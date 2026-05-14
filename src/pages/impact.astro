@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import Stat from '../components/Stat.astro';
+import IndiaMap from '../components/IndiaMap.astro';
+import { SITE } from '../lib/site';
+---
+<Base title="Impact" description="Three concrete stories on what one small CBG plant actually changes — for farmer income, for air, and for soil.">
+  <Section eyebrow="Impact" title="A 4 TPD plant is small. None of these numbers fix India. All of them make our slice of Andhra a measurably better place.">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {SITE.impactStats.map(s => <Stat stat={s} />)}
+    </div>
+  </Section>
+
+  <!-- STORY 1 — FARMER INCOME -->
+  <Section eyebrow="Story 1 · Farmer income" title="A second income, not a side hustle">
+    <div class="prose-svge">
+      <p>
+        A one-acre paddy plot in Vizianagaram yields, on average, two paddy crops per year and roughly 4 tonnes of dry paddy straw as a co-product. That straw, today, has three usual fates: burnt in the field (most common), used as cattle bedding (a fraction), or left to rot. None of them pay.
+      </p>
+      <p>
+        Under our model, every tonne of paddy straw we buy goes onto a supply slip, into the digester, and 14 days later, into the farmer's bank account. The economics aren't transformational — but they convert a free residue into a small, reliable, repeatable income stream that compounds across a 50&nbsp;km catchment.
+      </p>
+      <p>
+        For Napier grass — a perennial tropical grass that grows on land otherwise considered uncultivable — we offer contract farming. Suresh's family has owned land in this district for three generations. We know which plots have been lying fallow because they're stony or low-water. That land grows Napier just fine, and Napier feeds our digester just as well as paddy straw.
+      </p>
+      <p class="text-sm font-mono text-[color:var(--color-slate-2)]">
+        Reference: NITI Aayog (2023) on paddy-straw availability and disposal economics; SATAT scheme document on CBG feedstock contracts.
+      </p>
+    </div>
+  </Section>
+
+  <!-- MAP -->
+  <Section eyebrow="The geography of the problem" title="Why this matters where it matters">
+    <div class="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
+      <IndiaMap />
+      <div class="text-sm leading-relaxed">
+        <p>India's paddy belt and India's smog corridor overlap. Both rest, geographically, on the same set of states that grow most of the country's rice — Punjab, Haryana, Uttar Pradesh, Bihar, West Bengal, coastal Andhra Pradesh, Telangana, Odisha.</p>
+        <p class="mt-3">Our plant sits inside that paddy belt, in coastal Andhra Pradesh. Same problem (paddy straw with no buyer), at a smaller scale than Punjab, with the same default outcome (burning). Same solution.</p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- STORY 2 — AIR -->
+  <Section eyebrow="Story 2 · Air" title="The straw doesn't have to burn">
+    <div class="prose-svge">
+      <p>
+        Every November and December, the Indo-Gangetic Plain — Punjab, Haryana, Uttar Pradesh, Bihar — turns into a chimney for roughly six weeks. Paddy-stubble burning contributes 30–40&nbsp;% of Delhi's PM2.5 during peak smog episodes. The story is not new and the policy responses are not working.
+      </p>
+      <p>
+        Coastal Andhra Pradesh has the same residue, on a smaller scale, with the same default outcome: <em>burn it because there is no buyer</em>. CBG plants are a buyer. Our plant alone will pull roughly 26,000 tonnes of paddy straw out of the burn cycle every year. That is a small fraction of the national problem and 100&nbsp;% of the local one in our 50&nbsp;km radius.
+      </p>
+      <p>
+        We are not pretending one plant fixes Delhi. We are pretending one plant fixes Vizianagaram's burning-season air. That is a smaller, more honest claim — and one we can be held to.
+      </p>
+      <p class="text-sm font-mono text-[color:var(--color-slate-2)]">
+        Reference: CPCB annual PM2.5 reports; IIT-Kanpur Delhi air-quality source apportionment; IARI on stubble-burning economics.
+      </p>
+    </div>
+  </Section>
+
+  <!-- STORY 3 — SOIL -->
+  <Section eyebrow="Story 3 · Soil" title="Carbon back into the soil">
+    <div class="prose-svge">
+      <p>
+        Indian agricultural soils have lost roughly half of their organic carbon stock since the Green Revolution. Chemical fertilizers replaced organic matter; chemical fertilizers do not feed the soil — they bypass it. The result, three decades in, is a measurable drop in soil-organic-carbon, water-holding capacity, and microbial activity across the very fields that fed the country.
+      </p>
+      <p>
+        A bio-CNG plant doesn't only produce gas. The digestate — the slurry that comes out of the digester after methane is extracted — is one of the densest organic-manure inputs you can put back into a field. We will produce roughly 1 tonne per hour of solid Fermented Organic Manure and 52 m³/day of liquid digestate. All of it is returned to the catchment we sourced from. None of it is sold to a distant fertilizer brand.
+      </p>
+      <p>
+        That is the real loop: feedstock from farmers, gas to IOCL, manure back to the same farmers. The plant is a translator between a residue economy and a soil economy.
+      </p>
+      <p class="text-sm font-mono text-[color:var(--color-slate-2)]">
+        Reference: ICAR-IISS Bhopal on soil organic carbon trends; NITI Aayog (2022) on organic manure deficit; MNRE National Bioenergy Programme on FOM as a co-product.
+      </p>
+    </div>
+  </Section>
+
+  <!-- ALIGNED WITH -->
+  <Section eyebrow="Aligned with" title="Three national missions">
+    <div class="grid sm:grid-cols-3 gap-5 text-sm">
+      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
+        <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">MoPNG</div>
+        <h3 class="mt-2 text-lg">SATAT</h3>
+        <p class="mt-1 leading-relaxed">Sustainable Alternative Towards Affordable Transportation — 5,000 CBG plants, 15 MMTPA. We have an IOCL Letter of Intent under this scheme.</p>
+      </div>
+      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
+        <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">Jal Shakti / MNRE</div>
+        <h3 class="mt-2 text-lg">GOBARdhan</h3>
+        <p class="mt-1 leading-relaxed">Galvanizing Organic Bio-Agro Resources Dhan — ₹10,000 Cr scheme targeting 500 bio-CNG plants from organic waste. Our process is GOBARdhan-aligned.</p>
+      </div>
+      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
+        <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">MNRE</div>
+        <h3 class="mt-2 text-lg">National Bioenergy Programme</h3>
+        <p class="mt-1 leading-relaxed">Phase-I Central Financial Assistance for biogas plants. Extended to 31 March 2026.</p>
+      </div>
+    </div>
+  </Section>
+</Base>

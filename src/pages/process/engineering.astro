@@ -1,0 +1,84 @@
+---
+import Base from '../../layouts/Base.astro';
+import Section from '../../components/Section.astro';
+
+const steps = [
+  { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20–25% solids, or paddy straw + cattle dung mix. Sourced via contract farming and direct supply from farmers within a 50 km radius of the plant.' },
+  { n: '02', t: 'Mixing tank', d: 'Feedstock combined with ~145 m³/day of recycled process water. Total ~216 m³/day slurry flows to the digester.' },
+  { n: '03', t: 'Anaerobic digestion', d: 'CSTR-type digester. 24-hour residence. Outputs 9,500 Nm³/day of raw biogas, plus 216 m³/day post-digester slurry at 6–7% solids.' },
+  { n: '04', t: 'Slurry separation', d: 'Solid–liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM). Liquid fraction is partially recycled to mixing tank; rest goes to local fields.' },
+  { n: '05', t: 'Gas purification', d: 'Water scrubber → chemical scrubber → activated carbon filter → two-tower VPSA system. Strips CO₂, H₂S, and moisture to ≥90% methane.' },
+  { n: '06', t: 'Compression & buffer', d: 'Purified CBG compressed and stored in a surge vessel. Air compressor drives changeover valves on the VPSA cycle.' },
+  { n: '07', t: 'Dispatch QC', d: 'Continuous gas analysers (CH₄, CO₂, O₂, H₂S) and a dew-point sensor stamp each dispatch slip. Out-of-spec gas is recycled, not loaded.' },
+  { n: '08', t: 'Dispatch to IOCL', d: 'CBG cascade trucks (or pipeline once available) carry the gas to Indian Oil offtake points under the SATAT contract.' },
+];
+
+const machinery = [
+  ['Anaerobic Digester (CSTR Type)', '1 No.', 'RCC/MS with Balloon'],
+  ['Moisture Separator cum Pre-Filter at Inlet', '1 No.', 'SS304'],
+  ['Biogas Blower with FLP Motor & VFD', '2 No. (1W+1S)', '—'],
+  ['Water Ring Vacuum Pump with FLP Motor & VFD', '2 No. (1W+1S)', '—'],
+  ['Water Scrubber', '1 No.', 'HDPE'],
+  ['Pre-Water Cooler', '1 No.', 'SS304'],
+  ['Chemical Scrubber', '1 No.', 'SS304'],
+  ['Biogas Dehumidifier with Moisture Separator', '1 No.', 'SS304'],
+  ['Water Chilling Unit with Recirculation Pump', '1 No.', '—'],
+  ['Cooling Tower with Recirculation Pump', '1 No.', '—'],
+  ['Activated Carbon Filter', '1 No.', 'C.S.'],
+  ['Air Compressor (instrument air, changeover valves)', '1 No.', '—'],
+  ['2-Tower VPSA Biogas Purification Plant', '2 No.', 'S.S./C.S.'],
+  ['Biogas Surge Vessel', '1 No.', 'C.S.'],
+  ['Fine Filter at Outlet', '1 No.', 'C.S.'],
+  ['Outlet Bio Gas Flow Transmitter', '1 No.', '—'],
+  ['Gas Analysers (CH₄, CO₂, O₂, H₂S)', '1 No.', '—'],
+  ['Dew Point Sensor', '1 No.', '—'],
+];
+---
+<Base title="Process — Engineering Detail" description="Eight-step engineering process for the SVGE 4 TPD CBG plant, with major equipment list.">
+  <Section eyebrow="Engineering detail" title="The flow chart, in eight steps">
+    <p class="mb-8 text-lg max-w-3xl leading-relaxed">
+      Designed and integrated by <strong>Raj Process Equipments & Systems Pvt Ltd, Pune</strong> — a SATAT-approved EPC for India's CBG mission.
+    </p>
+    <ol class="grid sm:grid-cols-2 gap-4">
+      {steps.map(s => (
+        <li class="rounded-2xl bg-white border border-black/5 p-5">
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-xs text-[color:var(--color-saffron-text)]">{s.n}</span>
+            <h3 class="text-base">{s.t}</h3>
+          </div>
+          <p class="mt-2 text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <Section eyebrow="Major equipment" title="What sits on the plot">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-black/10 rounded-2xl overflow-hidden">
+        <thead class="bg-[color:var(--color-paper-2)] text-left">
+          <tr>
+            <th class="px-4 py-3">Equipment</th>
+            <th class="px-4 py-3">Quantity</th>
+            <th class="px-4 py-3">Material</th>
+          </tr>
+        </thead>
+        <tbody class="text-xs">
+          {machinery.map(([e, q, m]) => (
+            <tr class="border-t border-black/5">
+              <td class="px-4 py-2">{e}</td>
+              <td class="px-4 py-2 font-mono">{q}</td>
+              <td class="px-4 py-2 font-mono">{m}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">Plus supporting harvesting machinery: rotary slasher, tedder, raker, balers, tractors, telehandler, moisture meter, water tank, fire extinguisher, lightning arrestor.</p>
+  </Section>
+
+  <Section narrow>
+    <p class="text-sm">
+      Want the human version? See <a href="/process/">the three-POV explainer</a>.
+    </p>
+  </Section>
+</Base>

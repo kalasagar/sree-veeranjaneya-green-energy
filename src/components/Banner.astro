@@ -1,0 +1,39 @@
+---
+/**
+ * Banner — full-width responsive banner image with AVIF/WebP/PNG fallback.
+ *
+ * Usage:
+ *   <Banner
+ *     name="hero_paddy_dawn"
+ *     alt="A paddy field at dawn in Andhra Pradesh, with a single biogas digester on the horizon."
+ *     aspect="21/9"
+ *     priority
+ *   />
+ *
+ * Assumes /public/banners/<name>.avif, .webp, .png exist.
+ */
+interface Props {
+  name: string;
+  alt: string;
+  aspect?: '21/9' | '16/9' | '16/6' | '1/1';
+  priority?: boolean;
+}
+const { name, alt, aspect = '21/9', priority = false } = Astro.props;
+const fetchPriority = priority ? 'high' : 'auto';
+const loading = priority ? 'eager' : 'lazy';
+---
+<figure class="relative overflow-hidden rounded-2xl border border-black/5 bg-[color:var(--color-paper-2)]" style={`aspect-ratio: ${aspect};`}>
+  <picture>
+    <source srcset={`/banners/${name}.avif`} type="image/avif" />
+    <img
+      src={`/banners/${name}.webp`}
+      alt={alt}
+      width="1920"
+      height="900"
+      loading={loading}
+      decoding="async"
+      fetchpriority={fetchPriority}
+      class="w-full h-full object-cover"
+    />
+  </picture>
+</figure>

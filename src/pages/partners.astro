@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import { SITE } from '../lib/site';
+
+const lookFor = [
+  {
+    k: 'Feedstock supply',
+    v: 'Farmers, aggregators, FPOs in the Vizianagaram–Srikakulam belt. Napier under contract, paddy straw on supply slip. Cash within 14 days.',
+    cta: { label: 'Start there', href: '/farmers/' },
+  },
+  {
+    k: 'EPC sub-contracting',
+    v: 'Civil, mechanical, and electrical sub-packages once construction begins. Local hire preferred where competence permits.',
+    cta: { label: 'Send a one-pager', href: '/contact/' },
+  },
+  {
+    k: 'Cascade logistics',
+    v: 'Truck operators for CBG dispatch to IOCL outlets. Capacity, IS-compliant cascades, route experience matter — flat rates don\'t.',
+    cta: { label: 'Send credentials', href: '/contact/' },
+  },
+  {
+    k: 'FOM offtake',
+    v: 'Cooperatives, FPOs, organic-input dealers who buy solid Fermented Organic Manure or liquid digestate. We do not sell to brand distributors — we sell to the same belt we source from.',
+    cta: { label: 'Open a conversation', href: '/contact/' },
+  },
+  {
+    k: 'Lenders',
+    v: 'The term loan is structured. We are not raising fresh debt. Future plants — when they come — will start the conversation from here.',
+    cta: null,
+  },
+  {
+    k: 'Talent',
+    v: 'Operations, lab, aggregation, accounts. Hiring opens with construction. Local hire first.',
+    cta: { label: 'Be the first to know', href: '/careers/' },
+  },
+];
+---
+<Base title="Partners" description="Who we already work with — IOCL, Raj Process Equipments, the Government of India — and what we look for in the next set.">
+  <Section eyebrow="Partners" title="The network behind one small plant">
+    <p class="text-lg max-w-3xl mb-8 leading-relaxed">
+      Three relationships are already in place. They are the three that determine whether the plant gets built, gets gas out the gate, and survives the first five years.
+    </p>
+    <div class="grid sm:grid-cols-3 gap-5">
+      {SITE.partners.map(p => (
+        <article class="rounded-2xl bg-white border border-black/5 p-6">
+          <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">{p.role}</div>
+          <h3 class="mt-2 text-lg leading-snug">{p.name}</h3>
+          <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed">{p.note}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section eyebrow="What we look for" title="The six categories we will partner on">
+    <div class="grid sm:grid-cols-2 gap-5">
+      {lookFor.map(item => (
+        <article class="rounded-2xl bg-[color:var(--color-paper-2)] p-6">
+          <h3 class="text-lg leading-snug">{item.k}</h3>
+          <p class="mt-3 text-sm leading-relaxed text-[color:var(--color-slate)]">{item.v}</p>
+          {item.cta && <a href={item.cta.href} class="mt-4 inline-block text-sm font-mono text-[color:var(--color-saffron-text)] hover:underline">{item.cta.label} ↗</a>}
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section narrow eyebrow="A note on what we won't do">
+    <div class="prose-svge">
+      <p>
+        We won't sell a stake to a fund. The 70/30 family equity split is the equity split — we are not adding a third party at this stage. Future plants, if they exist, will be financed the same way unless we discover a structural reason to change.
+      </p>
+      <p>
+        We won't dispatch out-of-spec gas. Continuous analysers stamp every slip; out-of-spec is recycled, not sold. IOCL gets IS 16087:2016 or it gets nothing — and the same standard applies internally.
+      </p>
+      <p>
+        We won't pay middlemen between us and the farmer. The whole point is to be a buyer that pays the farmer directly, on the slip, in 14 days. Adding a layer breaks the model.
+      </p>
+    </div>
+  </Section>
+</Base>

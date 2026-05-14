@@ -1,0 +1,51 @@
+---
+import { SITE } from '../lib/site';
+---
+<footer class="mt-24 border-t border-black/10 bg-[color:var(--color-paper-2)]">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 py-10 grid sm:grid-cols-3 gap-8 text-sm">
+    <div>
+      <div class="flex items-center gap-3">
+        <img src="/brand/mark.svg" alt="SVGE" width="40" height="40" />
+        <div>
+          <div class="font-semibold text-[color:var(--color-forest)]">{SITE.name}</div>
+          <div class="font-mono text-xs text-[color:var(--color-slate-2)]">{SITE.tagline}</div>
+        </div>
+      </div>
+      <p class="mt-4 text-xs leading-relaxed text-[color:var(--color-slate-2)]">
+        4 TPD Compressed Bio-Gas plant under construction in Vizianagaram, AP.
+        Aligned with SATAT · GOBARdhan · MNRE.
+      </p>
+    </div>
+    <div>
+      <div class="font-semibold mb-2 text-[color:var(--color-forest)]">Site</div>
+      <ul class="space-y-1">
+        {SITE.nav.map(n => <li><a href={n.href}>{n.label}</a></li>)}
+        {SITE.navSecondary.map(n => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/news/">News</a></li>
+        <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-semibold mb-2 text-[color:var(--color-forest)]">Registered Office</div>
+      <p class="text-xs leading-relaxed">
+        {SITE.registeredOffice.line1}<br/>
+        {SITE.registeredOffice.line2}<br/>
+        {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}<br/>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      </p>
+      <p class="mt-3 font-mono text-[11px] text-[color:var(--color-slate-2)]">
+        CIN: {SITE.cin}<br/>GSTIN: {SITE.gst}<br/>UDYAM: {SITE.udyam}
+      </p>
+    </div>
+  </div>
+  <div class="border-t border-black/5">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-2 text-xs text-[color:var(--color-slate-2)]">
+      <span>© {new Date().getFullYear()} {SITE.legalName}. All rights reserved.</span>
+      <span class="flex items-center gap-4 font-mono">
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <span class="hidden sm:inline">Built with Astro · hosted on Cloudflare Pages</span>
+      </span>
+    </div>
+  </div>
+</footer>

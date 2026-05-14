@@ -1,0 +1,16 @@
+---
+import { SITE } from '../lib/site';
+---
+<div class="grid sm:grid-cols-2 gap-3">
+  {SITE.intents.map(i => (
+    <a href={i.href} class="group rounded-2xl bg-white border border-black/5 p-5 no-underline hover:border-[color:var(--color-forest)] transition-colors">
+      <div class="flex items-start gap-3">
+        <span class="mt-0.5 inline-flex items-center justify-center w-8 h-8 rounded-full bg-[color:var(--color-paper-2)] text-[color:var(--color-saffron-text)] font-bold group-hover:bg-[color:var(--color-saffron)] group-hover:text-white transition-colors">→</span>
+        <div>
+          <div class="font-semibold text-[color:var(--color-forest)]">{i.label}</div>
+          <div class="text-xs mt-1 text-[color:var(--color-slate-2)]">{i.hint}</div>
+        </div>
+      </div>
+    </a>
+  ))}
+</div>

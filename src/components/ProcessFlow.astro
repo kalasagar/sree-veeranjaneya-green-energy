@@ -1,0 +1,46 @@
+---
+/**
+ * Five-step horizontal process flow as inline SVG.
+ * Excalidraw-style: rounded rectangles, hand-drawn feel via slight stroke variation.
+ * Brand palette only.
+ */
+const steps = [
+  { n: '01', t: 'Field', sub: 'Farmer harvests' },
+  { n: '02', t: 'Digester', sub: 'CSTR · 24h' },
+  { n: '03', t: 'Purify', sub: 'VPSA → ≥90% CH₄' },
+  { n: '04', t: 'Dispatch', sub: 'IOCL LoI' },
+  { n: '05', t: 'Return', sub: 'FOM → soil' },
+];
+---
+<svg viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="Five-step CBG plant process flow.">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+      <polygon points="0,0 12,6 0,12" fill="#1B5E20"/>
+    </marker>
+  </defs>
+  {steps.map((s, i) => {
+    const x = 40 + i * 232;
+    return (
+      <g>
+        <rect x={x} y="50" width="200" height="120" rx="22" ry="22"
+              fill="#FAFAF7" stroke="#1B5E20" stroke-width="3"/>
+        <text x={x + 100} y="78" text-anchor="middle"
+              font-family="ui-monospace, monospace" font-size="13" fill="#E65100" font-weight="700">
+          {s.n}
+        </text>
+        <text x={x + 100} y="112" text-anchor="middle"
+              font-family="Sora, system-ui, sans-serif" font-size="22" fill="#1B5E20" font-weight="700">
+          {s.t}
+        </text>
+        <text x={x + 100} y="142" text-anchor="middle"
+              font-family="ui-monospace, monospace" font-size="12" fill="#37474F">
+          {s.sub}
+        </text>
+        {i < steps.length - 1 && (
+          <line x1={x + 200} y1="110" x2={x + 232 - 4} y2="110"
+                stroke="#1B5E20" stroke-width="3" marker-end="url(#arrow)"/>
+        )}
+      </g>
+    );
+  })}
+</svg>

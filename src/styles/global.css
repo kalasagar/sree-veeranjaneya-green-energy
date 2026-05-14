@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #1B5E20;
+  --color-forest-dark: #103a14;
+  --color-forest-light: #2e7d32;
+
+  /* Saffron — two variants for WCAG AA:
+     - var(--color-saffron) is the brand accent. Use on shapes/icons/large headings only.
+     - var(--color-saffron-text) is the legible-on-paper variant for small text. */
+  --color-saffron: #E65100;
+  --color-saffron-light: #ff7a1a;
+  --color-saffron-text: #B34200;   /* ~5.4:1 on paper — AA pass for normal text */
+
+  --color-gold: #FFB300;
+  --color-paper: #FAFAF7;
+  --color-paper-2: #f3f3ec;
+  --color-slate: #37474F;
+
+  /* Slate-2 darkened for AA. Used for eyebrows, body footnotes, captions. */
+  --color-slate-2: #4F6670;        /* ~4.7:1 on paper — AA pass for normal text */
+  --color-slate-2-soft: #607D8B;   /* keep the old softer tone for non-text use (borders, fills) */
+
+  --font-sans: 'Sora', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--color-paper);
+    color: var(--color-slate);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { color: var(--color-forest); font-weight: 700; letter-spacing: -0.01em; }
+  a { color: var(--color-forest); text-decoration: underline; text-underline-offset: 3px; }
+  a:hover { color: var(--color-saffron); }
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.25rem; border-radius: 999px; font-weight: 600;
+  text-decoration: none; transition: transform .15s, background .15s, color .15s;
+}
+.btn-primary { background: var(--color-forest); color: var(--color-paper); }
+.btn-primary:hover { background: var(--color-forest-dark); color: var(--color-paper); }
+.btn-ghost { border: 1.5px solid var(--color-forest); color: var(--color-forest); background: transparent; }
+.btn-ghost:hover { background: var(--color-forest); color: var(--color-paper); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .2rem .6rem; font-size: .75rem; border-radius: 999px;
+  background: var(--color-paper-2); color: var(--color-forest);
+  font-family: var(--font-mono);
+}
+
+.prose-svge {
+  max-width: 70ch;
+  line-height: 1.7;
+}
+.prose-svge p { margin-bottom: 1rem; }
+.prose-svge h2 { margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.6rem; }
+.prose-svge h3 { margin-top: 2rem; margin-bottom: .75rem; font-size: 1.2rem; }
+.prose-svge ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+.prose-svge li { margin-bottom: .35rem; }

@@ -1,0 +1,40 @@
+---
+import { SITE } from '../lib/site';
+import Banner from './Banner.astro';
+const { hero } = SITE;
+---
+<section class="relative">
+  <!-- Cinematic banner above the fold -->
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6 sm:pt-10">
+    <Banner name="hero_paddy_dawn" alt="A paddy field at dawn in coastal Andhra Pradesh, with a small biogas digester silhouette on the right horizon." aspect="21/9" priority />
+  </div>
+
+  <div class="absolute inset-0 -z-10" aria-hidden="true" style="background: radial-gradient(ellipse at top left, rgba(27,94,32,0.10) 0%, rgba(250,250,247,0) 60%), radial-gradient(ellipse at bottom right, rgba(230,81,0,0.08) 0%, rgba(250,250,247,0) 60%);"></div>
+
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-10 sm:pt-14 pb-10 sm:pb-16 grid sm:grid-cols-[1fr_auto] gap-8 items-center">
+    <div>
+      <span class="chip">{hero.eyebrow}</span>
+      <h1 class="text-4xl sm:text-6xl mt-5 leading-[1.04] tracking-tight">
+        {hero.h1Top}<br/>
+        <span class="text-[color:var(--color-saffron-text)]">{hero.h1Mid}</span><br/>
+        {hero.h1Bottom}
+      </h1>
+      <p class="mt-6 text-lg leading-relaxed max-w-2xl">{hero.sub}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        {hero.ctas.map(c => (
+          <a href={c.href} class={`btn ${c.tone === 'primary' ? 'btn-primary' : 'btn-ghost'}`}>{c.label} ↗</a>
+        ))}
+      </div>
+    </div>
+    <div class="hidden sm:block w-[260px] aspect-square">
+      <img
+        src="/brand/mark.svg"
+        width="260"
+        height="260"
+        alt="SVGE mark — paddy wreath surrounding a leaf-flame"
+        decoding="async"
+        class="w-full h-full object-contain"
+      />
+    </div>
+  </div>
+</section>
