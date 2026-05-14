@@ -21,7 +21,7 @@ interface Props {
 const { side = 'left', eyebrow, title, image = null, imageAlt = '', numeral } = Astro.props;
 const imgFirst = side === 'left';
 ---
-<div class="grid-12 items-center">
+<div class="grid-12 items-center" data-reveal>
   <div class={`col-5 ${imgFirst ? 'lg:order-1' : 'lg:order-2'}`}>
     {image ? (
       <picture>

@@ -6,12 +6,42 @@ interface Props {
   supporting: StatT[];   // 2-3 items
 }
 const { hero, supporting } = Astro.props;
+
+// Try to split a stat value into a prefix and a parseable number for count-up.
+// Examples: "₹12" → {prefix:"₹", num:12}, "~14" → {prefix:"~", num:14},
+// "9,600" → {prefix:"", num:9600, thousands:true}, "2.63" → {decimals:2}, "≥90%" → not countable, leave as-is.
+function parseStat(v: string) {
+  const m = v.match(/^(\D*?)([\d,]+(?:\.\d+)?)(\D*)$/);
+  if (!m) return null;
+  const prefix = m[1] ?? '';
+  const raw = m[2];
+  const suffix = m[3] ?? '';
+  const thousands = raw.includes(',');
+  const num = parseFloat(raw.replace(/,/g, ''));
+  if (Number.isNaN(num)) return null;
+  const decimals = (raw.split('.')[1] || '').length;
+  return { prefix, suffix, num, thousands, decimals };
+}
+
+const heroParsed = parseStat(hero.value);
 ---
-<div class="grid-12">
+<div class="grid-12" data-reveal data-reveal-stagger>
   <!-- Hero stat — spans wide -->
   <article class="col-8 rounded-xl bg-[color:var(--color-paper-2)] p-8 sm:p-12">
     <div class="flex items-baseline">
-      <span class="stat-mega">{hero.value}{hero.unit && <span class="unit">{hero.unit}</span>}</span>
+      {heroParsed ? (
+        <span
+          class="stat-mega"
+          data-count-to={heroParsed.num}
+          data-prefix={heroParsed.prefix}
+          data-suffix={heroParsed.suffix}
+          data-decimals={heroParsed.decimals}
+          data-thousands={heroParsed.thousands ? 'true' : 'false'}
+        >{hero.value}</span>
+      ) : (
+        <span class="stat-mega">{hero.value}</span>
+      )}
+      {hero.unit && <span class="unit">{hero.unit}</span>}
     </div>
     <p class="eyebrow mt-4">{hero.k}</p>
     {hero.framing && <p class="mt-4 text-[color:var(--color-slate)] text-lg leading-relaxed max-w-prose">{hero.framing}</p>}
@@ -24,15 +54,30 @@ const { hero, supporting } = Astro.props;
 
   <!-- Supporting stats — stack on tablet+, full-width on mobile -->
   <div class="col-4 flex flex-col gap-4">
-    {supporting.map(s => (
-      <article class="flex-1 rounded-xl bg-[color:var(--color-paper-3)] p-6">
-        <div class="flex items-baseline">
-          <span class="stat-num">{s.value}{s.unit && <span class="unit">{s.unit}</span>}</span>
-        </div>
-        <p class="eyebrow mt-2">{s.k}</p>
-        {s.framing && <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
-        {s.source && <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">Source: {s.source.label}</p>}
-      </article>
-    ))}
+    {supporting.map(s => {
+      const p = parseStat(s.value);
+      return (
+        <article class="flex-1 rounded-xl bg-[color:var(--color-paper-3)] p-6 hover-lift">
+          <div class="flex items-baseline">
+            {p ? (
+              <span
+                class="stat-num"
+                data-count-to={p.num}
+                data-prefix={p.prefix}
+                data-suffix={p.suffix}
+                data-decimals={p.decimals}
+                data-thousands={p.thousands ? 'true' : 'false'}
+              >{s.value}</span>
+            ) : (
+              <span class="stat-num">{s.value}</span>
+            )}
+            {s.unit && <span class="unit">{s.unit}</span>}
+          </div>
+          <p class="eyebrow mt-2">{s.k}</p>
+          {s.framing && <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
+          {s.source && <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">Source: {s.source.label}</p>}
+        </article>
+      );
+    })}
   </div>
 </div>

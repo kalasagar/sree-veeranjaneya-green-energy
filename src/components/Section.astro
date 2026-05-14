@@ -20,7 +20,7 @@ const bgClass = {
 <section id={id} class={`section ${bgClass}`}>
   <div class={`container-svge ${narrow ? 'max-w-3xl' : ''}`}>
     {(eyebrow || title || numeral || lede) && (
-      <header class="mb-10 sm:mb-14">
+      <header class="mb-10 sm:mb-14" data-reveal>
         {numeral && <p class="numeral mb-4">{numeral}</p>}
         {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
         {title && (

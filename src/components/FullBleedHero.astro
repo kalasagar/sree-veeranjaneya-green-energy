@@ -26,9 +26,9 @@ const minH = height === 'xl' ? 'min-h-[78vh] sm:min-h-[640px]' : 'min-h-[58vh] s
 const fetchPriority = priority ? 'high' : 'auto';
 const loading = priority ? 'eager' : 'lazy';
 ---
-<section class={`relative w-full ${minH} flex items-end overflow-hidden`}>
+<section class={`svge-hero relative w-full ${minH} flex items-end overflow-hidden`}>
   {banner ? (
-    <picture class="absolute inset-0">
+    <picture class="absolute inset-0 parallax-img" data-parallax transition:name={`hero-${banner}`}>
       <source srcset={`/banners/${banner}.avif`} type="image/avif" />
       <img
         src={`/banners/${banner}.webp`}

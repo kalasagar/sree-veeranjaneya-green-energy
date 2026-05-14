@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site';
@@ -116,6 +117,7 @@ const orgJsonLd = {
     )}
     <link rel="alternate" type="application/rss+xml" title="SVGE — News" href="/news/rss.xml" />
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter fallback="animate" />
   </head>
   <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:p-2 focus:rounded">Skip to content</a>
@@ -124,5 +126,88 @@ const orgJsonLd = {
       <slot />
     </main>
     <Footer />
+
+    <!-- Scroll-reveal + hero parallax + stat count-up. Re-runs on every View-Transition navigation. -->
+    <script is:inline data-astro-rerun>
+      (function () {
+        var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ---- Scroll reveal ----
+        var revealEls = document.querySelectorAll('[data-reveal]:not([data-revealed])');
+        if (rm) {
+          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
+        } else if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.setAttribute('data-revealed', '');
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+          revealEls.forEach(function (el) { io.observe(el); });
+        } else {
+          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
+        }
+
+        // ---- Hero parallax ----
+        if (!rm) {
+          var parallaxEls = document.querySelectorAll('[data-parallax]');
+          if (parallaxEls.length) {
+            var ticking = false;
+            function onScroll() {
+              if (ticking) return;
+              ticking = true;
+              requestAnimationFrame(function () {
+                var y = window.scrollY;
+                parallaxEls.forEach(function (el) {
+                  var r = el.getBoundingClientRect();
+                  if (r.bottom > 0 && r.top < window.innerHeight) {
+                    var offset = Math.max(-30, Math.min(0, -y * 0.12));
+                    el.style.transform = 'translate3d(0,' + offset + 'px,0)';
+                  }
+                });
+                ticking = false;
+              });
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+          }
+        }
+
+        // ---- Stat count-up ----
+        if (!rm) {
+          var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
+          if ('IntersectionObserver' in window) {
+            var co = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                co.unobserve(el);
+                el.setAttribute('data-counted', '');
+                var to = parseFloat(el.getAttribute('data-count-to'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+                var thousands = el.getAttribute('data-thousands') === 'true';
+                var start = performance.now();
+                var dur = 1200;
+                function step(t) {
+                  var p = Math.min(1, (t - start) / dur);
+                  var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+                  var v = to * eased;
+                  var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
+                  if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                  el.textContent = prefix + s + suffix;
+                  if (p < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+              });
+            }, { threshold: 0.4 });
+            countEls.forEach(function (el) { co.observe(el); });
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

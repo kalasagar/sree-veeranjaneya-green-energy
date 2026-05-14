@@ -299,6 +299,15 @@ export const SITE = {
     { href: '/careers/', label: 'Careers' },
   ],
 
+  // ---- STATUS (used by the dismissible top chip) ----
+  status: {
+    phase: 'pre-construction' as 'pre-construction' | 'construction' | 'operational',
+    label: 'Pre-construction',
+    lastUpdate: '2026-05-14',
+    note: 'Latest update on /news/',
+    href: '/news/',
+  },
+
   // ---- BUILT-IN-PUBLIC PROMISE (used on /, /about/, footer) ----
   publicPromise:
     'We are pre-construction. From the day concrete is poured we will publish a monthly update — photos, one milestone, one financial number, one thing that went wrong. That is the trust mechanic.',

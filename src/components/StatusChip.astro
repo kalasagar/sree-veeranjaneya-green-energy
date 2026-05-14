@@ -1,0 +1,35 @@
+---
+import { SITE } from '../lib/site';
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+const lastUpdate = fmt.format(new Date(SITE.status.lastUpdate));
+---
+<div id="svge-status" class="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] text-xs">
+  <div class="container-svge py-2 flex items-center justify-between gap-3">
+    <a href={SITE.status.href} class="flex items-center gap-2 no-underline text-[color:var(--color-paper)] hover:text-[color:var(--color-saffron)] transition-colors duration-150">
+      <span class="inline-block w-2 h-2 rounded-full bg-[color:var(--color-saffron)] animate-pulse"></span>
+      <span class="font-mono uppercase tracking-widest text-[10px] text-[color:var(--color-saffron)]">{SITE.status.label}</span>
+      <span class="hidden sm:inline text-[color:var(--color-paper)]/80">·</span>
+      <span class="hidden sm:inline text-[color:var(--color-paper)]/90">{SITE.status.note}</span>
+      <span class="hidden md:inline text-[color:var(--color-paper)]/60 font-mono">· {lastUpdate}</span>
+      <span class="ml-1">→</span>
+    </a>
+    <button id="svge-status-dismiss" type="button" aria-label="Dismiss status banner" class="text-[color:var(--color-paper)]/70 hover:text-[color:var(--color-paper)] px-2 py-1 min-h-[32px] min-w-[32px] -mr-2">
+      ✕
+    </button>
+  </div>
+</div>
+<script is:inline data-astro-rerun>
+  (function () {
+    var el = document.getElementById('svge-status');
+    if (!el) return;
+    if (sessionStorage.getItem('svge:status-dismissed') === '1') {
+      el.style.display = 'none';
+      return;
+    }
+    var btn = document.getElementById('svge-status-dismiss');
+    btn && btn.addEventListener('click', function () {
+      el.style.display = 'none';
+      sessionStorage.setItem('svge:status-dismissed', '1');
+    });
+  })();
+</script>
