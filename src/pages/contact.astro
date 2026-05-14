@@ -75,7 +75,10 @@ import { SITE } from '../lib/site';
     e.preventDefault();
     const form = e.currentTarget;
     const status = document.getElementById('formStatus');
-    status.textContent = 'Sending…';
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalLabel = submitBtn?.textContent;
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
+    status.textContent = '';
     try {
       const fd = new FormData(form);
       const r = await fetch(form.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
@@ -85,11 +88,13 @@ import { SITE } from '../lib/site';
         status.style.color = '#1B5E20';
       } else {
         status.textContent = 'Could not send. Please email svge.india@gmail.com directly. (' + r.status + ')';
-        status.style.color = '#E65100';
+        status.style.color = '#B34200';
       }
     } catch {
       status.textContent = 'Network error. Please email svge.india@gmail.com directly.';
-      status.style.color = '#E65100';
+      status.style.color = '#B34200';
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel ?? 'Send message ↗'; }
     }
   });
 </script>

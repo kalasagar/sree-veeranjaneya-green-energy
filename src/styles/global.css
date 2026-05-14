@@ -37,17 +37,42 @@
   h1, h2, h3, h4 { color: var(--color-forest); font-weight: 700; letter-spacing: -0.01em; }
   a { color: var(--color-forest); text-decoration: underline; text-underline-offset: 3px; }
   a:hover { color: var(--color-saffron); }
+
+  /* Visible keyboard-focus rings on all interactive elements.
+     Uses focus-visible so the ring only shows for keyboard, not mouse clicks. */
+  a:focus-visible, button:focus-visible, summary:focus-visible,
+  input:focus-visible, textarea:focus-visible, select:focus-visible,
+  details:focus-visible {
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Respect reduced-motion preference site-wide. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    html { scroll-behavior: auto; }
+  }
 }
 
 .btn {
   display: inline-flex; align-items: center; gap: .5rem;
   padding: .75rem 1.25rem; border-radius: 999px; font-weight: 600;
-  text-decoration: none; transition: transform .15s, background .15s, color .15s;
+  text-decoration: none;
+  transition: transform .18s ease-out, background .18s ease-out, color .18s ease-out, box-shadow .18s ease-out;
+  cursor: pointer;
 }
+.btn:active { transform: scale(0.98); }
 .btn-primary { background: var(--color-forest); color: var(--color-paper); }
 .btn-primary:hover { background: var(--color-forest-dark); color: var(--color-paper); }
 .btn-ghost { border: 1.5px solid var(--color-forest); color: var(--color-forest); background: transparent; }
 .btn-ghost:hover { background: var(--color-forest); color: var(--color-paper); }
+.btn[disabled], .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 .chip {
   display: inline-flex; align-items: center; gap: .35rem;
