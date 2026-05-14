@@ -1,14 +1,14 @@
 ---
 import { SITE } from '../lib/site';
 ---
-<div class="grid sm:grid-cols-2 gap-3">
+<div class="grid-12">
   {SITE.intents.map(i => (
-    <a href={i.href} class="group rounded-2xl bg-white border border-black/5 p-5 no-underline hover:border-[color:var(--color-forest)] transition-colors">
-      <div class="flex items-start gap-3">
-        <span class="mt-0.5 inline-flex items-center justify-center w-8 h-8 rounded-full bg-[color:var(--color-paper-2)] text-[color:var(--color-saffron-text)] font-bold group-hover:bg-[color:var(--color-saffron)] group-hover:text-white transition-colors">→</span>
+    <a href={i.href} class="col-6 group rounded-xl bg-[color:var(--color-paper-2)] border border-[color:var(--color-slate-2-soft)]/20 p-6 no-underline cursor-pointer hover:bg-[color:var(--color-paper-3)] hover:border-[color:var(--color-forest)] active:scale-[0.99] transition-all duration-200 ease-out min-h-[120px]">
+      <div class="flex items-start gap-4">
+        <span class="mt-1 inline-flex shrink-0 items-center justify-center w-10 h-10 rounded-md bg-[color:var(--color-paper)] text-[color:var(--color-saffron-text)] font-bold text-lg group-hover:bg-[color:var(--color-saffron)] group-hover:text-[color:var(--color-paper)] transition-colors duration-200">→</span>
         <div>
-          <div class="font-semibold text-[color:var(--color-forest)]">{i.label}</div>
-          <div class="text-xs mt-1 text-[color:var(--color-slate-2)]">{i.hint}</div>
+          <h3 class="text-lg font-semibold text-[color:var(--color-forest)] leading-snug">{i.label}</h3>
+          <p class="text-sm mt-1 text-[color:var(--color-slate-2)] leading-relaxed">{i.hint}</p>
         </div>
       </div>
     </a>

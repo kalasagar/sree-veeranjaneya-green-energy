@@ -1,80 +1,92 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import PullQuote from '../components/PullQuote.astro';
 import { SITE } from '../lib/site';
 ---
 <Base title="Press" description="Press kit for journalists covering SVGE — boilerplate, fact sheet, logo pack, founder quotes, contact.">
-  <Section eyebrow="Press" title="Press kit">
-    <div class="prose-svge">
-      <p>Everything below is on the record and may be reproduced with attribution. We aim to reply to journalist queries within one business day.</p>
-    </div>
+  <FullBleedHero banner={null} alt="Press" eyebrow="Press">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">Press kit.</h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      Everything below is on the record. Reproduce with attribution. We aim to reply within one business day.
+    </p>
+  </FullBleedHero>
 
-    <div class="mt-10 grid lg:grid-cols-2 gap-6">
-      <div class="rounded-2xl bg-white border border-black/5 p-6">
-        <h2 class="text-xl">Boilerplate (60 words)</h2>
-        <p class="mt-3 text-sm leading-relaxed">{SITE.description}</p>
-      </div>
-      <div class="rounded-2xl bg-white border border-black/5 p-6">
-        <h2 class="text-xl">Boilerplate (longer, 120 words)</h2>
-        <p class="mt-3 text-sm leading-relaxed">
-          Sree Veeranjaneya Green Energy Pvt Ltd is a small family-owned Compressed Bio-Gas (CBG) project in Thatipadu village, Vizianagaram district, Andhra Pradesh. Founded in June 2024 by Pogiri Suri Rao and Pogiri Deepika, the company is building a 4 TPD CBG plant aligned with India's SATAT and GOBARdhan missions. The plant will produce IS 16087:2016 specification transport fuel for Indian Oil under a signed Letter of Intent, and Fermented Organic Manure for local farmers. Total project cost is ₹33.27 crore. The plant is currently in pre-construction. The founders hold 100% of the equity (70/30) and have publicly committed to monthly progress disclosures once construction begins.
-        </p>
-      </div>
+  <Section eyebrow="Boilerplate" title="Two lengths. Drop in and use.">
+    <div class="grid-12">
+      <article class="col-6 rounded-xl bg-[color:var(--color-paper-2)] p-6">
+        <p class="eyebrow mb-3">60 words</p>
+        <p class="text-base leading-relaxed">{SITE.description}</p>
+      </article>
+      <article class="col-6 rounded-xl bg-[color:var(--color-paper-2)] p-6">
+        <p class="eyebrow mb-3">120 words</p>
+        <p class="text-base leading-relaxed">Sree Veeranjaneya Green Energy Pvt Ltd is a small family-owned Compressed Bio-Gas (CBG) project in Thatipadu village, Vizianagaram district, Andhra Pradesh. Founded in June 2024 by Pogiri Suri Rao and Pogiri Deepika, the company is building a 4 TPD CBG plant aligned with India's SATAT and GOBARdhan missions. The plant will produce IS 16087:2016 specification transport fuel for Indian Oil under a signed Letter of Intent, and Fermented Organic Manure for local farmers. Total project cost is ₹33.27 crore. The plant is currently in pre-construction. The founders hold 100% of the equity (70/30) and have publicly committed to monthly progress disclosures once construction begins.</p>
+      </article>
     </div>
+  </Section>
 
-    <div class="mt-6 grid lg:grid-cols-2 gap-6">
-      <div class="rounded-2xl bg-white border border-black/5 p-6">
-        <h2 class="text-xl">Fast facts</h2>
-        <ul class="mt-3 text-sm leading-relaxed list-disc list-inside space-y-1">
-          <li>Founded: 12 June 2024</li>
-          <li>CIN: {SITE.cin}</li>
-          <li>Plant capacity: 4 TPD CBG · 9,600 Nm³/day raw biogas</li>
-          <li>Standard: IS 16087:2016 (≥90% CH₄)</li>
-          <li>Site: Thatipadu village, Regidi Amadalavalasa mandal, Vizianagaram, AP — 532440</li>
-          <li>Land: 2.63 acres (owner titled)</li>
-          <li>Captive solar: 500 kW</li>
-          <li>Project cost: ₹33.27 crore</li>
-          <li>Equity / debt: ₹8.37 Cr / ₹23.40 Cr (10-year term)</li>
-          <li>Offtake: Indian Oil Corporation — Letter of Intent issued</li>
-          <li>Technology partner: Raj Process Equipments & Systems Pvt Ltd, Pune (SATAT-approved)</li>
-          <li>Feedstock: Napier grass (contract farming), paddy straw, cattle dung</li>
-          <li>Co-product: 1 TPH solid + 52 m³/day liquid Fermented Organic Manure</li>
+  <Section eyebrow="Fast facts" title="Everything a journalist will ask." bg="paper-2">
+    <dl class="grid-12 text-sm">
+      {[
+        ['Founded', '12 June 2024'], ['CIN', SITE.cin],
+        ['Plant capacity', '4 TPD CBG · 9,600 Nm³/day raw biogas'],
+        ['Standard', 'IS 16087:2016 (≥90% CH₄)'],
+        ['Site', 'Thatipadu village, Regidi Amadalavalasa mandal, Vizianagaram, AP — 532440'],
+        ['Land', '2.63 acres (owner titled)'],
+        ['Captive solar', '500 kW'],
+        ['Project cost', '₹33.27 crore'],
+        ['Equity / debt', '₹8.37 Cr / ₹23.40 Cr (10-year term)'],
+        ['Offtake', 'Indian Oil Corporation — Letter of Intent issued'],
+        ['Tech partner', 'Raj Process Equipments & Systems Pvt Ltd, Pune (SATAT-approved)'],
+        ['Feedstock', 'Napier grass (contract farming), paddy straw, cattle dung'],
+        ['Co-product', '1 TPH solid + 52 m³/day liquid Fermented Organic Manure'],
+      ].map(([k, v]) => (
+        <div class="col-6 lg:col-4 border-t border-[color:var(--color-ink)] pt-3">
+          <dt class="eyebrow text-[color:var(--color-slate-2)] mb-1">{k}</dt>
+          <dd class="font-mono text-[color:var(--color-forest)] break-words">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <Section eyebrow="Brand pack" title="Logo, palette, banners.">
+    <div class="grid-12">
+      <ul class="col-8 grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/mark.svg">Mark — SVG</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/mark_2048.png">Mark — PNG 2048</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/mark_1024.png">Mark — PNG 1024</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/mark_512.png">Mark — PNG 512</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/linkedin_banner.png">LinkedIn banner</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href="/brand/og_image.png">OG / social card</a></li>
+      </ul>
+      <aside class="col-4 rounded-xl bg-[color:var(--color-paper-2)] p-6 text-sm leading-relaxed">
+        <p class="eyebrow mb-2">Palette</p>
+        <ul class="font-mono space-y-1">
+          <li>Forest #1B5E20</li>
+          <li>Saffron #E65100</li>
+          <li>Paper #FAFAF7</li>
+          <li>Slate #37474F</li>
         </ul>
-      </div>
-
-      <div class="rounded-2xl bg-white border border-black/5 p-6">
-        <h2 class="text-xl">Logo & brand pack</h2>
-        <p class="mt-3 text-sm leading-relaxed">Free for editorial use with attribution. Please do not modify, recolour, or place on background colours other than off-white / brand green.</p>
-        <ul class="mt-4 grid grid-cols-2 gap-3 text-sm">
-          <li><a href="/brand/mark.svg">Mark — SVG</a></li>
-          <li><a href="/brand/mark_2048.png">Mark — PNG 2048</a></li>
-          <li><a href="/brand/mark_1024.png">Mark — PNG 1024</a></li>
-          <li><a href="/brand/mark_512.png">Mark — PNG 512</a></li>
-          <li><a href="/brand/linkedin_banner.png">LinkedIn banner</a></li>
-          <li><a href="/brand/og_image.png">OG / social card</a></li>
-        </ul>
-        <p class="mt-4 text-[11px] font-mono text-[color:var(--color-slate-2)]">Palette: forest #1B5E20 · saffron #E65100 · paper #FAFAF7 · slate #37474F.</p>
-      </div>
+      </aside>
     </div>
+  </Section>
 
-    <div class="mt-6 grid lg:grid-cols-2 gap-6">
+  <Section eyebrow="Founder quotes" title="On the record." bg="paper-2">
+    <div class="grid-12">
       {SITE.promoters.map(p => (
-        <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-6">
-          <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">Founder quote · on the record</div>
-          <blockquote class="mt-3 border-l-4 border-[color:var(--color-forest)] pl-4 italic">
-            <p class="text-base leading-relaxed">{`"${p.quote}"`}</p>
-            <footer class="mt-2 text-xs font-mono not-italic">
-              — {p.name}, {p.role}{p.quoteDraft ? <span class="ml-2 text-[color:var(--color-saffron-text)] not-italic">[Draft — pending founder approval]</span> : ''}
-            </footer>
-          </blockquote>
+        <div class="col-6">
+          <PullQuote quote={p.quote} attribution={`${p.name}, ${p.role}`} draft={p.quoteDraft} />
         </div>
       ))}
     </div>
+  </Section>
 
-    <div class="mt-10 rounded-2xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8">
-      <h2 class="text-xl text-[color:var(--color-paper)]">Journalist contact</h2>
-      <p class="mt-3 text-sm">Email <a class="underline text-[color:var(--color-paper)]" href={`mailto:${SITE.email}?subject=Press%20enquiry`}>{SITE.email}</a> with subject line "Press enquiry". We aim to reply within one business day.</p>
-      <p class="mt-3 text-xs opacity-80">If you need a phone call, the founders are available by appointment after construction begins.</p>
+  <Section narrow>
+    <div class="rounded-xl bg-[color:var(--color-ink)] text-[color:var(--color-paper)] p-8">
+      <p class="eyebrow text-[color:var(--color-paper)]/80 mb-2">Journalist contact</p>
+      <p class="text-2xl">Email <a class="underline text-[color:var(--color-paper)]" href={`mailto:${SITE.email}?subject=Press%20enquiry`}>{SITE.email}</a> with subject line "Press enquiry".</p>
+      <p class="mt-3 text-sm text-[color:var(--color-paper)]/80">Reply within one business day. Phone interview available by appointment once construction begins.</p>
     </div>
   </Section>
 </Base>

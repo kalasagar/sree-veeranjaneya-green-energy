@@ -1,100 +1,111 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
-import Manifesto from '../components/Manifesto.astro';
-import Stat from '../components/Stat.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import BentoGrid from '../components/BentoGrid.astro';
+import EditorialBlock from '../components/EditorialBlock.astro';
+import Logos from '../components/Logos.astro';
 import { SITE } from '../lib/site';
+
+const stake = SITE.stakeStats;
+const stepImages = [
+  { id: 'farmers_hands_straw', alt: 'Hands tying paddy straw at golden hour' },
+  { id: null, alt: '' },
+  { id: null, alt: '' },
+  { id: null, alt: '' },
+  { id: 'impact_fom_soil', alt: 'A hand spreading FOM on Andhra soil' },
+];
 ---
 <Base>
-  <Manifesto />
-
-  <!-- WHAT'S AT STAKE -->
-  <Section eyebrow="What's at stake" title="Why this matters, in three numbers">
-    <div class="grid sm:grid-cols-3 gap-4 sm:gap-5">
-      {SITE.stakeStats.map(s => <Stat stat={s} large />)}
+  <!-- HERO -->
+  <FullBleedHero
+    banner="hero_paddy_dawn"
+    alt="A paddy field at dawn in coastal Andhra Pradesh with a small biogas digester silhouette on the right horizon."
+    eyebrow={SITE.hero.eyebrow}
+    height="xl"
+    priority
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3">
+      {SITE.hero.h1Top}<br/>
+      <span style="color:#FFB300;">{SITE.hero.h1Mid}</span><br/>
+      {SITE.hero.h1Bottom}
+    </h1>
+    <p class="mt-6 text-lg sm:text-xl max-w-2xl text-[color:var(--color-paper)]/95 leading-relaxed">{SITE.hero.sub}</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      {SITE.hero.ctas.map(c => (
+        <a href={c.href} class={`btn ${c.tone === 'primary' ? 'btn-primary' : 'btn-ink'}`}>{c.label} →</a>
+      ))}
     </div>
+  </FullBleedHero>
+
+  <!-- WHAT'S AT STAKE — bento -->
+  <Section eyebrow="What's at stake" title="Why this matters, in three numbers.">
+    <BentoGrid hero={stake[0]} supporting={[stake[1], stake[2]]} />
   </Section>
 
-  <!-- HOW THIS PLANT CLOSES THE LOOP -->
-  <Section eyebrow="How this plant closes the loop" title="Five steps. One cycle. No smoke.">
-    <ol class="grid sm:grid-cols-5 gap-3 sm:gap-4 text-sm">
-      <li class="rounded-2xl bg-white border border-black/5 p-5">
-        <div class="font-mono text-xs text-[color:var(--color-saffron-text)]">01 · Field</div>
-        <h3 class="mt-2 text-base">Farmer harvests</h3>
-        <p class="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">Paddy straw and cattle dung come off the field. Today, most of it burns. We pay for it instead.</p>
-      </li>
-      <li class="rounded-2xl bg-white border border-black/5 p-5">
-        <div class="font-mono text-xs text-[color:var(--color-saffron-text)]">02 · Digester</div>
-        <h3 class="mt-2 text-base">We digest it</h3>
-        <p class="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">9,600 Nm³ of raw biogas per day from a single CSTR-type anaerobic digester running 24 hours.</p>
-      </li>
-      <li class="rounded-2xl bg-white border border-black/5 p-5">
-        <div class="font-mono text-xs text-[color:var(--color-saffron-text)]">03 · Purification</div>
-        <h3 class="mt-2 text-base">We purify it</h3>
-        <p class="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">Two-tower VPSA and scrubbers strip CO₂, H₂S, and moisture to ≥90% methane — IS 16087:2016 spec.</p>
-      </li>
-      <li class="rounded-2xl bg-white border border-black/5 p-5">
-        <div class="font-mono text-xs text-[color:var(--color-saffron-text)]">04 · Dispatch</div>
-        <h3 class="mt-2 text-base">IOCL buys it</h3>
-        <p class="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">4 tonnes per day of CBG. Roughly the daily CNG for 80 city buses. Under a signed Letter of Intent.</p>
-      </li>
-      <li class="rounded-2xl bg-white border border-black/5 p-5">
-        <div class="font-mono text-xs text-[color:var(--color-saffron-text)]">05 · Return</div>
-        <h3 class="mt-2 text-base">FOM goes back</h3>
-        <p class="mt-2 text-xs leading-relaxed text-[color:var(--color-slate)]">52 m³/day of liquid manure plus 1 TPH of solid FOM return to the same fields. Soil gets its carbon back.</p>
-      </li>
+  <!-- HOW THIS PLANT CLOSES THE LOOP — 5-step -->
+  <Section
+    eyebrow="How this plant closes the loop"
+    title="Five steps. One cycle. No smoke."
+    bg="paper-2"
+  >
+    <ol class="grid-12">
+      {[
+        { t: 'Farmer harvests', d: 'Paddy straw and cattle dung come off the field. Today most of it burns. We pay for it instead.' },
+        { t: 'We digest it', d: '9,600 Nm³ of raw biogas per day from a single CSTR-type anaerobic digester running 24 hours.' },
+        { t: 'We purify it', d: 'Two-tower VPSA and scrubbers strip CO₂, H₂S, and moisture to ≥90% methane — IS 16087:2016 spec.' },
+        { t: 'IOCL buys it', d: '4 tonnes per day of CBG. Roughly the daily CNG for 80 city buses. Under a signed Letter of Intent.' },
+        { t: 'FOM goes back', d: '52 m³/day of liquid manure plus 1 TPH of solid FOM return to the same fields. Soil gets its carbon back.' },
+      ].map((s, i) => (
+        <li class="col-12 lg:col-span-2 bg-[color:var(--color-paper)] p-6 rounded-lg" style="grid-column: span 12;">
+          <p class="numeral mb-3" style="font-size: 2rem;">0{i + 1}</p>
+          <h3 class="text-lg leading-snug mb-2">{s.t}</h3>
+          <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
+        </li>
+      ))}
     </ol>
   </Section>
 
-  <!-- WHY THIS PLANT, WHY NOW -->
-  <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant">
-    <div class="grid sm:grid-cols-3 gap-5">
-      {SITE.differentiators.map(d => (
-        <article class="rounded-2xl bg-[color:var(--color-paper-2)] p-6">
-          <h3 class="text-lg leading-snug">{d.title}</h3>
-          <p class="mt-3 text-sm leading-relaxed">{d.body}</p>
-        </article>
+  <!-- WHY THIS PLANT — three editorial spreads -->
+  <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant.">
+    <div class="space-y-16">
+      {SITE.differentiators.map((d, i) => (
+        <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={i === 0 ? 'hero_paddy_dawn' : null} imageAlt="">
+          <p>{d.body}</p>
+        </EditorialBlock>
       ))}
     </div>
   </Section>
 
   <!-- BUILT IN PUBLIC -->
   <Section narrow eyebrow="Built in public" title="No glossy reveal. Monthly receipts.">
-    <p class="text-lg leading-relaxed">{SITE.publicPromise}</p>
-    <p class="mt-6">
-      <a href="/news/" class="btn btn-primary">Read the first post ↗</a>
+    <p class="lede">{SITE.publicPromise}</p>
+    <p class="mt-8">
+      <a href="/news/" class="btn btn-primary">Read the first post →</a>
     </p>
-    <p class="mt-3 text-sm text-[color:var(--color-slate-2)]">
+    <p class="mt-4 text-sm text-[color:var(--color-slate-2)]">
       Posts continue monthly from the day concrete is poured.
       <a href="/careers/">Careers</a> and <a href="/press/">press</a> get the same updates.
     </p>
   </Section>
 
   <!-- PARTNERS -->
-  <Section eyebrow="Partners" title="Trusted by">
-    <div class="grid sm:grid-cols-3 gap-5 text-sm">
-      {SITE.partners.map(p => (
-        <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-          <div class="font-semibold text-[color:var(--color-forest)]">{p.name}</div>
-          <div class="mt-1 text-xs font-mono uppercase tracking-wider text-[color:var(--color-saffron-text)]">{p.role}</div>
-          <p class="mt-2 text-[color:var(--color-slate-2)] leading-relaxed">{p.note}</p>
-        </div>
-      ))}
-    </div>
+  <Section eyebrow="Partners" title="The network behind the plant." bg="paper-2">
+    <Logos />
   </Section>
 
   <!-- SEGMENTED CTA -->
-  <Section narrow eyebrow="Talk to us" title="Pick the door that fits">
-    <div class="grid sm:grid-cols-2 gap-3">
-      <a href="/farmers/" class="rounded-2xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-6 no-underline cursor-pointer hover:bg-[color:var(--color-forest-dark)] active:scale-[0.99] transition-all duration-200 ease-out">
-        <div class="text-xs font-mono uppercase tracking-widest">For Farmers</div>
-        <div class="mt-2 text-lg font-semibold">We buy your paddy straw, Napier and dung.</div>
-        <div class="mt-1 text-sm">14-day payment, bank transfer, 50 km radius.</div>
+  <Section narrow eyebrow="Talk to us" title="Pick the door that fits.">
+    <div class="grid-12">
+      <a href="/farmers/" class="col-6 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-forest-dark)] active:scale-[0.99] transition-all duration-200 ease-out">
+        <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Farmers</p>
+        <p class="text-2xl font-semibold leading-tight">We buy your paddy straw, Napier and dung.</p>
+        <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">14-day payment, bank transfer, 50&nbsp;km radius.</p>
       </a>
-      <a href="/contact/" class="rounded-2xl bg-[color:var(--color-saffron-text)] text-[color:var(--color-paper)] p-6 no-underline cursor-pointer hover:bg-[color:var(--color-saffron)] active:scale-[0.99] transition-all duration-200 ease-out">
-        <div class="text-xs font-mono uppercase tracking-widest">For Partners & Press</div>
-        <div class="mt-2 text-lg font-semibold">EPC, logistics, FOM offtake, journalists, future hires.</div>
-        <div class="mt-1 text-sm">Email reply within two business days.</div>
+      <a href="/contact/" class="col-6 rounded-xl bg-[color:var(--color-saffron-text)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-saffron)] active:scale-[0.99] transition-all duration-200 ease-out">
+        <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Partners & Press</p>
+        <p class="text-2xl font-semibold leading-tight">EPC, logistics, FOM offtake, journalists, future hires.</p>
+        <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">Email reply within two business days.</p>
       </a>
     </div>
   </Section>

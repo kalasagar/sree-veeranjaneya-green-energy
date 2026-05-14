@@ -1,0 +1,60 @@
+---
+/**
+ * FullBleedHero — full-width banner with a dark gradient scrim
+ * and headline/sub overlaid on the lower-left.
+ *
+ * The hero is composed of:
+ *   - <picture> with AVIF/WebP banner
+ *   - dark scrim for legibility
+ *   - eyebrow / display / sub stacked over the lower-left
+ *   - optional CTA slot (rendered below the text inside the hero)
+ *
+ * If no banner is wired yet, pass `banner={null}` and a forest-green
+ * solid colour wash is used instead.
+ */
+interface Props {
+  banner?: string | null;       // file basename in /banners/, e.g. 'hero_paddy_dawn'
+  alt?: string;
+  eyebrow?: string;
+  title?: string;               // plain string used as fallback
+  height?: 'lg' | 'xl';
+  priority?: boolean;
+}
+const { banner = null, alt = '', eyebrow, title, height = 'lg', priority = false } = Astro.props;
+
+const minH = height === 'xl' ? 'min-h-[78vh] sm:min-h-[640px]' : 'min-h-[58vh] sm:min-h-[520px]';
+const fetchPriority = priority ? 'high' : 'auto';
+const loading = priority ? 'eager' : 'lazy';
+---
+<section class={`relative w-full ${minH} flex items-end overflow-hidden`}>
+  {banner ? (
+    <picture class="absolute inset-0">
+      <source srcset={`/banners/${banner}.avif`} type="image/avif" />
+      <img
+        src={`/banners/${banner}.webp`}
+        alt={alt}
+        width="1920"
+        height="900"
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchPriority}
+        class="w-full h-full object-cover"
+      />
+    </picture>
+  ) : (
+    <div class="absolute inset-0" style="background: linear-gradient(135deg, #1B5E20 0%, #103a14 100%);"></div>
+  )}
+
+  <!-- Dark legibility scrim -->
+  <div class="absolute inset-0" aria-hidden="true" style="background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(10,20,16,0.78) 100%);"></div>
+
+  <div class="container-svge relative pb-10 sm:pb-16 lg:pb-20 pt-16">
+    <div class="max-w-[64ch] text-[color:var(--color-paper)]">
+      {eyebrow && <p class="eyebrow mb-3" style="color:#FFB300;">{eyebrow}</p>}
+      {title && (
+        <h1 class="display text-[color:var(--color-paper)]">{title}</h1>
+      )}
+      <slot />
+    </div>
+  </div>
+</section>

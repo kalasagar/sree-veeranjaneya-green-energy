@@ -1,0 +1,16 @@
+---
+interface Props {
+  quote: string;
+  attribution?: string;
+  draft?: boolean;
+}
+const { quote, attribution, draft = false } = Astro.props;
+---
+<figure class="pullquote my-8">
+  <p>{`“${quote}”`}</p>
+  {attribution && (
+    <cite>
+      — {attribution}{draft && <span class="ml-2 text-[color:var(--color-saffron-text)]">[Draft — pending founder approval]</span>}
+    </cite>
+  )}
+</figure>

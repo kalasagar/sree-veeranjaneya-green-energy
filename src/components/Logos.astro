@@ -1,0 +1,12 @@
+---
+import { SITE } from '../lib/site';
+---
+<div class="grid-12 items-center">
+  {SITE.partners.map((p, i) => (
+    <article class="col-4 border-t border-[color:var(--color-slate-2-soft)]/40 pt-6">
+      <p class="eyebrow mb-2">{p.role}</p>
+      <h3 class="text-lg font-semibold text-[color:var(--color-forest)] leading-snug">{p.name}</h3>
+      <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed">{p.note}</p>
+    </article>
+  ))}
+</div>

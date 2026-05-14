@@ -1,106 +1,96 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
 
-const farmerPov = [
-  { t: 'You harvest', d: 'We don\'t care if it\'s baled, loose, or in a heap. Dry and clean is what we pay for.' },
-  { t: 'We collect', d: 'You bring it to the plant, or we send a vehicle in season. Either way, you sign a slip.' },
-  { t: 'We pay', d: '14 days. Bank transfer. Against the supply slip. No "next week".' },
-  { t: 'You get the manure back', d: 'Fermented Organic Manure delivered to your field at a fair rate, 60 days after delivery.' },
-];
-
-const driverPov = [
-  { t: 'Truck arrives', d: 'A 4-cylinder CBG cascade truck — clean, road-legal, IS-certified.' },
-  { t: 'Gas dispatched', d: 'Loaded at our outlet. CH₄ purity, dew point, O₂ all stamped on the dispatch slip in front of you.' },
-  { t: 'Slip in hand', d: 'Same slip is what IOCL pays us against. Transparent, traceable, on time.' },
-  { t: 'Out to IOCL', d: 'You drive. We track. The slip gets reconciled monthly.' },
-];
-
-const auditorPov = [
-  { t: 'Feedstock in', d: '72 TPD Napier or equivalent dry-matter mix. Mixing tank at 216 m³/day with 145 m³ recycled water.' },
-  { t: 'Digestion', d: 'CSTR-type anaerobic digester, 24h operation. Outputs 9,500 Nm³/day raw biogas.' },
-  { t: 'Purification', d: 'Two-tower VPSA + water scrubber + chemical scrubber + activated carbon filter — IS 16087:2016.' },
-  { t: 'Compression & QC', d: 'Continuous gas analysers on CH₄, CO₂, O₂, H₂S, dew point. Out-of-spec gas is recycled, not dispatched.' },
+const povs = [
+  {
+    eyebrow: "From a farmer's POV",
+    title: '"What changes for me?"',
+    items: [
+      { t: 'You harvest', d: 'We don\'t care if it\'s baled, loose, or in a heap. Dry and clean is what we pay for.' },
+      { t: 'We collect', d: 'You bring it to the plant, or we send a vehicle in season. Either way, you sign a slip.' },
+      { t: 'We pay', d: '14 days. Bank transfer. Against the supply slip. No "next week".' },
+      { t: 'You get manure back', d: 'Fermented Organic Manure delivered to your field at a fair rate, 60 days after delivery.' },
+    ],
+  },
+  {
+    eyebrow: "From a cascade truck driver's POV",
+    title: '"How do I know the gas is real?"',
+    items: [
+      { t: 'Truck arrives', d: 'A 4-cylinder CBG cascade truck — clean, road-legal, IS-certified.' },
+      { t: 'Gas dispatched', d: 'Loaded at our outlet. CH₄ purity, dew point, O₂ all stamped on the dispatch slip in front of you.' },
+      { t: 'Slip in hand', d: 'Same slip is what IOCL pays us against. Transparent, traceable, on time.' },
+      { t: 'Out to IOCL', d: 'You drive. We track. The slip gets reconciled monthly.' },
+    ],
+  },
+  {
+    eyebrow: "From an auditor / lender's POV",
+    title: '"Is it engineered to spec?"',
+    items: [
+      { t: 'Feedstock in', d: '72 TPD Napier or equivalent dry-matter mix. Mixing tank at 216 m³/day with 145 m³ recycled water.' },
+      { t: 'Digestion', d: 'CSTR-type anaerobic digester, 24h operation. Outputs 9,500 Nm³/day raw biogas.' },
+      { t: 'Purification', d: 'Two-tower VPSA + water scrubber + chemical scrubber + activated carbon filter — IS 16087:2016.' },
+      { t: 'Compression & QC', d: 'Continuous gas analysers on CH₄, CO₂, O₂, H₂S, dew point. Out-of-spec gas is recycled, not dispatched.' },
+    ],
+  },
 ];
 ---
 <Base title="Process" description="The CBG plant explained from three points of view — farmer, driver, auditor.">
-  <Section eyebrow="Process" title="The same plant. Three points of view.">
-    <p class="text-lg max-w-3xl mb-10 leading-relaxed">
-      Every CBG plant document on the internet shows you the same flow chart: feedstock → digester → purification → CBG. That diagram is on <a href="/process/engineering/">a separate page</a> if you want it. What we'd rather tell you is what actually happens — from where you sit.
+  <FullBleedHero
+    banner={null}
+    alt="Process"
+    eyebrow="Process"
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+      The same plant.<br/>
+      <span style="color:#FFB300;">Three points of view.</span>
+    </h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      Every CBG plant on the internet shows you the same flow chart. <a class="underline text-[color:var(--color-paper)]" href="/process/engineering/">The engineering detail is on a separate page.</a> What we'd rather tell you is what actually happens — from where you sit.
     </p>
+  </FullBleedHero>
 
-    <div class="mb-10">
+  <!-- Process flow at a glance -->
+  <Section eyebrow="At a glance" title="Five steps. One cycle. No smoke.">
+    <div class="rounded-xl bg-[color:var(--color-paper-2)] p-6 overflow-x-auto">
       <ProcessFlow />
-    </div>
-
-    <div class="grid lg:grid-cols-3 gap-6">
-      <article class="rounded-2xl bg-white border border-black/5 p-6">
-        <header class="border-b border-black/5 pb-3 mb-4">
-          <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">From a farmer's POV</div>
-          <h3 class="text-lg mt-1">"What changes for me?"</h3>
-        </header>
-        <ol class="space-y-3 text-sm">
-          {farmerPov.map((s, i) => (
-            <li>
-              <div class="font-mono text-[11px] text-[color:var(--color-slate-2)]">0{i + 1}</div>
-              <div class="font-semibold">{s.t}</div>
-              <p class="text-[color:var(--color-slate)] mt-1 leading-relaxed">{s.d}</p>
-            </li>
-          ))}
-        </ol>
-      </article>
-
-      <article class="rounded-2xl bg-white border border-black/5 p-6">
-        <header class="border-b border-black/5 pb-3 mb-4">
-          <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">From a cascade truck driver's POV</div>
-          <h3 class="text-lg mt-1">"How do I know the gas is real?"</h3>
-        </header>
-        <ol class="space-y-3 text-sm">
-          {driverPov.map((s, i) => (
-            <li>
-              <div class="font-mono text-[11px] text-[color:var(--color-slate-2)]">0{i + 1}</div>
-              <div class="font-semibold">{s.t}</div>
-              <p class="text-[color:var(--color-slate)] mt-1 leading-relaxed">{s.d}</p>
-            </li>
-          ))}
-        </ol>
-      </article>
-
-      <article class="rounded-2xl bg-white border border-black/5 p-6">
-        <header class="border-b border-black/5 pb-3 mb-4">
-          <div class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]">From an auditor / lender's POV</div>
-          <h3 class="text-lg mt-1">"Is it engineered to spec?"</h3>
-        </header>
-        <ol class="space-y-3 text-sm">
-          {auditorPov.map((s, i) => (
-            <li>
-              <div class="font-mono text-[11px] text-[color:var(--color-slate-2)]">0{i + 1}</div>
-              <div class="font-semibold">{s.t}</div>
-              <p class="text-[color:var(--color-slate)] mt-1 leading-relaxed">{s.d}</p>
-            </li>
-          ))}
-        </ol>
-      </article>
     </div>
   </Section>
 
-  <Section eyebrow="Specification" title="What goes out of the gate">
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm border border-black/10 rounded-2xl overflow-hidden">
-        <thead class="bg-[color:var(--color-paper-2)] text-left">
+  <!-- THREE POV SPREADS -->
+  {povs.map((pov, i) => (
+    <Section eyebrow={pov.eyebrow} title={pov.title} numeral={`0${i + 1}`} bg={i % 2 === 1 ? 'paper-2' : 'paper'}>
+      <ol class="grid-12">
+        {pov.items.map((s, j) => (
+          <li class="col-6 lg:col-3 border-t-2 border-[color:var(--color-forest)] pt-4">
+            <p class="font-mono text-xs text-[color:var(--color-saffron-text)] mb-2">0{j + 1}</p>
+            <h3 class="text-lg font-semibold mb-2">{s.t}</h3>
+            <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </Section>
+  ))}
+
+  <!-- SPECIFICATION -->
+  <Section eyebrow="Specification" title="What goes out of the gate.">
+    <div class="overflow-x-auto rounded-xl border border-[color:var(--color-ink)]">
+      <table class="w-full text-sm">
+        <thead class="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] text-left">
           <tr>
-            <th class="px-4 py-3">Parameter</th>
-            <th class="px-4 py-3">SVGE / IS 16087:2016</th>
+            <th class="px-5 py-3 eyebrow text-[color:var(--color-paper)]">Parameter</th>
+            <th class="px-5 py-3 eyebrow text-[color:var(--color-paper)]">SVGE / IS 16087:2016</th>
           </tr>
         </thead>
         <tbody class="font-mono text-xs">
-          <tr class="border-t border-black/5"><td class="px-4 py-2">Methane (CH₄), minimum</td><td class="px-4 py-2">≥ 90.0%</td></tr>
-          <tr class="border-t border-black/5"><td class="px-4 py-2">CO₂, maximum</td><td class="px-4 py-2">≤ 4%</td></tr>
-          <tr class="border-t border-black/5"><td class="px-4 py-2">CO₂ + N₂ + O₂, maximum</td><td class="px-4 py-2">≤ 10%</td></tr>
-          <tr class="border-t border-black/5"><td class="px-4 py-2">Oxygen (O₂), maximum</td><td class="px-4 py-2">≤ 0.5%</td></tr>
-          <tr class="border-t border-black/5"><td class="px-4 py-2">Total sulphur (incl. H₂S), max</td><td class="px-4 py-2">≤ 20 mg/m³</td></tr>
-          <tr class="border-t border-black/5"><td class="px-4 py-2">Moisture, maximum</td><td class="px-4 py-2">≤ 5 mg/m³</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">Methane (CH₄), minimum</td><td class="px-5 py-3">≥ 90.0%</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">CO₂, maximum</td><td class="px-5 py-3">≤ 4%</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">CO₂ + N₂ + O₂, maximum</td><td class="px-5 py-3">≤ 10%</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">Oxygen (O₂), maximum</td><td class="px-5 py-3">≤ 0.5%</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">Total sulphur (incl. H₂S), max</td><td class="px-5 py-3">≤ 20 mg/m³</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3">Moisture, maximum</td><td class="px-5 py-3">≤ 5 mg/m³</td></tr>
         </tbody>
       </table>
     </div>

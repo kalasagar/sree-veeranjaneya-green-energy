@@ -1,32 +1,56 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
-import Stat from '../components/Stat.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import BentoGrid from '../components/BentoGrid.astro';
 import PlantMap from '../components/PlantMap.astro';
 import { SITE } from '../lib/site';
+
+const ps = SITE.plantStats;
 ---
 <Base title="The Project" description="One plant. 2.63 acres. ₹33.27 crore. 12 months to commissioning once we break ground.">
-  <Section eyebrow="The project" title="One plant. 2.63 acres. ₹33.27 crore. 12 months to commissioning once we break ground.">
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {SITE.plantStats.slice(0, 4).map(s => <Stat stat={s} />)}
-    </div>
-    <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {SITE.plantStats.slice(4).map(s => <Stat stat={s} />)}
+  <FullBleedHero
+    banner={null}
+    alt="Concept render of the SVGE bio-CNG plant."
+    eyebrow="The Project"
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+      One plant. <span style="color:#FFB300;">12 months</span> to commissioning once we break ground.
+    </h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      2.63 acres in Thatipadu village, ₹33.27 crore on the line, an IOCL Letter of Intent in hand. Here is exactly what we are building.
+    </p>
+  </FullBleedHero>
+
+  <!-- BENTO PLANT SNAPSHOT -->
+  <Section eyebrow="Plant snapshot" title="What sits on 2.63 acres.">
+    <BentoGrid hero={ps[0]} supporting={[ps[1], ps[2], ps[3]]} />
+    <div class="mt-8 grid-12">
+      {ps.slice(4).map(s => (
+        <div class="col-3 border-t-2 border-[color:var(--color-ink)] pt-4">
+          <div class="stat-num">{s.value}<span class="unit">{s.unit}</span></div>
+          <p class="eyebrow mt-2">{s.k}</p>
+          {s.framing && <p class="text-sm mt-2 text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
+        </div>
+      ))}
     </div>
   </Section>
 
-  <Section eyebrow="Location" title="Where we are">
-    <div class="grid lg:grid-cols-[1.4fr_1fr] gap-6 items-start">
-      <PlantMap />
-      <div class="text-sm leading-relaxed">
-        <h3 class="text-lg mb-3">Site & connectivity</h3>
-        <ul class="space-y-1">
+  <!-- LOCATION -->
+  <Section eyebrow="Location" title="Where we are." bg="paper-2">
+    <div class="grid-12 items-start">
+      <div class="col-8">
+        <PlantMap />
+      </div>
+      <aside class="col-4 text-sm leading-relaxed">
+        <h3 class="text-xl mb-3">Site & connectivity</h3>
+        <ul class="space-y-1.5">
           <li><strong>Village:</strong> {SITE.plant.village}</li>
           <li><strong>Mandal:</strong> {SITE.plant.mandal}</li>
           <li><strong>District:</strong> {SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}</li>
-          <li><strong>Land:</strong> {SITE.plant.landAcres} acres, owned by the Managing Director</li>
+          <li><strong>Land:</strong> {SITE.plant.landAcres} ac, MD-owned</li>
         </ul>
-        <h3 class="text-lg mt-6 mb-3">Distance to</h3>
+        <h3 class="text-xl mt-6 mb-3">Distance to</h3>
         <ul class="space-y-1 font-mono text-xs">
           <li>Rajam — 8 km</li>
           <li>Amadalavalasa — 24 km</li>
@@ -35,54 +59,56 @@ import { SITE } from '../lib/site';
           <li>Visakhapatnam Airport — 111 km</li>
           <li>Visakhapatnam Seaport — 122 km</li>
         </ul>
-      </div>
+      </aside>
     </div>
   </Section>
 
-  <Section eyebrow="Timeline" title="Where we are right now">
-    <ol class="relative border-l border-[color:var(--color-forest)]/30 pl-6 space-y-5">
+  <!-- TIMELINE -->
+  <Section eyebrow="Timeline" title="Where we are right now.">
+    <ol class="relative border-l-2 border-[color:var(--color-forest)]/30 pl-8 space-y-6 max-w-3xl">
       {SITE.timeline.map(t => (
         <li class="relative">
-          <span class={`absolute -left-[34px] top-1 w-4 h-4 rounded-full ${t.current ? 'bg-[color:var(--color-saffron)] ring-4 ring-[color:var(--color-saffron)]/20' : t.done ? 'bg-[color:var(--color-forest)]' : 'bg-white border-2 border-[color:var(--color-forest)]/30'}`}></span>
-          <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">{t.date}</div>
-          <div class={`text-sm ${t.done ? 'font-semibold' : 'text-[color:var(--color-slate-2)]'}`}>{t.label}{t.current ? ' — current' : ''}</div>
+          <span class={`absolute -left-[42px] top-1 w-5 h-5 rounded-full ${t.current ? 'bg-[color:var(--color-saffron)] ring-4 ring-[color:var(--color-saffron)]/20' : t.done ? 'bg-[color:var(--color-forest)]' : 'bg-[color:var(--color-paper)] border-2 border-[color:var(--color-forest)]/40'}`}></span>
+          <div class="eyebrow">{t.date}</div>
+          <div class={`text-base mt-1 ${t.done ? 'font-semibold text-[color:var(--color-ink)]' : 'text-[color:var(--color-slate-2)]'}`}>{t.label}{t.current ? ' — current' : ''}</div>
         </li>
       ))}
     </ol>
-    <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">Pre-construction. The day concrete is poured, the monthly public update starts.</p>
+    <p class="mt-8 text-sm font-mono text-[color:var(--color-slate-2)]">Pre-construction. The day concrete is poured, the monthly public update starts.</p>
   </Section>
 
-  <Section eyebrow="Capital" title="How the ₹33.27 crore breaks up">
-    <div class="grid sm:grid-cols-3 gap-4 text-sm">
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">Owner equity</div>
-        <div class="mt-1 text-2xl font-bold text-[color:var(--color-forest)]">₹{SITE.financing.equityCr} Cr</div>
-        <div class="text-xs text-[color:var(--color-slate-2)]">{SITE.financing.equityPct}% · 100% from the two directors</div>
-      </div>
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">Term loan</div>
-        <div class="mt-1 text-2xl font-bold text-[color:var(--color-forest)]">₹{SITE.financing.termLoanCr} Cr</div>
-        <div class="text-xs text-[color:var(--color-slate-2)]">{SITE.financing.termLoanPct}% · {SITE.financing.tenureMonths}-month tenure</div>
-      </div>
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">Unsecured</div>
-        <div class="mt-1 text-2xl font-bold text-[color:var(--color-forest)]">₹{SITE.financing.unsecuredCr} Cr</div>
-        <div class="text-xs text-[color:var(--color-slate-2)]">{SITE.financing.unsecuredPct}% · family loan</div>
-      </div>
+  <!-- CAPITAL -->
+  <Section eyebrow="Capital" title="How the ₹33.27 crore breaks up." bg="paper-2">
+    <div class="grid-12">
+      <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
+        <p class="eyebrow mb-2">Owner equity</p>
+        <div class="stat-num">₹{SITE.financing.equityCr}<span class="unit">Cr</span></div>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.equityPct}% · 100% from the two directors</p>
+      </article>
+      <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
+        <p class="eyebrow mb-2">Term loan</p>
+        <div class="stat-num">₹{SITE.financing.termLoanCr}<span class="unit">Cr</span></div>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.termLoanPct}% · {SITE.financing.tenureMonths}-month tenure</p>
+      </article>
+      <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
+        <p class="eyebrow mb-2">Unsecured</p>
+        <div class="stat-num">₹{SITE.financing.unsecuredCr}<span class="unit">Cr</span></div>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.unsecuredPct}% · family loan</p>
+      </article>
     </div>
 
-    <details class="mt-8 rounded-2xl bg-white border border-black/5 p-6 open:bg-[color:var(--color-paper-2)]">
+    <details class="mt-10 rounded-xl bg-[color:var(--color-paper)] border border-[color:var(--color-slate-2-soft)]/30 p-6 open:bg-[color:var(--color-paper-3)]">
       <summary class="cursor-pointer font-semibold text-[color:var(--color-forest)]">For lenders and project finance — open the details panel</summary>
-      <div class="mt-4 text-sm leading-relaxed">
+      <div class="mt-4 text-sm leading-relaxed prose-svge">
         <p>The full Detailed Project Report (DPR) is available on request to qualified lenders. Headline assumptions:</p>
-        <ul class="list-disc list-inside mt-3 space-y-1">
+        <ul>
           <li>Project cost: ₹33.27 Cr total. Funded 25.15% equity / 70.34% term loan / 4.51% unsecured.</li>
           <li>Operations: 24 hours × 360 days. Plant capacity 4 TPD CBG, 9,600 Nm³/day raw gas.</li>
           <li>Offtake: Indian Oil Corporation Letter of Intent under SATAT.</li>
-          <li>FCV / CFA eligibility: MNRE Phase-I National Bioenergy Programme (extended to 31 Mar 2026).</li>
+          <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme (extended to 31 Mar 2026).</li>
           <li>UDYAM-registered MSME: {SITE.udyam}.</li>
         </ul>
-        <p class="mt-4 text-xs font-mono text-[color:var(--color-slate-2)]">Annexures on sensitivity analysis, break-even, DSCR, IRR, working capital, and depreciation are available on email request with a brief intro to your institution.</p>
+        <p>Annexures on sensitivity analysis, break-even, DSCR, IRR, working capital, and depreciation are available on email request with a brief intro to your institution.</p>
       </div>
     </details>
   </Section>

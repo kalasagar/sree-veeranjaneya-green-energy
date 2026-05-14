@@ -1,16 +1,26 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
-import Banner from '../components/Banner.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import PullQuote from '../components/PullQuote.astro';
 import { SITE } from '../lib/site';
 ---
 <Base title="About" description="The two-director family-owned company behind SVGE — and the four things we are willing to be measured on.">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6 pt-6 sm:pt-10">
-    <Banner name="about_founder_field" alt="A man in a white kurta walking unhurriedly down a narrow earth path between tall Napier grass plots at golden hour." aspect="21/9" priority />
-  </div>
+  <FullBleedHero
+    banner="about_founder_field"
+    alt="A man in a white kurta walking unhurriedly down a narrow earth path between tall Napier grass plots at golden hour."
+    eyebrow="About"
+    height="lg"
+    priority
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">A small family-owned company.<br/>
+      <span style="color:#FFB300;">One plant. ₹8.37 crore on the line.</span>
+    </h1>
+  </FullBleedHero>
 
-  <Section eyebrow="About" title="A small family-owned company. One plant. ₹8.37 crore on the line." narrow>
-    <div class="prose-svge">
+  <!-- LEAD PARAGRAPH (editorial, drop-cap) -->
+  <Section narrow>
+    <div class="prose-svge drop-cap">
       <p>
         We are not a fund-backed clean-tech startup. We are two directors, ₹8.37 crore of personal equity, a ₹23.40 crore term loan, an Indian Oil Letter of Intent, and 2.63 acres of paddy-belt land we bought for exactly this purpose.
       </p>
@@ -23,62 +33,63 @@ import { SITE } from '../lib/site';
     </div>
   </Section>
 
-  <Section eyebrow="Founders" title="Who is on the line">
-    <div class="grid sm:grid-cols-2 gap-6">
-      {SITE.promoters.map(p => (
-        <article class="rounded-2xl bg-white p-6 border border-black/5">
-          <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-[color:var(--color-paper-2)] grid place-items-center font-bold text-[color:var(--color-forest)] text-lg">
-              {p.name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+  <!-- FOUNDERS — editorial spread per founder -->
+  <Section eyebrow="Founders" title="Who is on the line." bg="paper-2">
+    <div class="space-y-16">
+      {SITE.promoters.map((p, i) => (
+        <div class="grid-12 items-start">
+          <div class={`col-4 ${i % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+            <div class="aspect-square rounded-xl bg-[color:var(--color-paper)] border border-[color:var(--color-slate-2-soft)]/30 grid place-items-center">
+              <span class="text-5xl font-bold text-[color:var(--color-forest)]">
+                {p.name.split(' ').map(w => w[0]).slice(0, 2).join('')}
+              </span>
             </div>
-            <div>
-              <div class="font-semibold text-lg">{p.name}</div>
-              <div class="text-xs font-mono uppercase tracking-wider text-[color:var(--color-saffron-text)]">{p.role} · {p.share}</div>
-            </div>
+            <p class="mt-3 text-[11px] font-mono text-[color:var(--color-slate-2)]">Portrait pending shoot.</p>
           </div>
-          <p class="mt-4 text-sm leading-relaxed">{p.story}</p>
-          <blockquote class="mt-4 border-l-4 border-[color:var(--color-saffron)] pl-4 italic text-[color:var(--color-slate)]">
-            <p class="text-sm">{`"${p.quote}"`}</p>
-            <footer class="mt-2 text-[11px] font-mono not-italic text-[color:var(--color-slate-2)]">
-              — {p.name}{p.quoteDraft ? <span class="ml-2 text-[color:var(--color-saffron-text)]">[Draft — pending founder approval]</span> : ''}
-            </footer>
-          </blockquote>
-          <p class="mt-4 text-[11px] font-mono text-[color:var(--color-slate-2)]">DIN {p.din} · {p.credentials}</p>
-        </article>
+          <div class={`col-8 ${i % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+            <p class="eyebrow mb-2">{p.role} · {p.share}</p>
+            <h3 class="text-2xl sm:text-3xl mb-4">{p.name}</h3>
+            <p class="prose-svge">{p.story}</p>
+            <PullQuote quote={p.quote} attribution={p.name} draft={p.quoteDraft} />
+            <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">DIN {p.din} · {p.credentials}</p>
+          </div>
+        </div>
       ))}
     </div>
   </Section>
 
-  <Section eyebrow="What we are willing to be measured on" title="Four behavioural promises">
-    <div class="grid sm:grid-cols-2 gap-5">
-      {SITE.values.map(v => (
-        <article class="rounded-2xl bg-[color:var(--color-paper-2)] p-6">
-          <h3 class="text-lg leading-snug">{v.k}</h3>
-          <p class="mt-3 text-sm leading-relaxed">{v.v}</p>
-        </article>
+  <!-- BEHAVIOURAL PROMISES — numbered editorial stack -->
+  <Section eyebrow="What we are willing to be measured on" title="Four behavioural promises.">
+    <div class="space-y-10">
+      {SITE.values.map((v, i) => (
+        <div class="grid-12 items-start">
+          <div class="col-3">
+            <p class="numeral">0{i + 1}</p>
+          </div>
+          <div class="col-8">
+            <h3 class="text-2xl sm:text-3xl leading-tight mb-3">{v.k}.</h3>
+            <p class="text-[color:var(--color-slate)] text-lg leading-relaxed max-w-prose">{v.v}</p>
+          </div>
+        </div>
       ))}
     </div>
   </Section>
 
-  <Section eyebrow="Registration" title="The paperwork, in plain sight">
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">CIN</div>
-        <div class="mt-1 font-semibold break-all">{SITE.cin}</div>
-      </div>
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">GSTIN</div>
-        <div class="mt-1 font-semibold break-all">{SITE.gst}</div>
-      </div>
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">UDYAM</div>
-        <div class="mt-1 font-semibold break-all">{SITE.udyam}</div>
-      </div>
-      <div class="rounded-2xl bg-[color:var(--color-paper-2)] p-5">
-        <div class="text-xs font-mono uppercase text-[color:var(--color-slate-2)]">Incorporated</div>
-        <div class="mt-1 font-semibold">12 June 2024</div>
-      </div>
-    </div>
-    <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">Registered office: {SITE.registeredOffice.line1}, {SITE.registeredOffice.line2}, {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.</p>
+  <!-- REGISTRATION — data sheet -->
+  <Section eyebrow="Registration" title="The paperwork, in plain sight." bg="paper-2">
+    <dl class="grid-12 font-mono text-sm">
+      {[
+        { k: 'CIN', v: SITE.cin },
+        { k: 'GSTIN', v: SITE.gst },
+        { k: 'UDYAM', v: SITE.udyam },
+        { k: 'Incorporated', v: '12 June 2024' },
+      ].map(item => (
+        <div class="col-3 border-t-2 border-[color:var(--color-ink)] pt-3">
+          <dt class="eyebrow text-[color:var(--color-slate-2)] mb-1">{item.k}</dt>
+          <dd class="text-base break-all text-[color:var(--color-forest)] font-semibold">{item.v}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-8 text-xs font-mono text-[color:var(--color-slate-2)]">Registered office: {SITE.registeredOffice.line1}, {SITE.registeredOffice.line2}, {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.</p>
   </Section>
 </Base>

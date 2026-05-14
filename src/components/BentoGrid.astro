@@ -1,0 +1,38 @@
+---
+import type { Stat as StatT } from '../lib/site';
+
+interface Props {
+  hero: StatT;
+  supporting: StatT[];   // 2-3 items
+}
+const { hero, supporting } = Astro.props;
+---
+<div class="grid-12">
+  <!-- Hero stat — spans wide -->
+  <article class="col-8 rounded-xl bg-[color:var(--color-paper-2)] p-8 sm:p-12">
+    <div class="flex items-baseline">
+      <span class="stat-mega">{hero.value}{hero.unit && <span class="unit">{hero.unit}</span>}</span>
+    </div>
+    <p class="eyebrow mt-4">{hero.k}</p>
+    {hero.framing && <p class="mt-4 text-[color:var(--color-slate)] text-lg leading-relaxed max-w-prose">{hero.framing}</p>}
+    {hero.source && (
+      <p class="mt-3 text-xs font-mono text-[color:var(--color-slate-2)]">
+        Source: {hero.source.label}
+      </p>
+    )}
+  </article>
+
+  <!-- Supporting stats — stack on tablet+, full-width on mobile -->
+  <div class="col-4 flex flex-col gap-4">
+    {supporting.map(s => (
+      <article class="flex-1 rounded-xl bg-[color:var(--color-paper-3)] p-6">
+        <div class="flex items-baseline">
+          <span class="stat-num">{s.value}{s.unit && <span class="unit">{s.unit}</span>}</span>
+        </div>
+        <p class="eyebrow mt-2">{s.k}</p>
+        {s.framing && <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
+        {s.source && <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">Source: {s.source.label}</p>}
+      </article>
+    ))}
+  </div>
+</div>

@@ -1,38 +1,50 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
 ---
 <Base title="Careers" description="Hiring opens when construction begins. Be the first to know.">
-  <Section eyebrow="Careers" title="We're not hiring yet. Soon, though." narrow>
+  <FullBleedHero banner={null} alt="Careers" eyebrow="Careers">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+      We're not hiring yet.<br/>
+      <span style="color:#FFB300;">Soon, though.</span>
+    </h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      SVGE will hire its first plant operations, lab, aggregation, and accounts team when construction begins. Right now it's just the two directors and a small set of contractors.
+    </p>
+  </FullBleedHero>
+
+  <Section eyebrow="The roles we plan to open" title="Five categories. Local hire first.">
+    <div class="grid-12">
+      {[
+        ['Plant operations', 'Shift engineers, biogas operators, instrumentation technicians.'],
+        ['Lab', 'Gas analysis chemists for daily IS 16087:2016 verification.'],
+        ['Feedstock aggregation', 'Field supervisors managing farmer relationships and daily collection logistics in a 50 km radius.'],
+        ['Accounts & administration', 'Payments, GST, statutory compliance.'],
+        ['Drivers', 'Cascade truck operations to IOCL outlets.'],
+      ].map(([t, d], i) => (
+        <article class="col-6 lg:col-4 border-t-2 border-[color:var(--color-forest)] pt-4">
+          <p class="numeral mb-3" style="font-size: 2rem;">0{i + 1}</p>
+          <h3 class="text-xl mb-2">{t}</h3>
+          <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{d}</p>
+        </article>
+      ))}
+    </div>
+  </Section>
+
+  <Section eyebrow="What we will offer" title="The basics, on time." bg="paper-2">
+    <ul class="grid-12 text-base">
+      <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Calibrated salary.</strong> District norms, on time, every month.</li>
+      <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Statutory PF + ESI.</strong> From day one of permanent roles.</li>
+      <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Telugu by default.</strong> English on request.</li>
+      <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Short commute.</strong> We hire local first.</li>
+    </ul>
+  </Section>
+
+  <Section narrow eyebrow="Be first to know" title="One email. We'll find you when a role opens.">
     <div class="prose-svge">
-      <p class="text-lg">
-        SVGE will hire its first plant operations, lab, aggregation, and accounts team when construction begins on the Thatipadu site. Right now it's just the two directors and a small set of contractors.
-      </p>
-
-      <h2>The roles we plan to open</h2>
-      <ul>
-        <li><strong>Plant operations</strong> — shift engineers, biogas operators, instrumentation technicians.</li>
-        <li><strong>Lab</strong> — gas analysis chemists for daily IS 16087:2016 verification.</li>
-        <li><strong>Feedstock aggregation</strong> — field supervisors managing farmer relationships and daily collection logistics in a 50&nbsp;km radius.</li>
-        <li><strong>Accounts & administration</strong> — payments, GST, statutory compliance.</li>
-        <li><strong>Drivers</strong> — for cascade truck operations to IOCL.</li>
-      </ul>
-
-      <h2>What we will offer</h2>
-      <ul>
-        <li>Salaries calibrated to district norms, with on-time monthly payment.</li>
-        <li>Statutory PF and ESI from day one of permanent roles.</li>
-        <li>Telugu-medium contracts as default; English available on request.</li>
-        <li>A short commute. We hire local first.</li>
-      </ul>
-
-      <h2>Be first to know</h2>
-      <p>
-        Email <a href="mailto:svge.india@gmail.com?subject=Careers%20interest">svge.india@gmail.com</a> with subject line <em>Careers interest</em> and a one-line note about the role you'd be a fit for. We'll add you to a small list and contact you the day a relevant opening is posted.
-      </p>
-      <p>
-        We don't run a formal applicant tracking system yet. Your email goes to a single inbox the directors check personally.
-      </p>
+      <p>Email <a href="mailto:svge.india@gmail.com?subject=Careers%20interest">svge.india@gmail.com</a> with subject line <em>Careers interest</em> and a one-line note about the role you'd be a fit for. We'll add you to a small list and contact you the day a relevant opening is posted.</p>
+      <p>We don't run a formal applicant tracking system yet. Your email goes to a single inbox the directors check personally.</p>
     </div>
   </Section>
 </Base>

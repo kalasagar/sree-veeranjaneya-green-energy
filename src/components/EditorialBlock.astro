@@ -1,0 +1,54 @@
+---
+/**
+ * EditorialBlock — alternating-side image+text spread used on long pages.
+ *
+ * Composition:
+ *   <EditorialBlock side="left|right" eyebrow="…" title="…" image="/banners/x.avif">
+ *     body text or any children
+ *   </EditorialBlock>
+ *
+ * On mobile the image stacks above the text. On desktop, image and text
+ * occupy 5-and-7 columns of the 12-col grid respectively (asymmetric Swiss).
+ */
+interface Props {
+  side?: 'left' | 'right';   // image on which side (desktop only)
+  eyebrow?: string;
+  title?: string;
+  image?: string | null;     // banner basename in /banners/
+  imageAlt?: string;
+  numeral?: string;          // '01', '02' for sequential blocks
+}
+const { side = 'left', eyebrow, title, image = null, imageAlt = '', numeral } = Astro.props;
+const imgFirst = side === 'left';
+---
+<div class="grid-12 items-center">
+  <div class={`col-5 ${imgFirst ? 'lg:order-1' : 'lg:order-2'}`}>
+    {image ? (
+      <picture>
+        <source srcset={`/banners/${image}.avif`} type="image/avif" />
+        <img
+          src={`/banners/${image}.webp`}
+          alt={imageAlt}
+          width="1200"
+          height="900"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-auto rounded-xl object-cover"
+        />
+      </picture>
+    ) : (
+      <div class="w-full aspect-[4/3] rounded-xl bg-[color:var(--color-paper-2)] grid place-items-center">
+        <span class="eyebrow text-[color:var(--color-slate-2)]">image pending</span>
+      </div>
+    )}
+  </div>
+
+  <div class={`col-6 ${imgFirst ? 'lg:order-2 lg:col-start-7' : 'lg:order-1 lg:col-start-2'}`}>
+    {numeral && <p class="numeral mb-4">{numeral}</p>}
+    {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+    {title && <h2 class="text-3xl sm:text-4xl mb-4 leading-tight">{title}</h2>}
+    <div class="prose-svge">
+      <slot />
+    </div>
+  </div>
+</div>
