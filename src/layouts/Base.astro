@@ -73,6 +73,11 @@ const orgJsonLd = {
       <link rel="preload" href="/brand/mark.svg" as="image" type="image/svg+xml" />
     </>}
     {Astro.url.pathname === '/about/' && <link rel="preload" href="/banners/about_founder_field.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/project/' && <link rel="preload" href="/banners/project_plant_render.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {(Astro.url.pathname === '/process/' || Astro.url.pathname === '/process/engineering/') && <link rel="preload" href="/banners/project_plant_render.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/impact/' && <link rel="preload" href="/banners/impact_fom_soil.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/farmers/' && <link rel="preload" href="/banners/farmers_hands_straw.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/press/' && <link rel="preload" href="/banners/press_kit.avif" as="image" type="image/avif" fetchpriority="high" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
