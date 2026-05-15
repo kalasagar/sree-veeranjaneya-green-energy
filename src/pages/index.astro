@@ -3,10 +3,21 @@ import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import Countdown from '../components/Countdown.astro';
 import BentoGrid from '../components/BentoGrid.astro';
 import EditorialBlock from '../components/EditorialBlock.astro';
 import Logos from '../components/Logos.astro';
+import SATATPositioner from '../components/SATATPositioner.astro';
+import Stakeholders from '../components/Stakeholders.astro';
+import DayInTheData from '../components/DayInTheData.astro';
 import { SITE } from '../lib/site';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+).slice(0, 3);
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
 
 const stake = SITE.stakeStats;
 const stepImages = [
@@ -40,9 +51,26 @@ const stepImages = [
     </div>
   </FullBleedHero>
 
+  <Kicker eyebrow="One small plant · two-year clock · 40-km radius" deck='4 TPD CBG. <span style="color:var(--color-saffron-text);">40-km supply radius.</span> A 2-year clock.' />
+
+  <!-- COUNTDOWN STRIP -->
+  <Section narrow>
+    <Countdown label="to the IOCL commissioning deadline" />
+  </Section>
+
   <!-- WHAT'S AT STAKE — bento -->
   <Section eyebrow="What's at stake" title="Why this matters, in three numbers.">
     <BentoGrid hero={stake[0]} supporting={[stake[1], stake[2]]} />
+  </Section>
+
+  <!-- DAY IN THE DATA — scrollytelling centrepiece -->
+  <Section eyebrow="A day in the data" title="One operating day, in numbers." bg="paper-2">
+    <DayInTheData />
+  </Section>
+
+  <!-- SATAT POSITIONER -->
+  <Section>
+    <SATATPositioner />
   </Section>
 
   <!-- HOW THIS PLANT CLOSES THE LOOP — 5-step -->
@@ -96,19 +124,24 @@ const stepImages = [
     <Logos />
   </Section>
 
-  <!-- SEGMENTED CTA -->
-  <Section narrow eyebrow="Talk to us" title="Pick the door that fits.">
-    <div class="grid-12">
-      <a href={link("/farmers/")} class="col-6 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-forest-dark)] active:scale-[0.99] transition-all duration-200 ease-out">
-        <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Farmers</p>
-        <p class="text-2xl font-semibold leading-tight">We buy your paddy straw, Napier and dung.</p>
-        <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">14-day payment, bank transfer, 50&nbsp;km radius.</p>
-      </a>
-      <a href={link("/contact/")} class="col-6 rounded-xl bg-[color:var(--color-saffron-text)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-saffron)] active:scale-[0.99] transition-all duration-200 ease-out">
-        <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Partners & Press</p>
-        <p class="text-2xl font-semibold leading-tight">EPC, logistics, FOM offtake, journalists, future hires.</p>
-        <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">Email reply within two business days.</p>
-      </a>
-    </div>
+  <!-- LATEST FROM THE BUILD JOURNAL -->
+  {posts.length > 0 && (
+    <Section eyebrow="From the build journal" title="Monthly receipts." bg="paper-2">
+      <div class="grid sm:grid-cols-3 gap-4">
+        {posts.map(p => (
+          <a href={link(`/news/${p.id}/`)} class="svge-card p-5 no-underline group">
+            <p class="eyebrow text-[color:var(--tone-ink)]">{fmt.format(p.data.date)}</p>
+            <h3 class="mt-2 text-lg leading-snug text-[color:var(--color-ink)] group-hover:text-[color:var(--tone-ink)]">{p.data.title}</h3>
+            <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{p.data.summary}</p>
+          </a>
+        ))}
+      </div>
+      <p class="mt-6 text-sm"><a href={link('/press/#journal')}>The full build journal →</a></p>
+    </Section>
+  )}
+
+  <!-- STAKEHOLDER ROUTER -->
+  <Section eyebrow="Talk to us" title="Pick the door that fits.">
+    <Stakeholders />
   </Section>
 </Base>

@@ -1,0 +1,119 @@
+---
+/**
+ * Interactive plant blueprint — hand-rolled SVG site plan with clickable
+ * hotspots that swap a side rail with equipment spec.
+ */
+import { SITE } from '../lib/site';
+
+const cap = SITE.capacity;
+
+const hotspots = [
+  { id: 'gate', x: 60, y: 220, label: 'Gate & weighbridge', body: 'Inbound feedstock check — moisture, contamination, weighing. Slip-numbered. Every supply is a record on /press/#journal once construction begins.', meta: 'Step 01' },
+  { id: 'mix', x: 150, y: 220, label: 'Mixing tank · pre-digester', body: 'Feedstock pre-blended with ~145 m³/day recycled water in a 648 m³ pre-digester. Total ~216 m³/day slurry into the CSTRs.', meta: 'Step 02' },
+  { id: 'cstr', x: 320, y: 180, label: '4 × CSTR digester', body: '4 × 26 m × 8.63 m. Total 15,402 m³. HRT 34 d, OLR 1.75 kg VS/m³/day. Stirred continuously. The fermentation engine.', meta: 'Step 03 · core' },
+  { id: 'sep', x: 460, y: 240, label: 'Slurry separator', body: '52 m³/day liquid FOM + ~1 TPH solid Fermented Organic Manure. Liquid loop returns to mixing tank; rest goes back to farmer fields.', meta: 'Step 04' },
+  { id: 'scrub', x: 540, y: 170, label: 'Scrubbers · activated carbon', body: 'Water scrubber → chemical scrubber → activated carbon polish. Strips CO₂, H₂S and moisture before VPSA.', meta: 'Step 05a' },
+  { id: 'vpsa', x: 620, y: 170, label: '2-tower VPSA', body: 'Vacuum Pressure Swing Adsorption. ≥' + cap.methaneMinPct + ' % CH₄ at outlet. Dew point dropped to ' + cap.gasDryerDewPointC + ' °C by the PSA dryer.', meta: 'Step 05b · upgrade' },
+  { id: 'comp', x: 710, y: 200, label: 'Compression · surge', body: 'CBG compressed to ' + cap.compressionBar + ' bar. Surge vessel buffers between VPSA cycles and compressor draw.', meta: 'Step 06' },
+  { id: 'dispatch', x: 800, y: 220, label: 'Cascade dispatch', body: 'IS 15319 cascade trailers. Gas analyser + dew-point sensor stamp every dispatch slip. Out-of-spec gas is recycled, never loaded.', meta: 'Step 07–08' },
+];
+
+const initial = hotspots[2]; // CSTR is default
+---
+<section class="svge-card p-6 sm:p-8" data-reveal id="blueprint-interactive">
+  <p class="eyebrow text-[color:var(--tone-ink)]">Plant blueprint</p>
+  <h3 class="mt-2 text-2xl text-[color:var(--color-ink)]">The plant, in one drawing.</h3>
+  <p class="mt-2 text-sm text-[color:var(--color-slate)] max-w-3xl">
+    Click any hotspot for the equipment spec + role. Schematic site plan, not to scale; engineering layout reconciles with Raj Process EPC drawings.
+  </p>
+
+  <div class="mt-6 grid lg:grid-cols-[1.4fr_1fr] gap-6">
+    <div class="rounded-2xl bg-[color:var(--color-paper-3)] p-4">
+      <svg viewBox="0 0 900 360" class="w-full h-auto" data-plant-svg role="img" aria-label="Interactive plant blueprint">
+        {/* Ground line */}
+        <line x1="20" y1="320" x2="880" y2="320" stroke="var(--color-slate-2-soft)" stroke-width="1" stroke-dasharray="3 4" />
+        {/* Flow line */}
+        <path d="M 60 220 L 150 220 L 230 200 L 320 180 L 460 240 L 540 170 L 620 170 L 710 200 L 800 220" stroke="var(--tone)" stroke-width="2" fill="none" stroke-dasharray="4 4" />
+
+        {/* Equipment glyphs */}
+        {/* Gate */}
+        <g><rect x="40" y="200" width="40" height="40" rx="3" fill="var(--color-ink)" /></g>
+        {/* Mixing tank */}
+        <g><rect x="125" y="195" width="50" height="50" rx="3" fill="var(--color-slate-2-soft)" /></g>
+        {/* CSTRs */}
+        {[0, 1, 2, 3].map(i => (
+          <g>
+            <ellipse cx={260 + i * 35} cy="170" rx="14" ry="6" fill="var(--color-forest)" />
+            <rect x={246 + i * 35} y="160" width="28" height="60" fill="var(--color-forest)" />
+            <ellipse cx={260 + i * 35} cy="220" rx="14" ry="6" fill="var(--color-forest-dark)" />
+          </g>
+        ))}
+        {/* Separator */}
+        <g><rect x="440" y="225" width="40" height="40" rx="4" fill="#B7472A" /></g>
+        {/* Scrubber towers */}
+        <g><rect x="525" y="130" width="20" height="80" fill="var(--color-slate)" /><rect x="555" y="130" width="20" height="80" fill="var(--color-slate)" /></g>
+        {/* VPSA towers */}
+        <g><rect x="605" y="115" width="22" height="95" fill="var(--tone)" /><rect x="635" y="115" width="22" height="95" fill="var(--tone)" /></g>
+        {/* Compressor */}
+        <g><rect x="690" y="185" width="40" height="40" rx="6" fill="var(--color-ink)" /></g>
+        {/* Cascade trailer */}
+        <g>
+          <rect x="780" y="195" width="60" height="32" rx="3" fill="var(--color-paper)" stroke="var(--color-ink)" stroke-width="1.5" />
+          <circle cx="795" cy="232" r="6" fill="var(--color-ink)" /><circle cx="825" cy="232" r="6" fill="var(--color-ink)" />
+        </g>
+
+        {/* Hotspots */}
+        {hotspots.map(h => (
+          <g class="cursor-pointer" data-hotspot={h.id} tabindex="0" role="button" aria-label={h.label}>
+            <circle cx={h.x} cy={h.y} r="14" fill="var(--color-paper)" stroke="var(--tone)" stroke-width="2" />
+            <circle cx={h.x} cy={h.y} r="6" fill="var(--tone)" />
+          </g>
+        ))}
+      </svg>
+    </div>
+    <aside class="self-start svge-card p-6" data-plant-rail>
+      <p class="text-xs font-mono uppercase tracking-widest text-[color:var(--tone-ink)]" data-rail-meta>{initial.meta}</p>
+      <h4 class="mt-1 text-2xl text-[color:var(--color-ink)] font-semibold leading-snug" data-rail-label>{initial.label}</h4>
+      <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed" data-rail-body>{initial.body}</p>
+      <ul class="mt-6 grid grid-cols-2 gap-2">
+        {hotspots.map(h => (
+          <li>
+            <button type="button" class="w-full text-left px-3 py-2 rounded-md text-xs font-mono text-[color:var(--color-slate)] hover:bg-[color:var(--tone-soft)] hover:text-[color:var(--tone-ink)] transition-colors" data-rail-jump={h.id}>{h.label}</button>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<script is:inline data-astro-rerun define:vars={{ hotspots }}>
+  (function () {
+    var svg = document.querySelector('[data-plant-svg]');
+    var rail = document.querySelector('[data-plant-rail]');
+    if (!svg || !rail) return;
+    var meta = rail.querySelector('[data-rail-meta]');
+    var label = rail.querySelector('[data-rail-label]');
+    var body = rail.querySelector('[data-rail-body]');
+    function setActive(id) {
+      var hot = hotspots.find(function (h) { return h.id === id; });
+      if (!hot) return;
+      if (meta) meta.textContent = hot.meta;
+      if (label) label.textContent = hot.label;
+      if (body) body.textContent = hot.body;
+      svg.querySelectorAll('[data-hotspot]').forEach(function (g) {
+        var on = g.getAttribute('data-hotspot') === id;
+        g.querySelectorAll('circle').forEach(function (c, i) {
+          if (i === 0) c.setAttribute('stroke-width', on ? '3' : '2');
+          if (i === 1) c.setAttribute('r', on ? '8' : '6');
+        });
+      });
+    }
+    svg.querySelectorAll('[data-hotspot]').forEach(function (g) {
+      g.addEventListener('click', function () { setActive(g.getAttribute('data-hotspot')); });
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(g.getAttribute('data-hotspot')); } });
+    });
+    rail.querySelectorAll('[data-rail-jump]').forEach(function (b) {
+      b.addEventListener('click', function () { setActive(b.getAttribute('data-rail-jump')); });
+    });
+  })();
+</script>

@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
-import IntentChooser from '../components/IntentChooser.astro';
+import Kicker from '../components/Kicker.astro';
+import Stakeholders from '../components/Stakeholders.astro';
 import { SITE } from '../lib/site';
 ---
 <Base title="Contact" description="Pick the door that fits — farmer, partner, journalist, or future hire — and we'll route your message.">
@@ -21,8 +22,10 @@ import { SITE } from '../lib/site';
     </p>
   </FullBleedHero>
 
+  <Kicker eyebrow="Contact · seven audiences" deck='Seven audiences. <span style="color:var(--color-saffron-text);">One inbox.</span>' />
+
   <Section>
-    <IntentChooser />
+    <Stakeholders />
   </Section>
 
   <Section eyebrow="Or use the form" title="A single message gets to all founders." bg="paper-2">

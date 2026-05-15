@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import TimelineRail from '../components/TimelineRail.astro';
 import PullQuote from '../components/PullQuote.astro';
 import StatGrid from '../components/StatGrid.astro';
 import FounderAvatar from '../components/FounderAvatar.astro';
@@ -28,8 +30,17 @@ const aboutStats = [
     </h1>
   </FullBleedHero>
 
+  <Kicker eyebrow="About · Two directors · One clock" deck='One company. <span style="color:var(--color-saffron-text);">Two directors.</span> A 24-month build.' />
+
+  <!-- TIMELINE RAIL — the new centrepiece -->
+  <Section eyebrow="Timeline" title="The company, on a rail.">
+    <div class="max-w-3xl">
+      <TimelineRail />
+    </div>
+  </Section>
+
   <!-- LEAD PARAGRAPH (editorial, drop-cap) -->
-  <Section narrow>
+  <Section narrow bg="paper-2">
     <div class="prose-svge drop-cap">
       <p>
         Sree Veeranjaneya Green Energy is a two-director Andhra Pradesh company building a 4 TPD Compressed Bio-Gas plant in Thatipadu village, Vizianagaram district. The Indian Oil Letter of Intent was issued on 04.10.2024 (ref IndianOil/SATAT/01/3931) under the SATAT scheme; commissioning is contracted within 2 years.

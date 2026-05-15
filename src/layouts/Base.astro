@@ -3,9 +3,13 @@ import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import StatusStrip from '../components/StatusStrip.astro';
 import { SITE } from '../lib/site';
+import { stripBase } from '../lib/links';
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+const path = stripBase(Astro.url.pathname);
+const tone = SITE.tones[path] ?? 'paper';
 
 interface Props {
   title?: string;
@@ -126,9 +130,10 @@ const orgJsonLd = {
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="animate" />
   </head>
-  <body>
+  <body data-tone={tone}>
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:p-2 focus:rounded">Skip to content</a>
     <Header />
+    <StatusStrip />
     <main id="main">
       <slot />
     </main>
@@ -180,6 +185,29 @@ const orgJsonLd = {
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
           }
+        }
+
+        // ---- SVG draw-on-scroll ----
+        if (!rm && 'IntersectionObserver' in window) {
+          var drawEls = document.querySelectorAll('[data-draw]:not([data-drawn])');
+          var drawObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              var el = e.target;
+              drawObs.unobserve(el);
+              var paths = el.querySelectorAll('path');
+              paths.forEach(function (p) {
+                try {
+                  var len = p.getTotalLength();
+                  p.style.setProperty('--draw-length', len);
+                } catch (err) {}
+              });
+              requestAnimationFrame(function () { el.setAttribute('data-drawn', ''); });
+            });
+          }, { threshold: 0.18 });
+          drawEls.forEach(function (el) { drawObs.observe(el); });
+        } else {
+          document.querySelectorAll('[data-draw]').forEach(function (el) { el.setAttribute('data-drawn', ''); });
         }
 
         // ---- Stat count-up ----

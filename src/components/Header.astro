@@ -13,7 +13,7 @@ const path = stripBase(Astro.url.pathname);
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
-const HERO_PAGES = ['/', '/about/', '/project/', '/process/', '/impact/', '/farmers/', '/partners/', '/press/', '/careers/', '/contact/', '/news/'];
+const HERO_PAGES = ['/', '/about/', '/plant/', '/build/', '/farmers/', '/work/', '/press/', '/contact/'];
 const heroPage = HERO_PAGES.includes(path);
 ---
 <header
@@ -136,23 +136,7 @@ const heroPage = HERO_PAGES.includes(path);
       })}
     </ul>
 
-    <p class="eyebrow mb-3">Also</p>
-    <ul class="space-y-1">
-      {SITE.navSecondary.map((n) => {
-        const active = path.startsWith(n.href);
-        return (
-          <li>
-            <a
-              href={link(n.href)}
-              class={`block px-3 py-3 rounded-md text-base no-underline transition-colors duration-150 ${active ? 'bg-[color:var(--color-paper-2)] text-[color:var(--color-forest)] font-semibold' : 'text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)]'}`}
-            >{n.label}</a>
-          </li>
-        );
-      })}
-      <li><a href={link("/news/")} class="block px-3 py-3 rounded-md text-base text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)] no-underline">News</a></li>
-    </ul>
-
-    <a href={link("/contact/")} class="mt-8 inline-flex items-center justify-center w-full gap-1.5 h-12 rounded-full bg-[color:var(--color-forest)] text-[color:var(--color-paper)] text-sm font-mono uppercase tracking-[0.18em] no-underline">
+    <a href={link("/contact/")} class="mt-2 inline-flex items-center justify-center w-full gap-1.5 h-12 rounded-full bg-[color:var(--color-forest)] text-[color:var(--color-paper)] text-sm font-mono uppercase tracking-[0.18em] no-underline">
       Talk to us
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
     </a>

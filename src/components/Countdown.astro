@@ -1,0 +1,73 @@
+---
+/**
+ * Live countdown to the LoI commissioning deadline. Renders SSR-stable digits,
+ * then ticks on the client.
+ */
+import { SITE } from '../lib/site';
+
+interface Props {
+  target?: string;
+  label?: string;
+  caption?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+const {
+  target = SITE.loi.commissioningDeadline,
+  label = 'to commissioning deadline',
+  caption = `LoI clause 2 · ${new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`,
+  size = 'md',
+} = Astro.props;
+
+const targetDate = new Date(target + 'T00:00:00Z');
+const now = new Date();
+const ms = Math.max(0, targetDate.getTime() - now.getTime());
+const days = Math.floor(ms / 86_400_000);
+const hours = Math.floor((ms % 86_400_000) / 3_600_000);
+const minutes = Math.floor((ms % 3_600_000) / 60_000);
+
+const digitClass = size === 'lg' ? 'text-6xl sm:text-7xl' : size === 'sm' ? 'text-2xl' : 'text-4xl sm:text-5xl';
+---
+<div class="svge-card p-6 sm:p-8" data-countdown data-target={targetDate.toISOString()} data-reveal>
+  <p class="eyebrow mb-4 text-[color:var(--tone-ink)]">{caption}</p>
+  <div class="flex items-end gap-6 sm:gap-10 flex-wrap">
+    <div>
+      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="days">{days.toLocaleString('en-IN')}</span>
+      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">days</span>
+    </div>
+    <div>
+      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="hours">{hours.toString().padStart(2, '0')}</span>
+      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">hrs</span>
+    </div>
+    <div>
+      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="mins">{minutes.toString().padStart(2, '0')}</span>
+      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">min</span>
+    </div>
+    <p class="ml-auto max-w-xs text-sm font-mono text-[color:var(--color-slate-2)] leading-relaxed">{label}</p>
+  </div>
+</div>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (rm) return;
+    var roots = document.querySelectorAll('[data-countdown]:not([data-ticking])');
+    roots.forEach(function (root) {
+      root.setAttribute('data-ticking', '');
+      var target = new Date(root.getAttribute('data-target')).getTime();
+      var d = root.querySelector('[data-cd="days"]');
+      var h = root.querySelector('[data-cd="hours"]');
+      var m = root.querySelector('[data-cd="mins"]');
+      function tick() {
+        var diff = Math.max(0, target - Date.now());
+        var dd = Math.floor(diff / 86400000);
+        var hh = Math.floor((diff % 86400000) / 3600000);
+        var mm = Math.floor((diff % 3600000) / 60000);
+        if (d) d.textContent = dd.toLocaleString('en-IN');
+        if (h) h.textContent = String(hh).padStart(2, '0');
+        if (m) m.textContent = String(mm).padStart(2, '0');
+      }
+      tick();
+      setInterval(tick, 30_000);
+    });
+  })();
+</script>

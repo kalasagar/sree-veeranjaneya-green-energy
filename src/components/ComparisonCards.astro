@@ -1,0 +1,23 @@
+---
+/**
+ * "What 4 TPD looks like" — six cards with inline bar.
+ */
+import { SITE } from '../lib/site';
+const cards = SITE.comparisons;
+---
+<section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal>
+  {cards.map((c, i) => (
+    <article class="svge-card p-5 flex flex-col">
+      <p class="eyebrow text-[color:var(--tone-ink)]">{c.label}</p>
+      <p class="mt-3 flex items-baseline gap-2">
+        <span class="numeral-display text-3xl sm:text-4xl text-[color:var(--color-ink)]">{c.value}</span>
+        <span class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">{c.unit}</span>
+      </p>
+      <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed flex-1">{c.framing}</p>
+      <div class="mt-4 svge-bar h-1.5" aria-hidden="true">
+        <span style={`width:${(i + 1) * 14 + 10}%;background:var(--tone);`}></span>
+      </div>
+      <p class="mt-3 text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">{c.source}</p>
+    </article>
+  ))}
+</section>

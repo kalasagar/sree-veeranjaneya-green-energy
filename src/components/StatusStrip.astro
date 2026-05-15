@@ -1,0 +1,36 @@
+---
+/**
+ * Plant clock — instrument-panel strip between header and hero on every route.
+ * Four cells: D-day · phase · clearances · last update.
+ */
+import { SITE } from '../lib/site';
+import { link } from '../lib/links';
+
+const deadline = new Date(SITE.loi.commissioningDeadline + 'T00:00:00Z');
+const now = new Date();
+const msPerDay = 86_400_000;
+const daysLeft = Math.max(0, Math.round((deadline.getTime() - now.getTime()) / msPerDay));
+const lastUpdate = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(
+  new Date(SITE.status.lastUpdate + 'T00:00:00Z'),
+);
+const phaseLabel = SITE.status.phaseLabel;
+const cleared = `${SITE.status.clearancesObtained}/${SITE.status.clearancesTotal}`;
+const pulse = daysLeft < 90;
+---
+<div class="svge-status" role="status" aria-label="Plant build status">
+  <div class="container-svge flex flex-wrap items-stretch">
+    <a href={link('/build/')} class="cell" aria-label={`Days remaining to commissioning deadline: ${daysLeft}`}>
+      <span class={`dot ${pulse ? 'pulse' : ''}`} aria-hidden="true"></span>
+      <span>D − <span class="numeral-display">{daysLeft.toLocaleString('en-IN')}</span>d <span class="opacity-60">to commissioning</span></span>
+    </a>
+    <a href={link('/build/')} class="cell">
+      <span>Phase: <span style="color: var(--color-paper);">{phaseLabel}</span></span>
+    </a>
+    <a href={link('/build/#clearances')} class="cell">
+      <span>Clearances <span class="numeral-display" style="color: var(--color-paper);">{cleared}</span></span>
+    </a>
+    <a href={link('/press/#journal')} class="cell ml-auto">
+      <span>Last update <span style="color: var(--color-paper);">{lastUpdate}</span></span>
+    </a>
+  </div>
+</div>

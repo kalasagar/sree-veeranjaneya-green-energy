@@ -3,9 +3,25 @@ import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import ChipRail from '../components/ChipRail.astro';
 import PullQuote from '../components/PullQuote.astro';
 import Mark from '../components/Mark.astro';
+import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+const chips = [
+  { id: 'boilerplate', label: 'Boilerplate' },
+  { id: 'facts', label: 'Fast facts' },
+  { id: 'brand', label: 'Brand pack' },
+  { id: 'quotes', label: 'Quotes' },
+  { id: 'journal', label: 'Journal' },
+];
 ---
 <Base title="Press" description="Press kit for journalists covering SVGE — boilerplate, fact sheet, logo pack, founder quotes, contact.">
   <FullBleedHero banner="press_kit" alt="Editorial overhead photograph of a press kit folder on a dark slate desk with a saffron pen." eyebrow="Press">
@@ -15,7 +31,10 @@ import { SITE } from '../lib/site';
     </p>
   </FullBleedHero>
 
-  <Section eyebrow="Boilerplate" title="Two lengths. Drop in and use.">
+  <Kicker eyebrow="Press · kit · journal" deck='Boilerplate. <span style="color:var(--color-saffron-text);">Brand pack.</span> Build journal.' />
+  <ChipRail items={chips} />
+
+  <Section id="boilerplate" eyebrow="Boilerplate" title="Two lengths. Drop in and use.">
     <div class="grid-12">
       <article class="col-6 rounded-xl bg-[color:var(--color-paper-2)] p-6">
         <p class="eyebrow mb-3">60 words</p>
@@ -28,7 +47,7 @@ import { SITE } from '../lib/site';
     </div>
   </Section>
 
-  <Section eyebrow="Fast facts" title="Everything a journalist will ask." bg="paper-2">
+  <Section id="facts" eyebrow="Fast facts" title="Everything a journalist will ask." bg="paper-2">
     <dl class="grid-12 text-sm">
       {[
         ['Founded', '12 June 2024 · ROC Vijayawada'],
@@ -57,7 +76,7 @@ import { SITE } from '../lib/site';
     </dl>
   </Section>
 
-  <Section eyebrow="Brand pack" title="Logo, palette, banners.">
+  <Section id="brand" eyebrow="Brand pack" title="Logo, palette, banners.">
     <!-- Mark showcase tile -->
     <div class="mb-10 flex items-center gap-8 sm:gap-10 p-6 sm:p-8 rounded-2xl bg-[color:var(--color-paper-2)] border border-[color:var(--color-slate-2-soft)]/15">
       <Mark size={160} />
@@ -89,7 +108,7 @@ import { SITE } from '../lib/site';
     </div>
   </Section>
 
-  <Section eyebrow="Founder quotes" title="On the record." bg="paper-2">
+  <Section id="quotes" eyebrow="Founder quotes" title="On the record." bg="paper-2">
     <div class="grid-12">
       {SITE.promoters.map(p => (
         <div class="col-6">
@@ -97,6 +116,27 @@ import { SITE } from '../lib/site';
         </div>
       ))}
     </div>
+  </Section>
+
+  <Section id="journal" eyebrow="Build journal" title="Monthly receipts.">
+    {posts.length === 0 && <p class="text-sm font-mono text-[color:var(--color-slate-2)]">No posts yet. The first one lands the day construction begins — target Q3 2026.</p>}
+    {posts.map(post => (
+      <article class="border-t-2 border-[color:var(--color-ink)] py-6 max-w-3xl" data-reveal>
+        <p class="eyebrow">{fmt.format(post.data.date)}</p>
+        <h3 class="mt-2 text-2xl"><a href={link(`/news/${post.id}/`)}>{post.data.title}</a></h3>
+        <p class="mt-2 text-[color:var(--color-slate)] leading-relaxed">{post.data.summary}</p>
+      </article>
+    ))}
+  </Section>
+
+  <Section narrow bg="paper-2">
+    <NotifyMe
+      topic="Newsletter"
+      eyebrow="Stay in the loop"
+      title="One email a month, from the day concrete is poured."
+      body="Same content as the build journal, delivered. Unsubscribe at any time."
+      cta="Send me the monthly update"
+    />
   </Section>
 
   <Section narrow>

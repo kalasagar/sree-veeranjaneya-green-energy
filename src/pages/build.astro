@@ -1,0 +1,176 @@
+---
+import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
+import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import ChipRail from '../components/ChipRail.astro';
+import BentoGrid from '../components/BentoGrid.astro';
+import PlantMap from '../components/PlantMap.astro';
+import IndiaMap from '../components/IndiaMap.astro';
+import Countdown from '../components/Countdown.astro';
+import TimelineRail from '../components/TimelineRail.astro';
+import ClearanceMatrix from '../components/ClearanceMatrix.astro';
+import RadiusMap from '../components/RadiusMap.astro';
+import SATATPositioner from '../components/SATATPositioner.astro';
+import TeamComposition from '../components/TeamComposition.astro';
+import ComparisonCards from '../components/ComparisonCards.astro';
+import CapitalFlow from '../components/CapitalFlow.astro';
+import { SITE } from '../lib/site';
+
+const ps = SITE.plantStats;
+const chips = [
+  { id: 'status', label: 'Status' },
+  { id: 'capital', label: 'Capital' },
+  { id: 'clearances', label: 'Clearances' },
+  { id: 'radius', label: 'Radius' },
+  { id: 'site', label: 'Site plan' },
+  { id: 'impact', label: 'Impact' },
+  { id: 'team', label: 'Team' },
+  { id: 'dataroom', label: 'Data room' },
+];
+---
+<Base title="The Build" description="₹33 Cr. ₹6.7 Cr in incentives. Seven clearances. 120 jobs. The whole build, in numbers.">
+  <FullBleedHero
+    banner="project_plant_render"
+    alt="Aerial view of the plant site surrounded by paddy fields."
+    eyebrow="The Build"
+    objectPosition="50% 20%"
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+      4 TPD CBG. 40-km radius.<br/>
+      <span style="color:#FFB300;">A 2-year clock.</span>
+    </h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      Single plant. Single site. IOCL Letter of Intent in hand. SATAT-approved EPC. CPCB WHITE pollution category. The build, in numbers.
+    </p>
+  </FullBleedHero>
+
+  <Kicker eyebrow="The build · ₹33 Cr · 7 clearances · 120 jobs" deck='₹33 Cr. <span style="color:var(--color-saffron-text);">₹6.7 Cr in incentives.</span> Seven clearances. 120 jobs.' />
+  <ChipRail items={chips} />
+
+  <!-- STATUS -->
+  <Section id="status" eyebrow="Status" title="Where we are right now.">
+    <div class="grid lg:grid-cols-[1.2fr_1fr] gap-6 items-start">
+      <Countdown size="lg" />
+      <article class="svge-card p-6 sm:p-8">
+        <p class="eyebrow text-[color:var(--tone-ink)]">LoI · 04.10.2024</p>
+        <h3 class="mt-2 text-2xl">IndianOil / SATAT / 01 / 3931</h3>
+        <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed">15-year Commercial Agreement validity. Procurement price floor ₹{SITE.loi.priceFloorRsKg}/kg + taxes through {new Date(SITE.loi.priceFloorThrough).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}, indexed to CNG retail thereafter.</p>
+        <dl class="mt-4 grid grid-cols-2 gap-3 text-xs font-mono">
+          <div><dt class="text-[color:var(--color-slate-2)]">Issuer</dt><dd class="text-[color:var(--color-ink)]">IOCL AE&amp;SD</dd></div>
+          <div><dt class="text-[color:var(--color-slate-2)]">Signatory</dt><dd class="text-[color:var(--color-ink)]">{SITE.loi.issuerSignatory}</dd></div>
+          <div><dt class="text-[color:var(--color-slate-2)]">CNG linkage</dt><dd class="text-[color:var(--color-ink)]">{SITE.loi.iocCnglinkagePct}%</dd></div>
+          <div><dt class="text-[color:var(--color-slate-2)]">Quantity</dt><dd class="text-[color:var(--color-ink)]">{SITE.loi.quantityTpd} TPD</dd></div>
+        </dl>
+      </article>
+    </div>
+  </Section>
+
+  <Section bg="paper-2">
+    <BentoGrid hero={ps[0]} supporting={[ps[1], ps[2], ps[3]]} />
+    <div class="mt-8 grid-12">
+      {ps.slice(4).map(s => (
+        <div class="col-3 border-t-2 border-[color:var(--color-ink)] pt-4">
+          <div class="stat-num">{s.value}<span class="unit">{s.unit}</span></div>
+          <p class="eyebrow mt-2">{s.k}</p>
+          {s.framing && <p class="text-sm mt-2 text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- CAPITAL -->
+  <Section id="capital" eyebrow="Capital" title="How the project is funded.">
+    <CapitalFlow />
+    <div class="mt-10 grid-12">
+      <article class="col-4 svge-card p-6">
+        <p class="eyebrow mb-2">Structure</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">Promoter-led</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">Two directors own 100% of the equity. No fund clock, no investor exit pressure.</p>
+      </article>
+      <article class="col-4 svge-card p-6">
+        <p class="eyebrow mb-2">Term loan</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">{SITE.financing.termYears}-year</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">Public-sector lender. Disbursement begins with construction; door-to-door tenor concludes with the offtake-contract horizon.</p>
+      </article>
+      <article class="col-4 svge-card p-6">
+        <p class="eyebrow mb-2">Confirmed incentives</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">₹{SITE.financing.incentivesCr} Cr</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">MNRE CFA · AGRL Ministry · FOM Market Development Assistance (Min. of Chemicals &amp; Fertilizers). Plus a {SITE.financing.taxHolidayYears}-year income-tax holiday for CBG plants.</p>
+      </article>
+    </div>
+    <p class="mt-6 text-sm text-[color:var(--color-slate-2)] font-mono">Total project cost ≈ ₹{SITE.financing.totalCr} Cr · {SITE.financing.structure}.</p>
+  </Section>
+
+  <!-- CLEARANCES -->
+  <Section bg="paper-2">
+    <ClearanceMatrix />
+  </Section>
+
+  <!-- RADIUS -->
+  <Section id="radius" eyebrow="Radius" title="A 40-km supply belt and a 75-km dispatch cap.">
+    <RadiusMap highlight={40} caption="Concentric distances from the plant site at Thatipadu. Supply rolls in from 40 km; CBG cascade dispatch caps at 75 km per LoI clause 5." />
+  </Section>
+
+  <!-- SITE PLAN -->
+  <Section id="site" eyebrow="Site plan" title="On the ground." bg="paper-2">
+    <div class="grid-12 items-start">
+      <div class="col-8">
+        <PlantMap />
+      </div>
+      <aside class="col-4 text-sm leading-relaxed">
+        <h3 class="text-xl mb-3">Site & connectivity</h3>
+        <ul class="space-y-1.5">
+          <li><strong>Village:</strong> {SITE.plant.village}</li>
+          <li><strong>Mandal:</strong> {SITE.plant.mandal}</li>
+          <li><strong>District:</strong> {SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}</li>
+          <li><strong>Land:</strong> {SITE.plant.landAcres} ac, MD-owned</li>
+        </ul>
+      </aside>
+    </div>
+  </Section>
+
+  <!-- SATAT POSITIONER -->
+  <Section>
+    <SATATPositioner />
+  </Section>
+
+  <!-- IMPACT -->
+  <Section id="impact" eyebrow="Impact" title="What 4 TPD looks like." bg="paper-2">
+    <ComparisonCards />
+  </Section>
+
+  <Section>
+    <IndiaMap />
+  </Section>
+
+  <!-- TEAM -->
+  <Section id="team" eyebrow="Team" title="Who is doing the work." bg="paper-2">
+    <TeamComposition />
+  </Section>
+
+  <!-- TIMELINE -->
+  <Section eyebrow="Timeline" title="Where we are on the rail.">
+    <div class="max-w-3xl">
+      <TimelineRail />
+    </div>
+  </Section>
+
+  <!-- DATA ROOM (lender block) -->
+  <Section id="dataroom" eyebrow="For lenders" title="The data room." bg="paper-2">
+    <article class="svge-card p-6 sm:p-8 max-w-3xl">
+      <p class="eyebrow mb-3">Request the DPR</p>
+      <p class="text-base leading-relaxed">The full Detailed Project Report — cost sheet, sensitivity analysis, DSCR, IRR, working-capital plan, equipment vendor quotations — is available on email request to qualified lenders with a brief intro to your institution.</p>
+      <ul class="mt-4 text-sm leading-relaxed list-disc pl-5 space-y-1">
+        <li>Total project cost ≈ ₹{SITE.financing.totalCr} Cr. {SITE.financing.structure}.</li>
+        <li>Plant capacity {SITE.capacity.cbgTpd} TPD CBG · {SITE.capacity.rawGasNm3PerDay.toLocaleString('en-IN')} Nm³/day raw biogas · {SITE.capacity.workingHoursDay} h × {SITE.capacity.workingDaysYear} days · {SITE.capacity.standard}.</li>
+        <li>IOCL LoI dated 04.10.2024 · {SITE.loi.commercialAgreementYears}-year Commercial Agreement · commissioning deadline 04.10.2026.</li>
+        <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme · ₹{SITE.financing.incentivesCr} Cr confirmed central incentives · {SITE.financing.taxHolidayYears}-year tax holiday.</li>
+        <li>UDYAM-registered MSME: {SITE.udyam}. ROC Vijayawada, Reg. No. {SITE.registrationNumber}.</li>
+        <li>CPCB pollution category: WHITE. 4 clearances obtained, 3 applied, 1 after-COD.</li>
+      </ul>
+      <p class="mt-5 text-sm">Email <a href={`mailto:${SITE.email}?subject=DPR%20request`}>{SITE.email}</a> with subject line <em>DPR request</em>.</p>
+    </article>
+  </Section>
+</Base>

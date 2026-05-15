@@ -176,6 +176,15 @@ export const SITE = {
     lat: 18.487531,
     lng: 83.69774,
     landAcres: 2.63,
+    // Concentric distance rings used by RadiusMap.
+    distances: [
+      { km: 8, label: 'Regidi Amadalavalasa', kind: 'town' },
+      { km: 24, label: 'Bobbili', kind: 'town' },
+      { km: 33, label: 'Rajam (registered office)', kind: 'office' },
+      { km: 40, label: 'Feedstock catchment', kind: 'supply' },
+      { km: 75, label: 'IOCL retail-outlet dispatch cap (LoI cl. 5)', kind: 'dispatch' },
+      { km: 122, label: 'Visakhapatnam port', kind: 'port' },
+    ] as { km: number; label: string; kind: 'town' | 'office' | 'supply' | 'dispatch' | 'port' }[],
   },
   capacity: {
     cbgTpd: 4,
@@ -253,6 +262,13 @@ export const SITE = {
     totalJobs: 120,
     localHirePolicy: 'Local hire first — operations, lab, aggregation, accounts, driving, watchmen.',
     catchmentRadiusKm: 40,
+    // Coarse role-band split for TeamComposition. Plant + extended supply chain.
+    roleBands: [
+      { band: 'Operations & shift', plant: 22, extended: 0, note: 'Plant operators, control room, shift supervisors.' },
+      { band: 'Maintenance & utilities', plant: 11, extended: 0, note: 'Mechanical, electrical, instrumentation, civil upkeep.' },
+      { band: 'Lab, QC & dispatch', plant: 8, extended: 0, note: 'Gas analysers, IS 16087 sampling, dispatch slip integrity.' },
+      { band: 'Aggregation & accounts', plant: 6, extended: 73, note: 'Farmer-side: drivers, aggregators, accounts, watchmen, contract harvest crews within 40 km.' },
+    ],
   },
 
   // ---- INDUSTRY CONTEXT (R1 facts, dated) ----
@@ -363,31 +379,112 @@ export const SITE = {
   },
 
   // ---- NAV ----
-  // Primary nav lives in the header. Keep it ≤6 items so it doesn't scroll on mobile.
-  // Audience-specific pages (Partners, Press, Careers) are reached via segmented CTAs and the footer.
+  // V3 consolidation: 11 routes → 7. /plant absorbs /process + /process/engineering;
+  // /build absorbs /project + /impact; /work absorbs /partners + /careers; /press
+  // absorbs /news. Old routes redirect via astro.config.mjs.
   nav: [
     { href: '/', label: 'Home' },
     { href: '/about/', label: 'About' },
-    { href: '/project/', label: 'Project' },
-    { href: '/process/', label: 'Process' },
-    { href: '/impact/', label: 'Impact' },
+    { href: '/plant/', label: 'Plant' },
+    { href: '/build/', label: 'Build' },
     { href: '/farmers/', label: 'Farmers' },
+    { href: '/work/', label: 'Work' },
+    { href: '/press/', label: 'Press' },
     { href: '/contact/', label: 'Contact' },
   ],
-  navSecondary: [
-    { href: '/partners/', label: 'Partners' },
-    { href: '/press/', label: 'Press' },
-    { href: '/careers/', label: 'Careers' },
-  ],
+  navSecondary: [] as { href: string; label: string }[],
 
-  // ---- STATUS (used by the dismissible top chip) ----
+  // ---- STATUS (used by StatusStrip on every page) ----
   status: {
-    phase: 'pre-construction' as 'pre-construction' | 'construction' | 'operational',
+    phase: 'pre-construction' as 'pre-construction' | 'construction' | 'commissioning' | 'operational',
+    phaseLabel: 'Pre-construction',
     label: 'Pre-construction · LoI active',
     lastUpdate: '2026-05-15',
     note: 'Construction begins Q3 2026 · LoI commissioning deadline 04.10.2026',
-    href: '/news/',
+    href: '/press/#journal',
+    clearancesObtained: 4,
+    clearancesTotal: 7,
+    // Ordered phase chips for StatusStrip phase indicator.
+    phases: ['Pre-construction', 'Construction', 'Commissioning', 'Operational'] as const,
   },
+
+  // ---- PER-ROUTE TONAL ACCENT (set as data-tone on <body>) ----
+  tones: {
+    '/': 'field',
+    '/about/': 'paper',
+    '/plant/': 'lab',
+    '/build/': 'lender',
+    '/farmers/': 'harvest',
+    '/work/': 'lender',
+    '/press/': 'ink',
+    '/contact/': 'paper',
+  } as Record<string, 'field' | 'paper' | 'lab' | 'lender' | 'harvest' | 'ink' | 'forest'>,
+
+  // ---- DAILY MASS-FLOW (drives CBGSankey + DayInTheData) ----
+  massFlow: {
+    feedstockTpd: 72,
+    napierTpd: 50,
+    paddyStrawTpd: 14,
+    dungTpd: 8,
+    waterRecycledM3PerDay: 145,
+    slurryToDigesterM3PerDay: 216,
+    rawBiogasNm3PerDay: 9600,
+    cbgTpd: 4,
+    cbgMethanePct: 90,
+    fomSolidTph: 1,
+    fomLiquidM3PerDay: 52,
+    cascadesPerDay: 4,
+    // Roughly 75 km radius cap means most loads route to local IOCL retail outlets.
+    dispatchKmCap: 75,
+  },
+
+  // ---- "WHAT 4 TPD LOOKS LIKE" (drives ComparisonCards) ----
+  comparisons: [
+    { value: '~9,600', unit: 'Nm³/day', label: 'Raw biogas', framing: 'Volume at standard temperature & pressure.', source: 'DPR §4.2' },
+    { value: '~80', unit: 'buses/day', label: 'Equivalent CNG fuelling', framing: 'A 12-m city bus at typical CNG mileage uses ~50 kg/day.', source: 'Derived from CBG output × CNG bus consumption' },
+    { value: '~29,000', unit: 'TPA', label: 'Feedstock out of burn cycle', framing: 'Paddy straw + Napier + dung diverted from open-field burning or waste.', source: 'DPR §3.1 feedstock plan' },
+    { value: '~365', unit: 'TPA', label: 'Solid FOM returned to soil', framing: 'Fermented Organic Manure shipped back to farmer fields.', source: 'DPR §4.6 digestate' },
+    { value: '~10,000', unit: 'tCO₂e/yr', label: 'Avoided emissions', framing: 'Versus straw burning + diesel/CNG displacement. SATAT scheme indicative.', source: 'MoPNG SATAT prospectus' },
+    { value: '~120', unit: 'jobs', label: 'Direct + indirect roles', framing: '47 plant payroll + 73 aggregation/transport/farmer-side roles in the 40-km radius.', source: 'DPR §5 manpower plan' },
+  ],
+
+  // ---- FARMER CALCULATOR (yield × price constants) ----
+  // Coarse, conservative ranges intended for "what could my plot earn" sketching,
+  // not contract numbers. All in INR.
+  crops: [
+    { id: 'napier', label: 'Napier grass (contract)', yieldTpaPerHa: 70, ratePerTonneInr: 1200, harvestsPerYear: 6, note: 'Perennial; 5-year offtake contract; 6 harvests/yr' },
+    { id: 'paddyStraw', label: 'Paddy straw (post-harvest)', yieldTpaPerHa: 4, ratePerTonneInr: 1800, harvestsPerYear: 2, note: 'Otherwise burned; cleared in 2 windows/yr' },
+    { id: 'dung', label: 'Cattle dung (per animal/yr)', yieldTpaPerHa: 2, ratePerTonneInr: 1500, harvestsPerYear: 12, note: 'Per cattle head/yr basis; monthly pickup' },
+  ],
+
+  // ---- GLOSSARY (drives SpecGlossary) ----
+  glossary: [
+    { term: 'CBG', long: 'Compressed Bio-Gas', def: 'Upgraded biogas with ≥90% methane, compressed to 250 bar for transport in cascade cylinders. Spec defined by IS 16087:2016.' },
+    { term: 'CSTR', long: 'Continuously Stirred Tank Reactor', def: 'Anaerobic digester design where slurry is kept in suspension by mechanical stirring. The SVGE plant runs four CSTRs of 26 m × 8.63 m each.' },
+    { term: 'HRT', long: 'Hydraulic Retention Time', def: 'Average time a unit of slurry spends inside the digester. SVGE design HRT is 34 days — long enough for methanogens to complete digestion.' },
+    { term: 'OLR', long: 'Organic Loading Rate', def: 'Mass of volatile solids fed per cubic metre of digester volume per day. SVGE design OLR is 1.75 kg VS/m³/day — conservative for CSTR.' },
+    { term: 'VS', long: 'Volatile Solids', def: 'The biodegradable fraction of feedstock dry matter. The digester only digests VS; the rest passes through as digestate.' },
+    { term: 'VPSA', long: 'Vacuum Pressure Swing Adsorption', def: 'Two-tower process that separates methane from CO₂ + trace gases by alternately adsorbing under pressure and desorbing under vacuum. SVGE uses a 2-tower VPSA from Raj Process.' },
+    { term: 'PSA', long: 'Pressure Swing Adsorption', def: 'Gas-drying technique using adsorbent beds cycled by pressure. Drops the dew point of CBG to −40 °C, well below IS 16087.' },
+    { term: 'IS 16087:2016', long: 'Indian standard for BioCNG/CBG', def: 'BIS specification for compressed biogas as automotive fuel. Sets minimum methane (≥90%), maximum CO₂ (≤4%), O₂ (≤0.5%), total sulphur (≤20 mg/m³), and water dew point (≤5 mg/m³).' },
+    { term: 'FOM', long: 'Fermented Organic Manure', def: 'The solid digestate fraction after slurry separation. Stable, fibrous, sold back to farmers as a soil amendment under the Ministry of C&F MDA scheme.' },
+    { term: 'SATAT', long: 'Sustainable Alternative Towards Affordable Transportation', def: 'MoPNG scheme launched 2018 to procure CBG via Letters of Intent issued by OMCs (IOCL/BPCL/HPCL). Targets 5,000 plants and 15 MMTPA CBG nationally.' },
+    { term: 'LoI', long: 'Letter of Intent', def: "Indian Oil's commitment to procure CBG at a published floor price for a defined Commercial Agreement validity. SVGE's LoI was issued 04.10.2024, ref IndianOil/SATAT/01/3931." },
+    { term: 'CFA', long: 'Capital Financial Assistance', def: 'A grant component under MNRE National Bioenergy Programme Phase-I. One of three central incentives contributing to SVGE\'s ₹6.7 Cr block.' },
+    { term: 'MDA', long: 'Market Development Assistance', def: 'Ministry of Chemicals & Fertilizers subsidy for selling FOM (fermented organic manure). Applies per-tonne to dispatches off the plant.' },
+    { term: 'PESO', long: 'Petroleum and Explosives Safety Organisation', def: 'Indian regulator under MoCI. Approves CBG cascade design, dispenser safety, and on-site storage under Gas Cylinder Rules 2016. SVGE has applied; approval is sequenced for pre-commissioning.' },
+    { term: 'WHITE category', long: 'CPCB pollution category', def: 'The lowest-impact CPCB tier. Energy-crop CBG plants are classified WHITE — only basic Consent to Establish + Consent to Operate are required.' },
+  ],
+
+  // ---- RFP CATEGORIES (drives /work#rfps) ----
+  rfps: [
+    { id: 'civil', label: 'Civil works & ground prep', status: 'open', scope: 'Site grading, CSTR foundations, control room, perimeter. ~2.63 acres at Thatipadu.', contact: 'svge.india@gmail.com' },
+    { id: 'epc', label: 'EPC integration support', status: 'awarded', scope: 'Process integration is awarded to Raj Process Equipments & Systems, Pune. Sub-contractor RFPs for specific skids may open.', contact: 'svge.india@gmail.com' },
+    { id: 'logistics', label: 'CBG cascade logistics', status: 'open', scope: 'Cascade trailers (250 bar IS 15319) for dispatch to IOCL retail outlets within ~75 km.', contact: 'svge.india@gmail.com' },
+    { id: 'feedstock', label: 'Feedstock aggregation', status: 'open', scope: 'Paddy-straw aggregation crews, Napier contract farming, dung pickup routes within 40 km radius.', contact: 'svge.india@gmail.com' },
+    { id: 'fom', label: 'FOM offtake & distribution', status: 'open', scope: 'Liquid + solid FOM offtake. ~365 TPA solid + ~52 m³/day liquid. MDA-eligible.', contact: 'svge.india@gmail.com' },
+    { id: 'instruments', label: 'Instrumentation & SCADA', status: 'discussion', scope: 'Gas analysers (CH₄ / CO₂ / O₂ / H₂S), dew-point sensors, integration with dispatch SCADA.', contact: 'svge.india@gmail.com' },
+  ] as { id: string; label: string; status: 'open' | 'discussion' | 'awarded'; scope: string; contact: string }[],
 
   // ---- BUILT-IN-PUBLIC PROMISE (used on /, /about/, footer) ----
   publicPromise:

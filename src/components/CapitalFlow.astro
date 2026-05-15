@@ -1,0 +1,119 @@
+---
+/**
+ * Capital flow — promoter + term loan + incentives → plant build buckets.
+ * Hand-rolled SVG Sankey approximation, no chart lib.
+ */
+import { SITE } from '../lib/site';
+
+// Rough split for visualisation. Total = SITE.financing.totalCr ≈ 33.
+const total = SITE.financing.totalCr;
+const incentives = SITE.financing.incentivesCr; // 6.7
+const promoter = +(total * 0.32).toFixed(1);    // ~10.6
+const termLoan = +(total - incentives - promoter).toFixed(1); // ~15.7
+
+// Build-side buckets (indicative; reconciles with the DPR).
+const buckets = [
+  { id: 'civil',   label: 'Civil works & ground prep',     cr: 6.5 },
+  { id: 'digester', label: 'Digesters + ancillaries',       cr: 11.0 },
+  { id: 'upgrade', label: 'VPSA + compression + dispatch', cr: 8.0 },
+  { id: 'utilities', label: 'Utilities + solar + SCADA',   cr: 4.5 },
+  { id: 'working', label: 'Working capital + contingency', cr: 3.27 },
+];
+
+const sources = [
+  { id: 'promoter', label: 'Promoter-led equity', cr: promoter,   color: '#1B5E20' },
+  { id: 'loan',     label: '10-yr term loan',     cr: termLoan,   color: '#2C5282' },
+  { id: 'incent',   label: 'Confirmed incentives ₹6.7 Cr', cr: incentives, color: '#C98E2B' },
+];
+
+// Incentive sub-split (always sums to incentives).
+const incentSplit = [
+  { id: 'cfa', label: 'MNRE CFA',                 cr: 2.8 },
+  { id: 'agrl', label: 'AGRL Ministry',            cr: 2.0 },
+  { id: 'fom',  label: 'FOM MDA (Min. C&F)',       cr: 1.9 },
+];
+
+const W = 800;
+const H = 360;
+const padX = 32;
+const padY = 24;
+const colW = 220;
+const trackW = W - 2 * padX - 2 * colW;
+
+let sy = padY;
+const sBlocks = sources.map(s => {
+  const h = (s.cr / total) * (H - 2 * padY);
+  const b = { ...s, y: sy, h };
+  sy += h + 6;
+  return b;
+});
+
+let ty = padY;
+const tBlocks = buckets.map(b => {
+  const h = (b.cr / total) * (H - 2 * padY);
+  const blk = { ...b, y: ty, h };
+  ty += h + 6;
+  return blk;
+});
+
+function curveTo(x1: number, y1: number, x2: number, y2: number, h: number) {
+  const cpx = (x1 + x2) / 2;
+  return `M${x1},${y1} C${cpx},${y1} ${cpx},${y2} ${x2},${y2} L${x2},${y2 + h} C${cpx},${y2 + h} ${cpx},${y1 + h} ${x1},${y1 + h} Z`;
+}
+---
+<section class="svge-card p-6 sm:p-8" data-reveal id="capital-flow" data-draw>
+  <p class="eyebrow text-[color:var(--tone-ink)]">Capital flow</p>
+  <h3 class="mt-2 text-2xl text-[color:var(--color-ink)]">
+    Promoter + term loan + ₹{incentives} Cr incentives = ~₹{total} Cr build
+  </h3>
+  <p class="mt-2 text-sm text-[color:var(--color-slate)] max-w-3xl">
+    Indicative allocation derived from the DPR cost sheet. Headline ratios are public; per-line rupees stay with qualified lenders.
+  </p>
+
+  <div class="mt-6 overflow-x-auto svge-sankey">
+    <svg viewBox={`0 0 ${W} ${H}`} class="w-full" role="img" aria-label="Capital flow diagram">
+      {/* Source labels */}
+      {sBlocks.map(s => (
+        <g class="source" data-source={s.id}>
+          <rect class="node" x={padX} y={s.y} width="14" height={s.h} style={`fill:${s.color};`} />
+          <text class="node-label" x={padX + 22} y={s.y + 14} style={`fill:${s.color};`}>{s.label}</text>
+          <text x={padX + 22} y={s.y + 28} class="text-xs">₹{s.cr} Cr</text>
+        </g>
+      ))}
+
+      {/* Streams */}
+      {sBlocks.map(s => tBlocks.map((t, ti) => {
+        const proportion = t.cr / total;
+        const streamH = s.h * proportion;
+        const sStart = s.y + s.h * (tBlocks.slice(0, ti).reduce((a, b) => a + b.cr / total, 0));
+        const tStart = t.y + t.h * (sBlocks.slice(0, sBlocks.indexOf(s)).reduce((a, b) => a + b.cr / total, 0));
+        const tStreamH = t.h * (s.cr / total);
+        const d = curveTo(padX + 16, sStart, W - padX - colW - 16, tStart, Math.min(streamH, tStreamH));
+        return <path d={d} style={`fill:${s.color};fill-opacity:0.35;`} />;
+      }))}
+
+      {/* Target buckets */}
+      {tBlocks.map(b => (
+        <g>
+          <rect class="node" x={W - padX - colW} y={b.y} width="14" height={b.h} />
+          <text class="node-label" x={W - padX - colW + 22} y={b.y + 14}>{b.label}</text>
+          <text x={W - padX - colW + 22} y={b.y + 28} class="text-xs">₹{b.cr} Cr</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+
+  <div class="mt-8 grid sm:grid-cols-3 gap-3">
+    <div class="rule-hairline sm:col-span-3"><span class="rule-label">₹{incentives} Cr incentives split</span></div>
+    {incentSplit.map(i => (
+      <article class="svge-card p-4">
+        <p class="eyebrow text-[color:var(--tone-ink)]">{i.label}</p>
+        <p class="mt-2 numeral-display text-xl text-[color:var(--color-ink)]">₹{i.cr} Cr</p>
+      </article>
+    ))}
+  </div>
+
+  <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">
+    Plus a {SITE.financing.taxHolidayYears}-year income-tax holiday for CBG plants under the Income Tax Act. Numbers above are public-disclosure ranges; the full breakdown reconciles in the DPR data room.
+  </p>
+</section>

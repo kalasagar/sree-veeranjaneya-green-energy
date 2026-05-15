@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import RadiusMap from '../components/RadiusMap.astro';
+import Accordion from '../components/Accordion.astro';
 import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 
@@ -29,6 +32,13 @@ const faqs = [
       If you farm within 40 km of Thatipadu in Vizianagaram or Srikakulam district — we want to talk to you.
     </p>
   </FullBleedHero>
+
+  <Kicker eyebrow="For farmers · 40 km · 14-day pay" deck='40-km radius. <span style="color:var(--color-saffron-text);">14-day payment.</span> Bank transfer, every slip.' />
+
+  <!-- RADIUS MAP — the new centrepiece -->
+  <Section eyebrow="Your land" title="If you farm within 40 km, this is the radius.">
+    <RadiusMap highlight={40} caption="Concentric distances from Thatipadu. Vizianagaram + Srikakulam catchment within the 40-km supply belt." />
+  </Section>
 
   <!-- HEADLINE PROMISE -->
   <Section bg="paper-2">
@@ -104,12 +114,9 @@ const faqs = [
 
   <!-- FAQ -->
   <Section eyebrow="Common questions" title="What farmers ask us first." narrow>
-    <div class="space-y-3">
+    <div class="max-w-3xl">
       {faqs.map(f => (
-        <details class="rounded-xl bg-[color:var(--color-paper-2)] p-5 open:bg-[color:var(--color-paper-3)]">
-          <summary class="cursor-pointer font-semibold text-[color:var(--color-forest)] text-lg">{f.q}</summary>
-          <p class="mt-3 text-base leading-relaxed serif">{f.a}</p>
-        </details>
+        <Accordion summary={f.q}><p class="serif">{f.a}</p></Accordion>
       ))}
     </div>
     <p class="mt-8 text-sm">

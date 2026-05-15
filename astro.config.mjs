@@ -12,6 +12,16 @@ export default defineConfig({
   build: { format: 'directory' },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
   vite: { plugins: [tailwindcss()] },
+  // V3 IA consolidation — old URLs redirect into the 7 new routes.
+  redirects: {
+    '/process/': '/plant/',
+    '/process/engineering/': '/plant/',
+    '/project/': '/build/',
+    '/impact/': '/build/',
+    '/partners/': '/work/',
+    '/careers/': '/work/',
+    '/news/': '/press/',
+  },
   integrations: [
     mdx(),
     sitemap({
