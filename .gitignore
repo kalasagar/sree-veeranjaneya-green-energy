@@ -22,3 +22,20 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# SVGE source documents + research scratch (PII + internal notes) — never commit
+research/
+
+# Internal review HTML / sample assets
+public/_review/
+
+# Asset backups (originals before re-encoding)
+public/banners/.orig/
+public/video/*.orig.mp4
+public/video/*.bak.mp4
+
+# Derived / experimental brand assets not used by site
+public/brand/derived/
+
+# Generated OG cards (regenerate via `node scripts/generate_og.mjs`)
+public/og/

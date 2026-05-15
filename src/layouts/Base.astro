@@ -4,6 +4,8 @@ import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE } from '../lib/site';
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
 interface Props {
   title?: string;
@@ -13,7 +15,7 @@ interface Props {
   article?: { title: string; description: string; datePublished: Date; tags?: string[] };
 }
 
-const { title, description, ogImage = '/brand/og_image.png', canonical, article } = Astro.props;
+const { title, description, ogImage = asset('brand/og_image.png'), canonical, article } = Astro.props;
 const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const desc = description ?? SITE.description;
 const url = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
@@ -65,19 +67,19 @@ const orgJsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} />
+    <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
     <link rel="canonical" href={url} />
     {Astro.url.pathname === '/' && <>
-      <link rel="preload" href="/banners/hero_paddy_dawn.avif" as="image" type="image/avif" fetchpriority="high" />
-      <link rel="preload" href="/brand/mark.svg" as="image" type="image/svg+xml" />
+      <link rel="preload" href={asset("banners/hero_paddy_dawn.avif")} as="image" type="image/avif" fetchpriority="high" />
+      <link rel="preload" href={asset("brand/mark_simple.svg")} as="image" type="image/svg+xml" />
     </>}
-    {Astro.url.pathname === '/about/' && <link rel="preload" href="/banners/about_founder_field.avif" as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/project/' && <link rel="preload" href="/banners/project_plant_render.avif" as="image" type="image/avif" fetchpriority="high" />}
-    {(Astro.url.pathname === '/process/' || Astro.url.pathname === '/process/engineering/') && <link rel="preload" href="/banners/project_plant_render.avif" as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/impact/' && <link rel="preload" href="/banners/impact_fom_soil.avif" as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/farmers/' && <link rel="preload" href="/banners/farmers_hands_straw.avif" as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/press/' && <link rel="preload" href="/banners/press_kit.avif" as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/about/' && <link rel="preload" href={asset("banners/about_founder_field.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/project/' && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {(Astro.url.pathname === '/process/' || Astro.url.pathname === '/process/engineering/') && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/impact/' && <link rel="preload" href={asset("banners/impact_fom_soil.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/farmers/' && <link rel="preload" href={asset("banners/farmers_hands_straw.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/press/' && <link rel="preload" href={asset("banners/press_kit.avif")} as="image" type="image/avif" fetchpriority="high" />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -120,7 +122,7 @@ const orgJsonLd = {
         mainEntityOfPage: url,
       })} />
     )}
-    <link rel="alternate" type="application/rss+xml" title="SVGE — News" href="/news/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="SVGE — News" href={asset("news/rss.xml")} />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="animate" />
   </head>

@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/links';
 import Section from '../../components/Section.astro';
 import FullBleedHero from '../../components/FullBleedHero.astro';
+import NotifyMe from '../../components/NotifyMe.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
@@ -23,7 +25,7 @@ const [featured, ...rest] = posts;
 
   {featured && (
     <Section eyebrow="Latest" title="The first post.">
-      <a href={`/news/${featured.id}/`} class="grid-12 no-underline group">
+      <a href={link(`/news/${featured.id}/`)} class="grid-12 no-underline group">
         <div class="col-8">
           <p class="eyebrow mb-3">{fmt.format(featured.data.date)}</p>
           <h2 class="text-3xl sm:text-5xl leading-tight text-[color:var(--color-forest)] group-hover:text-[color:var(--color-saffron-text)] transition-colors duration-200">{featured.data.title}</h2>
@@ -45,7 +47,7 @@ const [featured, ...rest] = posts;
         {rest.map(post => (
           <li class="border-t-2 border-[color:var(--color-ink)] pt-5">
             <p class="eyebrow">{fmt.format(post.data.date)}</p>
-            <h3 class="mt-2 text-2xl"><a href={`/news/${post.id}/`}>{post.data.title}</a></h3>
+            <h3 class="mt-2 text-2xl"><a href={link(`/news/${post.id}/`)}>{post.data.title}</a></h3>
             <p class="mt-2 text-[color:var(--color-slate)] leading-relaxed">{post.data.summary}</p>
           </li>
         ))}
@@ -55,7 +57,18 @@ const [featured, ...rest] = posts;
 
   {posts.length === 0 && (
     <Section narrow>
-      <p class="text-base font-mono text-[color:var(--color-slate-2)]">No posts yet. The first one lands the day construction commences.</p>
+      <p class="text-base font-mono text-[color:var(--color-slate-2)]">No posts yet. The first one lands the day construction begins — target Q3 2026.</p>
     </Section>
   )}
+
+  <!-- NEWSLETTER SIGN-UP -->
+  <Section narrow bg="paper-2">
+    <NotifyMe
+      topic="Newsletter"
+      eyebrow="Stay in the loop"
+      title="One email a month, from the day concrete is poured."
+      body="Same content as the news page, delivered. Unsubscribe at any time."
+      cta="Send me the monthly update"
+    />
+  </Section>
 </Base>

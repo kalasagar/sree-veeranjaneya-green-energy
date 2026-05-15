@@ -4,21 +4,24 @@ import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import BentoGrid from '../components/BentoGrid.astro';
 import PlantMap from '../components/PlantMap.astro';
+import EditorialBlock from '../components/EditorialBlock.astro';
+import Logos from '../components/Logos.astro';
 import { SITE } from '../lib/site';
 
 const ps = SITE.plantStats;
 ---
-<Base title="The Project" description="One plant. 2.63 acres. ₹33.27 crore. 12 months to commissioning once we break ground.">
+<Base title="The Project" description="4 TPD Compressed Bio-Gas plant in Thatipadu, Vizianagaram. IOCL Letter of Intent issued 04.10.2024. SATAT-approved EPC partner. 2-year commissioning clock.">
   <FullBleedHero
     banner="project_plant_render"
     alt="Aerial photograph of a small bio-CNG plant on a cleared plot, surrounded by paddy fields in coastal Andhra Pradesh."
     eyebrow="The Project"
   >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
-      One plant. <span style="color:#FFB300;">12 months</span> to commissioning once we break ground.
+      4 TPD CBG. 40-km supply radius.<br/>
+      <span style="color:#FFB300;">2-year commissioning clock.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      2.63 acres in Thatipadu village, ₹33.27 crore on the line, an IOCL Letter of Intent in hand. Here is exactly what we are building.
+      Single plant. Single site. Indian Oil Letter of Intent issued 04.10.2024 (ref IndianOil/SATAT/01/3931). EPC partner Raj Process Equipments &amp; Systems, Pune — SATAT-approved. Built to IS 16087:2016 spec. CPCB WHITE pollution category.
     </p>
   </FullBleedHero>
 
@@ -63,6 +66,14 @@ const ps = SITE.plantStats;
     </div>
   </Section>
 
+  <!-- WHAT GETS BUILT FIRST -->
+  <Section eyebrow="First things first" title="What goes up before anything else.">
+    <EditorialBlock side="left" image="project_plant_render" imageAlt="Render of the SVGE plant — anaerobic digester and surrounding plot." numeral="01">
+      <p>Civil works — boundary wall, plinth, internal road — and the anaerobic digester foundation. The digester is the heart of the plant; nothing else can be commissioned until its 24-hour residence cycle is running stably. Concrete is poured before any compressor or VPSA tower is even on site.</p>
+      <p class="mt-4">From the day concrete is poured, we publish a monthly public update — one photo, one milestone hit, one missed, one financial number, one thing that went wrong.</p>
+    </EditorialBlock>
+  </Section>
+
   <!-- TIMELINE -->
   <Section eyebrow="Timeline" title="Where we are right now.">
     <ol class="relative border-l-2 border-[color:var(--color-forest)]/30 pl-8 space-y-6 max-w-3xl">
@@ -77,38 +88,45 @@ const ps = SITE.plantStats;
     <p class="mt-8 text-sm font-mono text-[color:var(--color-slate-2)]">Pre-construction. The day concrete is poured, the monthly public update starts.</p>
   </Section>
 
+  <!-- PARTNERS -->
+  <Section eyebrow="Partners" title="The network behind the plant.">
+    <Logos />
+  </Section>
+
   <!-- CAPITAL -->
-  <Section eyebrow="Capital" title="How the ₹33.27 crore breaks up." bg="paper-2">
+  <Section eyebrow="Capital" title="How the project is funded." bg="paper-2">
     <div class="grid-12">
       <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
-        <p class="eyebrow mb-2">Owner equity</p>
-        <div class="stat-num">₹{SITE.financing.equityCr}<span class="unit">Cr</span></div>
-        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.equityPct}% · 100% from the two directors</p>
+        <p class="eyebrow mb-2">Structure</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">Promoter-led</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">Two directors own 100% of the equity. No fund clock, no investor exit pressure.</p>
       </article>
       <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
         <p class="eyebrow mb-2">Term loan</p>
-        <div class="stat-num">₹{SITE.financing.termLoanCr}<span class="unit">Cr</span></div>
-        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.termLoanPct}% · {SITE.financing.tenureMonths}-month tenure</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">{SITE.financing.termYears}-year</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">Public-sector lender. Disbursement begins with construction; door-to-door tenor concludes with the offtake-contract horizon.</p>
       </article>
       <article class="col-4 rounded-lg bg-[color:var(--color-paper)] p-6">
-        <p class="eyebrow mb-2">Unsecured</p>
-        <div class="stat-num">₹{SITE.financing.unsecuredCr}<span class="unit">Cr</span></div>
-        <p class="text-sm mt-2 text-[color:var(--color-slate)]">{SITE.financing.unsecuredPct}% · family loan</p>
+        <p class="eyebrow mb-2">Confirmed incentives</p>
+        <h3 class="text-xl leading-snug mt-1 text-[color:var(--color-forest)]">₹{SITE.financing.incentivesCr} Cr</h3>
+        <p class="text-sm mt-2 text-[color:var(--color-slate)]">MNRE CFA · AGRL Ministry · FOM Market Development Assistance (Min. of Chemicals &amp; Fertilizers). Plus a 5-year income-tax holiday for CBG plants.</p>
       </article>
     </div>
 
     <details class="mt-10 rounded-xl bg-[color:var(--color-paper)] border border-[color:var(--color-slate-2-soft)]/30 p-6 open:bg-[color:var(--color-paper-3)]">
-      <summary class="cursor-pointer font-semibold text-[color:var(--color-forest)]">For lenders and project finance — open the details panel</summary>
+      <summary class="cursor-pointer font-semibold text-[color:var(--color-forest)]">For lenders and project finance — request the DPR</summary>
       <div class="mt-4 text-sm leading-relaxed prose-svge">
-        <p>The full Detailed Project Report (DPR) is available on request to qualified lenders. Headline assumptions:</p>
+        <p>The full Detailed Project Report (DPR) — cost sheet, sensitivity analysis, break-even, DSCR, IRR, working capital, depreciation, equipment vendor quotations — is available on email request to qualified lenders with a brief intro to your institution.</p>
+        <p>Headline public points:</p>
         <ul>
-          <li>Project cost: ₹33.27 Cr total. Funded 25.15% equity / 70.34% term loan / 4.51% unsecured.</li>
-          <li>Operations: 24 hours × 360 days. Plant capacity 4 TPD CBG, 9,600 Nm³/day raw gas.</li>
-          <li>Offtake: Indian Oil Corporation Letter of Intent under SATAT.</li>
-          <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme (extended to 31 Mar 2026).</li>
-          <li>UDYAM-registered MSME: {SITE.udyam}.</li>
+          <li>Total project cost ≈ {SITE.financing.totalCr === 33.27 ? '₹33 Cr' : '₹' + SITE.financing.totalCr + ' Cr'}. {SITE.financing.structure}.</li>
+          <li>Plant capacity 4 TPD CBG, 9,600 Nm³/day raw biogas, 24 hours × 360 days, IS 16087:2016 spec.</li>
+          <li>Indian Oil Letter of Intent dated 04.10.2024 (ref IndianOil/SATAT/01/3931). 15-year Commercial Agreement validity. Commissioning deadline 04.10.2026.</li>
+          <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme (extended to 31.03.2026).</li>
+          <li>UDYAM-registered MSME: {SITE.udyam}. ROC Vijayawada, Reg. No. {SITE.registrationNumber}.</li>
+          <li>CPCB pollution category: WHITE. Three statutory clearances obtained, three applied, one after-COD.</li>
         </ul>
-        <p>Annexures on sensitivity analysis, break-even, DSCR, IRR, working capital, and depreciation are available on email request with a brief intro to your institution.</p>
+        <p>Email <a href={`mailto:${SITE.email}?subject=DPR%20request`}>{SITE.email}</a> with subject line <em>DPR request</em>.</p>
       </div>
     </details>
   </Section>

@@ -6,7 +6,12 @@ import IntentChooser from '../components/IntentChooser.astro';
 import { SITE } from '../lib/site';
 ---
 <Base title="Contact" description="Pick the door that fits — farmer, partner, journalist, or future hire — and we'll route your message.">
-  <FullBleedHero banner={null} alt="Contact" eyebrow="Contact">
+  <FullBleedHero
+    banner="about_founder_field"
+    alt="Founder walking unhurriedly down a narrow path between Napier grass plots at golden hour."
+    eyebrow="Contact"
+    objectPosition="50% 70%"
+  >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
       Pick the door<br/>
       <span style="color:#FFB300;">that fits.</span>
@@ -68,6 +73,27 @@ import { SITE } from '../lib/site';
           <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal<br/>{SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}<br/><span class="font-mono text-xs">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
         </div>
       </aside>
+    </div>
+  </Section>
+
+  <!-- WHAT HAPPENS NEXT — closing strip -->
+  <Section eyebrow="What happens after you send" title="Three commitments.">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <article class="svge-card p-6 sm:p-7 relative">
+        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">01</p>
+        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Reply within 2 business days</h3>
+        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">No auto-responders, no support tickets, no copy-paste. Both directors see every message.</p>
+      </article>
+      <article class="svge-card p-6 sm:p-7 relative">
+        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">02</p>
+        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Plain answer, no jargon</h3>
+        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">If we can't help we say so. If we can, we will tell you the next concrete step.</p>
+      </article>
+      <article class="svge-card p-6 sm:p-7 relative">
+        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">03</p>
+        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Phone call by appointment</h3>
+        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">Once construction begins. Use the form first; we will call you back at a time that fits.</p>
+      </article>
     </div>
   </Section>
 </Base>

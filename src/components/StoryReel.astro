@@ -1,0 +1,85 @@
+---
+/**
+ * StoryReel — strip of 3 story-arc clips that loop muted on viewport entry.
+ *
+ * Used on /news/ until all 6 beats land and we stitch hero_story_arc.mp4.
+ * Each clip is captioned (Problem · People · Plant); the future 3 beats
+ * (Process · Product · Return) are shown as labeled placeholders so the
+ * arc reads coherently.
+ *
+ * Lazy-loads videos on intersection; respects prefers-reduced-motion.
+ */
+import { link } from '../lib/links';
+const BASE = import.meta.env.BASE_URL;
+const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
+const beats = [
+  { id: 'story_b1_problem', label: 'Problem', caption: 'Paddy stubble at dusk. A distant burn line on the next field.', state: 'live' as const },
+  { id: 'story_b2_people',  label: 'People',  caption: 'Hands tying straw at golden hour. The same hands the buy slips go to.', state: 'live' as const },
+  { id: 'story_b3_plant',   label: 'Plant',   caption: 'First-light orbit of the Thatipadu plot. Vector overlay of what gets built.', state: 'live' as const },
+  { id: 'story_b4_process', label: 'Process', caption: 'A single saffron flame on the dome. Coming when Veo quota resets.', state: 'pending' as const },
+  { id: 'story_b5_product', label: 'Product', caption: 'CBG cascade truck pulling away in dawn dust. Coming.', state: 'pending' as const },
+  { id: 'story_b6_return',  label: 'Return',  caption: 'FOM onto red soil. A paddy seedling rises. Coming.', state: 'pending' as const },
+];
+---
+<div class="svge-story-reel">
+  <p class="eyebrow" style="color: var(--color-saffron-text);">The story film</p>
+  <h2 class="text-3xl sm:text-4xl mt-2 mb-3 leading-tight">Six beats. We have three.</h2>
+  <p class="text-base text-[color:var(--color-slate)] mb-8 max-w-[60ch] leading-relaxed">
+    A ~48-second documentary arc cut from six 8-second Veo clips: Problem → People → Plant → Process → Product → Return. The first three landed below; the rest land when daily quota resets. We will stitch the full film and post it here as our first construction-day update.
+  </p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    {beats.map((b, i) => (
+      <figure class="rounded-xl overflow-hidden bg-[color:var(--color-ink)] border border-[color:var(--color-slate-2-soft)]/30 relative">
+        <div class="aspect-video bg-black relative">
+          {b.state === 'live' ? (
+            <video
+              class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 motion-reduce:hidden"
+              data-story-reel-video
+              data-src={url(`video/${b.id}.mp4`)}
+              muted
+              playsinline
+              loop
+              preload="none"
+              aria-hidden="true"
+            ></video>
+          ) : (
+            <div class="absolute inset-0 grid place-items-center text-[color:var(--color-paper)]/45 text-sm font-mono">PENDING</div>
+          )}
+        </div>
+        <figcaption class="p-4 bg-[color:var(--color-ink)] text-[color:var(--color-paper)]">
+          <p class="flex items-baseline gap-3">
+            <span class="numeral text-xl text-[color:var(--color-saffron)]">0{i + 1}</span>
+            <span class="font-semibold tracking-tight">{b.label}</span>
+            {b.state === 'pending' && <span class="ml-auto font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-paper)]/50">Pending</span>}
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-[color:var(--color-paper)]/75">{b.caption}</p>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</div>
+<script is:inline data-astro-rerun>
+  (function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var vids = document.querySelectorAll('[data-story-reel-video]:not([data-armed])');
+    if (!vids.length || !('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var v = e.target;
+        io.unobserve(v);
+        v.setAttribute('data-armed', '');
+        var src = v.getAttribute('data-src');
+        if (!src) return;
+        v.src = src;
+        v.load();
+        v.addEventListener('canplay', function once() {
+          v.removeEventListener('canplay', once);
+          v.play().then(function () { v.style.opacity = '1'; }).catch(function () {});
+        });
+      });
+    }, { threshold: 0.2 });
+    vids.forEach(function (el) { io.observe(el); });
+  })();
+</script>

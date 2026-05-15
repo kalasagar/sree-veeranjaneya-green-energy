@@ -1,0 +1,30 @@
+---
+/**
+ * PageTitle — editorial title block for pages that don't use FullBleedHero.
+ *
+ * Renders eyebrow + <h1> + saffron rule + optional lede + optional meta line.
+ * Lives on paper-bg, sits below the solid header chrome. Replaces the implicit
+ * Section-as-page-title pattern that left no <h1> on the page and gave legal /
+ * utility pages no top identity.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+  meta?: string;
+  bg?: 'paper' | 'paper-2';
+}
+const { eyebrow, title, lede, meta, bg = 'paper' } = Astro.props;
+const bgClass = bg === 'paper-2' ? 'bg-[color:var(--color-paper-2)]' : 'bg-[color:var(--color-paper)]';
+---
+<section class={`svge-page-title ${bgClass} pt-28 sm:pt-36 pb-12 sm:pb-16 border-b border-[color:var(--color-slate-2-soft)]/15`}>
+  <div class="container-svge">
+    <div class="max-w-[60ch]">
+      {eyebrow && <p class="eyebrow mb-5">{eyebrow}</p>}
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl text-[color:var(--color-forest)] leading-[1.04] tracking-[-0.02em] text-balance">{title}</h1>
+      <span class="block mt-7 w-16 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
+      {lede && <p class="mt-7 text-lg sm:text-xl text-[color:var(--color-slate)] leading-relaxed">{lede}</p>}
+      {meta && <p class="mt-5 font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-slate-2)]">{meta}</p>}
+    </div>
+  </div>
+</section>

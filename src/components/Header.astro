@@ -1,24 +1,38 @@
 ---
+/**
+ * Slim header.
+ *   - Transparent over dark hero pages → solid (paper) after 60px scroll.
+ *   - Solid paper on every non-hero page.
+ *   - Saffron pulse dot on the mark signals "live · pre-construction".
+ *   - Primary CTA pill on the right (lg+); hamburger on mobile.
+ */
 import { SITE } from '../lib/site';
-import StatusChip from './StatusChip.astro';
-const path = Astro.url.pathname;
+import { link, stripBase } from '../lib/links';
+import Mark from './Mark.astro';
+const path = stripBase(Astro.url.pathname);
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
-// Pages whose hero is dark — header starts transparent over them
 const HERO_PAGES = ['/', '/about/', '/project/', '/process/', '/impact/', '/farmers/', '/partners/', '/press/', '/careers/', '/contact/', '/news/'];
-// On news posts and engineering and privacy/terms/404 the page doesn't open with a dark hero
-const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
+const heroPage = HERO_PAGES.includes(path);
 ---
-<div class="fixed top-0 inset-x-0 z-40">
-<StatusChip />
 <header
   id="svge-header"
   data-hero-page={heroPage ? '' : undefined}
-  class={`transition-[background,color,box-shadow,backdrop-filter] duration-200 ease-out ${heroPage ? 'svge-h-over' : 'svge-h-solid'}`}
+  class={`fixed top-0 inset-x-0 z-40 transition-[background,color,box-shadow,backdrop-filter] duration-200 ease-out ${heroPage ? 'svge-h-over' : 'svge-h-solid'}`}
 >
   <div class="container-svge">
-    <nav class="flex items-center justify-between gap-6 h-16 sm:h-20">
-      <a href="/" class="flex items-center gap-3 no-underline">
-        <img id="svge-mark" src="/brand/mark.svg" alt="SVGE mark" width="36" height="36" class="transition-[filter] duration-200 ease-out" />
+    <nav class="flex items-center justify-between gap-4 sm:gap-6 h-16 sm:h-20">
+      <a href={link("/")} class="flex items-center gap-3 no-underline group" aria-label="SVGE — home">
+        <span class="relative inline-flex items-center justify-center">
+          <span id="svge-mark" class="inline-flex items-center justify-center w-9 h-9">
+            <Mark size={36} ariaLabel={null} />
+          </span>
+          <span class="absolute -top-0.5 -right-0.5 inline-flex h-2 w-2" aria-hidden="true">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-[color:var(--color-saffron)]/55 animate-ping"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-[color:var(--color-saffron)] ring-1 ring-[color:var(--color-paper)]"></span>
+          </span>
+        </span>
         <span class="flex flex-col leading-tight">
           <span class="svge-h-wordmark text-sm font-semibold tracking-tight transition-colors duration-200">SVGE</span>
           <span class="svge-h-tagline hidden sm:inline text-[11px] font-mono transition-colors duration-200">Grass to Gas. Farm to Fuel.</span>
@@ -26,13 +40,13 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
       </a>
 
       <!-- DESKTOP NAV -->
-      <ul class="hidden lg:flex items-center gap-1 xl:gap-3 text-sm">
+      <ul class="hidden lg:flex items-center gap-1 xl:gap-2 text-sm">
         {SITE.nav.slice(1).map((n) => {
           const active = path === n.href || (path.startsWith(n.href) && n.href !== '/');
           return (
             <li>
               <a
-                href={n.href}
+                href={link(n.href)}
                 aria-current={active ? 'page' : undefined}
                 class={`svge-h-link px-3 py-2 min-h-[44px] inline-flex items-center no-underline whitespace-nowrap transition-colors duration-150 ease-out relative ${active ? 'is-active' : ''}`}
               >{n.label}</a>
@@ -41,25 +55,33 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
         })}
       </ul>
 
-      <!-- MOBILE HAMBURGER -->
-      <button
-        id="svge-drawer-open"
-        type="button"
-        aria-label="Open navigation menu"
-        aria-controls="svge-drawer"
-        aria-expanded="false"
-        class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md transition-colors duration-200"
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
+      <!-- CTA + HAMBURGER -->
+      <div class="flex items-center gap-2">
+        <a
+          href={link("/contact/")}
+          class="svge-h-cta hidden lg:inline-flex items-center gap-1.5 h-10 px-4 rounded-full text-[12px] font-mono uppercase tracking-[0.18em] no-underline transition-all duration-150"
+        >
+          <span>Talk to us</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <button
+          id="svge-drawer-open"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="svge-drawer"
+          aria-expanded="false"
+          class="lg:hidden inline-flex items-center justify-center w-11 h-11 rounded-md transition-colors duration-200"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </nav>
   </div>
 </header>
-</div>
 
 <!-- MOBILE DRAWER -->
 <div
@@ -77,8 +99,8 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
   class="fixed top-0 right-0 z-50 h-full w-[min(88vw,360px)] bg-[color:var(--color-paper)] border-l-4 border-[color:var(--color-saffron)] shadow-2xl translate-x-full transition-transform duration-250 ease-out data-[open]:translate-x-0"
 >
   <div class="flex items-center justify-between p-5 border-b border-[color:var(--color-slate-2-soft)]/30">
-    <a href="/" class="flex items-center gap-3 no-underline">
-      <img src="/brand/mark.svg" alt="" width="36" height="36" />
+    <a href={link("/")} class="flex items-center gap-3 no-underline">
+      <Mark size={36} ariaLabel={null} />
       <span class="flex flex-col leading-tight">
         <span class="text-sm font-semibold text-[color:var(--color-forest)]">SVGE</span>
         <span class="text-[11px] font-mono text-[color:var(--color-slate-2)]">Grass to Gas. Farm to Fuel.</span>
@@ -105,7 +127,7 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
         return (
           <li>
             <a
-              href={n.href}
+              href={link(n.href)}
               aria-current={active ? 'page' : undefined}
               class={`block px-3 py-3 rounded-md text-lg no-underline transition-colors duration-150 ${active ? 'bg-[color:var(--color-paper-2)] text-[color:var(--color-forest)] font-semibold' : 'text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)]'}`}
             >{n.label}</a>
@@ -121,17 +143,22 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
         return (
           <li>
             <a
-              href={n.href}
+              href={link(n.href)}
               class={`block px-3 py-3 rounded-md text-base no-underline transition-colors duration-150 ${active ? 'bg-[color:var(--color-paper-2)] text-[color:var(--color-forest)] font-semibold' : 'text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)]'}`}
             >{n.label}</a>
           </li>
         );
       })}
-      <li><a href="/news/" class="block px-3 py-3 rounded-md text-base text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)] no-underline">News</a></li>
+      <li><a href={link("/news/")} class="block px-3 py-3 rounded-md text-base text-[color:var(--color-slate)] hover:bg-[color:var(--color-paper-2)] hover:text-[color:var(--color-saffron-text)] no-underline">News</a></li>
     </ul>
 
-    <div class="mt-10 p-4 rounded-md bg-[color:var(--color-paper-2)] text-sm">
-      <p class="eyebrow mb-2">Talk to us</p>
+    <a href={link("/contact/")} class="mt-8 inline-flex items-center justify-center w-full gap-1.5 h-12 rounded-full bg-[color:var(--color-forest)] text-[color:var(--color-paper)] text-sm font-mono uppercase tracking-[0.18em] no-underline">
+      Talk to us
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+
+    <div class="mt-6 p-4 rounded-md bg-[color:var(--color-paper-2)] text-sm">
+      <p class="eyebrow mb-2">Or email</p>
       <a href="mailto:svge.india@gmail.com" class="font-semibold text-[color:var(--color-forest)] block">svge.india@gmail.com</a>
       <p class="mt-2 text-xs text-[color:var(--color-slate-2)]">Reply within two business days.</p>
     </div>
@@ -147,7 +174,6 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
     var drawer = document.getElementById('svge-drawer');
     if (!header) return;
 
-    // ----- Scroll state -----
     var lastSolid = null;
     var threshold = 60;
     function applyScrollState() {
@@ -165,46 +191,30 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
     applyScrollState();
     window.addEventListener('scroll', applyScrollState, { passive: true });
 
-    // ----- Drawer -----
     if (!openBtn || !drawer || !backdrop || !closeBtn) return;
 
     var lastFocus = null;
-
     function focusableInside(root) {
       return Array.from(root.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
     }
-
     function openDrawer() {
       lastFocus = document.activeElement;
-      drawer.hidden = false;
-      backdrop.hidden = false;
-      // next frame for transition
-      requestAnimationFrame(function () {
-        drawer.dataset.open = '';
-        backdrop.dataset.open = '';
-      });
+      drawer.hidden = false; backdrop.hidden = false;
+      requestAnimationFrame(function () { drawer.dataset.open = ''; backdrop.dataset.open = ''; });
       openBtn.setAttribute('aria-expanded', 'true');
       document.documentElement.style.overflow = 'hidden';
-      var first = focusableInside(drawer)[0];
-      first && first.focus();
+      var first = focusableInside(drawer)[0]; first && first.focus();
       document.addEventListener('keydown', onKey);
       document.addEventListener('focus', trapFocus, true);
     }
-
     function closeDrawer() {
-      delete drawer.dataset.open;
-      delete backdrop.dataset.open;
+      delete drawer.dataset.open; delete backdrop.dataset.open;
       openBtn.setAttribute('aria-expanded', 'false');
       document.documentElement.style.overflow = '';
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('focus', trapFocus, true);
-      setTimeout(function () {
-        drawer.hidden = true;
-        backdrop.hidden = true;
-        lastFocus && lastFocus.focus && lastFocus.focus();
-      }, 220);
+      setTimeout(function () { drawer.hidden = true; backdrop.hidden = true; lastFocus && lastFocus.focus && lastFocus.focus(); }, 220);
     }
-
     function onKey(e) {
       if (e.key === 'Escape') { e.preventDefault(); closeDrawer(); return; }
       if (e.key === 'Tab') {
@@ -215,19 +225,13 @@ const heroPage = HERO_PAGES.some(p => path === p || (p !== '/' && path === p));
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
     }
-
     function trapFocus(e) {
-      if (!drawer.contains(e.target)) {
-        var first = focusableInside(drawer)[0];
-        first && first.focus();
-      }
+      if (!drawer.contains(e.target)) { var f = focusableInside(drawer)[0]; f && f.focus(); }
     }
 
     openBtn.addEventListener('click', openDrawer);
     closeBtn.addEventListener('click', closeDrawer);
     backdrop.addEventListener('click', closeDrawer);
-    drawer.querySelectorAll('a[href]').forEach(function (a) {
-      a.addEventListener('click', closeDrawer);
-    });
+    drawer.querySelectorAll('a[href]').forEach(function (a) { a.addEventListener('click', closeDrawer); });
   })();
 </script>

@@ -26,12 +26,13 @@ function parseStat(v: string) {
 const heroParsed = parseStat(hero.value);
 ---
 <div class="grid-12" data-reveal data-reveal-stagger>
-  <!-- Hero stat — spans wide -->
-  <article class="col-8 rounded-xl bg-[color:var(--color-paper-2)] p-8 sm:p-12">
+  <!-- Hero stat — forest wash with saffron glow -->
+  <article class="svge-card svge-bento-hero col-8 p-8 sm:p-12 relative overflow-hidden">
+    <p class="eyebrow mb-4" style="color: var(--color-gold);">{hero.k}</p>
     <div class="flex items-baseline">
       {heroParsed ? (
         <span
-          class="stat-mega"
+          class="stat-mega text-[color:var(--color-paper)]"
           data-count-to={heroParsed.num}
           data-prefix={heroParsed.prefix}
           data-suffix={heroParsed.suffix}
@@ -39,25 +40,24 @@ const heroParsed = parseStat(hero.value);
           data-thousands={heroParsed.thousands ? 'true' : 'false'}
         >{hero.value}</span>
       ) : (
-        <span class="stat-mega">{hero.value}</span>
+        <span class="stat-mega text-[color:var(--color-paper)]">{hero.value}</span>
       )}
-      {hero.unit && <span class="unit">{hero.unit}</span>}
+      {hero.unit && <span class="unit text-[color:var(--color-paper)]/75 ml-2">{hero.unit}</span>}
     </div>
-    <p class="eyebrow mt-4">{hero.k}</p>
-    {hero.framing && <p class="mt-4 text-[color:var(--color-slate)] text-lg leading-relaxed max-w-prose">{hero.framing}</p>}
+    {hero.framing && <p class="mt-5 text-[color:var(--color-paper)]/85 text-lg leading-relaxed max-w-prose">{hero.framing}</p>}
     {hero.source && (
-      <p class="mt-3 text-xs font-mono text-[color:var(--color-slate-2)]">
+      <p class="mt-5 pt-4 border-t border-[color:var(--color-paper)]/15 text-xs font-mono text-[color:var(--color-paper)]/65">
         Source: {hero.source.label}
       </p>
     )}
   </article>
 
-  <!-- Supporting stats — stack on tablet+, full-width on mobile -->
+  <!-- Supporting stats -->
   <div class="col-4 flex flex-col gap-4">
     {supporting.map(s => {
       const p = parseStat(s.value);
       return (
-        <article class="flex-1 rounded-xl bg-[color:var(--color-paper-3)] p-6 hover-lift">
+        <article class="svge-card svge-bento-support flex-1 p-6 relative">
           <div class="flex items-baseline">
             {p ? (
               <span

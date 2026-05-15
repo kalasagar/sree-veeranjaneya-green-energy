@@ -1,6 +1,7 @@
 // SVGE site — single source of truth for copy, stats, and structured data.
-// Voice: insurgent / movement (Patagonia-style). Stat + brief framing line.
-// Scale framing: this one plant only. No portfolio talk.
+// Voice: operator-formal with editorial restraint. Lead with a fact + a date.
+// Scale framing: this one plant only. No portfolio talk. No founder emotion.
+// PII guardrails: founder ages, residential addresses, individual rupee figures, IRR/DSCR are off-limits.
 
 export type Source = { label: string; url?: string };
 export type Stat = {
@@ -18,12 +19,12 @@ export const SITE = {
   short: 'SVGE',
   tagline: 'Grass to Gas. Farm to Fuel.',
   description:
-    "We're building a 4-tonne-per-day Compressed Bio-Gas plant in rural Andhra Pradesh — turning the paddy straw India would otherwise burn into the clean fuel Indian Oil already wants to buy, and the organic manure local fields desperately need.",
+    "A 4-TPD Compressed Bio-Gas plant under SATAT in coastal Andhra Pradesh. Indian Oil Letter of Intent issued 04.10.2024 (ref IndianOil/SATAT/01/3931). Tech partner Raj Process Equipments, Pune. Built to IS 16087:2016 spec, WHITE pollution category, on a 2-year commissioning clock.",
   url: 'https://kalasagar.github.io/sree-veeranjaneya-green-energy',
   email: 'svge.india@gmail.com',
   // Phone intentionally not published until plant is operational.
 
-  // ---- HERO MANIFESTO ----
+  // ---- HERO MANIFESTO (home page — approved as-is by user) ----
   hero: {
     eyebrow: 'India · Andhra Pradesh · Pre-construction',
     h1Top: 'Burned in the field today.',
@@ -69,13 +70,13 @@ export const SITE = {
     { value: '52', unit: 'm³/day', k: 'Liquid manure' },
     { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, returned to farmer fields.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
-    { value: '₹33.27', unit: 'Cr', k: 'Total project cost' },
-    { value: '120', unit: 'months', k: 'Loan tenure', framing: '10-year term loan with SBI-style lender.' },
+    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, public-sector term loan, ₹6.7 Cr confirmed central incentives.' },
+    { value: 'WHITE', k: 'CPCB category', framing: 'Lowest-impact tier — energy-crop CBG plants are classified WHITE.' },
   ] satisfies Stat[],
 
   impactStats: [
     {
-      value: '~26,000',
+      value: '~29,000',
       unit: 'TPA',
       k: 'Feedstock pulled out of burn cycle',
       framing: 'Every tonne we buy is a tonne not set on fire.',
@@ -93,10 +94,9 @@ export const SITE = {
       framing: 'Roughly the daily CNG for 80 city buses.',
     },
     {
-      value: '500',
-      unit: 'kW',
-      k: 'Solar self-generation',
-      framing: 'Our own electricity bill is zero.',
+      value: '~120',
+      k: 'Direct + indirect jobs',
+      framing: '47 on plant payroll, plus aggregators, drivers, and farmer suppliers in a 40-km radius.',
     },
   ] satisfies Stat[],
 
@@ -105,17 +105,17 @@ export const SITE = {
     {
       title: 'The IOCL Letter of Intent is already in hand.',
       body:
-        'Most plants approved under SATAT are still chasing offtake. We are not. Indian Oil has issued our LoI; the plant we are building has a guaranteed buyer for every cubic metre of gas it produces.',
+        'IOCL issued our Letter of Intent on 04.10.2024 (ref IndianOil/SATAT/01/3931). The plant we are building has a contracted buyer for every cubic metre of gas it produces. Commercial Agreement validity is 15 years, indexed to a published procurement price floor of Rs. 46/kg + taxes through 31.03.2029. Most plants approved under SATAT are still chasing offtake; we are not.',
     },
     {
-      title: 'The founders own 100% of the equity.',
+      title: 'No fund clock. No exit pressure.',
       body:
-        '₹8.37 crore of personal cash sits on the line, alongside a ₹23.40 crore term loan and a ₹1.50 crore unsecured loan. There is no fund clock, no exit-pressure, no investor demanding we cut corners. We finish what we start.',
+        'Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore of confirmed central-government incentives — MNRE Capital Financial Assistance, AGRL Ministry support, and the FOM Market Development Assistance scheme. There is no investor demanding we cut corners on a quarter. We finish what we start.',
     },
     {
       title: 'The feedstock is at the doorstep.',
       body:
-        'Vizianagaram and Srikakulam districts together hold among the densest paddy-acreage concentrations in coastal Andhra Pradesh within a 50 km radius of the plant (Min. of Agriculture & Farmers\' Welfare). Feedstock is not the question. Logistics, contracts, and payment discipline are. That is what we work on.',
+        'The plant runs on Napier grass grown within 40 km of Thatipadu, plus paddy straw and cattle dung from the same belt. Vizianagaram and Srikakulam together hold among the densest paddy-acreage concentrations in coastal Andhra Pradesh. Feedstock supply is not the question. Logistics, contracts, and 14-day payment discipline are. That is what we work on.',
     },
   ],
 
@@ -124,7 +124,7 @@ export const SITE = {
     {
       label: 'I want to supply feedstock',
       href: '/farmers/',
-      hint: 'Farmer, aggregator, FPO — Napier grass, paddy straw, cattle dung.',
+      hint: 'Farmer, aggregator, FPO — Napier grass, paddy straw, cattle dung within 40 km.',
     },
     {
       label: "I'm an EPC / logistics / FOM partner",
@@ -139,7 +139,7 @@ export const SITE = {
     {
       label: 'I want to work at SVGE',
       href: '/careers/',
-      hint: 'Hiring opens once construction begins.',
+      hint: 'First hiring tranche begins around plant commissioning (target Q3 2026).',
     },
     {
       label: 'Something else',
@@ -153,7 +153,12 @@ export const SITE = {
   gst: '37ABNCS6700N1ZQ',
   udyam: 'UDYAM-AP-09-0027464',
   pan: 'ABNCS6700N',
+  rocName: 'ROC Vijayawada',
+  registrationNumber: '115061',
+  smallCompany: true,
   founded: '2024-06-12',
+  // The company was incorporated as an OPC on 12-06-2024 and converted to a
+  // two-director Private Limited on 25-10-2025 when Deepika joined as Director.
   registeredOffice: {
     line1: '6th Line, Maturgi Nagar',
     line2: 'Beside Donkala Mill, Rajam',
@@ -180,17 +185,92 @@ export const SITE = {
     workingDaysYear: 360,
     methaneMinPct: 90,
     standard: 'IS 16087:2016',
+    digesterType: 'CSTR',
+    digesterCount: 4,
+    digesterDiameterM: 26,
+    digesterHeightM: 8.63,
+    digesterTotalVolumeM3: 15402,
+    hydraulicRetentionTimeDays: 34,
+    organicLoadingRateKgPerM3Day: 1.75,
+    purification: '2-tower VPSA',
+    gasDryerDewPointC: -40,
+    compressionBar: 250,
   },
+
+  // ---- FINANCING (qualitative shape only — no rupee line items) ----
   financing: {
     totalCr: 33.27,
-    equityCr: 8.37,
-    equityPct: 25.15,
-    termLoanCr: 23.4,
-    termLoanPct: 70.34,
-    unsecuredCr: 1.5,
-    unsecuredPct: 4.51,
-    tenureMonths: 120,
+    structure: 'promoter-led with a 10-year public-sector term loan and family contribution',
+    termYears: 10,
+    incentivesCr: 6.7,
+    incentivesDetail: 'MNRE Capital Financial Assistance + AGRL Ministry support + FOM Market Development Assistance under Ministry of Chemicals & Fertilizers',
+    taxHolidayYears: 5,
+    taxHolidayBasis: 'Income Tax Act provision for CBG plants',
   },
+
+  // ---- IOCL LETTER OF INTENT ----
+  loi: {
+    issuer: 'Indian Oil Corporation (Alternate Energy & Sustainable Development)',
+    issuerSignatory: 'F. Mazumdar, General Manager (AE)',
+    reference: 'IndianOil/SATAT/01/3931',
+    date: '2024-10-04',
+    nieoiReference: 'CBG73',
+    nieoiReleased: '2024-08-01',
+    applicationDate: '2024-08-30',
+    quantityTpd: 4.0,
+    commissioningDeadline: '2026-10-04',
+    commercialAgreementYears: 15,
+    priceFloorRsKg: 46,
+    priceFloorThrough: '2029-03-31',
+    iocPriceLadderRevised: '2025-06-01',
+    iocCnglinkagePct: 85,
+  },
+
+  // ---- STATUTORY CLEARANCES ----
+  clearances: {
+    category: 'WHITE' as 'WHITE' | 'GREEN' | 'ORANGE' | 'RED',
+    categoryBasis: 'Agri-biomass / energy-crop CBG plant; CPCB classification',
+    environmentalClearanceRequired: false,
+    obtained: [
+      { item: 'Local Body Clearance', authority: 'Panchayat / Municipal' },
+      { item: 'Electricity Load', authority: 'Electricity Board' },
+      { item: 'Pollution Consent to Establish', authority: 'State PCB (Water Act 1974 + Air Act 1981)' },
+      { item: 'Inspector of Factories Approval', authority: 'Factories Act 1948' },
+    ],
+    applied: [
+      { item: 'Fire safety NoC', authority: 'Fire Department' },
+      { item: 'PESO Online Approval', authority: 'PESO (Gas Cylinder Rules 2016)' },
+      { item: 'PESO Approval Stamping', authority: 'PESO (Gas Cylinder Rules 2016)' },
+    ],
+    afterCOD: [
+      { item: 'Pollution Consent to Operate', authority: 'State PCB' },
+    ],
+  },
+
+  // ---- TEAM & EMPLOYMENT ----
+  team: {
+    plantHeadcount: 47,
+    totalJobs: 120,
+    localHirePolicy: 'Local hire first — operations, lab, aggregation, accounts, driving, watchmen.',
+    catchmentRadiusKm: 40,
+  },
+
+  // ---- INDUSTRY CONTEXT (R1 facts, dated) ----
+  industry: {
+    satatLaunchedYear: 2018,
+    satatTargetPlants: 5000,
+    satatTargetMmtpa: 15,
+    satatCommissioned: 80,                 // 30.11.2024 (MoPNG Year-End Review 2024)
+    satatUnderConstruction: 72,            // same source
+    satatCommissionedAsOfDate: '2024-11-30',
+    andhraPlantsCommissioned: 7,           // GOBARdhan portal snapshot end-2025
+    asOfDate: '2025-12-31',
+    sources: [
+      { label: 'MoPNG Year-End Review 2024', url: 'https://pib.gov.in/PressReleaseIframePage.aspx?PRID=2090844' },
+      { label: 'GOBARdhan portal', url: 'https://gobardhan.co.in/' },
+    ],
+  },
+
   feedstock: ['Napier grass (contract farming)', 'Paddy straw', 'Cattle dung'],
   outputs: [
     { name: 'Compressed Bio-Gas (CBG)', volume: '4 TPD', buyer: 'Indian Oil Corporation' },
@@ -202,22 +282,22 @@ export const SITE = {
   partners: [
     {
       name: 'Indian Oil Corporation',
-      role: 'CBG offtake (Letter of Intent)',
-      note: 'Under the Ministry of Petroleum & Natural Gas SATAT scheme — 5,000 plants nationally, 15 MMTPA target.',
+      role: 'CBG offtake — Letter of Intent issued 04.10.2024',
+      note: 'Under the Ministry of Petroleum & Natural Gas SATAT scheme. 15-year Commercial Agreement validity. Floor procurement price Rs. 46/kg through 31.03.2029, indexed thereafter to CNG retail prices.',
     },
     {
       name: 'Raj Process Equipments & Systems Pvt Ltd, Pune',
-      role: 'Plant technology partner',
-      note: 'SATAT-approved EPC. Anaerobic digester, two-tower VPSA purification, compression, and control systems.',
+      role: 'Plant technology partner — SATAT-approved EPC',
+      note: 'CSTR anaerobic digester, two-tower VPSA biogas upgrading, compression and cascade dispatch system, all-instrument SCADA. 1,500+ installations across 31+ countries.',
     },
     {
       name: 'Government of India',
       role: 'Scheme alignment',
-      note: 'SATAT · GOBARdhan · MNRE National Bioenergy Programme Phase-I CFA.',
+      note: 'SATAT · GOBARdhan · MNRE National Bioenergy Programme Phase-I CFA · FOM Market Development Assistance under Ministry of Chemicals & Fertilizers.',
     },
   ],
 
-  // ---- FOUNDERS (story-led, with drafted quotes) ----
+  // ---- FOUNDERS (operator-formal voice) ----
   promoters: [
     {
       name: 'Pogiri Suri Rao (Suresh Babu)',
@@ -225,11 +305,11 @@ export const SITE = {
       din: '10665806',
       share: '70%',
       story:
-        "Suresh grew up in Ponugutivalasa, started his first business at 26, and has run construction and trading companies across Srikakulam for over two decades. He bought the 2.63-acre Thatipadu plot in 2024 because he was tired of watching paddy straw burn at the edge of his hometown every November.",
+        "Suresh runs SVGE as Managing Director (DIN 10665806). He has built and managed construction and trading businesses across Srikakulam since 1998, and continues as Managing Director of Ram Hanumathe Constructions (OPC) Pvt Ltd (U43900AP2024OPC115316). He bought the 2.63-acre Thatipadu plot for SVGE in 2024.",
       quote:
-        "I'm 57. I've spent thirty years building things people walk past every day. Now I want to build a plant that pays the farmers around me to stop burning the field.",
+        "I've spent thirty years building things people walk past every day in Srikakulam. SVGE is the first that pays farmers in this district to stop burning the field.",
       quoteDraft: true,
-      credentials: 'M.Sc. (Mathematics), M.Sc. (Physics), M.Ed. Also Managing Director, Ram Hanumanthe Constructions (OPC) Pvt Ltd.',
+      credentials: 'M.Sc. (Mathematics), M.Sc. (Physics), M.Ed. Also Managing Director, Ram Hanumathe Constructions (OPC) Pvt Ltd.',
     },
     {
       name: 'Pogiri Deepika',
@@ -237,11 +317,11 @@ export const SITE = {
       din: '11358672',
       share: '30%',
       story:
-        'Deepika is a 26-year-old co-director — rare on any Indian energy company board, rarer still in rural Andhra. She handles land, regulatory paperwork, and farmer relationships. The least romantic and most important work in any infrastructure project.',
+        'Deepika joined the SVGE board on 25.10.2025 as Director (DIN 11358672) when the company expanded from a single-director structure to a two-director Private Limited. She handles land, regulatory paperwork, and farmer relationships — the least romantic and most important work in any infrastructure project.',
       quote:
-        'My only job is to make sure the paperwork never delays a payment.',
+        'My job is to make sure the paperwork never delays a payment.',
       quoteDraft: true,
-      credentials: 'B.A. Real Estate background, family-business operations.',
+      credentials: 'Director, SVGE — joined October 2025.',
     },
   ],
 
@@ -249,7 +329,7 @@ export const SITE = {
   values: [
     {
       k: 'We use the tech that already works',
-      v: 'SATAT-approved anaerobic digestion and VPSA purification. No bespoke chemistry, no science experiments on someone else\'s money.',
+      v: 'SATAT-approved anaerobic digestion and two-tower VPSA upgrading from Raj Process Equipments. No bespoke chemistry, no science experiments.',
     },
     {
       k: 'We pay farmers within 14 days',
@@ -257,7 +337,7 @@ export const SITE = {
     },
     {
       k: 'We measure what we promise',
-      v: "We will publish CH₄ purity, dispatched-tonnes, farmer-payments-made, and one financial number every month, from the day concrete is poured.",
+      v: "From the day concrete is poured, we publish one monthly update: CH₄ purity, dispatched tonnes, farmer payments made, one financial number, one thing that went wrong.",
     },
     {
       k: 'We start small and finish what we start',
@@ -269,11 +349,12 @@ export const SITE = {
   timeline: [
     { date: '2024-06-12', label: 'Company incorporated', done: true },
     { date: '2024-07', label: 'Land secured: 2.63 acres, Thatipadu', done: true },
-    { date: '2025', label: 'Technology partner selected (Raj Process Equipments & Systems)', done: true },
-    { date: '2025', label: 'IOCL Letter of Intent under SATAT', done: true },
-    { date: '2026-05', label: 'Pre-construction · site readiness', done: true, current: true },
-    { date: '2026', label: 'Construction commencement', done: false },
-    { date: '2027', label: 'Commissioning (T+12 months from construction start)', done: false },
+    { date: '2024-10-04', label: 'IOCL Letter of Intent issued (ref IndianOil/SATAT/01/3931)', done: true },
+    { date: '2025-10-25', label: 'Converted to two-director Private Limited; Deepika joined as Director', done: true },
+    { date: '2026-Q2', label: 'Pre-construction · site readiness', done: true, current: true },
+    { date: '2026-Q3', label: 'Construction begins · first monthly public update', done: false },
+    { date: '2026-10-04', label: 'IOCL commissioning deadline (LoI clause 2)', done: false },
+    { date: '2027', label: 'Commissioning + commercial dispatch to IOCL retail outlets', done: false },
   ],
 
   // ---- SOCIAL ----
@@ -302,13 +383,13 @@ export const SITE = {
   // ---- STATUS (used by the dismissible top chip) ----
   status: {
     phase: 'pre-construction' as 'pre-construction' | 'construction' | 'operational',
-    label: 'Pre-construction',
-    lastUpdate: '2026-05-14',
-    note: 'Latest update on /news/',
+    label: 'Pre-construction · LoI active',
+    lastUpdate: '2026-05-15',
+    note: 'Construction begins Q3 2026 · LoI commissioning deadline 04.10.2026',
     href: '/news/',
   },
 
   // ---- BUILT-IN-PUBLIC PROMISE (used on /, /about/, footer) ----
   publicPromise:
-    'We are pre-construction. From the day concrete is poured we will publish a monthly update — photos, one milestone, one financial number, one thing that went wrong. That is the trust mechanic.',
+    'We are pre-construction. From the day concrete is poured we will publish a monthly update — photos, one milestone hit, one missed, one financial number, one thing that went wrong. That is the trust mechanic.',
 };

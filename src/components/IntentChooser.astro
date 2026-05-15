@@ -1,15 +1,23 @@
 ---
 import { SITE } from '../lib/site';
+import { link } from '../lib/links';
 ---
 <div class="grid-12">
   {SITE.intents.map(i => (
-    <a href={i.href} class="col-6 group rounded-xl bg-[color:var(--color-paper-2)] border border-[color:var(--color-slate-2-soft)]/20 p-6 no-underline cursor-pointer hover:bg-[color:var(--color-paper-3)] hover:border-[color:var(--color-forest)] active:scale-[0.99] transition-all duration-200 ease-out min-h-[120px]">
-      <div class="flex items-start gap-4">
-        <span class="mt-1 inline-flex shrink-0 items-center justify-center w-10 h-10 rounded-md bg-[color:var(--color-paper)] text-[color:var(--color-saffron-text)] font-bold text-lg group-hover:bg-[color:var(--color-saffron)] group-hover:text-[color:var(--color-paper)] transition-colors duration-200">→</span>
-        <div>
+    <a href={link(i.href)} class="svge-card col-6 group inline-flex p-6 no-underline cursor-pointer min-h-[144px] items-stretch">
+      <div class="flex items-start gap-4 w-full">
+        <span class="mt-0.5 inline-flex shrink-0 items-center justify-center w-12 h-12 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] group-hover:bg-[color:var(--color-saffron)] transition-colors duration-200">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+        <div class="flex-1 min-w-0">
           <h3 class="text-lg font-semibold text-[color:var(--color-forest)] leading-snug">{i.label}</h3>
-          <p class="text-sm mt-1 text-[color:var(--color-slate-2)] leading-relaxed">{i.hint}</p>
+          <p class="text-sm mt-1.5 text-[color:var(--color-slate)] leading-relaxed">{i.hint}</p>
         </div>
+        <span class="self-center text-[color:var(--color-slate-2)] group-hover:text-[color:var(--color-saffron-text)] transition-colors duration-150">
+          <span class="arrow-x inline-block">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+          </span>
+        </span>
       </div>
     </a>
   ))}

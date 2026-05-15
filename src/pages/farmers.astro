@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 
 const faqs = [
@@ -13,9 +14,10 @@ const faqs = [
   { q: 'When does this actually start?', a: 'The plant is in pre-construction today. Once construction begins, we will publish a target month for first feedstock collection — likely around the commissioning date or just before. Email us now to be on the contact list when that happens.' },
 ];
 ---
-<Base title="For Farmers" description="We buy paddy straw, Napier grass, and cattle dung. We pay within 14 days. By bank transfer. Within 50 km of Thatipadu.">
+<Base title="For Farmers" description="We buy paddy straw, Napier grass, and cattle dung. We pay within 14 days. By bank transfer. Within 40 km of Thatipadu.">
   <FullBleedHero
     banner="farmers_hands_straw"
+    video="farmers_hands_straw"
     alt="Weathered South-Indian farmer hands tying a bundle of dry paddy straw with jute twine at golden hour."
     eyebrow="For Farmers"
   >
@@ -24,7 +26,7 @@ const faqs = [
       <span style="color:#FFB300;">what you would have burned.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      If you farm within 50 km of Thatipadu in Vizianagaram or Srikakulam district — we want to talk to you.
+      If you farm within 40 km of Thatipadu in Vizianagaram or Srikakulam district — we want to talk to you.
     </p>
   </FullBleedHero>
 
@@ -41,7 +43,7 @@ const faqs = [
       <div class="col-4">
         <div class="rounded-xl bg-[color:var(--color-paper)] p-6">
           <p class="eyebrow mb-2">Service radius</p>
-          <p class="stat-num">50<span class="unit">km</span></p>
+          <p class="stat-num">40<span class="unit">km</span></p>
           <p class="text-sm mt-2 text-[color:var(--color-slate)]">Around Thatipadu village. Covers most of Vizianagaram + Srikakulam.</p>
         </div>
       </div>
@@ -87,6 +89,17 @@ const faqs = [
         </li>
       ))}
     </ol>
+  </Section>
+
+  <!-- NOTIFY ME — pickup-route signup -->
+  <Section narrow>
+    <NotifyMe
+      topic="Farmer pickup route"
+      eyebrow="When pickup starts"
+      title="Be on the list when the first vehicle goes out."
+      body="One email — we'll let you know the day the pickup route in your village goes live. No follow-up spam."
+      cta="Add me to the route"
+    />
   </Section>
 
   <!-- FAQ -->

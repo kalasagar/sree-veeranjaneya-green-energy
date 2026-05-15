@@ -1,25 +1,53 @@
 ---
 import { SITE } from '../lib/site';
+import { link } from '../lib/links';
+import Mark from './Mark.astro';
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
 const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
 ---
 <footer class="mt-24">
 
-  <!-- BAND 1 — Editorial closing -->
-  <section class="bg-[color:var(--color-forest-dark)] text-[color:var(--color-paper)]">
-    <div class="container-svge py-16 sm:py-20">
-      <div class="grid-12 items-end">
-        <div class="col-8">
-          <p class="eyebrow" style="color:#FFB300;">Closing statement</p>
-          <p class="serif mt-4 text-[color:var(--color-paper)] leading-[1.05]" style="font-size: clamp(2.5rem, 6vw, 5rem); letter-spacing: -0.02em;">
-            Grass to Gas.<br/><em>Farm to Fuel.</em>
+  <!-- BAND 1 — Editorial closing.
+       Forest wash + saffron radial accent (matches BentoGrid hero), big
+       typographic anchor on left, status meta + CTA right-aligned. Mobile
+       collapses to a single column. -->
+  <section class="svge-footer-closing relative overflow-hidden text-[color:var(--color-paper)]">
+    <div class="container-svge py-20 sm:py-24 lg:py-28 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12 items-end">
+        <!-- Anchor -->
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="inline-block w-2 h-2 rounded-full bg-[color:var(--color-saffron)] animate-pulse" aria-hidden="true"></span>
+            <p class="eyebrow !text-[color:var(--color-gold)] mb-0">Closing statement</p>
+          </div>
+          <p class="serif italic leading-[0.98] text-[color:var(--color-paper)]" style="font-size: clamp(3rem, 8vw, 6.5rem); letter-spacing: -0.025em;">
+            Grass to Gas.<br/>Farm to Fuel.
           </p>
-          <p class="serif mt-6 text-lg sm:text-xl text-[color:var(--color-paper)]/80 leading-relaxed max-w-[55ch]">
-            We're building one Compressed Bio-Gas plant in Thatipadu, Vizianagaram. The receipts live on <a class="underline text-[color:var(--color-paper)]" href="/news/">our news page</a> — one update a month from the day concrete is poured.
+          <span class="block mt-8 w-16 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
+          <p class="mt-7 text-lg sm:text-xl text-[color:var(--color-paper)]/85 leading-relaxed max-w-[58ch]">
+            One Compressed Bio-Gas plant. Thatipadu, Vizianagaram. From the day concrete is poured, one public update a month — one photo, one milestone hit, one missed, one financial number, one thing that went wrong.
           </p>
         </div>
-        <div class="col-4 lg:text-right">
-          <a href="/news/" class="btn btn-ink inline-flex" style="background: var(--color-saffron-text); color: var(--color-paper);">Read the first post →</a>
+
+        <!-- Meta + CTAs -->
+        <div class="lg:col-span-4 lg:pl-6 lg:border-l lg:border-[color:var(--color-paper)]/20">
+          <Mark size={132} class="mb-7" />
+          <p class="font-mono uppercase tracking-[0.18em] text-[10px] text-[color:var(--color-paper)]/55 mb-3">Status</p>
+          <p class="text-[color:var(--color-paper)] font-semibold text-lg leading-snug">Pre-construction</p>
+          <p class="text-sm text-[color:var(--color-paper)]/70 mt-1">Construction begins Q3 2026</p>
+
+          <div class="mt-8 flex flex-col gap-2.5 max-w-xs">
+            <a href={link("/news/")} class="inline-flex items-center justify-between gap-2 h-12 px-5 rounded-full bg-[color:var(--color-saffron)] hover:bg-[color:var(--color-saffron-light)] text-[color:var(--color-paper)] no-underline font-mono uppercase text-[11px] tracking-[0.18em] transition-colors duration-150">
+              <span>Read the first post</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+            <a href={link("/contact/")} class="inline-flex items-center justify-between gap-2 h-12 px-5 rounded-full border border-[color:var(--color-paper)]/40 hover:border-[color:var(--color-paper)] hover:bg-[color:var(--color-paper)]/5 text-[color:var(--color-paper)] no-underline font-mono uppercase text-[11px] tracking-[0.18em] transition-colors duration-150">
+              <span>Talk to us</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -31,15 +59,16 @@ const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
       <div class="grid-12">
         <!-- Brand block -->
         <div class="col-3">
-          <div class="flex items-center gap-3">
-            <img src="/brand/mark.svg" alt="" width="40" height="40" />
-            <div>
-              <div class="font-semibold text-[color:var(--color-forest)] leading-tight">{SITE.short}</div>
-              <div class="font-mono text-[11px] text-[color:var(--color-slate-2)] leading-tight">Grass → Gas → Soil</div>
-            </div>
-          </div>
-          <p class="mt-4 text-xs leading-relaxed text-[color:var(--color-slate-2)]">
-            4 TPD CBG plant under construction in Vizianagaram, Andhra Pradesh. Aligned with SATAT · GOBARdhan · MNRE.
+          <Mark size={72} ariaLabel={null} />
+          <p class="mt-5 font-semibold text-xl text-[color:var(--color-forest)] leading-[1.1] tracking-tight">{SITE.short}</p>
+          <p class="mt-1 text-sm text-[color:var(--color-slate-2)] leading-snug">{SITE.legalName}</p>
+          <p class="mt-3 font-mono uppercase tracking-[0.18em] text-[10px] text-[color:var(--color-saffron-text)]">Grass · Gas · Soil</p>
+          <span class="block mt-5 w-10 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
+          <p class="mt-5 text-sm leading-relaxed text-[color:var(--color-slate)] max-w-[36ch]">
+            4 TPD Compressed Bio-Gas plant under construction in Vizianagaram, Andhra Pradesh.
+          </p>
+          <p class="mt-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--color-slate-2)]">
+            SATAT · GOBARdhan · MNRE
           </p>
         </div>
 
@@ -47,12 +76,12 @@ const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
         <div class="col-3">
           <p class="eyebrow mb-3">The project</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href="/about/">About</a></li>
-            <li><a href="/project/">Project</a></li>
-            <li><a href="/process/">Process</a></li>
-            <li><a href="/process/engineering/">Engineering detail</a></li>
-            <li><a href="/impact/">Impact</a></li>
-            <li><a href="/news/">News</a> · <a href="/news/rss.xml" class="text-xs">RSS</a></li>
+            <li><a href={link("/about/")}>About</a></li>
+            <li><a href={link("/project/")}>Project</a></li>
+            <li><a href={link("/process/")}>Process</a></li>
+            <li><a href={link("/process/engineering/")}>Engineering detail</a></li>
+            <li><a href={link("/impact/")}>Impact</a></li>
+            <li><a href={link("/news/")}>News</a> · <a href={link("/news/rss.xml")} class="text-xs">RSS</a></li>
           </ul>
         </div>
 
@@ -60,11 +89,11 @@ const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
         <div class="col-3">
           <p class="eyebrow mb-3">Audiences</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href="/farmers/">For farmers</a></li>
-            <li><a href="/partners/">Partners</a></li>
-            <li><a href="/press/">Press</a></li>
-            <li><a href="/careers/">Careers</a></li>
-            <li><a href="/contact/">Contact</a></li>
+            <li><a href={link("/farmers/")}>For farmers</a></li>
+            <li><a href={link("/partners/")}>Partners</a></li>
+            <li><a href={link("/press/")}>Press</a></li>
+            <li><a href={link("/careers/")}>Careers</a></li>
+            <li><a href={link("/contact/")}>Contact</a></li>
             <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn ↗</a></li>
           </ul>
         </div>
@@ -73,8 +102,8 @@ const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
         <div class="col-3">
           <p class="eyebrow mb-3">Legal & data</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href="/privacy/">Privacy policy</a></li>
-            <li><a href="/terms/">Terms of use</a></li>
+            <li><a href={link("/privacy/")}>Privacy policy</a></li>
+            <li><a href={link("/terms/")}>Terms of use</a></li>
             <li><a href={`mailto:${SITE.email}?subject=DPR%20request`}>Request the DPR</a></li>
           </ul>
         </div>

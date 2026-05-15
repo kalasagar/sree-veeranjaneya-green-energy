@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import BentoGrid from '../components/BentoGrid.astro';
@@ -22,6 +23,7 @@ const stepImages = [
     banner="hero_paddy_dawn"
     alt="A paddy field at dawn in coastal Andhra Pradesh with a small biogas digester silhouette on the right horizon."
     eyebrow={SITE.hero.eyebrow}
+    video="hero_dawn_paddy_to_flame"
     height="xl"
     priority
   >
@@ -33,7 +35,7 @@ const stepImages = [
     <p class="mt-6 text-lg sm:text-xl max-w-2xl text-[color:var(--color-paper)]/95 leading-relaxed">{SITE.hero.sub}</p>
     <div class="mt-8 flex flex-wrap gap-3">
       {SITE.hero.ctas.map(c => (
-        <a href={c.href} class={`btn ${c.tone === 'primary' ? 'btn-primary' : 'btn-ink'}`}>{c.label} →</a>
+        <a href={link(c.href)} class={`btn ${c.tone === 'primary' ? 'btn-primary' : 'btn-ink'}`}>{c.label} →</a>
       ))}
     </div>
   </FullBleedHero>
@@ -49,7 +51,7 @@ const stepImages = [
     title="Five steps. One cycle. No smoke."
     bg="paper-2"
   >
-    <ol class="grid-12">
+    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {[
         { t: 'Farmer harvests', d: 'Paddy straw and cattle dung come off the field. Today most of it burns. We pay for it instead.' },
         { t: 'We digest it', d: '9,600 Nm³ of raw biogas per day from a single CSTR-type anaerobic digester running 24 hours.' },
@@ -57,9 +59,9 @@ const stepImages = [
         { t: 'IOCL buys it', d: '4 tonnes per day of CBG. Roughly the daily CNG for 80 city buses. Under a signed Letter of Intent.' },
         { t: 'FOM goes back', d: '52 m³/day of liquid manure plus 1 TPH of solid FOM return to the same fields. Soil gets its carbon back.' },
       ].map((s, i) => (
-        <li class="col-12 lg:col-span-2 bg-[color:var(--color-paper)] p-6 rounded-lg" style="grid-column: span 12;">
-          <p class="numeral mb-3" style="font-size: 2rem;">0{i + 1}</p>
-          <h3 class="text-lg leading-snug mb-2">{s.t}</h3>
+        <li class="svge-card relative p-6 sm:p-7 flex flex-col">
+          <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">0{i + 1}</p>
+          <h3 class="text-base sm:text-lg leading-snug mb-2 text-[color:var(--color-forest)]">{s.t}</h3>
           <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
         </li>
       ))}
@@ -81,11 +83,11 @@ const stepImages = [
   <Section narrow eyebrow="Built in public" title="No glossy reveal. Monthly receipts.">
     <p class="lede">{SITE.publicPromise}</p>
     <p class="mt-8">
-      <a href="/news/" class="btn btn-primary">Read the first post →</a>
+      <a href={link("/news/")} class="btn btn-primary">Read the first post →</a>
     </p>
     <p class="mt-4 text-sm text-[color:var(--color-slate-2)]">
       Posts continue monthly from the day concrete is poured.
-      <a href="/careers/">Careers</a> and <a href="/press/">press</a> get the same updates.
+      <a href={link("/careers/")}>Careers</a> and <a href={link("/press/")}>press</a> get the same updates.
     </p>
   </Section>
 
@@ -97,12 +99,12 @@ const stepImages = [
   <!-- SEGMENTED CTA -->
   <Section narrow eyebrow="Talk to us" title="Pick the door that fits.">
     <div class="grid-12">
-      <a href="/farmers/" class="col-6 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-forest-dark)] active:scale-[0.99] transition-all duration-200 ease-out">
+      <a href={link("/farmers/")} class="col-6 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-forest-dark)] active:scale-[0.99] transition-all duration-200 ease-out">
         <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Farmers</p>
         <p class="text-2xl font-semibold leading-tight">We buy your paddy straw, Napier and dung.</p>
         <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">14-day payment, bank transfer, 50&nbsp;km radius.</p>
       </a>
-      <a href="/contact/" class="col-6 rounded-xl bg-[color:var(--color-saffron-text)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-saffron)] active:scale-[0.99] transition-all duration-200 ease-out">
+      <a href={link("/contact/")} class="col-6 rounded-xl bg-[color:var(--color-saffron-text)] text-[color:var(--color-paper)] p-8 no-underline cursor-pointer hover:bg-[color:var(--color-saffron)] active:scale-[0.99] transition-all duration-200 ease-out">
         <p class="eyebrow text-[color:var(--color-paper)] mb-3">For Partners & Press</p>
         <p class="text-2xl font-semibold leading-tight">EPC, logistics, FOM offtake, journalists, future hires.</p>
         <p class="mt-2 text-sm text-[color:var(--color-paper)]/90">Email reply within two business days.</p>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/links';
 import Section from '../../components/Section.astro';
 import { getCollection, render } from 'astro:content';
 
@@ -32,7 +33,7 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
         <Content />
       </div>
       <hr class="my-10 border-[color:var(--color-slate-2-soft)]/30" />
-      <p class="text-sm font-mono"><a href="/news/">← All posts</a></p>
+      <p class="text-sm font-mono"><a href={link("/news/")}>← All posts</a></p>
     </article>
   </Section>
 </Base>

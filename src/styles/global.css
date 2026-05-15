@@ -164,26 +164,28 @@
   }
 }
 
-.lede {
-  font-size: var(--text-lede);
-  line-height: 1.5;
-  max-width: 38ch;
-  color: var(--color-ink);
-}
-@media (min-width: 768px) { .lede { max-width: 42ch; } }
+@layer components {
+  .lede {
+    font-size: var(--text-lede);
+    line-height: 1.5;
+    max-width: 38ch;
+    color: var(--color-ink);
+  }
+  @media (min-width: 768px) { .lede { max-width: 42ch; } }
 
-.display {
-  font-family: var(--font-sans);
-  font-weight: 700;
-  font-size: clamp(2.25rem, 6vw, var(--text-display));
-  line-height: 1;
-  letter-spacing: -0.03em;
-  color: var(--color-ink);
-}
+  .display {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: clamp(2.25rem, 6vw, var(--text-display));
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
 
-.serif {
-  font-family: var(--font-serif);
-  font-feature-settings: "ss01", "kern";
+  .serif {
+    font-family: var(--font-serif);
+    font-feature-settings: "ss01", "kern";
+  }
 }
 
 /* Drop cap on first paragraph of an editorial article */
@@ -241,35 +243,46 @@
 }
 
 /* Stat blocks */
-.stat-mega {
-  font-size: clamp(3rem, 9vw, var(--text-mega));
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 0.9;
-  color: var(--color-forest);
-}
-.stat-mega .unit {
-  font-size: 0.35em;
-  font-family: var(--font-mono);
-  color: var(--color-slate-2);
-  letter-spacing: 0;
-  margin-left: .25em;
-  vertical-align: 0.3em;
-}
+@layer components {
+  .stat-mega {
+    font-size: clamp(3rem, 9vw, var(--text-mega));
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: var(--color-forest);
+  }
+  .stat-mega .unit {
+    font-size: 0.35em;
+    font-family: var(--font-mono);
+    color: var(--color-slate-2);
+    letter-spacing: 0;
+    margin-left: .25em;
+    vertical-align: 0.3em;
+  }
 
-.stat-num {
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  color: var(--color-forest);
-}
-.stat-num .unit {
-  font-size: 0.45em;
-  font-family: var(--font-mono);
-  color: var(--color-slate-2);
-  letter-spacing: 0;
-  margin-left: .2em;
+  .stat-num {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--color-forest);
+  }
+  .stat-num .unit {
+    font-size: 0.45em;
+    font-family: var(--font-mono);
+    color: var(--color-slate-2);
+    letter-spacing: 0;
+    margin-left: .2em;
+  }
+
+  .numeral {
+    font-family: var(--font-mono);
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 500;
+    line-height: 1;
+    color: var(--color-saffron);
+    letter-spacing: -0.02em;
+  }
 }
 
 /* Editorial prose */
@@ -318,15 +331,7 @@
   font-style: normal;
 }
 
-/* Numbered eyebrow markers */
-.numeral {
-  font-family: var(--font-mono);
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 500;
-  line-height: 1;
-  color: var(--color-saffron);
-  letter-spacing: -0.02em;
-}
+/* (legacy .numeral rule removed — now lives in @layer components above) */
 
 /* =========================================================
    Header two-state behaviour
@@ -357,8 +362,18 @@
 #svge-header.svge-h-over .svge-h-wordmark { color: var(--color-paper); }
 #svge-header.svge-h-over .svge-h-tagline { color: color-mix(in oklab, var(--color-paper) 80%, transparent); }
 
-/* Mark — invert when over hero so the green mark shows as paper */
-#svge-header.svge-h-over #svge-mark { filter: brightness(0) invert(1); }
+/* Mark — canonical raster brand tile. On dark backgrounds (hero, footer
+   closing band) it reads as a small paper-coloured brand badge, like an
+   app icon. Small ring gives it depth on dark scrims. */
+.svge-mark {
+  border: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 18%, transparent);
+}
+#svge-header.svge-h-over .svge-mark,
+section.svge-hero .svge-mark,
+.svge-footer-closing .svge-mark {
+  border-color: rgba(250, 250, 247, 0.25);
+  box-shadow: 0 4px 12px -6px rgba(10, 20, 16, 0.45);
+}
 
 /* Nav links */
 #svge-header .svge-h-link { color: var(--color-slate); }
@@ -379,6 +394,29 @@
 /* Hamburger button */
 #svge-drawer-open { color: var(--color-slate); }
 #svge-header.svge-h-over #svge-drawer-open { color: var(--color-paper); }
+
+/* Header CTA pill — adopts the surrounding theme (light over hero, dark on solid) */
+.svge-h-cta {
+  background: var(--color-forest);
+  color: var(--color-paper);
+  box-shadow: 0 1px 0 rgba(10,20,16,0.06), 0 2px 4px -2px rgba(10,20,16,0.18);
+}
+.svge-h-cta:hover {
+  background: var(--color-forest-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 1px 0 rgba(10,20,16,0.08), 0 6px 14px -6px rgba(10,20,16,0.28);
+}
+#svge-header.svge-h-over .svge-h-cta {
+  background: var(--color-saffron);
+  color: var(--color-paper);
+}
+#svge-header.svge-h-over .svge-h-cta:hover {
+  background: var(--color-saffron-light);
+}
+.svge-h-cta:focus-visible {
+  outline: 2px solid var(--color-saffron);
+  outline-offset: 3px;
+}
 
 /* Underline-grow on hover (desktop nav, when not active) */
 #svge-header .svge-h-link:not(.is-active)::after {
@@ -443,6 +481,56 @@ body:has(#svge-status:not([style*="display: none"])) section.svge-hero {
 .hover-lift:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 24px -12px rgba(10, 20, 16, .25);
+}
+
+/* Unified card chrome — used across NotifyMe, Stat, PullQuote, Banner,
+   IntentChooser, BentoGrid supporting cards. One source of truth. */
+.svge-card {
+  background: var(--color-paper);
+  border: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 18%, transparent);
+  border-radius: 16px;
+  box-shadow:
+    0 1px 0 rgba(10,20,16,0.04),
+    0 1px 3px -1px rgba(10,20,16,0.06);
+  transition: transform .18s ease-out, box-shadow .18s ease-out, border-color .18s ease-out;
+}
+a.svge-card:hover,
+button.svge-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--color-forest) 30%, transparent);
+  box-shadow:
+    0 1px 0 rgba(10,20,16,0.05),
+    0 10px 24px -12px rgba(10,20,16,0.22),
+    0 2px 4px rgba(10,20,16,0.06);
+}
+.svge-card:focus-visible {
+  outline: 2px solid var(--color-saffron);
+  outline-offset: 3px;
+}
+
+/* Footer closing band — same forest wash + saffron radial as BentoGrid hero */
+.svge-footer-closing {
+  background:
+    radial-gradient(ellipse at 15% 100%, rgba(230, 81, 0, 0.18) 0%, transparent 55%),
+    linear-gradient(140deg, var(--color-forest) 0%, var(--color-forest-dark) 100%);
+}
+
+/* BentoGrid hero variant — forest wash with radial saffron glow */
+.svge-bento-hero {
+  background:
+    radial-gradient(ellipse at 85% 15%, rgba(230, 81, 0, 0.22) 0%, transparent 55%),
+    linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-dark) 100%);
+  border-color: color-mix(in oklab, var(--color-forest-dark) 60%, transparent);
+}
+.svge-bento-hero:hover { border-color: color-mix(in oklab, var(--color-forest-dark) 80%, transparent); }
+
+/* BentoGrid supporting stat — saffron accent bar top-left */
+.svge-bento-support::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 24px;
+  width: 28px; height: 3px;
+  background: var(--color-saffron);
 }
 
 /* Arrow slide inside a hovered parent */

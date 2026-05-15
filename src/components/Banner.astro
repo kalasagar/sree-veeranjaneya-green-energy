@@ -21,12 +21,14 @@ interface Props {
 const { name, alt, aspect = '21/9', priority = false } = Astro.props;
 const fetchPriority = priority ? 'high' : 'auto';
 const loading = priority ? 'eager' : 'lazy';
+const BASE = import.meta.env.BASE_URL;
+const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 ---
-<figure class="relative overflow-hidden rounded-2xl border border-black/5 bg-[color:var(--color-paper-2)]" style={`aspect-ratio: ${aspect};`}>
+<figure class="svge-card relative overflow-hidden bg-[color:var(--color-paper-2)]" style={`aspect-ratio: ${aspect};`}>
   <picture>
-    <source srcset={`/banners/${name}.avif`} type="image/avif" />
+    <source srcset={url(`banners/${name}.avif`)} type="image/avif" />
     <img
-      src={`/banners/${name}.webp`}
+      src={url(`banners/${name}.webp`)}
       alt={alt}
       width="1920"
       height="900"

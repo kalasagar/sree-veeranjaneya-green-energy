@@ -1,9 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/links';
 import Section from '../../components/Section.astro';
+import PageTitle from '../../components/PageTitle.astro';
 
 const steps = [
-  { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20–25% solids, or paddy straw + cattle dung mix. Sourced via contract farming and direct supply from farmers within a 50 km radius of the plant.' },
+  { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20–25% solids, or paddy straw + cattle dung mix. Sourced via 5-year contract farming and direct supply from farmers within a 40-km radius of the plant.' },
   { n: '02', t: 'Mixing tank', d: 'Feedstock combined with ~145 m³/day of recycled process water. Total ~216 m³/day slurry flows to the digester.' },
   { n: '03', t: 'Anaerobic digestion', d: 'CSTR-type digester. 24-hour residence. Outputs 9,500 Nm³/day of raw biogas, plus 216 m³/day post-digester slurry at 6–7% solids.' },
   { n: '04', t: 'Slurry separation', d: 'Solid–liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM). Liquid fraction is partially recycled to mixing tank; rest goes to local fields.' },
@@ -35,7 +37,12 @@ const machinery = [
 ];
 ---
 <Base title="Process — Engineering Detail" description="Eight-step engineering process for the SVGE 4 TPD CBG plant, with major equipment list.">
-  <Section eyebrow="Engineering detail" title="The flow chart, in eight steps">
+  <PageTitle
+    eyebrow="Process · Engineering detail"
+    title="The flow chart, in eight steps."
+    lede="The plant's mechanical journey — feedstock to dispatch — with the major equipment list. Auditor-grade detail for journalists, lenders, and EPC partners."
+  />
+  <Section>
     <p class="mb-8 text-lg max-w-3xl leading-relaxed">
       Designed and integrated by <strong>Raj Process Equipments & Systems Pvt Ltd, Pune</strong> — a SATAT-approved EPC for India's CBG mission.
     </p>
@@ -50,6 +57,54 @@ const machinery = [
         </li>
       ))}
     </ol>
+  </Section>
+
+  <Section eyebrow="Plant specifications" title="The numbers the equipment is sized for." bg="paper-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <article class="svge-card p-5">
+        <p class="eyebrow mb-2">Digester</p>
+        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">4 × CSTR · 15,402 m³</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">RCC with balloon. 26 m diameter × 8.63 m height per unit. 15% gas-holding head space.</p>
+      </article>
+      <article class="svge-card p-5">
+        <p class="eyebrow mb-2">Retention &amp; loading</p>
+        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">HRT 34 d · OLR 1.75</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">Hydraulic Retention Time 34 days. Organic Loading Rate 1.75 kg VS/m³/day. Pre-digester 648 m³ at 10–12% total solids.</p>
+      </article>
+      <article class="svge-card p-5">
+        <p class="eyebrow mb-2">Upgrading</p>
+        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">2-tower VPSA</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">PSA gas dryer to −40 °C dew point. Activated-carbon polishing. Industry-standard VPSA achieves 96–98 % CH₄ recovery; SVGE's contracted floor is ≥ 90 %.</p>
+      </article>
+      <article class="svge-card p-5">
+        <p class="eyebrow mb-2">Dispatch</p>
+        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">250-bar cascade</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">IS 15319 cascades. Truck/trailer dispatch to IOCL Retail Outlet within 75 km (per LoI clause 5).</p>
+      </article>
+    </div>
+
+    <h3 class="text-2xl mb-3 text-[color:var(--color-forest)]">IS 16087:2016 — what each line means</h3>
+    <div class="overflow-x-auto rounded-2xl border border-[color:var(--color-slate-2-soft)]/30 bg-[color:var(--color-paper)]">
+      <table class="w-full text-sm">
+        <thead class="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] text-left">
+          <tr>
+            <th class="px-5 py-3 eyebrow text-[color:var(--color-paper)]">Parameter</th>
+            <th class="px-5 py-3 eyebrow text-[color:var(--color-paper)]">Limit</th>
+            <th class="px-5 py-3 eyebrow text-[color:var(--color-paper)]">What it means</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3 font-mono">CH₄ (methane)</td><td class="px-5 py-3 font-mono">≥ 90 % v/v</td><td class="px-5 py-3 text-[color:var(--color-slate)]">The fuel itself. Below 90 %, calorific value drops and CNG engines need re-tuning.</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3 font-mono">CO₂</td><td class="px-5 py-3 font-mono">≤ 4 %</td><td class="px-5 py-3 text-[color:var(--color-slate)]">Inert. Dilutes fuel; corrodes cylinders if water is also present.</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3 font-mono">O₂</td><td class="px-5 py-3 font-mono">≤ 0.5 %</td><td class="px-5 py-3 text-[color:var(--color-slate)]">Safety floor. Oxygen + methane + spark = explosion risk in cascades.</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3 font-mono">Total sulphur (incl. H₂S)</td><td class="px-5 py-3 font-mono">≤ 20 mg/m³</td><td class="px-5 py-3 text-[color:var(--color-slate)]">H₂S forms sulphuric acid with moisture; eats valves and cylinder steel.</td></tr>
+          <tr class="border-t border-[color:var(--color-slate-2-soft)]/30"><td class="px-5 py-3 font-mono">Moisture (water dew point)</td><td class="px-5 py-3 font-mono">≤ 5 mg/m³ (≈ −40 °C dew point at 250 bar)</td><td class="px-5 py-3 text-[color:var(--color-slate)]">Free water causes corrosion and ice plugs in regulators. The PSA dryer is sized to this.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="mt-4 text-xs font-mono text-[color:var(--color-slate-2)]">
+      Out-of-spec gas at any parameter is recycled to the inlet, never dispatched. OMCs (IOCL/BPCL/HPCL) reject any tanker that fails on any line at the dispensing station.
+    </p>
   </Section>
 
   <Section eyebrow="Major equipment" title="What sits on the plot">
@@ -78,7 +133,7 @@ const machinery = [
 
   <Section narrow>
     <p class="text-sm">
-      Want the human version? See <a href="/process/">the three-POV explainer</a>.
+      Want the human version? See <a href={link("/process/")}>the three-POV explainer</a>.
     </p>
   </Section>
 </Base>

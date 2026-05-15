@@ -2,24 +2,42 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
+import EditorialBlock from '../components/EditorialBlock.astro';
+import NotifyMe from '../components/NotifyMe.astro';
+import PullQuote from '../components/PullQuote.astro';
+import { SITE } from '../lib/site';
 ---
 <Base title="Careers" description="Hiring opens when construction begins. Be the first to know.">
-  <FullBleedHero banner={null} alt="Careers" eyebrow="Careers">
+  <FullBleedHero
+    banner="about_founder_field"
+    video="story_b2_people"
+    alt="People at the field — local hire first."
+    eyebrow="Careers"
+    objectPosition="50% 65%"
+  >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
       We're not hiring yet.<br/>
       <span style="color:#FFB300;">Soon, though.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      SVGE will hire its first plant operations, lab, aggregation, and accounts team when construction begins. Right now it's just the two directors and a small set of contractors.
+      The Indian Oil LoI commissioning deadline is 04.10.2026; the first hiring tranche begins around the start of commissioning (target Q3 2026). Total plant headcount at steady state is 47, with another ~70 people indirectly employed through aggregation, drivers, and farmer supplier networks.
     </p>
   </FullBleedHero>
 
-  <Section eyebrow="The roles we plan to open" title="Five categories. Local hire first.">
+  <!-- WHAT WE'RE BUILDING — human moment before the roles list -->
+  <Section eyebrow="What we're building" title="A 40-km radius worth of work.">
+    <EditorialBlock side="right" image="impact_fom_soil" imageAlt="Hands on the soil — the radius careers serve." numeral="">
+      <p>The plant pulls feedstock from a 40-km radius. Within that radius, careers at SVGE are mostly local — shift engineers from Vizianagaram, chemists from Srikakulam, field supervisors who can have a working conversation with a farmer about a supply slip in Telugu. We do not relocate people across the country to do that work; we hire from where the paddy is.</p>
+      <p class="mt-4">For specialised roles — gas analysers, instrumentation, controls — we hire wherever we find competence. But local-first is the default, not the exception.</p>
+    </EditorialBlock>
+  </Section>
+
+  <Section eyebrow="The roles we plan to open" title="Five categories. Local hire first." bg="paper-2">
     <div class="grid-12">
       {[
         ['Plant operations', 'Shift engineers, biogas operators, instrumentation technicians.'],
         ['Lab', 'Gas analysis chemists for daily IS 16087:2016 verification.'],
-        ['Feedstock aggregation', 'Field supervisors managing farmer relationships and daily collection logistics in a 50 km radius.'],
+        ['Feedstock aggregation', 'Field supervisors managing farmer relationships and daily collection logistics in a 40-km radius.'],
         ['Accounts & administration', 'Payments, GST, statutory compliance.'],
         ['Drivers', 'Cascade truck operations to IOCL outlets.'],
       ].map(([t, d], i) => (
@@ -32,7 +50,7 @@ import FullBleedHero from '../components/FullBleedHero.astro';
     </div>
   </Section>
 
-  <Section eyebrow="What we will offer" title="The basics, on time." bg="paper-2">
+  <Section eyebrow="What we will offer" title="The basics, on time.">
     <ul class="grid-12 text-base">
       <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Calibrated salary.</strong> District norms, on time, every month.</li>
       <li class="col-6 lg:col-3"><strong class="text-[color:var(--color-forest)]">Statutory PF + ESI.</strong> From day one of permanent roles.</li>
@@ -41,10 +59,23 @@ import FullBleedHero from '../components/FullBleedHero.astro';
     </ul>
   </Section>
 
+  <!-- VOICE — founder PullQuote -->
+  <Section narrow bg="paper-2">
+    <PullQuote
+      quote={SITE.promoters[0].quote}
+      attribution={`${SITE.promoters[0].name}, ${SITE.promoters[0].role}`}
+      draft={SITE.promoters[0].quoteDraft}
+    />
+  </Section>
+
+  <!-- ACTION — talent pool signup -->
   <Section narrow eyebrow="Be first to know" title="One email. We'll find you when a role opens.">
-    <div class="prose-svge">
-      <p>Email <a href="mailto:svge.india@gmail.com?subject=Careers%20interest">svge.india@gmail.com</a> with subject line <em>Careers interest</em> and a one-line note about the role you'd be a fit for. We'll add you to a small list and contact you the day a relevant opening is posted.</p>
-      <p>We don't run a formal applicant tracking system yet. Your email goes to a single inbox the directors check personally.</p>
-    </div>
+    <NotifyMe
+      topic="Careers interest"
+      eyebrow="Talent pool"
+      title="Get a heads-up when hiring opens."
+      body="One email, then nothing until we have a real role to send you. Used for plant operations, lab, aggregation, accounts, and driving."
+      cta="Add me to the list"
+    />
   </Section>
 </Base>

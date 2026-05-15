@@ -1,8 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import ProcessFlow from '../components/ProcessFlow.astro';
+import StoryReel from '../components/StoryReel.astro';
 
 const povs = [
   {
@@ -37,18 +39,18 @@ const povs = [
   },
 ];
 ---
-<Base title="Process" description="The CBG plant explained from three points of view — farmer, driver, auditor.">
+<Base title="Process" description="From Napier grass to CBG in 8 steps. CSTR-type digester, two-tower VPSA, 250-bar cascade dispatch, IS 16087:2016 spec.">
   <FullBleedHero
     banner="project_plant_render"
     alt="Aerial photograph of the SVGE plant site surrounded by paddy fields."
     eyebrow="Process"
   >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
-      The same plant.<br/>
-      <span style="color:#FFB300;">Three points of view.</span>
+      From Napier to CBG,<br/>
+      <span style="color:#FFB300;">in eight steps.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      Every CBG plant on the internet shows you the same flow chart. <a class="underline text-[color:var(--color-paper)]" href="/process/engineering/">The engineering detail is on a separate page.</a> What we'd rather tell you is what actually happens — from where you sit.
+      72 tonnes of Napier grass and farm-supplied paddy straw + cattle dung per day, through a CSTR-type anaerobic digester, upgraded by two-tower VPSA to ≥90% methane (IS 16087:2016), compressed to 250 bar, dispatched to Indian Oil retail outlets within a 75-km radius. <a class="underline text-[color:var(--color-paper)]" href={link("/process/engineering/")}>Engineering detail on a separate page.</a>
     </p>
   </FullBleedHero>
 
@@ -57,6 +59,11 @@ const povs = [
     <div class="rounded-xl bg-[color:var(--color-paper-2)] p-6 overflow-x-auto">
       <ProcessFlow />
     </div>
+  </Section>
+
+  <!-- STORY REEL — the documentary arc -->
+  <Section eyebrow="The story film" title="" bg="paper-2">
+    <StoryReel />
   </Section>
 
   <!-- THREE POV SPREADS -->

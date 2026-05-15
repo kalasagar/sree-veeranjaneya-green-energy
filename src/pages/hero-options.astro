@@ -1,0 +1,753 @@
+---
+import Base from '../layouts/Base.astro';
+
+/**
+ * /hero-options/ — internal preview page for hero-vs-header layout POCs.
+ *
+ * Four distinct compositions are rendered inline as framed device mockups
+ * using the real banner + cropped hero video. Pick option 1–4 and tell me
+ * which to apply to the production hero.
+ *
+ * Not linked from the public nav.
+ */
+
+const eyebrow = 'PRE-CONSTRUCTION · KRISHNA DIST · 14 MAY';
+const h1Top = 'Compressed Bio-Gas,';
+const h1Mid = 'from the paddy';
+const h1Bottom = 'that fuels rural Andhra.';
+const sub = 'Krishna District plant. Scaling to 4 TPD of CBG and 24 TPD of fermented organic manure by Q3 2026.';
+
+const navItems = ['About', 'Project', 'Process', 'Impact', 'Farmers', 'Contact'];
+
+const BASE = import.meta.env.BASE_URL;
+const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+const mark = url('brand/mark_simple.svg');
+const banner1024 = url('banners/hero_paddy_dawn-1024.webp');
+const banner1600 = url('banners/hero_paddy_dawn-1600.webp');
+const videoMp4 = url('video/hero_dawn_paddy_to_flame.mp4');
+---
+<Base title="Hero layout POCs · Pick one" description="Internal preview of 4 hero/header compositions for SVGE.">
+
+  <!-- Page intro -->
+  <section class="bg-[color:var(--color-paper-2)] py-12 sm:py-16">
+    <div class="container-svge">
+      <p class="eyebrow mb-3">Internal preview</p>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl text-[color:var(--color-forest)] leading-[1.05] tracking-tight">Hero layout options</h1>
+      <p class="mt-4 max-w-[60ch] text-[color:var(--color-slate)] text-lg leading-relaxed">
+        Four distinct compositions where the header doesn't hide the video. Each mockup uses the real banner and the cropped hero video.
+        Scroll through them and tell me which option to ship.
+      </p>
+    </div>
+  </section>
+
+  <!-- Shared mock CSS -->
+  <style is:global>
+    .hopt-frame {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 0 rgba(10,20,16,0.06),
+        0 24px 64px -32px rgba(10,20,16,0.45),
+        0 8px 16px -8px rgba(10,20,16,0.15);
+      border: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 22%, transparent);
+      background: var(--color-paper);
+    }
+    .hopt-chrome {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      height: 32px;
+      padding: 0 1rem;
+      background: #ECECDC;
+      border-bottom: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 25%, transparent);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--color-slate-2);
+    }
+    .hopt-dots { display: inline-flex; gap: 6px; }
+    .hopt-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(10,20,16,0.18); }
+    .hopt-dots span:nth-child(1) { background: #ff5f57; }
+    .hopt-dots span:nth-child(2) { background: #febc2e; }
+    .hopt-dots span:nth-child(3) { background: #28c840; }
+    .hopt-url {
+      flex: 1; text-align: center;
+      padding: 3px 12px;
+      background: var(--color-paper);
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .hopt-stage {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: var(--color-ink);
+      overflow: hidden;
+    }
+    .hopt-media {
+      position: absolute; inset: 0;
+      object-fit: cover;
+      width: 100%; height: 100%;
+    }
+    .hopt-scrim {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, rgba(10,20,16,0.15) 0%, rgba(10,20,16,0.04) 32%, rgba(10,20,16,0.36) 68%, rgba(10,20,16,0.78) 100%),
+        linear-gradient(90deg, rgba(10,20,16,0.55) 0%, rgba(10,20,16,0.18) 45%, rgba(10,20,16,0) 70%);
+      pointer-events: none;
+    }
+    .hopt-copy {
+      position: absolute;
+      left: 4%; bottom: 7%;
+      right: 4%; max-width: 60%;
+      color: var(--color-paper);
+    }
+    .hopt-copy .eyebrow { color: var(--color-gold); margin-bottom: 0.6rem; font-size: 10px; }
+    .hopt-copy .mock-h1 {
+      color: var(--color-paper);
+      font-family: var(--font-sans);
+      font-size: clamp(1.1rem, 2.4vw, 2.4rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+      margin: 0;
+    }
+    .hopt-copy .mock-h1 .accent { color: #FFB300; }
+    @media (max-width: 640px) {
+      .hopt-copy { max-width: 78%; bottom: 5%; }
+      .hopt-copy .sub { display: none; }
+      .hopt-copy .hopt-ctas { margin-top: 0.5rem; }
+      .hopt-cta { padding: 0.3rem 0.6rem; font-size: 8.5px; }
+    }
+    /* Video fade-in once it has data — controlled by JS below */
+    .hopt-video { opacity: 0; transition: opacity 700ms ease-out; }
+    .hopt-video.hopt-video--ready { opacity: 1; }
+    .hopt-copy .sub { color: rgba(250,250,247,0.92); font-size: clamp(0.75rem, 0.9vw, 0.95rem); margin-top: 0.6rem; line-height: 1.45; max-width: 38ch; }
+    .hopt-ctas { margin-top: 0.9rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .hopt-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0.4rem 0.85rem; border-radius: 999px;
+      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none;
+    }
+    .hopt-cta.primary { background: var(--color-saffron); color: var(--color-paper); }
+    .hopt-cta.ghost { background: transparent; color: var(--color-paper); border: 1px solid rgba(250,250,247,0.5); }
+
+    /* Header "chrome" inside the stage, shared base */
+    .hopt-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-family: var(--font-sans);
+    }
+    .hopt-header .brand { display: inline-flex; align-items: center; gap: 8px; }
+    .hopt-header .brand .mark { width: 22px; height: 22px; }
+    .hopt-header .brand .wm { font-weight: 600; font-size: 12px; color: var(--color-forest); letter-spacing: -0.01em; }
+    .hopt-header .nav { display: inline-flex; gap: 14px; }
+    .hopt-header .nav a { font-size: 10.5px; color: var(--color-slate); text-decoration: none; font-weight: 500; }
+    .hopt-header .nav a.is-active { color: var(--color-forest); position: relative; }
+    .hopt-header .nav a.is-active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px; background: var(--color-saffron); }
+    .hopt-header .cta-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 0.35rem 0.7rem; border-radius: 999px;
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--color-forest); color: var(--color-paper);
+      text-decoration: none;
+    }
+
+    /* -------- OPTION 1 — Stacked Classic -------- */
+    .opt1-stage { display: flex; flex-direction: column; aspect-ratio: 16 / 9; background: var(--color-ink); overflow: hidden; }
+    .opt1-header {
+      height: 52px;
+      padding: 0 1.25rem;
+      background: var(--color-paper);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 22%, transparent);
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .opt1-hero { position: relative; flex: 1; overflow: hidden; }
+
+    /* -------- OPTION 2 — Floating Pill -------- */
+    .opt2-pill {
+      position: absolute; top: 14px; left: 14px; right: 14px;
+      height: 44px;
+      padding: 0 14px 0 10px;
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--color-paper) 84%, transparent);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 30%, transparent);
+      box-shadow: 0 6px 18px -8px rgba(10,20,16,0.28);
+      justify-content: space-between;
+      z-index: 5;
+    }
+
+    /* -------- OPTION 3 — Framed Media Card -------- */
+    .opt3-stage { aspect-ratio: 16 / 9; background: var(--color-paper); display: flex; flex-direction: column; }
+    .opt3-header {
+      height: 52px;
+      padding: 0 1.25rem;
+      background: var(--color-paper);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 22%, transparent);
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .opt3-body { flex: 1; padding: 18px; }
+    .opt3-card {
+      width: 100%; height: 100%;
+      border-radius: 14px; overflow: hidden;
+      position: relative;
+      border: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 22%, transparent);
+      box-shadow:
+        0 1px 0 rgba(10,20,16,0.05),
+        0 14px 36px -22px rgba(10,20,16,0.35);
+    }
+
+    /* -------- OPTION 4 — Auto-hide on Scroll -------- */
+    .opt4-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 48px;
+      padding: 0 1.25rem;
+      background: color-mix(in oklab, var(--color-paper) 88%, transparent);
+      backdrop-filter: saturate(140%) blur(14px);
+      -webkit-backdrop-filter: saturate(140%) blur(14px);
+      border-bottom: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 22%, transparent);
+      justify-content: space-between;
+      z-index: 5;
+      animation: opt4-cycle 7s ease-in-out infinite;
+    }
+    .opt4-annotation {
+      position: absolute; bottom: 12px; right: 12px;
+      padding: 6px 10px;
+      background: rgba(10,20,16,0.72);
+      color: var(--color-paper);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+      border-radius: 6px;
+      backdrop-filter: blur(6px);
+      z-index: 6;
+    }
+    @keyframes opt4-cycle {
+      0%, 25%   { transform: translateY(0); }      /* visible */
+      35%, 65%  { transform: translateY(-100%); }  /* hidden (scroll down) */
+      75%, 100% { transform: translateY(0); }      /* revealed (scroll up) */
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .opt4-header { animation: none; }
+    }
+
+    /* -------- OPTION 5 — Full-bleed + header safe-zone (object-position trick) -------- */
+    .opt5-media { object-position: 50% 72%; }
+    .opt5-topfade {
+      position: absolute; top: 0; left: 0; right: 0; height: 110px;
+      background: linear-gradient(180deg, rgba(10,20,16,0.62) 0%, rgba(10,20,16,0.28) 55%, rgba(10,20,16,0.0) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+    .opt5-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 52px;
+      padding: 0 1.25rem;
+      background: transparent;
+      justify-content: space-between;
+      z-index: 5;
+    }
+    .opt5-header .brand .wm { color: var(--color-paper); }
+    .opt5-header .nav a { color: rgba(250,250,247,0.92); }
+    .opt5-header .nav a.is-active { color: var(--color-paper); }
+    .opt5-header .nav a.is-active::after { background: var(--color-saffron); }
+    .opt5-header .cta-pill { background: var(--color-saffron); color: var(--color-paper); }
+
+    /* -------- OPTION 6 — Full-bleed + re-encoded top extension (no content cropped, ever) -------- */
+    /* Stage uses the natural aspect of the extended video (1280:840) so the
+       extension band sits at top and the original frame fills below. */
+    .opt6-stage {
+      position: relative;
+      aspect-ratio: 1280 / 840;
+      background: var(--color-ink);
+      overflow: hidden;
+    }
+    .opt6-media { object-position: 50% 50%; }
+    /* Optional micro fade for header text legibility — much lighter than Option 5
+       since the blurred extension already darkens the top zone. */
+    .opt6-topfade {
+      position: absolute; top: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(180deg, rgba(10,20,16,0.32) 0%, rgba(10,20,16,0.0) 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+    /* Annotated guideline showing where the extension band ends */
+    .opt6-band-marker {
+      position: absolute; left: 0; right: 0;
+      /* 120px / 840 = 14.28% of the frame */
+      top: 14.28%;
+      border-top: 1px dashed rgba(255,179,0,0.6);
+      pointer-events: none;
+      z-index: 4;
+    }
+    .opt6-band-marker::after {
+      content: 'EXTENSION BAND ↑ · ORIGINAL FRAME ↓';
+      position: absolute; left: 12px; top: -16px;
+      padding: 2px 8px; border-radius: 4px;
+      background: rgba(255,179,0,0.85);
+      color: var(--color-ink);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em;
+    }
+    .opt6-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 52px;
+      padding: 0 1.25rem;
+      background: transparent;
+      justify-content: space-between;
+      z-index: 5;
+    }
+    .opt6-header .brand .wm { color: var(--color-paper); }
+    .opt6-header .nav a { color: rgba(250,250,247,0.92); }
+    .opt6-header .nav a.is-active { color: var(--color-paper); }
+    .opt6-header .nav a.is-active::after { background: var(--color-saffron); }
+    .opt6-header .cta-pill { background: var(--color-saffron); color: var(--color-paper); }
+
+    .opt5-safezone {
+      position: absolute; top: 8px; left: 12px;
+      padding: 4px 8px; border-radius: 999px;
+      background: rgba(230,81,0,0.85);
+      color: var(--color-paper);
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+      z-index: 6;
+    }
+
+    /* Option labels + tradeoffs */
+    .hopt-option {
+      padding-block: 3rem;
+      border-bottom: 1px solid color-mix(in oklab, var(--color-slate-2-soft) 18%, transparent);
+    }
+    .hopt-option:last-child { border-bottom: 0; }
+    .hopt-label {
+      display: inline-flex; align-items: baseline; gap: 14px;
+      margin-bottom: 18px;
+    }
+    .hopt-num {
+      font-family: var(--font-mono);
+      font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-saffron-text);
+    }
+    .hopt-title {
+      font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+      font-weight: 700;
+      color: var(--color-forest);
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .hopt-desc {
+      max-width: 70ch;
+      color: var(--color-slate);
+      font-size: 1rem;
+      line-height: 1.55;
+      margin: 0 0 1.5rem 0;
+    }
+    .hopt-tradeoffs {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 1.75rem;
+      max-width: 1180px;
+      margin-inline: auto;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    @media (min-width: 768px) {
+      .hopt-tradeoffs { grid-template-columns: 1fr 1fr; gap: 24px; }
+    }
+    .hopt-tradeoff h4 {
+      font-family: var(--font-mono);
+      font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--color-slate-2);
+      margin: 0 0 6px 0;
+      font-weight: 500;
+    }
+    .hopt-tradeoff p { margin: 0; color: var(--color-slate); }
+
+    /* Approve buttons */
+    .hopt-approve-row {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-top: 2rem;
+    }
+    .hopt-approve {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 20px; border-radius: 8px;
+      background: var(--color-forest); color: var(--color-paper);
+      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.15s ease-out;
+    }
+    .hopt-approve:hover { background: var(--color-forest-dark); color: var(--color-paper); }
+  </style>
+
+  <main class="bg-[color:var(--color-paper)]">
+    <div class="container-svge">
+
+      <!-- =================== OPTION 1 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num">Option 01</span>
+          <h2 class="hopt-title">Stacked Classic — header on top, video below</h2>
+        </div>
+        <p class="hopt-desc">
+          Opaque paper header sits at the top edge; the video starts immediately below it with no overlap.
+          The header is fully separated from the media, so no part of the video is ever hidden.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="opt1-stage">
+            <header class="hopt-header opt1-header">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="opt1-hero">
+              <img src={banner1024} alt="" class="hopt-media" />
+              <video class="hopt-media hopt-video" autoplay muted loop playsinline preload="metadata">
+                <source src={videoMp4} type="video/mp4" />
+              </video>
+              <div class="hopt-scrim"></div>
+              <div class="hopt-copy">
+                <p class="eyebrow">{eyebrow}</p>
+                <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+                <p class="sub">{sub}</p>
+                <div class="hopt-ctas">
+                  <a href="#" class="hopt-cta primary">Talk to us →</a>
+                  <a href="#" class="hopt-cta ghost">See the project →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Most predictable. Header never overlaps the video. Top edge of the photo is always visible.
+            Easiest to maintain across pages with very different banner crops.</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>Loses ~64–80px of vertical drama. Hero feels slightly "boxed in" rather than cinematic.
+            Less premium-feeling than full-bleed compositions.</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2001" class="hopt-approve">Approve Option 01</a></div>
+      </article>
+
+      <!-- =================== OPTION 2 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num">Option 02</span>
+          <h2 class="hopt-title">Floating Pill — small chrome over full-bleed video</h2>
+        </div>
+        <p class="hopt-desc">
+          Video bleeds top-to-bottom edge-to-edge. The header collapses to a translucent rounded pill that floats
+          with margin from the top and sides — small enough to never meaningfully obscure the video.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="hopt-stage">
+            <img src={banner1600} alt="" class="hopt-media" />
+            <video class="hopt-media hopt-video" autoplay muted loop playsinline preload="metadata">
+              <source src={videoMp4} type="video/mp4" />
+            </video>
+            <div class="hopt-scrim"></div>
+            <header class="hopt-header opt2-pill">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="hopt-copy">
+              <p class="eyebrow">{eyebrow}</p>
+              <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+              <p class="sub">{sub}</p>
+              <div class="hopt-ctas">
+                <a href="#" class="hopt-cta primary">Talk to us →</a>
+                <a href="#" class="hopt-cta ghost">See the project →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Most cinematic. Full-bleed video reads as the dominant visual. Header chrome occupies &lt; 6% of viewport.
+            Modern premium-product feel (Vercel, Linear-ish).</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>The pill technically sits over the video. On bright frames the pill needs strong backdrop-blur or it
+            becomes hard to read. Nav has to be tight (no full labels with long words).</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2002" class="hopt-approve">Approve Option 02</a></div>
+      </article>
+
+      <!-- =================== OPTION 3 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num">Option 03</span>
+          <h2 class="hopt-title">Framed Media Card — header above, video as inset card</h2>
+        </div>
+        <p class="hopt-desc">
+          Opaque header at top, then a strip of paper background, then the video lives inside a rounded card
+          with margin from the page edges. Reads like Stripe / Linear / Apple-announcement compositions — the
+          video is treated as a deliberate asset, not wallpaper.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="opt3-stage">
+            <header class="hopt-header opt3-header">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="opt3-body">
+              <div class="opt3-card">
+                <img src={banner1600} alt="" class="hopt-media" />
+                <video class="hopt-media hopt-video" autoplay muted loop playsinline preload="metadata">
+                  <source src={videoMp4} type="video/mp4" />
+                </video>
+                <div class="hopt-scrim"></div>
+                <div class="hopt-copy">
+                  <p class="eyebrow">{eyebrow}</p>
+                  <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+                  <p class="sub">{sub}</p>
+                  <div class="hopt-ctas">
+                    <a href="#" class="hopt-cta primary">Talk to us →</a>
+                    <a href="#" class="hopt-cta ghost">See the project →</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Most editorial / premium-product. Video is a deliberate composed asset. Header never touches the
+            video — they live in different visual zones. Plays well with the existing card system across the site.</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>Loses the most vertical real estate (header + page-bg gutter). Hero feels smaller. Less
+            "billboard" impact than full-bleed. Margins around the card cost ~40px on each side.</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2003" class="hopt-approve">Approve Option 03</a></div>
+      </article>
+
+      <!-- =================== OPTION 4 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num">Option 04</span>
+          <h2 class="hopt-title">Auto-hide Header — full-bleed, slides away on scroll-down</h2>
+        </div>
+        <p class="hopt-desc">
+          Full-bleed video starts at the top edge. Header is visible on first paint and on scroll-up; it slides
+          out of view when you scroll down so the video is unobstructed while reading. Returns the moment you
+          scroll up.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="hopt-stage">
+            <img src={banner1600} alt="" class="hopt-media" />
+            <video class="hopt-media hopt-video" autoplay muted loop playsinline preload="metadata">
+              <source src={videoMp4} type="video/mp4" />
+            </video>
+            <div class="hopt-scrim"></div>
+            <header class="hopt-header opt4-header">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="opt4-annotation">Header hides on scroll-down ↓ &nbsp;·&nbsp; reveals on scroll-up ↑</div>
+            <div class="hopt-copy">
+              <p class="eyebrow">{eyebrow}</p>
+              <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+              <p class="sub">{sub}</p>
+              <div class="hopt-ctas">
+                <a href="#" class="hopt-cta primary">Talk to us →</a>
+                <a href="#" class="hopt-cta ghost">See the project →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Full cinematic bleed while you read. Header is available on first paint (no discoverability hit)
+            and reappears as soon as you scroll up. Best of both worlds for media-heavy heroes.</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>Requires a scroll-direction script; a tiny bit of layout choreography. On very short pages or
+            in iframes (Embeds, GitHub Pages preview) the hide/show is less useful. Some users prefer always-visible nav.</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2004" class="hopt-approve">Approve Option 04</a></div>
+      </article>
+
+      <!-- =================== OPTION 5 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num">Option 05 · NEW</span>
+          <h2 class="hopt-title">Full-bleed + Header Safe-zone — no video content lost</h2>
+        </div>
+        <p class="hopt-desc">
+          Full-bleed video, edge to edge. The video's <code>object-position</code> is shifted to <strong>50% 72%</strong>
+          so the meaningful framing (paddy, horizon, flame) sits in the lower 70%; the natural sky/blank area at the top
+          becomes a "safe zone" for the header. A soft 110px gradient gives header text its legibility band without
+          adding any visible chrome. Header is fully transparent — paper text + saffron CTA float on the fade.
+          Result: full-bleed video AND nothing important hidden behind the header.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="hopt-stage">
+            <img src={banner1600} alt="" class="hopt-media opt5-media" />
+            <video class="hopt-media opt5-media hopt-video" autoplay muted loop playsinline preload="metadata">
+              <source src={videoMp4} type="video/mp4" />
+            </video>
+            <div class="opt5-topfade"></div>
+            <div class="hopt-scrim"></div>
+            <header class="hopt-header opt5-header">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" style="filter: brightness(0) invert(1);" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="hopt-copy">
+              <p class="eyebrow">{eyebrow}</p>
+              <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+              <p class="sub">{sub}</p>
+              <div class="hopt-ctas">
+                <a href="#" class="hopt-cta primary">Talk to us →</a>
+                <a href="#" class="hopt-cta ghost">See the project →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Full cinematic bleed. Top of the meaningful video frame is never hidden — the header sits over
+            the natural sky/empty zone the shot already has. No re-encode, no extension assets, no scroll
+            choreography. Works for every existing hero video so long as content isn't anchored to the top edge.</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>Depends on the video composition having sky / empty space at the top. If a hero ever needs
+            content right at the top edge (e.g. a sun framed at 5% from top), it gets pushed off-screen. Mitigation:
+            re-encode that specific video with a top extension (mirrored-blurred sky) and reuse the same layout.</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2005" class="hopt-approve">Approve Option 05</a></div>
+      </article>
+
+      <!-- =================== OPTION 6 =================== -->
+      <article class="hopt-option">
+        <div class="hopt-label">
+          <span class="hopt-num" style="color: var(--color-forest); background: color-mix(in oklab, var(--color-forest) 12%, transparent); padding: 4px 10px; border-radius: 4px;">Option 06 · SHIPPED</span>
+          <h2 class="hopt-title">Full-bleed + Re-encoded Top Extension — no content ever cropped</h2>
+        </div>
+        <p class="hopt-desc">
+          Same full-bleed framing as Option 05, but every hero video has been re-encoded with a <strong>120px mirrored-blurred top extension</strong>
+          (filter chain: <code>crop top 120px → vflip → gaussian-blur → vstack on top of original</code>). The video file
+          is now <code>1280×840</code> instead of <code>1280×720</code>; the original frame sits below an organic-feeling
+          "sky pad" that color-matches the scene. Header lives entirely on the extension band — guaranteed never to
+          obscure original content even if a future video has subject matter right at the top edge.
+        </p>
+
+        <div class="hopt-frame">
+          <div class="hopt-chrome"><span class="hopt-dots"><span></span><span></span><span></span></span><span class="hopt-url">kalasagar.github.io/sree-veeranjaneya-green-energy/</span></div>
+          <div class="opt6-stage">
+            <video class="hopt-media opt6-media hopt-video" autoplay muted loop playsinline preload="metadata">
+              <source src={videoMp4} type="video/mp4" />
+            </video>
+            <div class="opt6-topfade"></div>
+            <div class="hopt-scrim"></div>
+            <header class="hopt-header opt6-header">
+              <span class="brand">
+                <img src={mark} alt="" class="mark" style="filter: brightness(0) invert(1);" />
+                <span class="wm">SVGE</span>
+              </span>
+              <span class="nav">
+                {navItems.map((n, i) => <a href="#" class={i === 0 ? 'is-active' : ''}>{n}</a>)}
+              </span>
+              <a href="#" class="cta-pill">Talk to us →</a>
+            </header>
+            <div class="hopt-copy">
+              <p class="eyebrow">{eyebrow}</p>
+              <p class="mock-h1">{h1Top} <span class="accent">{h1Mid}</span> {h1Bottom}</p>
+              <p class="sub">{sub}</p>
+              <div class="hopt-ctas">
+                <a href="#" class="hopt-cta primary">Talk to us →</a>
+                <a href="#" class="hopt-cta ghost">See the project →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hopt-tradeoffs">
+          <div class="hopt-tradeoff">
+            <h3>Pros</h3>
+            <p>Most defensive. Header sits entirely above the original frame — zero risk of cropping meaningful
+            content, regardless of how a future video is composed. The extension is mirrored-blurred from the
+            video's own top pixels so it feels native, not stamped-on. Layout still reads as full-bleed cinema.</p>
+          </div>
+          <div class="hopt-tradeoff">
+            <h3>Cons</h3>
+            <p>Requires a one-time re-encode per hero video (already done for all 5: home, about, farmers, impact,
+            process). Video aspect changes from 16:9 to 1280:840 (~3:2). On widescreen viewports the video may
+            crop slightly on sides if hero is height-constrained — adjust with <code>object-position</code> if needed.</p>
+          </div>
+        </div>
+        <div class="hopt-approve-row"><a href="mailto:svge.india@gmail.com?subject=Approve%20Hero%20Option%2006" class="hopt-approve">Approve Option 06</a></div>
+      </article>
+
+    </div>
+  </main>
+
+  <script is:inline>
+    document.querySelectorAll('video.hopt-video').forEach(function (v) {
+      var ready = function () { v.classList.add('hopt-video--ready'); };
+      if (v.readyState >= 2) ready();
+      else v.addEventListener('loadeddata', ready, { once: true });
+    });
+  </script>
+</Base>
