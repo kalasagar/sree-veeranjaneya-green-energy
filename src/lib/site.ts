@@ -31,7 +31,7 @@ export const SITE = {
     h1Mid: 'Burned in your engine tomorrow.',
     h1Bottom: "We're closing that loop.",
     sub:
-      "Every winter, India burns about 14 million tonnes of paddy straw. The country imports 85% of its crude oil. Our 4-TPD Compressed Bio-Gas plant in Thatipadu, Vizianagaram is one answer to both. We hold an Indian Oil Letter of Intent dated 04 October 2024 and a 24-month clock to commission. The fuel is sold to IOCL; the organic manure that comes out alongside is sold across the same forty-kilometre farmer catchment we source from.",
+      "India burns about fourteen million tonnes of paddy straw every winter and imports eighty-five percent of its crude oil. Our 4-TPD Compressed Bio-Gas plant in Thatipadu, Vizianagaram answers both. We buy what would have been set on fire and sell clean fuel to Indian Oil.",
     ctas: [
       { label: 'Read the build', href: '/build/', tone: 'primary' as const },
       { label: 'Are you a farmer?', href: '/farmers/', tone: 'ghost' as const },
