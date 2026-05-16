@@ -2,16 +2,29 @@
 import Base from '../../layouts/Base.astro';
 import { link } from '../../lib/links';
 import Section from '../../components/Section.astro';
+import { SITE } from '../../lib/site';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news', ({ data }) => !data.draft);
-  return posts.map(post => ({ params: { id: post.id }, props: { post } }));
+  const sorted = [...posts].sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return posts.map(post => {
+    const i = sorted.findIndex(p => p.id === post.id);
+    const newer = i > 0 ? sorted[i - 1] : null;
+    const older = i < sorted.length - 1 ? sorted[i + 1] : null;
+    return { params: { id: post.id }, props: { post, newer, older } };
+  });
 }
 
-const { post } = Astro.props;
+const { post, newer, older } = Astro.props;
 const { Content } = await render(post);
-const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+const longFmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+const shortFmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+// Estimate read time from markdown body length (~200 wpm).
+const body = post.body ?? '';
+const wordCount = body.trim().split(/\s+/).filter(Boolean).length;
+const readMin = Math.max(1, Math.round(wordCount / 200));
 ---
 <Base
   title={post.data.title}
@@ -23,17 +36,198 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
     tags: post.data.tags,
   }}
 >
-  <Section>
-    <article class="max-w-3xl mx-auto">
-      <p class="eyebrow mb-3">{fmt.format(post.data.date)}</p>
-      <h1 class="text-4xl sm:text-6xl leading-[1.05] tracking-tight">{post.data.title}</h1>
-      <p class="serif text-xl sm:text-2xl mt-6 leading-relaxed text-[color:var(--color-slate)] italic max-w-[55ch]">{post.data.summary}</p>
-      <hr class="my-10 border-[color:var(--color-ink)] border-t-2 max-w-12" />
-      <div class="prose-svge serif drop-cap">
-        <Content />
+  <!-- Masthead -->
+  <Section narrow bg="paper-2">
+    <article class="svge-post-masthead">
+      <p class="eyebrow">
+        <a href={link('/press/#journal')} style="color: var(--color-saffron-text); text-decoration: none;">Build journal</a>
+      </p>
+      <h1 class="svge-post-title">{post.data.title}</h1>
+      <p class="svge-post-summary">{post.data.summary}</p>
+      <div class="svge-post-meta">
+        <time datetime={post.data.date.toISOString()}>{longFmt.format(post.data.date)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{readMin} min read</span>
+        {post.data.tags && post.data.tags.length > 0 && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span class="svge-post-tags">
+              {post.data.tags.map((t: string, i: number) => (
+                <span class="svge-post-tag">{t}{i < post.data.tags!.length - 1 ? ',' : ''}</span>
+              ))}
+            </span>
+          </>
+        )}
       </div>
-      <hr class="my-10 border-[color:var(--color-slate-2-soft)]/30" />
-      <p class="text-sm font-mono"><a href={link("/news/")}>← All posts</a></p>
     </article>
   </Section>
+
+  <!-- Body -->
+  <Section narrow>
+    <div class="prose-svge drop-cap svge-post-body">
+      <Content />
+    </div>
+  </Section>
+
+  <!-- After-post: signature + prev/next + back -->
+  <Section narrow bg="paper-2">
+    <div class="svge-post-after">
+      <!-- Signature -->
+      <div class="svge-post-signature">
+        <p class="eyebrow" style="color: var(--color-saffron-text);">Signed</p>
+        <p class="mt-2 svge-post-signature-line">The {SITE.short} team. {shortFmt.format(post.data.date)}.</p>
+        <p class="meta mt-3" style="color: var(--color-slate-2);">Permalink: <span style="font-family: var(--font-mono);">/news/{post.id}/</span></p>
+      </div>
+
+      <!-- Prev / Next navigation -->
+      {(newer || older) && (
+        <nav class="svge-post-nav" aria-label="Other posts in the build journal">
+          {newer ? (
+            <a href={link(`/news/${newer.id}/`)} class="svge-post-nav-cell">
+              <p class="eyebrow" style="color: var(--color-saffron-text);">← Newer</p>
+              <p class="svge-post-nav-title">{newer.data.title}</p>
+              <p class="meta mt-2" style="color: var(--color-slate-2);">{shortFmt.format(newer.data.date)}</p>
+            </a>
+          ) : (
+            <div class="svge-post-nav-cell svge-post-nav-empty">
+              <p class="eyebrow" style="color: var(--color-slate-2);">Newer</p>
+              <p class="meta mt-2" style="color: var(--color-slate-2);">You're at the latest post.</p>
+            </div>
+          )}
+          {older ? (
+            <a href={link(`/news/${older.id}/`)} class="svge-post-nav-cell svge-post-nav-cell--right">
+              <p class="eyebrow" style="color: var(--color-saffron-text);">Older →</p>
+              <p class="svge-post-nav-title">{older.data.title}</p>
+              <p class="meta mt-2" style="color: var(--color-slate-2);">{shortFmt.format(older.data.date)}</p>
+            </a>
+          ) : (
+            <div class="svge-post-nav-cell svge-post-nav-cell--right svge-post-nav-empty">
+              <p class="eyebrow" style="color: var(--color-slate-2);">Older</p>
+              <p class="meta mt-2" style="color: var(--color-slate-2);">The first post in this journal.</p>
+            </div>
+          )}
+        </nav>
+      )}
+
+      <!-- Back to journal -->
+      <p class="svge-post-back">
+        <a href={link('/press/#journal')}>← All posts in the build journal</a>
+      </p>
+    </div>
+  </Section>
 </Base>
+
+<style>
+  /* Masthead */
+  .svge-post-masthead { max-width: 65ch; }
+  .svge-post-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5.5vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    margin-top: 0.75rem;
+    max-width: 22ch;
+  }
+  .svge-post-summary {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+    line-height: 1.55;
+    color: var(--color-slate);
+    margin-top: 1.5rem;
+    max-width: 55ch;
+  }
+  .svge-post-meta {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-slate-2);
+  }
+  .svge-post-meta time { color: var(--color-ink); font-weight: 600; }
+  .svge-post-tags { display: inline-flex; flex-wrap: wrap; gap: 0.35rem; }
+  .svge-post-tag { color: var(--color-saffron-text); font-weight: 600; }
+
+  /* Body */
+  .svge-post-body { font-family: var(--font-display); }
+  .svge-post-body h2,
+  .svge-post-body h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin-top: 2.25rem;
+  }
+  .svge-post-body h2 { font-size: clamp(1.375rem, 2.4vw, 1.75rem); }
+  .svge-post-body h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); }
+  .svge-post-body h2 + p,
+  .svge-post-body h3 + p { margin-top: 0.75rem; }
+  .svge-post-body ul,
+  .svge-post-body ol { margin-top: 1rem; padding-left: 1.25rem; }
+  .svge-post-body li { margin-top: 0.35rem; }
+  .svge-post-body strong { color: var(--color-ink); font-weight: 700; }
+
+  /* After-post */
+  .svge-post-after { max-width: 65ch; }
+  .svge-post-signature {
+    border-top: 2px solid var(--color-ink);
+    padding-top: 1.5rem;
+  }
+  .svge-post-signature-line {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+  }
+
+  .svge-post-nav {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--rule-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .svge-post-nav { grid-template-columns: 1fr 1fr; }
+  }
+  .svge-post-nav-cell {
+    display: block;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-paper);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: background-color 0.15s ease;
+  }
+  .svge-post-nav-cell:hover { background: color-mix(in oklab, var(--color-saffron) 6%, var(--color-paper)); }
+  .svge-post-nav-cell--right { text-align: right; }
+  .svge-post-nav-empty { background: var(--color-paper); }
+  .svge-post-nav-title {
+    margin-top: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.25;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+  }
+
+  .svge-post-back {
+    margin-top: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .svge-post-back a { color: var(--color-slate); text-decoration: none; }
+  .svge-post-back a:hover { color: var(--color-saffron-text); }
+</style>
