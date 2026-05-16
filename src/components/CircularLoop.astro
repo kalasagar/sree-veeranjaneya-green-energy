@@ -64,74 +64,139 @@ const fights = [
 <div class={compact ? 'svge-circular-loop svge-circular-loop--compact' : 'svge-circular-loop'} data-reveal>
   <!-- The loop, in one drawing -->
   <figure class="loop-figure">
-    <svg viewBox="0 0 1000 640" role="img" aria-labelledby="loopTitle loopDesc" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 1000 720" role="img" aria-labelledby="loopTitle loopDesc" preserveAspectRatio="xMidYMid meet">
       <title id="loopTitle">The SVGE circular loop</title>
       <desc id="loopDesc">
-        Farmer's field at the top, our plant at the right, Indian Oil at the bottom, the same forty-kilometre catchment at the left. A saffron ring runs clockwise between them. Three inflows on the upper right (paddy straw, Napier grass, cattle dung) feed into the plant.
+        Farmer's field at the top, our plant at the right, Indian Oil at the bottom, the same forty-kilometre catchment at the left. A saffron ring runs clockwise between them. Three inflows from the upper right (paddy straw, Napier grass, cattle dung) feed into the plant. At the centre, 4 TPD of CBG and FOM leave each day.
       </desc>
 
       <defs>
-        <marker id="loopArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-          <path d="M0,1 L10,6 L0,11 z" fill="var(--color-saffron)"></path>
+        <radialGradient id="loopWash" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="var(--color-paper-2)" stop-opacity="0.7"/>
+          <stop offset="70%" stop-color="var(--color-paper)" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="var(--color-paper)" stop-opacity="0"/>
+        </radialGradient>
+        <marker id="loopArrow" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+          <path d="M0,1 L12,7 L0,13 z" fill="var(--color-saffron)"></path>
         </marker>
-        <marker id="inflowArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
-          <path d="M0,2 L10,6 L0,10 z" fill="var(--color-slate)"></path>
+        <marker id="inflowArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+          <path d="M0,2 L10,6 L0,10 z" fill="var(--color-saffron)"></path>
         </marker>
+
+        <!-- Decorative iconography. Drawn at unit scale and translated to each node. -->
+        <g id="iconPaddy">
+          <!-- a single paddy stalk with grains -->
+          <path d="M 0,18 Q 0,4 0,-18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <g fill="currentColor">
+            <ellipse cx="-3" cy="-14" rx="2" ry="3.5" transform="rotate(-20 -3 -14)"/>
+            <ellipse cx="3" cy="-10" rx="2" ry="3.5" transform="rotate(20 3 -10)"/>
+            <ellipse cx="-3" cy="-6" rx="2" ry="3.5" transform="rotate(-20 -3 -6)"/>
+            <ellipse cx="3" cy="-2" rx="2" ry="3.5" transform="rotate(20 3 -2)"/>
+          </g>
+        </g>
+        <g id="iconDigester">
+          <!-- a digester dome with a small flame -->
+          <path d="M -14,8 L -14,-2 A 14,14 0 0 1 14,-2 L 14,8 z" fill="currentColor"/>
+          <line x1="0" y1="-16" x2="0" y2="-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M 0,-18 Q -3,-22 0,-26 Q 3,-22 0,-18 z" fill="var(--color-saffron)"/>
+        </g>
+        <g id="iconFlame">
+          <!-- the IOCL flame: a stylised CBG flame -->
+          <path d="M 0,16 Q -10,4 -6,-8 Q -2,-4 -1,-12 Q 4,-2 8,2 Q 12,12 0,16 z" fill="var(--color-saffron)"/>
+          <path d="M 0,10 Q -3,4 -1,-2 Q 2,2 3,-4 Q 6,2 5,8 Q 3,12 0,10 z" fill="var(--color-gold)" opacity="0.85"/>
+        </g>
+        <g id="iconSeedling">
+          <!-- a single seedling rising from soil -->
+          <path d="M -16,12 L 16,12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 0,12 L 0,-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M 0,-2 Q -6,-6 -8,-12 Q -2,-10 0,-4" fill="currentColor"/>
+          <path d="M 0,-4 Q 6,-8 8,-14 Q 2,-12 0,-6" fill="currentColor"/>
+        </g>
+
+        <!-- Inflow chip icons (small) -->
+        <g id="chipStraw" fill="var(--color-saffron-text)">
+          <rect x="-9" y="-2" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
+          <rect x="-9" y="2" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
+          <rect x="-9" y="-6" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
+        </g>
+        <g id="chipNapier" fill="var(--color-saffron-text)">
+          <path d="M -8,8 Q -4,-4 0,-10 Q 4,-4 8,8 z"/>
+        </g>
+        <g id="chipDung" fill="var(--color-saffron-text)">
+          <ellipse cx="0" cy="0" rx="8" ry="5"/>
+          <ellipse cx="0" cy="0" rx="5" ry="3" fill="var(--color-paper)" opacity="0.35"/>
+        </g>
       </defs>
 
-      <!-- The saffron ring — four clockwise quadrants with end-arrow markers -->
-      <g class="loop-ring" fill="none" stroke="var(--color-saffron)" stroke-width="2.5" stroke-linecap="round">
-        <!-- N (500,140) → E (760,360) -->
-        <path d="M 500 140 A 220 220 0 0 1 760 360" marker-end="url(#loopArrow)"></path>
-        <!-- E (760,360) → S (500,580) -->
-        <path d="M 760 360 A 220 220 0 0 1 500 580" marker-end="url(#loopArrow)"></path>
-        <!-- S (500,580) → W (240,360) -->
-        <path d="M 500 580 A 220 220 0 0 1 240 360" marker-end="url(#loopArrow)"></path>
-        <!-- W (240,360) → N (500,140) -->
-        <path d="M 240 360 A 220 220 0 0 1 500 140" marker-end="url(#loopArrow)"></path>
+      <!-- Soft radial wash behind the ring for depth -->
+      <circle cx="500" cy="380" r="280" fill="url(#loopWash)"></circle>
+
+      <!-- Faint ghost ring for tonal anchor -->
+      <circle cx="500" cy="380" r="220" fill="none" stroke="var(--rule-color)" stroke-width="1" stroke-dasharray="2 6" opacity="0.55"></circle>
+
+      <!-- The saffron ring: four clockwise quadrants with mid-arc arrow markers -->
+      <g class="loop-ring" fill="none" stroke="var(--color-saffron)" stroke-width="4" stroke-linecap="round" data-draw>
+        <path d="M 500 160 A 220 220 0 0 1 720 380" marker-end="url(#loopArrow)"></path>
+        <path d="M 720 380 A 220 220 0 0 1 500 600" marker-end="url(#loopArrow)"></path>
+        <path d="M 500 600 A 220 220 0 0 1 280 380" marker-end="url(#loopArrow)"></path>
+        <path d="M 280 380 A 220 220 0 0 1 500 160" marker-end="url(#loopArrow)"></path>
       </g>
 
-      <!-- Inflows from outside the ring (top-right) -->
-      <g class="loop-inflows" fill="none" stroke="var(--color-slate)" stroke-width="1.5" stroke-dasharray="4 4">
-        <line x1="920" y1="100" x2="700" y2="220" marker-end="url(#inflowArrow)"></line>
-        <line x1="960" y1="220" x2="740" y2="290" marker-end="url(#inflowArrow)"></line>
-        <line x1="960" y1="360" x2="760" y2="360" marker-end="url(#inflowArrow)"></line>
-      </g>
-      <g class="loop-inflow-labels" font-family="var(--font-mono)" font-size="13" font-weight="600" letter-spacing="0.12em" fill="var(--color-saffron-text)" text-anchor="end" style="text-transform: uppercase;">
-        <text x="918" y="92">Paddy straw</text>
-        <text x="958" y="212">Napier grass</text>
-        <text x="958" y="352">Cattle dung</text>
+      <!-- Inflow rail: 3 dashed lines from chips into the plant node -->
+      <g class="loop-inflows" fill="none" stroke="var(--color-saffron-text)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.7">
+        <line x1="900" y1="120" x2="700" y2="260" marker-end="url(#inflowArrow)"></line>
+        <line x1="940" y1="220" x2="700" y2="340" marker-end="url(#inflowArrow)"></line>
+        <line x1="940" y1="340" x2="720" y2="400" marker-end="url(#inflowArrow)"></line>
       </g>
 
-      <!-- Four cardinal nodes (ink-filled discs) -->
+      <!-- Inflow chips (icon + label) -->
+      <g class="loop-inflow-chips" font-family="var(--font-mono)" font-size="13" font-weight="600" letter-spacing="0.12em" fill="var(--color-saffron-text)" text-anchor="end" style="text-transform: uppercase;">
+        <g transform="translate(900,120)"><use href="#chipStraw" transform="translate(20,0)"/></g>
+        <text x="888" y="115">Paddy straw</text>
+        <g transform="translate(940,220)"><use href="#chipNapier" transform="translate(20,0)"/></g>
+        <text x="928" y="215">Napier grass</text>
+        <g transform="translate(940,340)"><use href="#chipDung" transform="translate(20,0)"/></g>
+        <text x="928" y="335">Cattle dung</text>
+      </g>
+
+      <!-- Four cardinal nodes (ink-filled discs with iconography + label) -->
       <g class="loop-nodes">
-        <circle cx="500" cy="140" r="64" fill="var(--color-ink)"></circle>
-        <circle cx="760" cy="360" r="64" fill="var(--color-ink)"></circle>
-        <circle cx="500" cy="580" r="64" fill="var(--color-ink)"></circle>
-        <circle cx="240" cy="360" r="64" fill="var(--color-ink)"></circle>
+        <g transform="translate(500,160)">
+          <circle r="70" fill="var(--color-ink)"></circle>
+          <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconPaddy"/></g>
+          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="20" style="text-transform: uppercase;">Farmer's field</text>
+        </g>
+        <g transform="translate(720,380)">
+          <circle r="70" fill="var(--color-ink)"></circle>
+          <g transform="translate(0,-10)" color="var(--color-gold)"><use href="#iconDigester"/></g>
+          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Our plant</text>
+        </g>
+        <g transform="translate(500,600)">
+          <circle r="70" fill="var(--color-ink)"></circle>
+          <g transform="translate(0,-12)"><use href="#iconFlame"/></g>
+          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Indian Oil</text>
+        </g>
+        <g transform="translate(280,380)">
+          <circle r="70" fill="var(--color-ink)"></circle>
+          <g transform="translate(0,-8)" color="var(--color-gold)"><use href="#iconSeedling"/></g>
+          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">40 km belt</text>
+        </g>
       </g>
 
-      <!-- Node labels (paper text inside ink discs) -->
-      <g class="loop-node-labels" font-family="var(--font-display)" font-weight="700" font-size="20" fill="var(--color-paper)" text-anchor="middle" dominant-baseline="middle">
-        <text x="500" y="134">Farmer's</text>
-        <text x="500" y="158">field</text>
-
-        <text x="760" y="354">Our</text>
-        <text x="760" y="378">plant</text>
-
-        <text x="500" y="574">Indian</text>
-        <text x="500" y="598">Oil</text>
-
-        <text x="240" y="354">40 km</text>
-        <text x="240" y="378">belt</text>
+      <!-- Flow labels on the saffron arcs -->
+      <g class="loop-flow-labels" font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.16em" fill="var(--color-saffron-text)" text-anchor="middle" style="text-transform: uppercase;">
+        <text x="664" y="510">CBG dispatch →</text>
+        <text x="336" y="510">← FOM return</text>
+        <text x="336" y="270">↑ Soil rebuilds</text>
+        <text x="664" y="270">↓ Mass-flow in</text>
       </g>
 
-      <!-- Outflow labels (mono caps on the saffron arcs) -->
-      <g class="loop-flow-labels" font-family="var(--font-mono)" font-size="12" font-weight="600" letter-spacing="0.14em" fill="var(--color-saffron-text)" text-anchor="middle" style="text-transform: uppercase;">
-        <text x="690" y="490">CBG dispatch</text>
-        <text x="310" y="490">FOM return</text>
-        <text x="310" y="240">Soil rebuilds</text>
-        <text x="690" y="240">Mass-flow in</text>
+      <!-- Centre heart: the headline figure -->
+      <g class="loop-heart" text-anchor="middle">
+        <circle cx="500" cy="380" r="86" fill="var(--color-paper)" stroke="var(--color-saffron)" stroke-width="1.5"></circle>
+        <text x="500" y="368" font-family="var(--font-display)" font-weight="700" font-size="36" fill="var(--color-ink)" letter-spacing="-0.02em">4 TPD</text>
+        <text x="500" y="395" font-family="var(--font-mono)" font-size="10" font-weight="600" letter-spacing="0.22em" fill="var(--color-saffron-text)" style="text-transform: uppercase;">CBG · FOM</text>
+        <text x="500" y="416" font-family="var(--font-body)" font-size="10" fill="var(--color-slate)">every operating day</text>
       </g>
     </svg>
 
@@ -178,8 +243,24 @@ const fights = [
   .loop-figure svg {
     width: 100%;
     height: auto;
-    max-height: 560px;
+    max-height: 640px;
     display: block;
+  }
+  /* Saffron arc draws in when the SVG enters view (uses Base.astro's
+     data-draw observer; respects prefers-reduced-motion via the
+     fast-path in Base which immediately marks [data-drawn]). */
+  .loop-ring path {
+    stroke-dasharray: var(--draw-length, 1000);
+    stroke-dashoffset: var(--draw-length, 1000);
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  [data-drawn] .loop-ring path { stroke-dashoffset: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .loop-ring path {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+      transition: none;
+    }
   }
   .loop-caption {
     text-align: left;
