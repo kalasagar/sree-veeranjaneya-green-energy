@@ -1,18 +1,17 @@
 ---
 /**
- * Magazine deck under each hero. Eyebrow + bold one-liner.
+ * Magazine deck under each hero.
  */
 interface Props {
   eyebrow?: string;
   deck: string;
-  align?: 'left' | 'center';
 }
-const { eyebrow, deck, align = 'left' } = Astro.props;
+const { eyebrow, deck } = Astro.props;
 ---
 <section class="kicker">
-  <div class={`container-svge py-8 sm:py-10 ${align === 'center' ? 'text-center' : ''}`}>
-    {eyebrow && <p class="kicker-eyebrow">{eyebrow}</p>}
-    <div class={`kicker-rule mt-3 ${align === 'center' ? 'mx-auto' : ''}`}></div>
-    <h2 class="kicker-deck mt-3 max-w-4xl"><Fragment set:html={deck} /></h2>
+  <div class="container-svge">
+    {eyebrow && <p class="eyebrow kicker-eyebrow">{eyebrow}</p>}
+    <div class="kicker-rule mt-3"></div>
+    <h2 class="kicker-deck mt-4"><Fragment set:html={deck} /></h2>
   </div>
 </section>

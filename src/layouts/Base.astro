@@ -6,10 +6,9 @@ import Footer from '../components/Footer.astro';
 import StatusStrip from '../components/StatusStrip.astro';
 import { SITE } from '../lib/site';
 import { stripBase } from '../lib/links';
+
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
-const path = stripBase(Astro.url.pathname);
-const tone = SITE.tones[path] ?? 'paper';
 
 interface Props {
   title?: string;
@@ -17,12 +16,14 @@ interface Props {
   ogImage?: string;
   canonical?: string;
   article?: { title: string; description: string; datePublished: Date; tags?: string[] };
+  heroOver?: boolean;
 }
 
-const { title, description, ogImage = asset('brand/og_image.png'), canonical, article } = Astro.props;
+const { title, description, ogImage = asset('brand/og_image.png'), canonical, article, heroOver = false } = Astro.props;
 const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
 const desc = description ?? SITE.description;
 const url = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
+const path = stripBase(Astro.url.pathname);
 
 const orgJsonLd = {
   '@context': 'https://schema.org',
@@ -45,18 +46,7 @@ const orgJsonLd = {
   location: {
     '@type': 'Place',
     name: `${SITE.plant.village} CBG Plant`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: SITE.plant.village,
-      addressRegion: SITE.plant.state,
-      postalCode: SITE.plant.pin,
-      addressCountry: 'IN',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: SITE.plant.lat,
-      longitude: SITE.plant.lng,
-    },
+    geo: { '@type': 'GeoCoordinates', latitude: SITE.plant.lat, longitude: SITE.plant.lng },
   },
   sameAs: [SITE.social.linkedin],
   identifier: [
@@ -71,30 +61,22 @@ const orgJsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} />
-    <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
+    <link rel="icon" type="image/x-icon" href={asset('favicon.ico')} />
+    <link rel="apple-touch-icon" href={asset('apple-touch-icon.png')} />
     <link rel="canonical" href={url} />
-    {Astro.url.pathname === '/' && <>
-      <link rel="preload" href={asset("banners/hero_paddy_dawn.avif")} as="image" type="image/avif" fetchpriority="high" />
-      <link rel="preload" href={asset("brand/mark_simple.svg")} as="image" type="image/svg+xml" />
-    </>}
-    {Astro.url.pathname === '/about/' && <link rel="preload" href={asset("banners/about_founder_field.avif")} as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/project/' && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
-    {(Astro.url.pathname === '/process/' || Astro.url.pathname === '/process/engineering/') && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/impact/' && <link rel="preload" href={asset("banners/impact_fom_soil.avif")} as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/farmers/' && <link rel="preload" href={asset("banners/farmers_hands_straw.avif")} as="image" type="image/avif" fetchpriority="high" />}
-    {Astro.url.pathname === '/press/' && <link rel="preload" href={asset("banners/press_kit.avif")} as="image" type="image/avif" fetchpriority="high" />}
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;0,16..72,600;1,16..72,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;0,16..72,600;1,16..72,400&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
     </noscript>
+
     <title>{fullTitle}</title>
     <meta name="description" content={desc} />
     <meta name="theme-color" content="#1B5E20" />
@@ -113,38 +95,30 @@ const orgJsonLd = {
         headline: article.title,
         description: article.description,
         datePublished: article.datePublished.toISOString(),
-        dateModified: article.datePublished.toISOString(),
         url,
         image: new URL(ogImage, SITE.url).href,
         author: { '@type': 'Organization', name: SITE.legalName, url: SITE.url },
-        publisher: {
-          '@type': 'Organization',
-          name: SITE.legalName,
-          logo: { '@type': 'ImageObject', url: new URL('/brand/mark_512.png', SITE.url).href },
-        },
+        publisher: { '@type': 'Organization', name: SITE.legalName, logo: { '@type': 'ImageObject', url: new URL('/brand/mark_512.png', SITE.url).href } },
         keywords: article.tags?.join(', '),
         mainEntityOfPage: url,
       })} />
     )}
-    <link rel="alternate" type="application/rss+xml" title="SVGE — News" href={asset("news/rss.xml")} />
+    <link rel="alternate" type="application/rss+xml" title="SVGE — Build journal" href={asset('news/rss.xml')} />
     <meta name="generator" content={Astro.generator} />
     <ClientRouter fallback="animate" />
   </head>
-  <body data-tone={tone}>
-    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:p-2 focus:rounded">Skip to content</a>
-    <Header />
+  <body data-path={path}>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header heroOver={heroOver} />
     <StatusStrip />
-    <main id="main">
-      <slot />
-    </main>
+    <main id="main"><slot /></main>
     <Footer />
 
-    <!-- Scroll-reveal + hero parallax + stat count-up. Re-runs on every View-Transition navigation. -->
     <script is:inline data-astro-rerun>
       (function () {
         var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // ---- Scroll reveal ----
+        // Reveal observer
         var revealEls = document.querySelectorAll('[data-reveal]:not([data-revealed])');
         if (rm) {
           revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
@@ -162,32 +136,59 @@ const orgJsonLd = {
           revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
         }
 
-        // ---- Hero parallax ----
+        // Hero parallax (only on hero pages — looks for [data-hero-bg])
         if (!rm) {
-          var parallaxEls = document.querySelectorAll('[data-parallax]');
-          if (parallaxEls.length) {
+          var pxEls = document.querySelectorAll('[data-hero-bg]:not([data-hero-bg-bound])');
+          pxEls.forEach(function (el) {
+            el.setAttribute('data-hero-bg-bound', '');
             var ticking = false;
             function onScroll() {
               if (ticking) return;
               ticking = true;
               requestAnimationFrame(function () {
                 var y = window.scrollY;
-                parallaxEls.forEach(function (el) {
-                  var r = el.getBoundingClientRect();
-                  if (r.bottom > 0 && r.top < window.innerHeight) {
-                    var offset = Math.max(-30, Math.min(0, -y * 0.12));
-                    el.style.transform = 'translate3d(0,' + offset + 'px,0)';
-                  }
-                });
+                var offset = Math.max(-30, Math.min(0, -y * 0.12));
+                el.style.transform = 'translate3d(0,' + offset + 'px,0)';
                 ticking = false;
               });
             }
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
-          }
+          });
         }
 
-        // ---- SVG draw-on-scroll ----
+        // Count-up
+        if (!rm && 'IntersectionObserver' in window) {
+          var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
+          var co = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              var el = e.target;
+              co.unobserve(el);
+              el.setAttribute('data-counted', '');
+              var to = parseFloat(el.getAttribute('data-count-to'));
+              var prefix = el.getAttribute('data-prefix') || '';
+              var suffix = el.getAttribute('data-suffix') || '';
+              var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+              var thousands = el.getAttribute('data-thousands') === 'true';
+              var start = performance.now();
+              var dur = 1200;
+              function step(t) {
+                var p = Math.min(1, (t - start) / dur);
+                var eased = 1 - Math.pow(1 - p, 3);
+                var v = to * eased;
+                var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
+                if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                el.textContent = prefix + s + suffix;
+                if (p < 1) requestAnimationFrame(step);
+              }
+              requestAnimationFrame(step);
+            });
+          }, { threshold: 0.4 });
+          countEls.forEach(function (el) { co.observe(el); });
+        }
+
+        // SVG draw-on-scroll
         if (!rm && 'IntersectionObserver' in window) {
           var drawEls = document.querySelectorAll('[data-draw]:not([data-drawn])');
           var drawObs = new IntersectionObserver(function (entries) {
@@ -195,52 +196,29 @@ const orgJsonLd = {
               if (!e.isIntersecting) return;
               var el = e.target;
               drawObs.unobserve(el);
-              var paths = el.querySelectorAll('path');
-              paths.forEach(function (p) {
-                try {
-                  var len = p.getTotalLength();
-                  p.style.setProperty('--draw-length', len);
-                } catch (err) {}
+              el.querySelectorAll('path').forEach(function (p) {
+                try { p.style.setProperty('--draw-length', p.getTotalLength()); } catch (err) {}
               });
               requestAnimationFrame(function () { el.setAttribute('data-drawn', ''); });
             });
           }, { threshold: 0.18 });
           drawEls.forEach(function (el) { drawObs.observe(el); });
-        } else {
-          document.querySelectorAll('[data-draw]').forEach(function (el) { el.setAttribute('data-drawn', ''); });
         }
 
-        // ---- Stat count-up ----
+        // Hero video lazy-load (data-hero-bg-video)
         if (!rm) {
-          var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
-          if ('IntersectionObserver' in window) {
-            var co = new IntersectionObserver(function (entries) {
-              entries.forEach(function (e) {
-                if (!e.isIntersecting) return;
-                var el = e.target;
-                co.unobserve(el);
-                el.setAttribute('data-counted', '');
-                var to = parseFloat(el.getAttribute('data-count-to'));
-                var prefix = el.getAttribute('data-prefix') || '';
-                var suffix = el.getAttribute('data-suffix') || '';
-                var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-                var thousands = el.getAttribute('data-thousands') === 'true';
-                var start = performance.now();
-                var dur = 1200;
-                function step(t) {
-                  var p = Math.min(1, (t - start) / dur);
-                  var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-                  var v = to * eased;
-                  var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
-                  if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                  el.textContent = prefix + s + suffix;
-                  if (p < 1) requestAnimationFrame(step);
-                }
-                requestAnimationFrame(step);
-              });
-            }, { threshold: 0.4 });
-            countEls.forEach(function (el) { co.observe(el); });
-          }
+          var vids = document.querySelectorAll('[data-hero-bg-video]:not([data-vid-bound])');
+          vids.forEach(function (v) {
+            v.setAttribute('data-vid-bound', '');
+            var src = v.getAttribute('data-src');
+            if (!src) return;
+            v.src = src;
+            v.load();
+            v.addEventListener('canplay', function () {
+              v.style.opacity = v.getAttribute('data-target-opacity') || '1';
+              v.play().catch(function () {});
+            }, { once: true });
+          });
         }
       })();
     </script>

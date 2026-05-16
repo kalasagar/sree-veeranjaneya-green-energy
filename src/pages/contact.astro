@@ -6,125 +6,51 @@ import Kicker from '../components/Kicker.astro';
 import Stakeholders from '../components/Stakeholders.astro';
 import { SITE } from '../lib/site';
 ---
-<Base title="Contact" description="Pick the door that fits — farmer, partner, journalist, or future hire — and we'll route your message.">
+<Base title="Contact" description="Pick the door that fits — farmer, partner, journalist, future hire — we route your message." heroOver={true}>
   <FullBleedHero
     banner="about_founder_field"
-    alt="Founder walking unhurriedly down a narrow path between Napier grass plots at golden hour."
+    alt="Founder walking down a path between Napier grass plots at golden hour."
     eyebrow="Contact"
     objectPosition="50% 70%"
+    height="xl"
   >
-    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2.75rem, 6vw, 5rem);">
       Pick the door<br/>
-      <span style="color:#FFB300;">that fits.</span>
+      <span style="color: var(--color-gold);">that fits.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      Routes faster than a generic form. Pick one:
+      Routes faster than a generic form. Pick one.
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Contact · seven audiences" deck='Seven audiences. <span style="color:var(--color-saffron-text);">One inbox.</span>' />
+  <Kicker eyebrow="Contact · seven audiences" deck='Seven audiences. <span style="color: var(--color-saffron-text);">One inbox.</span>' />
 
-  <Section>
-    <Stakeholders />
-  </Section>
+  <Section><Stakeholders /></Section>
 
-  <Section eyebrow="Or use the form" title="A single message gets to all founders." bg="paper-2">
-    <div class="grid-12">
-      <div class="col-8">
-        <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" class="space-y-5">
-          <label class="block">
-            <span class="eyebrow text-[color:var(--color-slate-2)]">Your name</span>
-            <input required name="name" type="text" class="mt-1 w-full rounded-md border border-[color:var(--color-slate-2-soft)]/40 bg-[color:var(--color-paper)] px-4 py-3 text-base" />
-          </label>
-          <label class="block">
-            <span class="eyebrow text-[color:var(--color-slate-2)]">Email</span>
-            <input required name="email" type="email" class="mt-1 w-full rounded-md border border-[color:var(--color-slate-2-soft)]/40 bg-[color:var(--color-paper)] px-4 py-3 text-base" />
-          </label>
-          <label class="block">
-            <span class="eyebrow text-[color:var(--color-slate-2)]">Topic</span>
-            <select name="topic" class="mt-1 w-full rounded-md border border-[color:var(--color-slate-2-soft)]/40 bg-[color:var(--color-paper)] px-4 py-3 text-base">
-              <option>Feedstock supply (farmer / aggregator)</option>
-              <option>EPC / logistics / FOM partnership</option>
-              <option>Journalist / press</option>
-              <option>Hiring / careers</option>
-              <option>Lender / banking</option>
-              <option>Something else</option>
-            </select>
-          </label>
-          <label class="block">
-            <span class="eyebrow text-[color:var(--color-slate-2)]">Message</span>
-            <textarea required name="message" rows="6" class="mt-1 w-full rounded-md border border-[color:var(--color-slate-2-soft)]/40 bg-[color:var(--color-paper)] px-4 py-3 text-base"></textarea>
-          </label>
-          <input type="text" name="company_hp" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
-          <button type="submit" class="btn btn-primary">Send message →</button>
-          <p id="formStatus" class="text-xs font-mono text-[color:var(--color-slate-2)]"></p>
-        </form>
-      </div>
-
-      <aside class="col-4 space-y-5">
-        <div class="rounded-xl bg-[color:var(--color-paper)] p-6 text-sm">
-          <p class="eyebrow mb-2">Email</p>
-          <a class="text-lg font-semibold" href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          <p class="mt-3 text-xs text-[color:var(--color-slate-2)] leading-relaxed">No phone published until the plant is operational. Email reaches both directors.</p>
-        </div>
-        <div class="rounded-xl bg-[color:var(--color-paper)] p-6 text-sm leading-relaxed">
-          <p class="eyebrow mb-2">Registered Office</p>
-          <p>{SITE.registeredOffice.line1}<br/>{SITE.registeredOffice.line2}<br/>{SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}<br/>India</p>
-        </div>
-        <div class="rounded-xl bg-[color:var(--color-paper)] p-6 text-sm leading-relaxed">
-          <p class="eyebrow mb-2">Plant Site</p>
-          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal<br/>{SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}<br/><span class="font-mono text-xs">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
-        </div>
+  <Section eyebrow="Or use the form" title="A single message reaches all founders." bg="paper-2">
+    <div class="grid lg:grid-cols-[2fr_1fr] gap-8">
+      <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" class="space-y-5 max-w-2xl">
+        <label class="block">
+          <span class="eyebrow">Your name</span>
+          <input required name="name" type="text" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3" />
+        </label>
+        <label class="block">
+          <span class="eyebrow">Email</span>
+          <input required name="email" type="email" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3" />
+        </label>
+        <label class="block">
+          <span class="eyebrow">Message</span>
+          <textarea required name="message" rows="6" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3"></textarea>
+        </label>
+        <button type="submit" class="btn btn-primary">Send →</button>
+      </form>
+      <aside class="svge-card p-6">
+        <p class="eyebrow mb-2">Email directly</p>
+        <p class="text-lg"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p class="meta mt-3">Reply within two business days.</p>
+        <p class="eyebrow mt-6 mb-2">Office hours</p>
+        <p class="text-sm">Mon–Sat · 09:00–18:00 IST</p>
       </aside>
     </div>
   </Section>
-
-  <!-- WHAT HAPPENS NEXT — closing strip -->
-  <Section eyebrow="What happens after you send" title="Three commitments.">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <article class="svge-card p-6 sm:p-7 relative">
-        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">01</p>
-        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Reply within 2 business days</h3>
-        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">No auto-responders, no support tickets, no copy-paste. Both directors see every message.</p>
-      </article>
-      <article class="svge-card p-6 sm:p-7 relative">
-        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">02</p>
-        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Plain answer, no jargon</h3>
-        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">If we can't help we say so. If we can, we will tell you the next concrete step.</p>
-      </article>
-      <article class="svge-card p-6 sm:p-7 relative">
-        <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">03</p>
-        <h3 class="text-lg leading-snug mb-2 text-[color:var(--color-forest)]">Phone call by appointment</h3>
-        <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">Once construction begins. Use the form first; we will call you back at a time that fits.</p>
-      </article>
-    </div>
-  </Section>
 </Base>
-<script is:inline>
-  document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const status = document.getElementById('formStatus');
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalLabel = submitBtn?.textContent;
-    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
-    status.textContent = '';
-    try {
-      const fd = new FormData(form);
-      const r = await fetch(form.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
-      if (r.ok) {
-        form.reset();
-        status.textContent = 'Thank you — we received your message.';
-        status.style.color = '#1B5E20';
-      } else {
-        status.textContent = 'Could not send. Please email svge.india@gmail.com directly. (' + r.status + ')';
-        status.style.color = '#B34200';
-      }
-    } catch {
-      status.textContent = 'Network error. Please email svge.india@gmail.com directly.';
-      status.style.color = '#B34200';
-    } finally {
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalLabel ?? 'Send message →'; }
-    }
-  });
-</script>

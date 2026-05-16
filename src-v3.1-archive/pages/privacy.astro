@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
+import Section from '../components/Section.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { SITE } from '../lib/site';
+
+const lastUpdated = '2026-05-14';
+---
+<Base title="Privacy Policy" description="How Sree Veeranjaneya Green Energy handles your personal data — short, plain, India DPDP Act 2023 compliant.">
+  <PageTitle
+    eyebrow="Legal"
+    title="Privacy Policy"
+    lede="What we collect, why, and what we don't. Short, plain, India DPDP Act 2023 compliant."
+    meta={`Last updated · ${lastUpdated}`}
+  />
+  <Section narrow>
+    <div class="prose-svge">
+      <p>
+        This policy explains what personal data we collect on <a href={SITE.url}>{SITE.url}</a>, why, and what we do with it. It applies to {SITE.legalName} (CIN {SITE.cin}), the data fiduciary, contactable at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><strong>Contact form data.</strong> When you submit the form at <a href={link("/contact/")}>/contact/</a>, we receive your name, email, chosen topic, and message. No other fields.</li>
+        <li><strong>Server logs.</strong> Cloudflare Pages (our host) automatically logs your IP address, user agent, and the URL you requested, for security and abuse prevention. We do not read these logs in the normal course of operations.</li>
+        <li><strong>Analytics.</strong> If enabled, Cloudflare Web Analytics records aggregated, anonymised page views. No cookies. No personal identifiers.</li>
+      </ul>
+
+      <h2>What we do not collect</h2>
+      <ul>
+        <li>No tracking cookies, no third-party advertising pixels, no Google Analytics, no Facebook Pixel.</li>
+        <li>No payment data. We do not sell anything on this site.</li>
+        <li>No sensitive personal data — caste, religion, health, biometrics, financial info — under any circumstance.</li>
+      </ul>
+
+      <h2>Why we collect it</h2>
+      <p>One reason: to reply to your message. Contact form data is forwarded to our company inbox via MailChannels (our email relay), and read by the two directors. We use it to write back. That's it.</p>
+
+      <h2>How long we keep it</h2>
+      <ul>
+        <li>Contact form messages: retained in our email inbox indefinitely unless you ask us to delete them.</li>
+        <li>Server logs: kept by Cloudflare per their policy (typically 30 days).</li>
+        <li>Analytics: aggregated only — there is no record to delete.</li>
+      </ul>
+
+      <h2>Who we share it with</h2>
+      <p>
+        Two third parties touch your data, only as processors:
+      </p>
+      <ul>
+        <li><strong>Cloudflare Inc.</strong> — hosts the site and runs the contact-form function. <a href="https://www.cloudflare.com/privacypolicy/">Their privacy policy</a>.</li>
+        <li><strong>MailChannels Inc.</strong> — relays the contact email to our inbox. <a href="https://mailchannels.com/privacy-policy">Their privacy policy</a>.</li>
+      </ul>
+      <p>Nobody else. We do not sell or rent personal data to anyone, under any circumstance.</p>
+
+      <h2>Your rights under India's DPDP Act 2023</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Know what personal data of yours we hold.</li>
+        <li>Correct anything inaccurate.</li>
+        <li>Ask us to delete your data.</li>
+        <li>Withdraw consent at any time, after which we will stop processing.</li>
+        <li>Nominate someone else to exercise these rights on your behalf, if you become unable to.</li>
+        <li>Raise a complaint with the Data Protection Board of India if we don't resolve your concern.</li>
+      </ul>
+      <p>
+        To exercise any of these rights, email <a href={`mailto:${SITE.email}?subject=Privacy%20request`}>{SITE.email}</a> with subject line "Privacy request". We aim to respond within 14 days.
+      </p>
+
+      <h2>Children</h2>
+      <p>This site is not directed at people under 18. We do not knowingly collect data from minors. If you are a minor, do not submit the contact form.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If we change it, we update the "Last updated" date at the top and the new version takes effect from that date. Material changes will also be noted on <a href={link("/news/")}>our news page</a>.</p>
+    </div>
+  </Section>
+</Base>

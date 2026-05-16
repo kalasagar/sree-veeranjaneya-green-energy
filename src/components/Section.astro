@@ -1,32 +1,25 @@
 ---
+/**
+ * Editorial section wrapper. Eyebrow + display title + slot.
+ */
 interface Props {
+  id?: string;
   eyebrow?: string;
   title?: string;
-  lede?: string;       // optional sub-headline / intro sentence
-  numeral?: string;    // '01' style marker
-  narrow?: boolean;    // narrow container for long-form prose
-  bg?: 'paper' | 'paper-2' | 'ink' | 'forest';
-  id?: string;
+  bg?: 'paper' | 'paper-2' | 'ink';
+  narrow?: boolean;
+  lede?: string;
 }
-const { eyebrow, title, lede, numeral, narrow = false, bg = 'paper', id } = Astro.props;
-
-const bgClass = {
-  'paper': '',
-  'paper-2': 'bg-[color:var(--color-paper-2)]',
-  'ink': 'bg-[color:var(--color-ink)] text-[color:var(--color-paper)]',
-  'forest': 'bg-[color:var(--color-forest)] text-[color:var(--color-paper)]',
-}[bg];
+const { id, eyebrow, title, bg = 'paper', narrow = false, lede } = Astro.props;
+const bgClass = bg === 'paper-2' ? 'section-paper-2' : bg === 'ink' ? 'section-ink' : '';
 ---
 <section id={id} class={`section ${bgClass}`}>
-  <div class={`container-svge ${narrow ? 'max-w-3xl' : ''}`}>
-    {(eyebrow || title || numeral || lede) && (
-      <header class="mb-10 sm:mb-14" data-reveal>
-        {numeral && <p class="numeral mb-4">{numeral}</p>}
+  <div class={narrow ? 'container-narrow' : 'container-svge'}>
+    {(eyebrow || title) && (
+      <header class="mb-8 sm:mb-12" data-reveal>
         {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-        {title && (
-          <h2 class={`text-3xl sm:text-4xl lg:text-5xl leading-[1.05] max-w-[24ch] ${bg === 'ink' || bg === 'forest' ? 'text-[color:var(--color-paper)]' : ''}`}>{title}</h2>
-        )}
-        {lede && <p class={`lede mt-5 ${bg === 'ink' || bg === 'forest' ? 'text-[color:var(--color-paper)]/90' : ''}`}>{lede}</p>}
+        {title && <h2 class="display max-w-[24ch]">{title}</h2>}
+        {lede && <p class="lede mt-5">{lede}</p>}
       </header>
     )}
     <slot />

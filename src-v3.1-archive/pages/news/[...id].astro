@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/links';
+import Section from '../../components/Section.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news', ({ data }) => !data.draft);
+  return posts.map(post => ({ params: { id: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+---
+<Base
+  title={post.data.title}
+  description={post.data.summary}
+  article={{
+    title: post.data.title,
+    description: post.data.summary,
+    datePublished: post.data.date,
+    tags: post.data.tags,
+  }}
+>
+  <Section>
+    <article class="max-w-3xl mx-auto">
+      <p class="eyebrow mb-3">{fmt.format(post.data.date)}</p>
+      <h1 class="text-4xl sm:text-6xl leading-[1.05] tracking-tight">{post.data.title}</h1>
+      <p class="serif text-xl sm:text-2xl mt-6 leading-relaxed text-[color:var(--color-slate)] italic max-w-[55ch]">{post.data.summary}</p>
+      <hr class="my-10 border-[color:var(--color-ink)] border-t-2 max-w-12" />
+      <div class="prose-svge serif drop-cap">
+        <Content />
+      </div>
+      <hr class="my-10 border-[color:var(--color-slate-2-soft)]/30" />
+      <p class="text-sm font-mono"><a href={link("/news/")}>← All posts</a></p>
+    </article>
+  </Section>
+</Base>

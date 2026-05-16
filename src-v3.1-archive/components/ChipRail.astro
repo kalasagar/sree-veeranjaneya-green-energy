@@ -1,0 +1,45 @@
+---
+/**
+ * Sticky in-page section nav for merged pages.
+ */
+interface Props {
+  items: { id: string; label: string }[];
+}
+const { items } = Astro.props;
+---
+<nav class="svge-chiprail" aria-label="Section navigation">
+  <div class="container-svge">
+    <ul>
+      {items.map(it => (
+        <li><a href={`#${it.id}`}>{it.label}</a></li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    var links = document.querySelectorAll('.svge-chiprail a[href^="#"]');
+    if (!links.length) return;
+    var byId = {};
+    var ids = [];
+    links.forEach(function (a) {
+      var id = a.getAttribute('href').slice(1);
+      byId[id] = a;
+      var t = document.getElementById(id);
+      if (t) ids.push({ id: id, el: t });
+    });
+    if (!ids.length) return;
+    function onScroll() {
+      var y = window.scrollY + 140;
+      var current = ids[0].id;
+      for (var i = 0; i < ids.length; i++) {
+        if (ids[i].el.offsetTop <= y) current = ids[i].id;
+      }
+      links.forEach(function (a) { a.classList.remove('is-active'); });
+      if (byId[current]) byId[current].classList.add('is-active');
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>

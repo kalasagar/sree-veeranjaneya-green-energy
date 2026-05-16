@@ -1,0 +1,202 @@
+---
+/**
+ * FullBleedHero — full-width banner + optional Veo ambient video, with copy
+ * overlaid on the lower-left.
+ *
+ *   - <picture> AVIF/WebP banner as poster
+ *   - <video> overlay fades in on viewport entry; if it errors/blocks, banner stays
+ *   - graduated scrim concentrated where the H1 sits
+ *   - <slot /> renders eyebrow / display H1 / lede / CTAs from the page
+ *
+ * Pass `banner={null}` for a forest gradient wash.
+ */
+import Mark from './Mark.astro';
+
+interface Props {
+  banner?: string | null;
+  alt?: string;
+  eyebrow?: string;
+  title?: string;
+  height?: 'lg' | 'xl';
+  priority?: boolean;
+  video?: string | null;
+  objectPosition?: string;
+}
+const {
+  banner = null,
+  alt = '',
+  eyebrow,
+  title,
+  height = 'xl',
+  priority = false,
+  video = null,
+  objectPosition,
+} = Astro.props;
+
+const OP_DEFAULTS: Record<string, string> = {
+  hero_paddy_dawn:        '50% 30%',
+  about_founder_field:    '50% 35%',
+  project_plant_render:   '50% 50%',
+  farmers_hands_straw:    '50% 50%',
+  impact_fom_soil:        '50% 50%',
+  press_kit:              '50% 50%',
+};
+const op = objectPosition ?? (banner && OP_DEFAULTS[banner]) ?? '50% 30%';
+
+const minH = height === 'xl' ? 'min-h-[88vh] sm:min-h-[760px]' : 'min-h-[62vh] sm:min-h-[560px]';
+const fetchPriority = priority ? 'high' : 'auto';
+const loading = priority ? 'eager' : 'lazy';
+
+const BASE = import.meta.env.BASE_URL;
+const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+---
+<section class={`svge-hero relative w-full ${minH} flex items-end overflow-hidden`}>
+  {banner ? (
+    <picture class="absolute inset-0 parallax-img" data-parallax transition:name={`hero-${banner}`}>
+      <source
+        type="image/avif"
+        sizes="(max-width: 1024px) 100vw, 1600px"
+        srcset={`${url(`banners/${banner}-640.avif`)} 640w, ${url(`banners/${banner}-1024.avif`)} 1024w, ${url(`banners/${banner}-1600.avif`)} 1600w, ${url(`banners/${banner}.avif`)} 1920w`}
+      />
+      <source
+        type="image/webp"
+        sizes="(max-width: 1024px) 100vw, 1600px"
+        srcset={`${url(`banners/${banner}-640.webp`)} 640w, ${url(`banners/${banner}-1024.webp`)} 1024w, ${url(`banners/${banner}-1600.webp`)} 1600w, ${url(`banners/${banner}.webp`)} 1920w`}
+      />
+      <img
+        src={url(`banners/${banner}.webp`)}
+        alt={alt}
+        width="1920"
+        height="900"
+        loading={loading}
+        decoding="async"
+        fetchpriority={fetchPriority}
+        class="w-full h-full object-cover"
+        style={`object-position: ${op};`}
+      />
+    </picture>
+  ) : (
+    <div class="absolute inset-0" style="background: radial-gradient(ellipse at top right, #2e7d32 0%, #1B5E20 38%, #103a14 100%);"></div>
+  )}
+
+  {video && (
+    <!-- Video plays at its natural 16:9 aspect, centered. No canvas extension.
+         The header rides on a soft top scrim (rendered below) instead of on a
+         fake extension band — keeps the full original frame visible. -->
+    <video
+      class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 motion-reduce:hidden"
+      data-hero-bg-video
+      data-src={url(`video/${video}.mp4`)}
+      data-target-opacity="1"
+      style={`object-position: ${op}; filter: saturate(1.04);`}
+      muted
+      playsinline
+      loop
+      preload="none"
+      aria-hidden="true"
+    ></video>
+  )}
+
+  <!-- Minimal scrim system.
+       Layer 1 (base): bottom legibility ramp for H1/CTA + horizontal
+       left-feather. Top stays clear so the full original frame is visible.
+       Layer 2 (header strip): a thin dark fade scoped to the top ~110px,
+       just enough to keep paper-coloured header text + saffron CTA pill
+       legible regardless of what colour the frame's top is. No extension,
+       no mirror, no fake band — just a soft cap under the chrome. -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background: linear-gradient(180deg, rgba(10,20,16,0) 35%, rgba(10,20,16,0.32) 68%, rgba(10,20,16,0.76) 100%), linear-gradient(90deg, rgba(10,20,16,0.45) 0%, rgba(10,20,16,0.16) 45%, rgba(10,20,16,0) 70%);"></div>
+  <div class="absolute top-0 inset-x-0 pointer-events-none h-[110px]" aria-hidden="true" style="background: linear-gradient(180deg, rgba(10,20,16,0.55) 0%, rgba(10,20,16,0.18) 65%, rgba(10,20,16,0) 100%);"></div>
+
+  {video && (
+    <button
+      type="button"
+      class="absolute hidden lg:inline-flex bottom-6 right-6 z-10 items-center gap-2 px-3.5 py-2 rounded-full bg-[color:var(--color-ink)]/45 hover:bg-[color:var(--color-ink)]/70 backdrop-blur-md text-[color:var(--color-paper)] text-[10px] font-mono uppercase tracking-[0.18em] border border-[color:var(--color-paper)]/20 transition-colors duration-200 cursor-pointer motion-reduce:hidden"
+      aria-label="Toggle hero sound"
+      data-hero-audio
+    >
+      <span class="inline-flex items-center justify-center w-3.5 h-3.5" data-hero-audio-icon>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+      </span>
+      <span data-hero-audio-label>Sound off</span>
+    </button>
+  )}
+
+  <div class="container-svge relative pb-12 sm:pb-16 lg:pb-20 pt-20">
+    <div class="max-w-[64ch] text-[color:var(--color-paper)] svge-hero-content-mark">
+      {eyebrow && (
+        <div class="flex items-center gap-3 mb-4">
+          <Mark size={28} ariaLabel={null} />
+          <p class="eyebrow mb-0" style="color:#FFB300;">{eyebrow}</p>
+        </div>
+      )}
+      {title && (
+        <h1 class="display text-[color:var(--color-paper)]">{title}</h1>
+      )}
+      <slot />
+    </div>
+  </div>
+</section>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    // Lazy-load + autoplay hero videos when they enter the viewport.
+    // Banner stays as the poster underneath. Once the video is actually
+    // playing, fade it in and crossfade the banner out so they don't both
+    // show. On error / autoplay-blocked / reduced-motion, banner stays.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var vids = document.querySelectorAll('[data-hero-bg-video]:not([data-armed])');
+      if (vids.length && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (!e.isIntersecting) return;
+            var v = e.target;
+            io.unobserve(v);
+            v.setAttribute('data-armed', '');
+            var src = v.getAttribute('data-src');
+            if (!src) return;
+            var section = v.closest('section.svge-hero');
+            var poster = section && section.querySelector('picture.parallax-img');
+            var target = v.getAttribute('data-target-opacity') || '1';
+            v.src = src;
+            v.load();
+            v.addEventListener('canplay', function once() {
+              v.removeEventListener('canplay', once);
+              v.play().then(function () {
+                v.style.opacity = target;
+                if (poster) {
+                  poster.style.transition = 'opacity 700ms ease-out';
+                  poster.style.opacity = '0';
+                }
+              }).catch(function () {});
+            });
+            v.addEventListener('error', function () { v.style.opacity = '0'; });
+          });
+        }, { threshold: 0.15 });
+        vids.forEach(function (el) { io.observe(el); });
+      }
+    }
+
+    // Audio toggle
+    document.querySelectorAll('[data-hero-audio]:not([data-armed])').forEach(function (btn) {
+      btn.setAttribute('data-armed', '');
+      btn.addEventListener('click', function () {
+        var section = btn.closest('section.svge-hero');
+        var v = section && section.querySelector('[data-hero-bg-video]');
+        if (!v) return;
+        var icon = btn.querySelector('[data-hero-audio-icon]');
+        var label = btn.querySelector('[data-hero-audio-label]');
+        if (v.muted) {
+          v.muted = false;
+          v.volume = Math.max(0.4, v.volume || 0.6);
+          v.play().catch(function () {});
+          if (label) label.textContent = 'Sound on';
+          if (icon) icon.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        } else {
+          v.muted = true;
+          if (label) label.textContent = 'Sound off';
+          if (icon) icon.innerHTML = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+        }
+      });
+    });
+  })();
+</script>

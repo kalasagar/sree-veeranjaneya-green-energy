@@ -10,9 +10,7 @@ const { items } = Astro.props;
 <nav class="svge-chiprail" aria-label="Section navigation">
   <div class="container-svge">
     <ul>
-      {items.map(it => (
-        <li><a href={`#${it.id}`}>{it.label}</a></li>
-      ))}
+      {items.map(it => <li><a href={`#${it.id}`}>{it.label}</a></li>)}
     </ul>
   </div>
 </nav>
@@ -31,7 +29,7 @@ const { items } = Astro.props;
     });
     if (!ids.length) return;
     function onScroll() {
-      var y = window.scrollY + 140;
+      var y = window.scrollY + 160;
       var current = ids[0].id;
       for (var i = 0; i < ids.length; i++) {
         if (ids[i].el.offsetTop <= y) current = ids[i].id;

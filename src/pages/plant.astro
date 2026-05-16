@@ -5,77 +5,22 @@ import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
 import ChipRail from '../components/ChipRail.astro';
-import ProcessFlow from '../components/ProcessFlow.astro';
 import CBGSankey from '../components/CBGSankey.astro';
 import PlantBlueprint from '../components/PlantBlueprint.astro';
-import StoryReel from '../components/StoryReel.astro';
 import Accordion from '../components/Accordion.astro';
 import ClearanceMatrix from '../components/ClearanceMatrix.astro';
+import Stat from '../components/Stat.astro';
 import { SITE } from '../lib/site';
-
-const povs = [
-  {
-    eyebrow: "From a farmer's POV",
-    title: '"What changes for me?"',
-    items: [
-      { t: 'You harvest', d: "We don't care if it's baled, loose, or in a heap. Dry and clean is what we pay for." },
-      { t: 'We collect', d: 'You bring it to the plant, or we send a vehicle in season. Either way, you sign a slip.' },
-      { t: 'We pay', d: '14 days. Bank transfer. Against the supply slip. No "next week".' },
-      { t: 'You get manure back', d: 'Fermented Organic Manure delivered to your field at a fair rate, 60 days after delivery.' },
-    ],
-  },
-  {
-    eyebrow: "From a cascade truck driver's POV",
-    title: '"How do I know the gas is real?"',
-    items: [
-      { t: 'Truck arrives', d: 'A 4-cylinder CBG cascade truck — clean, road-legal, IS-certified.' },
-      { t: 'Gas dispatched', d: 'Loaded at our outlet. CH₄ purity, dew point, O₂ all stamped on the dispatch slip in front of you.' },
-      { t: 'Slip in hand', d: 'Same slip is what IOCL pays us against. Transparent, traceable, on time.' },
-      { t: 'Out to IOCL', d: 'You drive. We track. The slip gets reconciled monthly.' },
-    ],
-  },
-  {
-    eyebrow: "From an auditor / lender's POV",
-    title: '"Is it engineered to spec?"',
-    items: [
-      { t: 'Feedstock in', d: '72 TPD Napier or equivalent dry-matter mix. Mixing tank at 216 m³/day with 145 m³ recycled water.' },
-      { t: 'Digestion', d: 'CSTR-type anaerobic digester, 24h operation. Outputs 9,500 Nm³/day raw biogas.' },
-      { t: 'Purification', d: 'Two-tower VPSA + water scrubber + chemical scrubber + activated carbon filter — IS 16087:2016.' },
-      { t: 'Compression & QC', d: 'Continuous gas analysers on CH₄, CO₂, O₂, H₂S, dew point. Out-of-spec gas is recycled, not dispatched.' },
-    ],
-  },
-];
 
 const eightSteps = [
   { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20–25% solids, or paddy straw + cattle dung mix. Sourced via 5-year contract farming and direct supply from farmers within a 40-km radius of the plant.' },
   { n: '02', t: 'Mixing tank', d: 'Feedstock combined with ~145 m³/day of recycled process water. Total ~216 m³/day slurry flows to the digester.' },
   { n: '03', t: 'Anaerobic digestion', d: '4 × CSTR-type digesters (26 m × 8.63 m, total 15,402 m³). 34-day residence. Outputs 9,500 Nm³/day of raw biogas.' },
-  { n: '04', t: 'Slurry separation', d: 'Solid–liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM). Liquid fraction is partially recycled to mixing tank; rest goes to local fields.' },
+  { n: '04', t: 'Slurry separation', d: 'Solid–liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM).' },
   { n: '05', t: 'Gas purification', d: 'Water scrubber → chemical scrubber → activated carbon filter → two-tower VPSA system. Strips CO₂, H₂S, and moisture to ≥90% methane.' },
-  { n: '06', t: 'Compression & buffer', d: 'Purified CBG compressed and stored in a surge vessel. Air compressor drives changeover valves on the VPSA cycle.' },
+  { n: '06', t: 'Compression & buffer', d: 'Purified CBG compressed to 250 bar and stored in a surge vessel.' },
   { n: '07', t: 'Dispatch QC', d: 'Continuous gas analysers (CH₄, CO₂, O₂, H₂S) and a dew-point sensor stamp each dispatch slip. Out-of-spec gas is recycled, not loaded.' },
   { n: '08', t: 'Dispatch to IOCL', d: 'CBG cascade trucks (or pipeline once available) carry the gas to Indian Oil offtake points under the SATAT contract.' },
-];
-
-const machinery = [
-  ['Anaerobic Digester (CSTR Type)', '4 No.', 'RCC/MS with Balloon', 'The heart of the plant. Four units of 26 m × 8.63 m each, total 15,402 m³ working volume. HRT 34 days, OLR 1.75 kg VS/m³/day.'],
-  ['Moisture Separator cum Pre-Filter at Inlet', '1 No.', 'SS304', 'Drops bulk water before the gas blower; protects downstream piping from condensate slugging.'],
-  ['Biogas Blower with FLP Motor & VFD', '2 No. (1W+1S)', '—', 'Flameproof motor on a Variable Frequency Drive, one working + one standby for 24×360 ops.'],
-  ['Water Ring Vacuum Pump with FLP Motor & VFD', '2 No. (1W+1S)', '—', 'Drives the VPSA desorption cycle. 1W+1S sized for continuous duty.'],
-  ['Water Scrubber', '1 No.', 'HDPE', 'High-pressure water scrubbing strips bulk CO₂ before fine cleanup. HDPE resists the slightly acidic scrubber water.'],
-  ['Pre-Water Cooler', '1 No.', 'SS304', 'Drops gas temperature before chemical scrubbing — temperature swing improves sorbent capacity.'],
-  ['Chemical Scrubber', '1 No.', 'SS304', 'Polishes residual H₂S with a chemical sorbent. SS304 needed for sulphidic service.'],
-  ['Biogas Dehumidifier with Moisture Separator', '1 No.', 'SS304', 'Brings water dew point down before PSA polishing. SS304 chosen for condensate corrosion.'],
-  ['Water Chilling Unit with Recirculation Pump', '1 No.', '—', 'Process chilling for the scrubber loop. Closed circuit, low make-up demand.'],
-  ['Cooling Tower with Recirculation Pump', '1 No.', '—', 'Rejects heat from VPSA compression and digester ancillaries.'],
-  ['Activated Carbon Filter', '1 No.', 'C.S.', 'Last polishing stage for trace H₂S and VOCs before the VPSA inlet.'],
-  ['Air Compressor (instrument air, changeover valves)', '1 No.', '—', 'Drives the pneumatic actuators on the VPSA changeover valves and dispatch panel.'],
-  ['2-Tower VPSA Biogas Purification Plant', '2 No.', 'S.S./C.S.', 'The methane-vs-CO₂ separator. 96–98% methane recovery in industry; SVGE contracted floor is ≥90%.'],
-  ['Biogas Surge Vessel', '1 No.', 'C.S.', 'Levels pressure between VPSA cycles and compressor draw.'],
-  ['Fine Filter at Outlet', '1 No.', 'C.S.', 'Catches any carbon dust before the gas enters the high-pressure compressor.'],
-  ['Outlet Bio Gas Flow Transmitter', '1 No.', '—', 'Continuous CBG dispatch metering; the IOCL invoice number.'],
-  ['Gas Analysers (CH₄, CO₂, O₂, H₂S)', '1 No.', '—', 'Continuous online analysers. Out-of-spec values trigger recycle, never dispatch.'],
-  ['Dew Point Sensor', '1 No.', '—', 'Verifies the PSA dryer is delivering −40 °C dew point at the cascade fill point.'],
 ];
 
 const isSpec = [
@@ -83,124 +28,89 @@ const isSpec = [
   { p: 'CO₂', limit: '≤ 4 %', mean: 'Inert. Dilutes fuel; corrodes cylinders if water is also present.' },
   { p: 'O₂', limit: '≤ 0.5 %', mean: 'Safety floor. Oxygen + methane + spark = explosion risk in cascades.' },
   { p: 'Total sulphur (incl. H₂S)', limit: '≤ 20 mg/m³', mean: 'H₂S forms sulphuric acid with moisture; eats valves and cylinder steel.' },
-  { p: 'Moisture (water dew point)', limit: '≤ 5 mg/m³ (≈ −40 °C dew point at 250 bar)', mean: 'Free water causes corrosion and ice plugs in regulators. The PSA dryer is sized to this.' },
+  { p: 'Moisture (water dew point)', limit: '≤ 5 mg/m³ (≈ −40 °C dew point at 250 bar)', mean: 'Free water causes corrosion and ice plugs. The PSA dryer is sized to this.' },
+];
+
+const machinery = [
+  ['Anaerobic Digester (CSTR Type)', '4 No.', 'RCC/MS with Balloon', 'The heart of the plant. Four units of 26 m × 8.63 m each, total 15,402 m³.'],
+  ['Biogas Blower with FLP Motor & VFD', '2 No. (1W+1S)', '—', 'Flameproof motor on VFD, one working + one standby for 24×360 ops.'],
+  ['Water Scrubber', '1 No.', 'HDPE', 'High-pressure water scrubbing strips bulk CO₂ before fine cleanup.'],
+  ['Chemical Scrubber', '1 No.', 'SS304', 'Polishes residual H₂S with a chemical sorbent. SS304 needed for sulphidic service.'],
+  ['Activated Carbon Filter', '1 No.', 'C.S.', 'Last polishing stage for trace H₂S and VOCs before the VPSA inlet.'],
+  ['2-Tower VPSA Biogas Purification Plant', '2 No.', 'S.S./C.S.', 'The methane-vs-CO₂ separator. 96–98% methane recovery in industry; SVGE contracted floor is ≥90%.'],
+  ['Biogas Surge Vessel', '1 No.', 'C.S.', 'Levels pressure between VPSA cycles and compressor draw.'],
+  ['Gas Analysers (CH₄, CO₂, O₂, H₂S)', '1 No.', '—', 'Continuous online analysers. Out-of-spec values trigger recycle, never dispatch.'],
+  ['Dew Point Sensor', '1 No.', '—', 'Verifies the PSA dryer delivers −40 °C dew point at the cascade fill point.'],
 ];
 
 const chips = [
   { id: 'flow', label: 'Flow' },
-  { id: 'pov', label: 'POV' },
+  { id: 'steps', label: 'Eight steps' },
   { id: 'blueprint', label: 'Blueprint' },
-  { id: 'equipment', label: 'Equipment' },
   { id: 'spec', label: 'IS 16087' },
+  { id: 'equipment', label: 'Equipment' },
   { id: 'glossary', label: 'Glossary' },
 ];
 ---
-<Base title="Plant" description="Feedstock to fuel, on a single page. Eight-step process, IS 16087:2016 spec, full equipment list, and the glossary that ties it all together.">
+<Base title="Plant" description="Feedstock to fuel, on one page. Eight-step process, IS 16087:2016 spec, equipment list, glossary." heroOver={true}>
   <FullBleedHero
     banner="project_plant_render"
-    alt="Aerial photograph of a small bio-CNG plant on a cleared plot in coastal Andhra Pradesh."
+    alt="Aerial view of the plant site."
     eyebrow="Plant"
+    height="xl"
   >
-    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2.75rem, 6vw, 5rem);">
       Feedstock to fuel.<br/>
-      <span style="color:#FFB300;">On one page.</span>
+      <span style="color: var(--color-gold);">On one page.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      Eight engineering steps. One spec. One drawing. One glossary. Designed and integrated by Raj Process Equipments & Systems, Pune — a SATAT-approved EPC for India's CBG mission.
+      Eight engineering steps. One spec. One drawing. One glossary. Designed and integrated by Raj Process Equipments &amp; Systems, Pune — a SATAT-approved EPC.
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="The plant · 72 t/day in, 4 t/day out" deck='72 tonnes in. <span style="color:var(--color-saffron-text);">4 tonnes out.</span> Eight steps. One drawing.' />
+  <Kicker eyebrow="Plant · 72 t/day in, 4 t/day out" deck='72 tonnes in. <span style="color: var(--color-saffron-text);">4 tonnes out.</span> Eight steps. One drawing.' />
   <ChipRail items={chips} />
 
-  <!-- FLOW -->
+  <!-- Flow -->
   <Section id="flow" eyebrow="Mass-flow Sankey" title="From field to fill point.">
     <CBGSankey />
   </Section>
 
-  <Section bg="paper-2">
-    <ProcessFlow />
-  </Section>
-
-  <!-- 8-STEP GRID -->
-  <Section eyebrow="Eight steps" title="The flow chart, with engineering depth." bg="paper-2">
+  <!-- Eight steps -->
+  <Section id="steps" eyebrow="Eight steps" title="The flow chart, with engineering depth." bg="paper-2">
     <ol class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {eightSteps.map(s => (
-        <li class="svge-card p-5">
-          <div class="flex items-baseline gap-3">
-            <span class="font-mono text-xs text-[color:var(--tone-ink)]">{s.n}</span>
-            <h3 class="text-base">{s.t}</h3>
-          </div>
-          <p class="mt-2 text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
+        <li class="svge-card p-5" data-reveal>
+          <p class="numeral text-sm" style="color: var(--color-saffron-text);">{s.n}</p>
+          <h3 class="mt-2" style="font-family: var(--font-display); font-size: 1.125rem;">{s.t}</h3>
+          <p class="mt-2 text-sm leading-relaxed">{s.d}</p>
         </li>
       ))}
     </ol>
   </Section>
 
-  <!-- POV SPREADS -->
-  <Section id="pov" eyebrow="POV" title="What the same plant looks like to three different people.">
-    <div class="space-y-12">
-      {povs.map((g, gi) => (
-        <div class="grid-12 items-start" data-reveal>
-          <div class="col-4">
-            <p class="eyebrow">{g.eyebrow}</p>
-            <h3 class="text-2xl mt-2">{g.title}</h3>
-          </div>
-          <ol class="col-8 grid sm:grid-cols-2 gap-3">
-            {g.items.map((it, i) => (
-              <li class="svge-card p-4">
-                <p class="font-mono text-xs text-[color:var(--tone-ink)]">0{i + 1}</p>
-                <h4 class="text-base mt-1">{it.t}</h4>
-                <p class="text-sm leading-relaxed text-[color:var(--color-slate)] mt-1">{it.d}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      ))}
-    </div>
-  </Section>
-
-  <Section eyebrow="What the plant sounds like" title="Three minutes of footage, when there's footage to share." bg="paper-2">
-    <StoryReel />
-  </Section>
-
-  <!-- BLUEPRINT -->
+  <!-- Blueprint -->
   <Section id="blueprint" eyebrow="Plant blueprint" title="The plant, in one drawing.">
     <PlantBlueprint />
   </Section>
 
-  <Section eyebrow="Engineering · Plant specifications" title="The numbers the equipment is sized for." bg="paper-2">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-      <article class="svge-card p-5">
-        <p class="eyebrow mb-2">Digester</p>
-        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">4 × CSTR · 15,402 m³</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">RCC with balloon. 26 m diameter × 8.63 m height per unit. 15% gas-holding head space.</p>
-      </article>
-      <article class="svge-card p-5">
-        <p class="eyebrow mb-2">Retention &amp; loading</p>
-        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">HRT 34 d · OLR 1.75</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">Hydraulic Retention Time 34 days. Organic Loading Rate 1.75 kg VS/m³/day. Pre-digester 648 m³ at 10–12% total solids.</p>
-      </article>
-      <article class="svge-card p-5">
-        <p class="eyebrow mb-2">Upgrading</p>
-        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">2-tower VPSA</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">PSA gas dryer to −40 °C dew point. Activated-carbon polishing. Industry-standard VPSA achieves 96–98 % CH₄ recovery; SVGE's contracted floor is ≥ 90 %.</p>
-      </article>
-      <article class="svge-card p-5">
-        <p class="eyebrow mb-2">Dispatch</p>
-        <h3 class="text-xl font-semibold text-[color:var(--color-forest)] leading-snug">250-bar cascade</h3>
-        <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">IS 15319 cascades. Truck/trailer dispatch to IOCL Retail Outlet within 75 km (per LoI clause 5).</p>
-      </article>
+  <!-- Sized for -->
+  <Section eyebrow="Engineering" title="The numbers the equipment is sized for." bg="paper-2">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <Stat value="4 × CSTR" unit="15,402 m³" label="Digester" framing="RCC with balloon. 26 m × 8.63 m per unit. 15% gas-holding head space." />
+      <Stat value="34 d" unit="HRT" label="Retention" framing="HRT 34 days. OLR 1.75 kg VS/m³/day. Pre-digester 648 m³." />
+      <Stat value="2-tower" unit="VPSA" label="Upgrading" framing="PSA dryer to −40 °C dew point. Activated-carbon polishing. Contracted floor ≥ 90 % CH₄." />
+      <Stat value="250 bar" unit="cascade" label="Dispatch" framing="IS 15319 cascades. Dispatch to IOCL Retail Outlet within 75 km (LoI cl. 5)." />
     </div>
   </Section>
 
-  <!-- CLEARANCES -->
-  <Section bg="paper-2">
+  <!-- Clearances compact -->
+  <Section>
     <ClearanceMatrix compact={true} />
   </Section>
 
   <!-- IS 16087 -->
-  <Section id="spec" eyebrow="IS 16087:2016" title="The fuel spec, in plain language.">
+  <Section id="spec" eyebrow="IS 16087:2016" title="The fuel spec, in plain language." bg="paper-2">
     <div class="max-w-3xl">
       {isSpec.map(s => (
         <Accordion summary={s.p} meta={s.limit}>
@@ -208,41 +118,37 @@ const chips = [
         </Accordion>
       ))}
     </div>
-    <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)] max-w-3xl">
-      Out-of-spec gas at any parameter is recycled to the inlet, never dispatched. OMCs (IOCL/BPCL/HPCL) reject any tanker that fails on any line at the dispensing station.
-    </p>
+    <p class="meta mt-6 max-w-3xl">Out-of-spec gas at any parameter is recycled to the inlet, never dispatched. OMCs (IOCL/BPCL/HPCL) reject any tanker that fails on any line.</p>
   </Section>
 
-  <!-- EQUIPMENT -->
-  <Section id="equipment" eyebrow="Equipment" title="What sits on the plot." bg="paper-2">
-    <div class="space-y-1 max-w-5xl">
+  <!-- Equipment -->
+  <Section id="equipment" eyebrow="Equipment" title="What sits on the plot.">
+    <div class="max-w-5xl">
       {machinery.map(([e, q, m, why]) => (
         <Accordion summary={e as string} meta={`${q} · ${m}`}>
           <p>{why}</p>
         </Accordion>
       ))}
     </div>
-    <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">Plus supporting harvesting machinery: rotary slasher, tedder, raker, balers, tractors, telehandler, moisture meter, water tank, fire extinguisher, lightning arrestor.</p>
+    <p class="meta mt-6">Plus supporting harvesting machinery: rotary slasher, tedder, raker, balers, tractors, telehandler, moisture meter, water tank, fire extinguisher, lightning arrestor.</p>
   </Section>
 
-  <!-- GLOSSARY -->
-  <Section id="glossary" eyebrow="Glossary" title="Every term used on this site, defined.">
-    <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-5 max-w-5xl">
+  <!-- Glossary -->
+  <Section id="glossary" eyebrow="Glossary" title="Every term used on this site, defined." bg="paper-2">
+    <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-6">
       {SITE.glossary.map(g => (
-        <div id={`g-${g.term.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}>
+        <div data-reveal>
           <dt class="flex items-baseline gap-2">
-            <span class="font-mono font-semibold text-[color:var(--color-ink)]">{g.term}</span>
-            <span class="text-xs font-mono text-[color:var(--color-slate-2)]">— {g.long}</span>
+            <span class="numeral font-semibold text-base" style="color: var(--color-ink);">{g.term}</span>
+            <span class="meta">— {g.long}</span>
           </dt>
-          <dd class="mt-1 text-sm text-[color:var(--color-slate)] leading-relaxed">{g.def}</dd>
+          <dd class="mt-1 text-sm leading-relaxed">{g.def}</dd>
         </div>
       ))}
     </dl>
   </Section>
 
   <Section narrow>
-    <p class="text-sm">
-      Capital structure, clearance status, commissioning clock — <a href={link('/build/')}>see The Build</a>.
-    </p>
+    <p class="text-sm">Capital, clearances, commissioning clock — <a href={link('/build/')}>see The Build →</a></p>
   </Section>
 </Base>

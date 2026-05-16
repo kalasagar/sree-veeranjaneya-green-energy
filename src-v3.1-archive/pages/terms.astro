@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
+import Section from '../components/Section.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { SITE } from '../lib/site';
+
+const lastUpdated = '2026-05-14';
+---
+<Base title="Terms of Use" description="Plain terms governing your use of the SVGE website.">
+  <PageTitle
+    eyebrow="Legal"
+    title="Terms of Use"
+    lede="Plain terms governing your use of the SVGE website. By using it, you agree to these."
+    meta={`Last updated · ${lastUpdated}`}
+  />
+  <Section narrow>
+    <div class="prose-svge">
+      <p>
+        This site is operated by {SITE.legalName} ("SVGE", "we", "us"). By using it, you agree to the terms below. If you don't, please close the tab.
+      </p>
+
+      <h2>Information on this site</h2>
+      <p>
+        We try to keep everything on this site accurate and current. Some content — particularly stat citations, founder bios, and the project timeline — may be updated as facts change. We will note material changes on the <a href={link("/news/")}>News</a> page.
+      </p>
+      <p>
+        Nothing on this site is a contract, an offer to contract, or a commitment of any kind, except in two narrow places: (a) our public promise to publish a monthly construction update from the day concrete is poured, and (b) our farmer-facing payment promises set out on <a href={link("/farmers/")}>/farmers/</a>, which apply once you have entered into a written supply arrangement with us.
+      </p>
+
+      <h2>Brand and content licence</h2>
+      <ul>
+        <li><strong>Editorial use.</strong> Journalists may reproduce text and brand assets from this site with attribution. The <a href={link("/press/")}>press kit</a> sets out specifics.</li>
+        <li><strong>Brand assets.</strong> The SVGE name and mark are property of {SITE.legalName}. Do not modify the mark, recolour it, or use it on a background other than off-white or brand green without our written permission.</li>
+        <li><strong>Other content.</strong> All site text, photos, illustrations, and code are © {SITE.legalName}, all rights reserved unless explicitly licensed.</li>
+      </ul>
+
+      <h2>Third-party links</h2>
+      <p>
+        Where we link to outside resources — partner sites, government schemes, source citations — we don't control or endorse the content on those sites. Following an external link is at your own discretion.
+      </p>
+
+      <h2>No warranty</h2>
+      <p>
+        We provide this site "as is". We don't warrant that it will always be available, error-free, or fit for any particular purpose. We won't be liable for any indirect or consequential loss arising from your use of it.
+      </p>
+
+      <h2>Jurisdiction</h2>
+      <p>
+        These terms are governed by the laws of India. Any dispute is subject to the exclusive jurisdiction of the courts at Srikakulam, Andhra Pradesh.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Any question about these terms: email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </div>
+  </Section>
+</Base>

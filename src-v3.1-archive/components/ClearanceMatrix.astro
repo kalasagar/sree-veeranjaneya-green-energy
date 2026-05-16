@@ -1,0 +1,66 @@
+---
+/**
+ * Three-column clearance matrix: Obtained · Applied · After-COD.
+ * Each cell = badge + authority + scope.
+ */
+import { SITE } from '../lib/site';
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+const c = SITE.clearances;
+const total = c.obtained.length + c.applied.length + c.afterCOD.length;
+---
+<section class="svge-card p-6 sm:p-8" data-reveal id="clearances">
+  <div class="flex items-baseline justify-between flex-wrap gap-2">
+    <div>
+      <p class="eyebrow text-[color:var(--tone-ink)]">Statutory clearances</p>
+      <h3 class="mt-1 text-2xl text-[color:var(--color-ink)]">
+        <span class="numeral-display" data-count-to={c.obtained.length}>{c.obtained.length}</span> obtained · <span class="numeral-display" data-count-to={c.applied.length}>{c.applied.length}</span> applied · <span class="numeral-display" data-count-to={c.afterCOD.length}>{c.afterCOD.length}</span> after-COD
+      </h3>
+    </div>
+    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[color:var(--color-paper-3)] text-xs font-mono uppercase tracking-widest text-[color:var(--color-ink)]">
+      <span class="w-2 h-2 rounded-full" style="background: var(--color-paper);border:2px solid var(--color-ink);" aria-hidden="true"></span>
+      CPCB · {c.category} category
+    </span>
+  </div>
+  {!compact && <p class="mt-2 text-sm text-[color:var(--color-slate)]">{c.categoryBasis}. Environmental clearance not required for energy-crop CBG plants.</p>}
+
+  <div class="mt-6 grid md:grid-cols-3 gap-4">
+    <div>
+      <p class="rule-hairline"><span class="rule-label">Obtained</span></p>
+      <ul class="mt-2 space-y-2">
+        {c.obtained.map(item => (
+          <li class="flex items-start gap-2 text-sm">
+            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--color-forest)] flex-none" aria-hidden="true"></span>
+            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="rule-hairline"><span class="rule-label">Applied</span></p>
+      <ul class="mt-2 space-y-2">
+        {c.applied.map(item => (
+          <li class="flex items-start gap-2 text-sm">
+            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--tone)] flex-none" aria-hidden="true"></span>
+            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="rule-hairline"><span class="rule-label">After-COD</span></p>
+      <ul class="mt-2 space-y-2">
+        {c.afterCOD.map(item => (
+          <li class="flex items-start gap-2 text-sm">
+            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--color-paper-3)] ring-1 ring-[color:var(--color-slate-2-soft)] flex-none" aria-hidden="true"></span>
+            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  {!compact && <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">{total} clearances total, sequenced against the LoI commissioning clock. Out-of-scope: state-fire NOC pre-construction (Andhra Pradesh exemption).</p>}
+</section>

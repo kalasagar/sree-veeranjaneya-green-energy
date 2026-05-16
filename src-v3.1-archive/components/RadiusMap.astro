@@ -1,0 +1,54 @@
+---
+/**
+ * Concentric distance rings centred on Thatipadu (SVG, no map tiles).
+ * Pass `highlight` to feature one ring (e.g. '40' for supply radius).
+ */
+import { SITE } from '../lib/site';
+
+interface Props {
+  highlight?: number;
+  title?: string;
+  caption?: string;
+}
+const { highlight, title = 'Distances from Thatipadu', caption = '' } = Astro.props;
+const distances = SITE.plant.distances;
+const maxKm = Math.max(...distances.map(d => d.km));
+const padding = 28;
+const size = 480;
+const cx = size / 2;
+const cy = size / 2;
+const radiusFor = (km: number) => (km / maxKm) * (size / 2 - padding);
+---
+<figure class="svge-card p-6 sm:p-8" data-reveal>
+  <figcaption class="mb-4">
+    <p class="eyebrow text-[color:var(--tone-ink)]">{title}</p>
+    {caption && <p class="text-sm text-[color:var(--color-slate)] mt-1">{caption}</p>}
+  </figcaption>
+  <div class="grid lg:grid-cols-[1fr_300px] gap-6 items-center">
+    <svg class="svge-ring w-full max-w-[480px] mx-auto" viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Distance rings from Thatipadu">
+      <g>
+        {distances.map(d => {
+          const r = radiusFor(d.km);
+          const isHi = highlight === d.km;
+          return (
+            <g class="ring-group">
+              <circle class="ring" cx={cx} cy={cy} r={r} style={isHi ? 'stroke:var(--tone);stroke-width:2;' : ''} />
+              <text class="ring-label" x={cx + 4} y={cy - r - 4} style={isHi ? 'fill:var(--tone-ink);font-weight:600;' : ''}>{d.km} km · {d.label}</text>
+            </g>
+          );
+        })}
+        <circle class="center" cx={cx} cy={cy} r="5" />
+        <text x={cx + 9} y={cy + 4} class="ring-label" style="fill:var(--tone-ink);font-weight:600;">Thatipadu</text>
+      </g>
+    </svg>
+    <ul class="space-y-2 text-sm">
+      {distances.map(d => (
+        <li class={`flex items-baseline gap-2 ${highlight === d.km ? 'font-semibold' : ''}`}>
+          <span class="numeral-display text-[color:var(--color-ink)] w-12 text-right">{d.km}</span>
+          <span class="text-xs font-mono text-[color:var(--color-slate-2)]">km</span>
+          <span class="text-[color:var(--color-slate)] ml-2">{d.label}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</figure>

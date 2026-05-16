@@ -1,0 +1,22 @@
+---
+interface Props {
+  quote: string;
+  attribution?: string;
+  draft?: boolean;
+}
+const { quote, attribution, draft = false } = Astro.props;
+---
+<figure class="svge-card relative my-10 p-6 sm:p-8 lg:p-10">
+  <span class="absolute top-3 left-5 serif text-[64px] leading-none text-[color:var(--color-forest)]/15 select-none" aria-hidden="true">“</span>
+  <blockquote class="relative serif italic text-xl sm:text-2xl text-[color:var(--color-ink)] leading-snug pl-2">
+    {quote}
+  </blockquote>
+  {attribution && (
+    <figcaption class="mt-5 flex items-center gap-3 pl-2">
+      <span class="inline-block w-8 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
+      <span class="font-mono uppercase text-[11px] tracking-[0.16em] text-[color:var(--color-slate-2)]">
+        {attribution}{draft && <span class="ml-2 text-[color:var(--color-saffron-text)] normal-case">· Draft</span>}
+      </span>
+    </figcaption>
+  )}
+</figure>

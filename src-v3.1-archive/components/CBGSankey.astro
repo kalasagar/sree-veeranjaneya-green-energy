@@ -1,0 +1,108 @@
+---
+/**
+ * Mass-flow Sankey: feedstock → digester → raw biogas → upgrade → CBG + FOM.
+ * Hand-rolled SVG, no chart lib.
+ */
+import { SITE } from '../lib/site';
+
+const mf = SITE.massFlow;
+
+const inputs = [
+  { id: 'napier', label: `Napier grass · ${mf.napierTpd} TPD`, color: '#1B5E20', value: mf.napierTpd },
+  { id: 'straw',  label: `Paddy straw · ${mf.paddyStrawTpd} TPD`, color: '#C98E2B', value: mf.paddyStrawTpd },
+  { id: 'dung',   label: `Cattle dung · ${mf.dungTpd} TPD`, color: '#B7472A', value: mf.dungTpd },
+];
+
+const outputs = [
+  { id: 'cbg',  label: `CBG to IOCL · ${mf.cbgTpd} TPD`, color: '#E65100', share: 0.55 },
+  { id: 'fom',  label: `FOM (solid + liquid) · ~${mf.fomSolidTph} TPH + ${mf.fomLiquidM3PerDay} m³/d`, color: '#1B5E20', share: 0.35 },
+  { id: 'loss', label: 'CO₂ vented · water', color: '#90A4AE', share: 0.10 },
+];
+
+const W = 880;
+const H = 360;
+const padX = 28;
+const padY = 28;
+const colW = 230;
+
+const totalIn = inputs.reduce((s, i) => s + i.value, 0);
+let iy = padY;
+const iBlocks = inputs.map(i => {
+  const h = (i.value / totalIn) * (H - 2 * padY - 12);
+  const b = { ...i, y: iy, h };
+  iy += h + 6;
+  return b;
+});
+
+let oy = padY;
+const oBlocks = outputs.map(o => {
+  const h = o.share * (H - 2 * padY - 12);
+  const b = { ...o, y: oy, h };
+  oy += h + 6;
+  return b;
+});
+
+// Middle: a single digester column
+const midX = W / 2 - 20;
+const midY = padY;
+const midH = H - 2 * padY;
+
+function curve(x1: number, y1: number, x2: number, y2: number, h: number) {
+  const cx = (x1 + x2) / 2;
+  return `M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2} L${x2},${y2 + h} C${cx},${y2 + h} ${cx},${y1 + h} ${x1},${y1 + h} Z`;
+}
+---
+<section class="svge-card p-6 sm:p-8" data-reveal data-draw>
+  <p class="eyebrow text-[color:var(--tone-ink)]">Mass-flow Sankey</p>
+  <h3 class="mt-2 text-2xl text-[color:var(--color-ink)]">
+    {mf.feedstockTpd} TPD in. {mf.rawBiogasNm3PerDay.toLocaleString('en-IN')} Nm³/day raw biogas. {mf.cbgTpd} TPD out.
+  </h3>
+  <p class="mt-2 text-sm text-[color:var(--color-slate)] max-w-3xl">
+    Widths encode daily mass-flow. Indicative breakdown by feedstock stream and product fraction; reconciles with the DPR §3 plan.
+  </p>
+
+  <div class="mt-6 overflow-x-auto svge-sankey">
+    <svg viewBox={`0 0 ${W} ${H}`} class="w-full min-w-[720px]" role="img" aria-label="Feedstock to fuel mass-flow Sankey">
+      {/* Input nodes */}
+      {iBlocks.map(b => (
+        <g>
+          <rect class="node" x={padX} y={b.y} width="14" height={b.h} style={`fill:${b.color};`} />
+          <text class="node-label" x={padX + 22} y={b.y + 14} style={`fill:${b.color};`}>{b.label}</text>
+        </g>
+      ))}
+
+      {/* Input streams → digester */}
+      {iBlocks.map(b => {
+        const targetH = b.h;
+        const targetY = midY + ((b.y - padY) / (H - 2 * padY)) * midH;
+        return <path d={curve(padX + 16, b.y, midX - 2, targetY, targetH)} style={`fill:${b.color};fill-opacity:0.45;`} />;
+      })}
+
+      {/* Digester column */}
+      <rect class="node" x={midX} y={midY} width="40" height={midH} style="fill: var(--color-ink);" />
+      <text class="node-label" x={midX + 20} y={midY - 8} style="text-anchor:middle;fill:var(--color-ink);">4× CSTR · 15,402 m³</text>
+      <text x={midX + 20} y={midY + midH + 18} style="text-anchor:middle;fill:var(--color-slate);" class="text-xs">HRT 34 d · OLR 1.75</text>
+
+      {/* Digester → outputs */}
+      {oBlocks.map(o => {
+        const sourceY = midY + ((o.y - padY) / (H - 2 * padY)) * midH;
+        return <path d={curve(midX + 40, sourceY, W - padX - colW + 2, o.y, o.h)} style={`fill:${o.color};fill-opacity:0.45;`} />;
+      })}
+
+      {/* Output nodes */}
+      {oBlocks.map(b => (
+        <g>
+          <rect class="node" x={W - padX - colW} y={b.y} width="14" height={b.h} style={`fill:${b.color};`} />
+          <text class="node-label" x={W - padX - colW + 22} y={b.y + 14} style={`fill:${b.color};`}>{b.label}</text>
+        </g>
+      ))}
+    </svg>
+  </div>
+
+  <div class="mt-6 grid sm:grid-cols-4 gap-3 text-xs font-mono">
+    <div class="rule-hairline"><span class="rule-label">Recycled water</span><p class="mt-1 numeral-display text-base text-[color:var(--color-ink)]">{mf.waterRecycledM3PerDay} m³/d</p></div>
+    <div class="rule-hairline"><span class="rule-label">Slurry to digester</span><p class="mt-1 numeral-display text-base text-[color:var(--color-ink)]">{mf.slurryToDigesterM3PerDay} m³/d</p></div>
+    <div class="rule-hairline"><span class="rule-label">CH₄ (contracted floor)</span><p class="mt-1 numeral-display text-base text-[color:var(--color-ink)]">≥{mf.cbgMethanePct}%</p></div>
+    <div class="rule-hairline"><span class="rule-label">Cascades dispatched</span><p class="mt-1 numeral-display text-base text-[color:var(--color-ink)]">~{mf.cascadesPerDay}/day</p></div>
+  </div>
+</section>

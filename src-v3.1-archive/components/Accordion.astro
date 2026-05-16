@@ -1,0 +1,20 @@
+---
+/**
+ * Generic <details>-based disclosure. Pass children for the body.
+ */
+interface Props {
+  summary: string;
+  meta?: string;
+  open?: boolean;
+}
+const { summary, meta, open = false } = Astro.props;
+---
+<details class="svge-disclosure" open={open}>
+  <summary>
+    <span class="flex-1">{summary}</span>
+    {meta && <span class="text-xs font-mono opacity-60">{meta}</span>}
+  </summary>
+  <div class="disc-body">
+    <slot />
+  </div>
+</details>

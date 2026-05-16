@@ -1,0 +1,47 @@
+---
+/**
+ * Icon — thin wrapper for Lucide-style inline SVG icons.
+ *
+ * Replaces unicode-as-icon usages (✕ dismiss, → CTAs in buttons, ↗ external).
+ * Plain text-flow arrows in copy (e.g. "Grass → Gas → Soil") stay as unicode.
+ *
+ * Usage:
+ *   <Icon name="x" size={16} class="text-current" />
+ *
+ * Sizes default to 16; viewBox is 24x24 across all glyphs for consistency.
+ */
+type IconName = 'x' | 'arrow-right' | 'arrow-up-right' | 'chevron-right' | 'mail' | 'rss';
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+  stroke?: number;
+  ariaLabel?: string;
+}
+const { name, size = 16, class: className = '', stroke = 2, ariaLabel } = Astro.props;
+const PATHS: Record<IconName, string> = {
+  'x': '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  'arrow-right': '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  'arrow-up-right': '<line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>',
+  'chevron-right': '<polyline points="9 18 15 12 9 6"/>',
+  'mail': '<rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/>',
+  'rss': '<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/>',
+};
+const hidden = ariaLabel ? undefined : 'true';
+---
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={`inline-block align-text-bottom ${className}`}
+  aria-hidden={hidden}
+  aria-label={ariaLabel}
+  role={ariaLabel ? 'img' : undefined}
+  set:html={PATHS[name]}
+/>

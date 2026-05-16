@@ -1,83 +1,20 @@
 ---
-import type { Stat as StatT } from '../lib/site';
-
+import Stat from './Stat.astro';
 interface Props {
-  hero: StatT;
-  supporting: StatT[];   // 2-3 items
+  hero: { value: string; unit?: string; k: string; framing?: string };
+  supporting: { value: string; unit?: string; k: string; framing?: string }[];
 }
 const { hero, supporting } = Astro.props;
-
-// Try to split a stat value into a prefix and a parseable number for count-up.
-// Examples: "₹12" → {prefix:"₹", num:12}, "~14" → {prefix:"~", num:14},
-// "9,600" → {prefix:"", num:9600, thousands:true}, "2.63" → {decimals:2}, "≥90%" → not countable, leave as-is.
-function parseStat(v: string) {
-  const m = v.match(/^(\D*?)([\d,]+(?:\.\d+)?)(\D*)$/);
-  if (!m) return null;
-  const prefix = m[1] ?? '';
-  const raw = m[2];
-  const suffix = m[3] ?? '';
-  const thousands = raw.includes(',');
-  const num = parseFloat(raw.replace(/,/g, ''));
-  if (Number.isNaN(num)) return null;
-  const decimals = (raw.split('.')[1] || '').length;
-  return { prefix, suffix, num, thousands, decimals };
-}
-
-const heroParsed = parseStat(hero.value);
 ---
-<div class="grid-12" data-reveal data-reveal-stagger>
-  <!-- Hero stat — forest wash with saffron glow -->
-  <article class="svge-card svge-bento-hero col-8 p-8 sm:p-12 relative overflow-hidden">
-    <p class="eyebrow mb-4" style="color: var(--color-gold);">{hero.k}</p>
-    <div class="flex items-baseline">
-      {heroParsed ? (
-        <span
-          class="stat-mega text-[color:var(--color-paper)]"
-          data-count-to={heroParsed.num}
-          data-prefix={heroParsed.prefix}
-          data-suffix={heroParsed.suffix}
-          data-decimals={heroParsed.decimals}
-          data-thousands={heroParsed.thousands ? 'true' : 'false'}
-        >{hero.value}</span>
-      ) : (
-        <span class="stat-mega text-[color:var(--color-paper)]">{hero.value}</span>
-      )}
-      {hero.unit && <span class="unit text-[color:var(--color-paper)]/75 ml-2">{hero.unit}</span>}
-    </div>
-    {hero.framing && <p class="mt-5 text-[color:var(--color-paper)]/85 text-lg leading-relaxed max-w-prose">{hero.framing}</p>}
-    {hero.source && (
-      <p class="mt-5 pt-4 border-t border-[color:var(--color-paper)]/15 text-xs font-mono text-[color:var(--color-paper)]/65">
-        Source: {hero.source.label}
-      </p>
-    )}
+<div class="grid lg:grid-cols-[1.6fr_1fr] gap-4" data-reveal>
+  <article class="svge-card p-8 sm:p-12" style="background: var(--color-ink); color: var(--color-paper);">
+    <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">{hero.k}</p>
+    <p class="mt-4 mega" style="color: var(--color-paper);" data-count-target>
+      <span data-count-to={hero.value.replace(/[^0-9.]/g, '')} data-thousands="true">{hero.value}</span>{hero.unit && <span class="ml-2 eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">{hero.unit}</span>}
+    </p>
+    {hero.framing && <p class="mt-5 max-w-[40ch] leading-relaxed" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">{hero.framing}</p>}
   </article>
-
-  <!-- Supporting stats -->
-  <div class="col-4 flex flex-col gap-4">
-    {supporting.map(s => {
-      const p = parseStat(s.value);
-      return (
-        <article class="svge-card svge-bento-support flex-1 p-6 relative">
-          <div class="flex items-baseline">
-            {p ? (
-              <span
-                class="stat-num"
-                data-count-to={p.num}
-                data-prefix={p.prefix}
-                data-suffix={p.suffix}
-                data-decimals={p.decimals}
-                data-thousands={p.thousands ? 'true' : 'false'}
-              >{s.value}</span>
-            ) : (
-              <span class="stat-num">{s.value}</span>
-            )}
-            {s.unit && <span class="unit">{s.unit}</span>}
-          </div>
-          <p class="eyebrow mt-2">{s.k}</p>
-          {s.framing && <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{s.framing}</p>}
-          {s.source && <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">Source: {s.source.label}</p>}
-        </article>
-      );
-    })}
+  <div class="grid sm:grid-cols-1 gap-4">
+    {supporting.map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
   </div>
 </div>

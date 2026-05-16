@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import TimelineRail from '../components/TimelineRail.astro';
+import PullQuote from '../components/PullQuote.astro';
+import StatGrid from '../components/StatGrid.astro';
+import FounderAvatar from '../components/FounderAvatar.astro';
+import { SITE } from '../lib/site';
+
+const aboutStats = [
+  { v: '2024', k: 'Founded', sub: '12 June · ' + SITE.rocName },
+  { v: '4 TPD', k: 'CBG capacity', sub: 'IS 16087:2016 spec' },
+  { v: 'WHITE', k: 'CPCB category', sub: 'Lowest-impact tier' },
+  { v: '2.63 ac', k: 'Plot owned', sub: 'Thatipadu, Vizianagaram' },
+];
+---
+<Base title="About" description="Two-director Andhra Pradesh company building a 4 TPD CBG plant. IOCL Letter of Intent issued 04.10.2024. SATAT-approved EPC partner. WHITE pollution category.">
+  <FullBleedHero
+    banner="about_founder_field"
+    video="about_founder_walk"
+    alt="A man in a white kurta walking unhurriedly down a narrow earth path between tall Napier grass plots at golden hour."
+    eyebrow="About SVGE"
+    height="xl"
+    priority
+  >
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">One plant. Two directors.<br/>
+      <span style="color:#FFB300;">A 2-year clock to commissioning.</span>
+    </h1>
+  </FullBleedHero>
+
+  <Kicker eyebrow="About · Two directors · One clock" deck='One company. <span style="color:var(--color-saffron-text);">Two directors.</span> A 24-month build.' />
+
+  <!-- TIMELINE RAIL — the new centrepiece -->
+  <Section eyebrow="Timeline" title="The company, on a rail.">
+    <div class="max-w-3xl">
+      <TimelineRail />
+    </div>
+  </Section>
+
+  <!-- LEAD PARAGRAPH (editorial, drop-cap) -->
+  <Section narrow bg="paper-2">
+    <div class="prose-svge drop-cap">
+      <p>
+        Sree Veeranjaneya Green Energy is a two-director Andhra Pradesh company building a 4 TPD Compressed Bio-Gas plant in Thatipadu village, Vizianagaram district. The Indian Oil Letter of Intent was issued on 04.10.2024 (ref IndianOil/SATAT/01/3931) under the SATAT scheme; commissioning is contracted within 2 years.
+      </p>
+      <p>
+        The plant is one of about 152 SATAT CBG projects currently in operation or under construction nationally, and one of seven in Andhra Pradesh. Tech partner Raj Process Equipments &amp; Systems, Pune. Built to IS 16087:2016 spec. Classified WHITE by the CPCB. Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore in confirmed central-government incentives.
+      </p>
+      <p>
+        We named the company after the local form of Lord Hanuman — Veeranjaneya — because Suresh's family has lived in this part of Andhra for as long as anyone can remember. The mark on the wordmark is secular: a leaf and a flame. The name carries the heritage; the mark does not need to.
+      </p>
+    </div>
+  </Section>
+
+  <!-- DENSITY — Company at a glance -->
+  <Section eyebrow="At a glance" title="The company, in four numbers." bg="paper-2">
+    <StatGrid stats={aboutStats} />
+  </Section>
+
+  <!-- FOUNDERS — editorial spread per founder -->
+  <Section eyebrow="Founders" title="Who is on the line.">
+    <div class="space-y-16">
+      {SITE.promoters.map((p, i) => {
+        const avatarName = i === 0 ? 'suresh' : 'deepika';
+        return (
+          <div class="grid-12 items-start">
+            <div class={`col-4 ${i % 2 === 0 ? 'lg:order-1' : 'lg:order-2'}`}>
+              <div class="aspect-square rounded-2xl bg-[color:var(--color-paper-2)] border border-[color:var(--color-slate-2-soft)]/25 grid place-items-center overflow-hidden">
+                <FounderAvatar name={avatarName} size={240} label={`Stylised portrait of ${p.name}`} />
+              </div>
+              <p class="mt-3 text-[11px] font-mono text-[color:var(--color-slate-2)]">Stylised portrait · real photograph pending shoot.</p>
+            </div>
+            <div class={`col-8 ${i % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
+              <p class="eyebrow mb-2">{p.role} · {p.share}</p>
+              <h3 class="text-2xl sm:text-3xl mb-4">{p.name}</h3>
+              <p class="prose-svge">{p.story}</p>
+              <PullQuote quote={p.quote} attribution={p.name} draft={p.quoteDraft} />
+              <p class="mt-2 text-[11px] font-mono text-[color:var(--color-slate-2)]">DIN {p.din} · {p.credentials}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </Section>
+
+  <!-- BEHAVIOURAL PROMISES — numbered editorial stack -->
+  <Section eyebrow="What we are willing to be measured on" title="Four behavioural promises.">
+    <div class="space-y-10">
+      {SITE.values.map((v, i) => (
+        <div class="grid-12 items-start">
+          <div class="col-3">
+            <p class="numeral">0{i + 1}</p>
+          </div>
+          <div class="col-8">
+            <h3 class="text-2xl sm:text-3xl leading-tight mb-3">{v.k}.</h3>
+            <p class="text-[color:var(--color-slate)] text-lg leading-relaxed max-w-prose">{v.v}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <!-- REGISTRATION — data sheet -->
+  <Section eyebrow="Registration" title="The paperwork, in plain sight." bg="paper-2">
+    <dl class="grid-12 font-mono text-sm">
+      {[
+        { k: 'CIN', v: SITE.cin },
+        { k: 'GSTIN', v: SITE.gst },
+        { k: 'UDYAM', v: SITE.udyam },
+        { k: 'Incorporated', v: '12 June 2024' },
+        { k: 'ROC', v: SITE.rocName + ' · ' + SITE.registrationNumber },
+        { k: 'PAN', v: SITE.pan },
+        { k: 'Class', v: 'Private · Small Company' },
+        { k: 'CPCB category', v: 'WHITE' },
+      ].map(item => (
+        <div class="col-3 border-t-2 border-[color:var(--color-ink)] pt-3">
+          <dt class="eyebrow text-[color:var(--color-slate-2)] mb-1">{item.k}</dt>
+          <dd class="text-base break-all text-[color:var(--color-forest)] font-semibold">{item.v}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="mt-8 text-xs font-mono text-[color:var(--color-slate-2)]">
+      Registered office: {SITE.registeredOffice.line1}, {SITE.registeredOffice.line2}, {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.
+      Incorporated as a One Person Company on 12.06.2024; converted to a two-director Private Limited on 25.10.2025.
+    </p>
+  </Section>
+</Base>

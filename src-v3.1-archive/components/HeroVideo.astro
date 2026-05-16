@@ -1,0 +1,51 @@
+---
+/**
+ * HeroVideo — drop-in muted looping background video with poster fallback.
+ *
+ * Behaviour:
+ *   - Poster image shows instantly (banner/AVIF).
+ *   - Video loads lazily, autoplays muted, loops, no controls.
+ *   - `prefers-reduced-motion: reduce` → no autoplay; poster shows only.
+ *   - If the MP4 doesn't exist at deploy time, the poster is what the page shows.
+ *
+ * Usage:
+ *   <HeroVideo
+ *     src="/video/hero_dawn_paddy_to_flame.mp4"
+ *     poster="/banners/hero_paddy_dawn.avif"
+ *     alt="A paddy field at dawn with a small biogas digester on the horizon."
+ *   />
+ */
+interface Props {
+  src: string;
+  poster: string;
+  alt: string;
+  aspect?: '16/9' | '21/9' | '1/1';
+}
+const { src, poster, alt, aspect = '21/9' } = Astro.props;
+---
+<figure class={`relative overflow-hidden rounded-2xl border border-black/5`} style={`aspect-ratio: ${aspect};`}>
+  <img
+    src={poster}
+    alt={alt}
+    width="1600"
+    height="800"
+    decoding="async"
+    fetchpriority="high"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <video
+    src={src}
+    poster={poster}
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="metadata"
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
+  ></video>
+</figure>
+<style>
+  /* If the video errors (404, etc.), the underlying poster <img> still shows. */
+  video::-webkit-media-controls { display: none !important; }
+</style>

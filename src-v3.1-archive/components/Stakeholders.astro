@@ -1,0 +1,40 @@
+---
+/**
+ * Magazine-cover audience router. Replaces IntentChooser.
+ * 7 audience lines, each linking to the page that best serves them.
+ */
+import { link } from '../lib/links';
+
+const audiences = [
+  { num: '01', who: 'IOCL / SATAT officials', want: 'Spec compliance, LoI status, dispatch logistics', href: '/plant/', anchor: 'CBG to IOCL' },
+  { num: '02', who: 'Term lenders', want: 'Capital flow, clearance status, commissioning clock', href: '/build/', anchor: 'The build, in numbers' },
+  { num: '03', who: 'Farmers + aggregators', want: '40-km radius, payment cadence, contract terms', href: '/farmers/', anchor: 'Your land, our radius' },
+  { num: '04', who: 'EPC / logistics partners', want: 'Open RFPs by category, direct intake', href: '/work/#rfps', anchor: 'Engage with the build' },
+  { num: '05', who: 'Future hires', want: 'Role bands, hiring tranches, local-hire policy', href: '/work/#careers', anchor: '47 plant roles, 120 total' },
+  { num: '06', who: 'Journalists', want: 'Brand pack, fast facts, build journal', href: '/press/', anchor: 'Kit, fast facts, journal' },
+  { num: '07', who: 'State / district officials', want: 'Clearance matrix, WHITE-category basis, jobs map', href: '/build/#clearances', anchor: 'Clearances on the rail' },
+];
+---
+<section class="svge-card p-0 overflow-hidden" data-reveal>
+  <div class="bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-6 sm:px-10 py-8 sm:py-10">
+    <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Seven audiences · one inbox</p>
+    <h3 class="mt-2 display text-[color:var(--color-paper)]" style="font-size: clamp(1.75rem, 3.8vw, 2.5rem);line-height:1.05;">Pick the door that fits.</h3>
+  </div>
+  <ol class="divide-y divide-[color:var(--color-paper-3)]">
+    {audiences.map(a => (
+      <li>
+        <a href={link(a.href)} class="grid grid-cols-[auto_1fr_auto] items-center gap-4 sm:gap-6 px-6 sm:px-10 py-5 no-underline group hover:bg-[color:var(--tone-soft)] transition-colors">
+          <span class="numeral-display text-[color:var(--color-slate-2)] group-hover:text-[color:var(--tone-ink)] text-2xl">{a.num}</span>
+          <div>
+            <p class="text-[color:var(--color-ink)] text-lg sm:text-xl font-semibold leading-tight">{a.who}</p>
+            <p class="text-sm text-[color:var(--color-slate)] mt-0.5">{a.want}</p>
+          </div>
+          <span class="hidden sm:flex flex-col items-end text-right">
+            <span class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)] group-hover:text-[color:var(--tone-ink)]">{a.anchor}</span>
+            <svg class="mt-1 arrow-x" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:var(--tone-ink);"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</section>

@@ -1,0 +1,149 @@
+---
+import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
+import Section from '../components/Section.astro';
+import FullBleedHero from '../components/FullBleedHero.astro';
+import Kicker from '../components/Kicker.astro';
+import ChipRail from '../components/ChipRail.astro';
+import PullQuote from '../components/PullQuote.astro';
+import Mark from '../components/Mark.astro';
+import NotifyMe from '../components/NotifyMe.astro';
+import { SITE } from '../lib/site';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+const chips = [
+  { id: 'boilerplate', label: 'Boilerplate' },
+  { id: 'facts', label: 'Fast facts' },
+  { id: 'brand', label: 'Brand pack' },
+  { id: 'quotes', label: 'Quotes' },
+  { id: 'journal', label: 'Journal' },
+];
+---
+<Base title="Press" description="Press kit for journalists covering SVGE — boilerplate, fact sheet, logo pack, founder quotes, contact.">
+  <FullBleedHero banner="press_kit" alt="Editorial overhead photograph of a press kit folder on a dark slate desk with a saffron pen." eyebrow="Press">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">Press kit.</h1>
+    <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
+      Everything below is on the record. Reproduce with attribution. We aim to reply within one business day.
+    </p>
+  </FullBleedHero>
+
+  <Kicker eyebrow="Press · kit · journal" deck='Boilerplate. <span style="color:var(--color-saffron-text);">Brand pack.</span> Build journal.' />
+  <ChipRail items={chips} />
+
+  <Section id="boilerplate" eyebrow="Boilerplate" title="Two lengths. Drop in and use.">
+    <div class="grid-12">
+      <article class="col-6 rounded-xl bg-[color:var(--color-paper-2)] p-6">
+        <p class="eyebrow mb-3">60 words</p>
+        <p class="text-base leading-relaxed">{SITE.description}</p>
+      </article>
+      <article class="col-6 rounded-xl bg-[color:var(--color-paper-2)] p-6">
+        <p class="eyebrow mb-3">120 words</p>
+        <p class="text-base leading-relaxed">Sree Veeranjaneya Green Energy Private Limited (CIN U35101AP2024PTC115061) is a two-director Andhra Pradesh company building a 4 TPD Compressed Bio-Gas plant in Thatipadu village, Vizianagaram district. The Indian Oil Letter of Intent under the SATAT scheme was issued on 04.10.2024 (ref IndianOil/SATAT/01/3931) with a 2-year commissioning clock to 04.10.2026 and a 15-year Commercial Agreement validity. SVGE is one of about 152 SATAT CBG projects nationally and one of seven in Andhra Pradesh. EPC partner is the SATAT-approved Raj Process Equipments &amp; Systems Pvt Ltd, Pune. The plant is built to IS 16087:2016 spec, classified WHITE by CPCB, and runs on Napier grass from a 40-km supply radius. Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore of confirmed central-government incentives. The company has publicly committed to monthly progress disclosures from the day concrete is poured.</p>
+      </article>
+    </div>
+  </Section>
+
+  <Section id="facts" eyebrow="Fast facts" title="Everything a journalist will ask." bg="paper-2">
+    <dl class="grid-12 text-sm">
+      {[
+        ['Founded', '12 June 2024 · ROC Vijayawada'],
+        ['CIN', SITE.cin],
+        ['Plant capacity', '4 TPD CBG · 9,600 Nm³/day raw biogas'],
+        ['Standard', 'IS 16087:2016 (≥90% CH₄)'],
+        ['Site', 'Thatipadu village, Regidi Amadalavalasa mandal, Vizianagaram, AP — 532440'],
+        ['Land', '2.63 acres · MD-owned'],
+        ['Captive solar', '0.5 MW'],
+        ['Project cost', '~₹33 crore · promoter-led with 10-year term loan'],
+        ['Confirmed incentives', '₹6.7 Cr (MNRE CFA · AGRL Ministry · FOM Market Development Assistance) + 5-yr tax holiday'],
+        ['Offtake', 'Indian Oil Corporation · LoI 04.10.2024 (ref IndianOil/SATAT/01/3931) · 15-year Commercial Agreement'],
+        ['Commissioning deadline', '04.10.2026 (LoI clause 2)'],
+        ['Tech partner', 'Raj Process Equipments & Systems Pvt Ltd, Pune · SATAT-approved'],
+        ['Feedstock', 'Napier grass (40-km radius, 5-year farmer agreements), paddy straw, cattle dung'],
+        ['Co-product', '1 TPH solid + 52 m³/day liquid Fermented Organic Manure'],
+        ['CPCB category', 'WHITE (lowest pollution tier)'],
+        ['Team', '47 plant-payroll, ~120 direct + indirect jobs at steady state'],
+        ['SATAT national context', '80 plants commissioned + 72 under construction (MoPNG, Nov 2024)'],
+      ].map(([k, v]) => (
+        <div class="col-6 lg:col-4 border-t border-[color:var(--color-ink)] pt-3">
+          <dt class="eyebrow text-[color:var(--color-slate-2)] mb-1">{k}</dt>
+          <dd class="font-mono text-[color:var(--color-forest)] break-words">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  </Section>
+
+  <Section id="brand" eyebrow="Brand pack" title="Logo, palette, banners.">
+    <!-- Mark showcase tile -->
+    <div class="mb-10 flex items-center gap-8 sm:gap-10 p-6 sm:p-8 rounded-2xl bg-[color:var(--color-paper-2)] border border-[color:var(--color-slate-2-soft)]/15">
+      <Mark size={160} />
+      <div>
+        <p class="eyebrow mb-2">The mark</p>
+        <p class="text-base sm:text-lg text-[color:var(--color-slate)] leading-relaxed max-w-[40ch]">
+          Forest leaf · saffron flame · paper field. The leaf is the feedstock; the flame is what we turn it into. Use it on a paper or off-white background. For dark backgrounds, use the inverted PNG.
+        </p>
+      </div>
+    </div>
+    <div class="grid-12">
+      <ul class="col-8 grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/mark.svg")}>Mark — SVG</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/mark_2048.png")}>Mark — PNG 2048</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/mark_1024.png")}>Mark — PNG 1024</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/mark_512.png")}>Mark — PNG 512</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/linkedin_banner.png")}>LinkedIn banner</a></li>
+        <li><a class="block rounded-lg bg-[color:var(--color-paper-2)] p-3 hover:bg-[color:var(--color-paper-3)]" href={link("/brand/og_image.png")}>OG / social card</a></li>
+      </ul>
+      <aside class="col-4 rounded-xl bg-[color:var(--color-paper-2)] p-6 text-sm leading-relaxed">
+        <p class="eyebrow mb-2">Palette</p>
+        <ul class="font-mono space-y-1">
+          <li>Forest #1B5E20</li>
+          <li>Saffron #E65100</li>
+          <li>Paper #FAFAF7</li>
+          <li>Slate #37474F</li>
+        </ul>
+      </aside>
+    </div>
+  </Section>
+
+  <Section id="quotes" eyebrow="Founder quotes" title="On the record." bg="paper-2">
+    <div class="grid-12">
+      {SITE.promoters.map(p => (
+        <div class="col-6">
+          <PullQuote quote={p.quote} attribution={`${p.name}, ${p.role}`} draft={p.quoteDraft} />
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="journal" eyebrow="Build journal" title="Monthly receipts.">
+    {posts.length === 0 && <p class="text-sm font-mono text-[color:var(--color-slate-2)]">No posts yet. The first one lands the day construction begins — target Q3 2026.</p>}
+    {posts.map(post => (
+      <article class="border-t-2 border-[color:var(--color-ink)] py-6 max-w-3xl" data-reveal>
+        <p class="eyebrow">{fmt.format(post.data.date)}</p>
+        <h3 class="mt-2 text-2xl"><a href={link(`/news/${post.id}/`)}>{post.data.title}</a></h3>
+        <p class="mt-2 text-[color:var(--color-slate)] leading-relaxed">{post.data.summary}</p>
+      </article>
+    ))}
+  </Section>
+
+  <Section narrow bg="paper-2">
+    <NotifyMe
+      topic="Newsletter"
+      eyebrow="Stay in the loop"
+      title="One email a month, from the day concrete is poured."
+      body="Same content as the build journal, delivered. Unsubscribe at any time."
+      cta="Send me the monthly update"
+    />
+  </Section>
+
+  <Section narrow>
+    <div class="rounded-xl bg-[color:var(--color-ink)] text-[color:var(--color-paper)] p-8">
+      <p class="eyebrow text-[color:var(--color-paper)]/80 mb-2">Journalist contact</p>
+      <p class="text-2xl">Email <a class="underline text-[color:var(--color-paper)]" href={`mailto:${SITE.email}?subject=Press%20enquiry`}>{SITE.email}</a> with subject line "Press enquiry".</p>
+      <p class="mt-3 text-sm text-[color:var(--color-paper)]/80">Reply within one business day. Phone interview available by appointment once construction begins.</p>
+    </div>
+  </Section>
+</Base>

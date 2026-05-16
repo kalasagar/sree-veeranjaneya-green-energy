@@ -1,49 +1,36 @@
 ---
+/**
+ * Editorial colophon — masthead, sitemap, registration, build info.
+ */
 import { SITE } from '../lib/site';
 import { link } from '../lib/links';
 import Mark from './Mark.astro';
-const BASE = import.meta.env.BASE_URL;
-const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
-
-const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
+const year = new Date().getFullYear();
 ---
 <footer class="mt-24">
-
-  <!-- BAND 1 — Editorial closing.
-       Forest wash + saffron radial accent (matches BentoGrid hero), big
-       typographic anchor on left, status meta + CTA right-aligned. Mobile
-       collapses to a single column. -->
-  <section class="svge-footer-closing relative overflow-hidden text-[color:var(--color-paper)]">
-    <div class="container-svge py-20 sm:py-24 lg:py-28 relative">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-y-10 lg:gap-x-12 items-end">
-        <!-- Anchor -->
+  <!-- Closing statement -->
+  <section style="background: var(--color-ink); color: var(--color-paper);">
+    <div class="container-svge py-20 sm:py-24">
+      <div class="grid lg:grid-cols-12 gap-y-10 lg:gap-x-12 items-end">
         <div class="lg:col-span-8">
-          <div class="flex items-center gap-3 mb-6">
-            <span class="inline-block w-2 h-2 rounded-full bg-[color:var(--color-saffron)] animate-pulse" aria-hidden="true"></span>
-            <p class="eyebrow !text-[color:var(--color-gold)] mb-0">Closing statement</p>
-          </div>
-          <p class="serif italic leading-[0.98] text-[color:var(--color-paper)]" style="font-size: clamp(3rem, 8vw, 6.5rem); letter-spacing: -0.025em;">
-            Grass to Gas.<br/>Farm to Fuel.
-          </p>
+          <p class="eyebrow" style="color: var(--color-gold);">Closing statement</p>
+          <p class="mega mt-4" style="color: var(--color-paper); font-family: var(--font-display); font-style: italic; line-height: 0.94;">Grass to Gas.<br/>Farm to Fuel.</p>
           <span class="block mt-8 w-16 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
-          <p class="mt-7 text-lg sm:text-xl text-[color:var(--color-paper)]/85 leading-relaxed max-w-[58ch]">
-            One Compressed Bio-Gas plant. Thatipadu, Vizianagaram. From the day concrete is poured, one public update a month — one photo, one milestone hit, one missed, one financial number, one thing that went wrong.
+          <p class="mt-7 text-lg sm:text-xl leading-relaxed max-w-[58ch]" style="color: color-mix(in oklab, var(--color-paper) 88%, transparent);">
+            One Compressed Bio-Gas plant. Thatipadu, Vizianagaram. From the day concrete is poured, one update a month — one photo, one milestone hit, one missed, one financial number, one thing that went wrong.
           </p>
         </div>
-
-        <!-- Meta + CTAs -->
-        <div class="lg:col-span-4 lg:pl-6 lg:border-l lg:border-[color:var(--color-paper)]/20">
-          <Mark size={132} class="mb-7" />
-          <p class="font-mono uppercase tracking-[0.18em] text-[10px] text-[color:var(--color-paper)]/55 mb-3">Status</p>
-          <p class="text-[color:var(--color-paper)] font-semibold text-lg leading-snug">Pre-construction</p>
-          <p class="text-sm text-[color:var(--color-paper)]/70 mt-1">Construction begins Q3 2026</p>
-
-          <div class="mt-8 flex flex-col gap-2.5 max-w-xs">
-            <a href={link("/press/#journal")} class="inline-flex items-center justify-between gap-2 h-12 px-5 rounded-full bg-[color:var(--color-saffron)] hover:bg-[color:var(--color-saffron-light)] text-[color:var(--color-paper)] no-underline font-mono uppercase text-[11px] tracking-[0.18em] transition-colors duration-150">
+        <div class="lg:col-span-4 lg:pl-6 lg:border-l" style="border-color: color-mix(in oklab, var(--color-paper) 20%, transparent);">
+          <Mark size={120} />
+          <p class="mt-6 meta" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Status</p>
+          <p class="text-lg font-semibold" style="color: var(--color-paper);">{SITE.status.phaseLabel}</p>
+          <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Construction begins Q3 2026</p>
+          <div class="mt-6 flex flex-col gap-2 max-w-xs">
+            <a href={link('/press/#journal')} class="btn btn-on-dark justify-between" style="background: var(--color-saffron); color: var(--color-paper);">
               <span>Read the build journal</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
-            <a href={link("/contact/")} class="inline-flex items-center justify-between gap-2 h-12 px-5 rounded-full border border-[color:var(--color-paper)]/40 hover:border-[color:var(--color-paper)] hover:bg-[color:var(--color-paper)]/5 text-[color:var(--color-paper)] no-underline font-mono uppercase text-[11px] tracking-[0.18em] transition-colors duration-150">
+            <a href={link('/contact/')} class="btn justify-between" style="border: 1px solid color-mix(in oklab, var(--color-paper) 40%, transparent); color: var(--color-paper);">
               <span>Talk to us</span>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
@@ -53,88 +40,74 @@ const fmt = new Intl.DateTimeFormat('en-IN', { year: 'numeric' });
     </div>
   </section>
 
-  <!-- BAND 2 — Sitemap + address -->
-  <section class="bg-[color:var(--color-paper-2)]">
-    <div class="container-svge py-12 sm:py-16">
+  <!-- Colophon -->
+  <section style="background: var(--color-paper-2);">
+    <div class="container-svge py-12">
       <div class="grid-12">
-        <!-- Brand block -->
         <div class="col-3">
-          <Mark size={72} ariaLabel={null} />
-          <p class="mt-5 font-semibold text-xl text-[color:var(--color-forest)] leading-[1.1] tracking-tight">{SITE.short}</p>
-          <p class="mt-1 text-sm text-[color:var(--color-slate-2)] leading-snug">{SITE.legalName}</p>
-          <p class="mt-3 font-mono uppercase tracking-[0.18em] text-[10px] text-[color:var(--color-saffron-text)]">Grass · Gas · Soil</p>
-          <span class="block mt-5 w-10 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
-          <p class="mt-5 text-sm leading-relaxed text-[color:var(--color-slate)] max-w-[36ch]">
-            4 TPD Compressed Bio-Gas plant under construction in Vizianagaram, Andhra Pradesh.
-          </p>
-          <p class="mt-3 font-mono text-[10.5px] uppercase tracking-[0.16em] text-[color:var(--color-slate-2)]">
-            SATAT · GOBARdhan · MNRE
-          </p>
+          <Mark size={64} ariaLabel={null} />
+          <p class="mt-4 text-lg font-semibold" style="font-family: var(--font-display); color: var(--color-ink);">{SITE.short}</p>
+          <p class="meta mt-1">{SITE.legalName}</p>
+          <p class="mt-3 eyebrow">SATAT · GOBARdhan · MNRE</p>
         </div>
-
-        <!-- The build -->
         <div class="col-3">
           <p class="eyebrow mb-3">The build</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href={link("/about/")}>About</a></li>
-            <li><a href={link("/plant/")}>Plant</a></li>
-            <li><a href={link("/plant/#blueprint")}>Plant blueprint</a></li>
-            <li><a href={link("/build/")}>The build</a></li>
-            <li><a href={link("/build/#capital")}>Capital flow</a></li>
-            <li><a href={link("/build/#impact")}>Impact</a></li>
+            <li><a href={link('/about/')}>About</a></li>
+            <li><a href={link('/plant/')}>Plant</a></li>
+            <li><a href={link('/build/')}>Build</a></li>
+            <li><a href={link('/build/#impact')}>Impact</a></li>
           </ul>
         </div>
-
-        <!-- Audiences -->
         <div class="col-3">
           <p class="eyebrow mb-3">Audiences</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href={link("/farmers/")}>For farmers</a></li>
-            <li><a href={link("/work/#rfps")}>RFPs</a></li>
-            <li><a href={link("/work/#careers")}>Careers</a></li>
-            <li><a href={link("/press/")}>Press kit</a></li>
-            <li><a href={link("/press/#journal")}>Build journal</a> · <a href={link("/news/rss.xml")} class="text-xs">RSS</a></li>
-            <li><a href={link("/contact/")}>Contact</a></li>
-            <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn ↗</a></li>
+            <li><a href={link('/farmers/')}>For farmers</a></li>
+            <li><a href={link('/work/#rfps')}>RFPs</a></li>
+            <li><a href={link('/work/#careers')}>Careers</a></li>
+            <li><a href={link('/press/')}>Press kit</a></li>
+            <li><a href={link('/press/#journal')}>Build journal</a> · <a href={link('/news/rss.xml')} class="text-xs">RSS</a></li>
+            <li><a href={link('/contact/')}>Contact</a></li>
           </ul>
         </div>
-
-        <!-- Legal -->
         <div class="col-3">
-          <p class="eyebrow mb-3">Legal & data</p>
+          <p class="eyebrow mb-3">Legal &amp; data</p>
           <ul class="space-y-1.5 text-sm">
-            <li><a href={link("/privacy/")}>Privacy policy</a></li>
-            <li><a href={link("/terms/")}>Terms of use</a></li>
+            <li><a href={link('/privacy/')}>Privacy policy</a></li>
+            <li><a href={link('/terms/')}>Terms of use</a></li>
             <li><a href={`mailto:${SITE.email}?subject=DPR%20request`}>Request the DPR</a></li>
+            <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn ↗</a></li>
           </ul>
         </div>
       </div>
 
-      <!-- Address + registration block -->
-      <div class="mt-12 pt-8 border-t border-[color:var(--color-slate-2-soft)]/30 grid-12 text-xs text-[color:var(--color-slate-2)] leading-relaxed">
+      <div class="mt-10 pt-8 border-t border-[color:var(--rule-color)] grid-12 text-xs meta leading-relaxed">
         <div class="col-4">
           <p class="eyebrow mb-2">Plant site</p>
-          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>{SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}<br/><span class="font-mono">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
+          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>{SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}<br/><span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
         </div>
         <div class="col-4">
           <p class="eyebrow mb-2">Registered office</p>
           <p>{SITE.registeredOffice.line1},<br/>{SITE.registeredOffice.line2},<br/>{SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}<br/><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
         </div>
-        <div class="col-4 font-mono">
-          <p class="eyebrow mb-2 font-sans">Identifiers</p>
+        <div class="col-4 numeral">
+          <p class="eyebrow mb-2" style="font-family: var(--font-mono);">Identifiers</p>
           <p>CIN: {SITE.cin}<br/>GSTIN: {SITE.gst}<br/>UDYAM: {SITE.udyam}<br/>PAN: {SITE.pan}</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- BAND 3 — Utility -->
-  <section class="bg-[color:var(--color-paper)] border-t border-[color:var(--color-slate-2-soft)]/30">
-    <div class="container-svge py-5 flex flex-wrap items-center justify-between gap-2 text-xs text-[color:var(--color-slate-2)] svge-controlpanel">
-      <span>© {fmt.format(new Date())} {SITE.legalName}. All rights reserved.</span>
-      <span class="flex items-center gap-3 font-mono">
-        <span class="pill"><span class="w-1.5 h-1.5 rounded-full bg-[color:var(--color-saffron)]" aria-hidden="true"></span> v3 · published {SITE.status.lastUpdate}</span>
-        <span>Every number on this site reconciles with the DPR + IOCL LoI.</span>
+  <!-- Utility -->
+  <section style="background: var(--color-paper); border-top: 1px solid var(--rule-color);">
+    <div class="container-svge py-5 flex flex-wrap items-center justify-between gap-2 text-xs" style="color: var(--color-slate-2); font-family: var(--font-mono);">
+      <span>© {year} {SITE.legalName}. All rights reserved.</span>
+      <span class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--color-paper-3);">
+          <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-saffron);" aria-hidden="true"></span>
+          V4 · published {SITE.status.lastUpdate}
+        </span>
+        <span class="hidden md:inline">Every number on this site reconciles with the DPR + IOCL LoI.</span>
       </span>
     </div>
   </section>

@@ -5,12 +5,11 @@ import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
 import Countdown from '../components/Countdown.astro';
-import BentoGrid from '../components/BentoGrid.astro';
+import Stat from '../components/Stat.astro';
 import EditorialBlock from '../components/EditorialBlock.astro';
-import Logos from '../components/Logos.astro';
 import SATATPositioner from '../components/SATATPositioner.astro';
-import Stakeholders from '../components/Stakeholders.astro';
 import DayInTheData from '../components/DayInTheData.astro';
+import Stakeholders from '../components/Stakeholders.astro';
 import { SITE } from '../lib/site';
 import { getCollection } from 'astro:content';
 
@@ -18,87 +17,55 @@ const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 ).slice(0, 3);
 const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
-
-const stake = SITE.stakeStats;
-const stepImages = [
-  { id: 'farmers_hands_straw', alt: 'Hands tying paddy straw at golden hour' },
-  { id: null, alt: '' },
-  { id: null, alt: '' },
-  { id: null, alt: '' },
-  { id: 'impact_fom_soil', alt: 'A hand spreading FOM on Andhra soil' },
-];
 ---
-<Base>
-  <!-- HERO -->
+<Base heroOver={true}>
   <FullBleedHero
     banner="hero_paddy_dawn"
-    alt="A paddy field at dawn in coastal Andhra Pradesh with a small biogas digester silhouette on the right horizon."
+    alt="A paddy field at dawn in coastal Andhra Pradesh."
     eyebrow={SITE.hero.eyebrow}
     video="hero_dawn_paddy_to_flame"
     height="xl"
     priority
   >
-    <h1 class="display text-[color:var(--color-paper)] mt-3">
+    <h1 class="display text-[color:var(--color-paper)] mt-3" style="font-size: clamp(2.75rem, 6vw, 5rem);">
       {SITE.hero.h1Top}<br/>
-      <span style="color:#FFB300;">{SITE.hero.h1Mid}</span><br/>
+      <span style="color: var(--color-gold);">{SITE.hero.h1Mid}</span><br/>
       {SITE.hero.h1Bottom}
     </h1>
     <p class="mt-6 text-lg sm:text-xl max-w-2xl text-[color:var(--color-paper)]/95 leading-relaxed">{SITE.hero.sub}</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      {SITE.hero.ctas.map(c => (
-        <a href={link(c.href)} class={`btn ${c.tone === 'primary' ? 'btn-primary' : 'btn-ink'}`}>{c.label} →</a>
-      ))}
+      <a href={link('/build/')} class="btn btn-on-dark">Read the build →</a>
+      <a href={link('/farmers/')} class="btn btn-ghost" style="color: var(--color-paper); border-color: var(--color-paper);">Are you a farmer?</a>
     </div>
   </FullBleedHero>
 
-  <Kicker eyebrow="One small plant · two-year clock · 40-km radius" deck='4 TPD CBG. <span style="color:var(--color-saffron-text);">40-km supply radius.</span> A 2-year clock.' />
+  <Kicker eyebrow="One plant · two-year clock · 40 km" deck='4 TPD CBG. <span style="color:var(--color-saffron-text);">40-km supply radius.</span> A 2-year clock.' />
 
-  <!-- COUNTDOWN STRIP -->
+  <!-- Countdown -->
   <Section narrow>
     <Countdown label="to the IOCL commissioning deadline" />
   </Section>
 
-  <!-- WHAT'S AT STAKE — bento -->
-  <Section eyebrow="What's at stake" title="Why this matters, in three numbers.">
-    <BentoGrid hero={stake[0]} supporting={[stake[1], stake[2]]} />
+  <!-- What's at stake -->
+  <Section eyebrow="What's at stake" title="Why this matters, in three numbers." bg="paper-2">
+    <div class="grid sm:grid-cols-3 gap-4">
+      {SITE.stakeStats.map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
+    </div>
   </Section>
 
-  <!-- DAY IN THE DATA — scrollytelling centrepiece -->
-  <Section eyebrow="A day in the data" title="One operating day, in numbers." bg="paper-2">
+  <!-- A day in the data -->
+  <Section eyebrow="A day in the data" title="One operating day, in numbers.">
     <DayInTheData />
   </Section>
 
-  <!-- SATAT POSITIONER -->
-  <Section>
+  <!-- SATAT positioner -->
+  <Section bg="paper-2">
     <SATATPositioner />
   </Section>
 
-  <!-- HOW THIS PLANT CLOSES THE LOOP — 5-step -->
-  <Section
-    eyebrow="How this plant closes the loop"
-    title="Five steps. One cycle. No smoke."
-    bg="paper-2"
-  >
-    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      {[
-        { t: 'Farmer harvests', d: 'Paddy straw and cattle dung come off the field. Today most of it burns. We pay for it instead.' },
-        { t: 'We digest it', d: '9,600 Nm³ of raw biogas per day from a single CSTR-type anaerobic digester running 24 hours.' },
-        { t: 'We purify it', d: 'Two-tower VPSA and scrubbers strip CO₂, H₂S, and moisture to ≥90% methane — IS 16087:2016 spec.' },
-        { t: 'IOCL buys it', d: '4 tonnes per day of CBG. Roughly the daily CNG for 80 city buses. Under a signed Letter of Intent.' },
-        { t: 'FOM goes back', d: '52 m³/day of liquid manure plus 1 TPH of solid FOM return to the same fields. Soil gets its carbon back.' },
-      ].map((s, i) => (
-        <li class="svge-card relative p-6 sm:p-7 flex flex-col">
-          <p class="font-mono font-medium text-2xl text-[color:var(--color-saffron)] leading-none tracking-tight mb-4">0{i + 1}</p>
-          <h3 class="text-base sm:text-lg leading-snug mb-2 text-[color:var(--color-forest)]">{s.t}</h3>
-          <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{s.d}</p>
-        </li>
-      ))}
-    </ol>
-  </Section>
-
-  <!-- WHY THIS PLANT — three editorial spreads -->
+  <!-- Why this plant -->
   <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant.">
-    <div class="space-y-16">
+    <div class="space-y-20">
       {SITE.differentiators.map((d, i) => (
         <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={i === 0 ? 'hero_paddy_dawn' : null} imageAlt="">
           <p>{d.body}</p>
@@ -107,32 +74,15 @@ const stepImages = [
     </div>
   </Section>
 
-  <!-- BUILT IN PUBLIC -->
-  <Section narrow eyebrow="Built in public" title="No glossy reveal. Monthly receipts.">
-    <p class="lede">{SITE.publicPromise}</p>
-    <p class="mt-8">
-      <a href={link("/news/")} class="btn btn-primary">Read the first post →</a>
-    </p>
-    <p class="mt-4 text-sm text-[color:var(--color-slate-2)]">
-      Posts continue monthly from the day concrete is poured.
-      <a href={link("/careers/")}>Careers</a> and <a href={link("/press/")}>press</a> get the same updates.
-    </p>
-  </Section>
-
-  <!-- PARTNERS -->
-  <Section eyebrow="Partners" title="The network behind the plant." bg="paper-2">
-    <Logos />
-  </Section>
-
-  <!-- LATEST FROM THE BUILD JOURNAL -->
+  <!-- Build journal -->
   {posts.length > 0 && (
     <Section eyebrow="From the build journal" title="Monthly receipts." bg="paper-2">
       <div class="grid sm:grid-cols-3 gap-4">
         {posts.map(p => (
-          <a href={link(`/news/${p.id}/`)} class="svge-card p-5 no-underline group">
-            <p class="eyebrow text-[color:var(--tone-ink)]">{fmt.format(p.data.date)}</p>
-            <h3 class="mt-2 text-lg leading-snug text-[color:var(--color-ink)] group-hover:text-[color:var(--tone-ink)]">{p.data.title}</h3>
-            <p class="mt-2 text-sm text-[color:var(--color-slate)] leading-relaxed">{p.data.summary}</p>
+          <a href={link(`/news/${p.id}/`)} class="svge-card p-6 no-underline">
+            <p class="meta">{fmt.format(p.data.date)}</p>
+            <h3 class="mt-3 text-xl leading-snug">{p.data.title}</h3>
+            <p class="mt-3 text-sm leading-relaxed">{p.data.summary}</p>
           </a>
         ))}
       </div>
@@ -140,7 +90,7 @@ const stepImages = [
     </Section>
   )}
 
-  <!-- STAKEHOLDER ROUTER -->
+  <!-- Stakeholders -->
   <Section eyebrow="Talk to us" title="Pick the door that fits.">
     <Stakeholders />
   </Section>

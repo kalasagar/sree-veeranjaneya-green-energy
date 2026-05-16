@@ -9,71 +9,52 @@ import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 
 const faqs = [
-  { q: 'Do I have to sign a long-term contract?', a: 'No. For paddy straw, every supply is on its own slip. For Napier grass, we offer a season-long contract because we want to know we\'ll have feedstock — but it\'s renewable per season, never multi-year-locked. There is no "bonded supply" anywhere in this model.' },
-  { q: "How do I know you'll actually pay in 14 days?", a: 'Every payment is bank-transfer against a numbered supply slip you keep a copy of. From the day concrete is poured, we will publish farmer-payments-made as one of the monthly numbers on /news/. If we ever miss a 14-day window, you\'ll see it in the public log first.' },
-  { q: 'What if my paddy straw is wet from rain?', a: "We don't pay for wet straw — it kills the digester economics. But: if a forecast tells you the rain is coming, call us before harvest. We have flexibility on timing. We do not have flexibility on moisture content at the gate." },
-  { q: 'Do I get the Fermented Organic Manure for free, or do I pay?', a: 'FOM is sold back at a fair market rate — significantly below chemical fertilizer for the equivalent nutrient load. We are not a charity, but we are also not pricing FOM as a profit centre. The model is: gas pays the bills; FOM rebuilds the catchment we source from.' },
-  { q: 'Will Napier grass work on my land?', a: 'Napier handles most coastal-Andhra soils, including stony or low-water plots that struggle with paddy. We will visit your land before signing — at our cost — to confirm. There is no application fee.' },
-  { q: 'When does this actually start?', a: 'The plant is in pre-construction today. Once construction begins, we will publish a target month for first feedstock collection — likely around the commissioning date or just before. Email us now to be on the contact list when that happens.' },
+  { q: 'Do I have to sign a long-term contract?', a: 'No. For paddy straw, every supply is on its own slip. For Napier grass, we offer a season-long contract because we want to know we will have feedstock — but it is renewable per season, never multi-year-locked.' },
+  { q: "How do I know you'll actually pay in 14 days?", a: 'Every payment is bank-transfer against a numbered supply slip you keep a copy of. From the day concrete is poured, we will publish farmer-payments-made as one of the monthly numbers on /press/#journal.' },
+  { q: 'What if my paddy straw is wet from rain?', a: "We don't pay for wet straw — it kills the digester economics. But if a forecast tells you the rain is coming, call us before harvest. We have flexibility on timing." },
+  { q: 'Do I get Fermented Organic Manure for free?', a: 'FOM is sold back at a fair market rate — significantly below chemical fertilizer for the equivalent nutrient load.' },
+  { q: 'Will Napier grass work on my land?', a: 'Napier handles most coastal-Andhra soils, including stony or low-water plots that struggle with paddy. We will visit your land before signing — at our cost.' },
+  { q: 'When does this actually start?', a: 'The plant is in pre-construction today. Email us now to be on the contact list when first feedstock collection begins (target Q3 2026).' },
 ];
 ---
-<Base title="For Farmers" description="We buy paddy straw, Napier grass, and cattle dung. We pay within 14 days. By bank transfer. Within 40 km of Thatipadu.">
+<Base title="For Farmers" description="We buy paddy straw, Napier grass, cattle dung. We pay within 14 days. By bank transfer. Within 40 km of Thatipadu." heroOver={true}>
   <FullBleedHero
     banner="farmers_hands_straw"
     video="farmers_hands_straw"
-    alt="Weathered South-Indian farmer hands tying a bundle of dry paddy straw with jute twine at golden hour."
+    alt="Weathered hands tying a bundle of dry paddy straw."
     eyebrow="For Farmers"
+    height="xl"
   >
-    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2.75rem, 6vw, 5rem);">
       We buy<br/>
-      <span style="color:#FFB300;">what you would have burned.</span>
+      <span style="color: var(--color-gold);">what you would have burned.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
       If you farm within 40 km of Thatipadu in Vizianagaram or Srikakulam district — we want to talk to you.
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="For farmers · 40 km · 14-day pay" deck='40-km radius. <span style="color:var(--color-saffron-text);">14-day payment.</span> Bank transfer, every slip.' />
+  <Kicker eyebrow="Farmers · 40 km · 14-day pay" deck='40-km radius. <span style="color: var(--color-saffron-text);">14-day payment.</span> Bank transfer, every slip.' />
 
-  <!-- RADIUS MAP — the new centrepiece -->
+  <!-- Radius -->
   <Section eyebrow="Your land" title="If you farm within 40 km, this is the radius.">
-    <RadiusMap highlight={40} caption="Concentric distances from Thatipadu. Vizianagaram + Srikakulam catchment within the 40-km supply belt." />
+    <RadiusMap highlight={40} caption="Concentric distances from Thatipadu. Vizianagaram + Srikakulam catchment within the 40-km belt." />
   </Section>
 
-  <!-- HEADLINE PROMISE -->
-  <Section bg="paper-2">
-    <div class="grid-12 items-center">
-      <div class="col-8">
-        <p class="eyebrow mb-3">Our promise</p>
-        <h2 class="text-3xl sm:text-5xl leading-[1.05] max-w-[18ch]">
-          14-day payment. Bank transfer. <span class="text-[color:var(--color-saffron-text)]">Every supply slip.</span>
-        </h2>
-        <p class="mt-5 text-lg text-[color:var(--color-slate)] max-w-prose leading-relaxed">No 60-day arrears. No "next week" delays. No middleman cuts. The slip number from your delivery is the same slip number on our books.</p>
-      </div>
-      <div class="col-4">
-        <div class="rounded-xl bg-[color:var(--color-paper)] p-6">
-          <p class="eyebrow mb-2">Service radius</p>
-          <p class="stat-num">40<span class="unit">km</span></p>
-          <p class="text-sm mt-2 text-[color:var(--color-slate)]">Around Thatipadu village. Covers most of Vizianagaram + Srikakulam.</p>
-        </div>
-      </div>
-    </div>
-  </Section>
-
-  <!-- WHAT WE BUY -->
-  <Section eyebrow="What we buy / what we don't" title="The contract, in plain language.">
-    <div class="grid-12">
-      <div class="col-6 rounded-xl bg-[color:var(--color-forest)] text-[color:var(--color-paper)] p-8">
-        <p class="eyebrow text-[color:var(--color-paper)]/85 mb-3">We pay for</p>
-        <ul class="space-y-4 mt-4">
-          <li class="flex items-baseline gap-3"><span class="numeral text-[color:var(--color-paper)] text-3xl">01</span><div><strong class="text-lg">Paddy straw</strong> — dry, baled or loose, post-harvest.</div></li>
-          <li class="flex items-baseline gap-3"><span class="numeral text-[color:var(--color-paper)] text-3xl">02</span><div><strong class="text-lg">Napier grass</strong> — under a contract-farming agreement on your land or ours.</div></li>
-          <li class="flex items-baseline gap-3"><span class="numeral text-[color:var(--color-paper)] text-3xl">03</span><div><strong class="text-lg">Cattle dung</strong> — fresh, in volume, from your shed.</div></li>
+  <!-- What we buy -->
+  <Section eyebrow="What we buy / what we don't" title="The contract, in plain language." bg="paper-2">
+    <div class="grid lg:grid-cols-2 gap-4">
+      <div class="svge-card p-8" style="background: var(--color-forest); color: var(--color-paper);" data-reveal>
+        <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">We pay for</p>
+        <ul class="mt-4 space-y-4">
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">01</span><div><strong class="text-lg">Paddy straw</strong> — dry, baled or loose, post-harvest.</div></li>
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">02</span><div><strong class="text-lg">Napier grass</strong> — under a contract-farming agreement on your land or ours.</div></li>
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">03</span><div><strong class="text-lg">Cattle dung</strong> — fresh, in volume, from your shed.</div></li>
         </ul>
       </div>
-      <div class="col-6 rounded-xl bg-[color:var(--color-paper-3)] p-8">
-        <p class="eyebrow mb-3">We won't pay for</p>
-        <ul class="space-y-3 list-disc list-inside text-[color:var(--color-slate)] text-base mt-4">
+      <div class="svge-card p-8" data-reveal>
+        <p class="eyebrow">We won't pay for</p>
+        <ul class="mt-4 space-y-2 list-disc list-inside">
           <li>Wet or rotting straw — must be dry and clean.</li>
           <li>Plastic-contaminated bales.</li>
           <li>Pre-burned or charred residue (defeats the point).</li>
@@ -83,8 +64,8 @@ const faqs = [
     </div>
   </Section>
 
-  <!-- HOW IT WORKS -->
-  <Section eyebrow="How it works" title="Four steps. No paperwork tricks." bg="paper-2">
+  <!-- Four steps -->
+  <Section eyebrow="How it works" title="Four steps. No paperwork tricks.">
     <ol class="grid-12">
       {[
         ['Contact us', 'Email, WhatsApp (once construction starts), or walk-in once we are on site.'],
@@ -92,35 +73,31 @@ const faqs = [
         ['Deliver + sign', 'You deliver to the plant or our pickup point. You sign a numbered supply slip; we keep a copy.'],
         ['Get paid', '14 days. Bank transfer. To the account on the slip.'],
       ].map(([t, d], i) => (
-        <li class="col-3 border-t-2 border-[color:var(--color-forest)] pt-4">
-          <p class="numeral mb-3" style="font-size: 2rem;">0{i + 1}</p>
-          <h3 class="text-lg font-semibold mb-2">{t}</h3>
-          <p class="text-sm leading-relaxed text-[color:var(--color-slate)]">{d}</p>
+        <li class="col-3 rule-bold pt-4" data-reveal>
+          <p class="numeral text-3xl" style="color: var(--color-saffron-text);">0{i + 1}</p>
+          <h3 class="mt-2" style="font-family: var(--font-display); font-size: 1.25rem;">{t}</h3>
+          <p class="mt-2 text-sm leading-relaxed">{d}</p>
         </li>
       ))}
     </ol>
   </Section>
 
-  <!-- NOTIFY ME — pickup-route signup -->
-  <Section narrow>
+  <!-- Notify -->
+  <Section narrow bg="paper-2">
     <NotifyMe
       topic="Farmer pickup route"
       eyebrow="When pickup starts"
       title="Be on the list when the first vehicle goes out."
-      body="One email — we'll let you know the day the pickup route in your village goes live. No follow-up spam."
+      body="One email when the pickup route in your village goes live. No follow-up spam."
       cta="Add me to the route"
     />
   </Section>
 
   <!-- FAQ -->
   <Section eyebrow="Common questions" title="What farmers ask us first." narrow>
-    <div class="max-w-3xl">
-      {faqs.map(f => (
-        <Accordion summary={f.q}><p class="serif">{f.a}</p></Accordion>
-      ))}
+    <div>
+      {faqs.map(f => <Accordion summary={f.q}><p>{f.a}</p></Accordion>)}
     </div>
-    <p class="mt-8 text-sm">
-      Couldn't find your question? Email <a href={`mailto:${SITE.email}?subject=Farmer%20enquiry`}>{SITE.email}</a> with subject line "Farmer enquiry". A Telugu page is in the works for 2026 Q3.
-    </p>
+    <p class="mt-8 text-sm">Couldn't find your question? Email <a href={`mailto:${SITE.email}?subject=Farmer%20enquiry`}>{SITE.email}</a>. A Telugu page is in the works for 2026 Q3.</p>
   </Section>
 </Base>

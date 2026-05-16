@@ -1,0 +1,248 @@
+---
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StatusStrip from '../components/StatusStrip.astro';
+import { SITE } from '../lib/site';
+import { stripBase } from '../lib/links';
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+const path = stripBase(Astro.url.pathname);
+const tone = SITE.tones[path] ?? 'paper';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+  article?: { title: string; description: string; datePublished: Date; tags?: string[] };
+}
+
+const { title, description, ogImage = asset('brand/og_image.png'), canonical, article } = Astro.props;
+const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const desc = description ?? SITE.description;
+const url = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
+
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.legalName,
+  alternateName: SITE.name,
+  url: SITE.url,
+  logo: new URL('/brand/mark_512.png', SITE.url).href,
+  email: SITE.email,
+  description: SITE.description,
+  foundingDate: SITE.founded,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${SITE.registeredOffice.line1}, ${SITE.registeredOffice.line2}`,
+    addressLocality: SITE.registeredOffice.district,
+    addressRegion: SITE.registeredOffice.state,
+    postalCode: SITE.registeredOffice.pin,
+    addressCountry: 'IN',
+  },
+  location: {
+    '@type': 'Place',
+    name: `${SITE.plant.village} CBG Plant`,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: SITE.plant.village,
+      addressRegion: SITE.plant.state,
+      postalCode: SITE.plant.pin,
+      addressCountry: 'IN',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: SITE.plant.lat,
+      longitude: SITE.plant.lng,
+    },
+  },
+  sameAs: [SITE.social.linkedin],
+  identifier: [
+    { '@type': 'PropertyValue', name: 'CIN', value: SITE.cin },
+    { '@type': 'PropertyValue', name: 'GSTIN', value: SITE.gst },
+    { '@type': 'PropertyValue', name: 'UDYAM', value: SITE.udyam },
+  ],
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href={asset("favicon.ico")} />
+    <link rel="apple-touch-icon" href={asset("apple-touch-icon.png")} />
+    <link rel="canonical" href={url} />
+    {Astro.url.pathname === '/' && <>
+      <link rel="preload" href={asset("banners/hero_paddy_dawn.avif")} as="image" type="image/avif" fetchpriority="high" />
+      <link rel="preload" href={asset("brand/mark_simple.svg")} as="image" type="image/svg+xml" />
+    </>}
+    {Astro.url.pathname === '/about/' && <link rel="preload" href={asset("banners/about_founder_field.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/project/' && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {(Astro.url.pathname === '/process/' || Astro.url.pathname === '/process/engineering/') && <link rel="preload" href={asset("banners/project_plant_render.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/impact/' && <link rel="preload" href={asset("banners/impact_fom_soil.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/farmers/' && <link rel="preload" href={asset("banners/farmers_hands_straw.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    {Astro.url.pathname === '/press/' && <link rel="preload" href={asset("banners/press_kit.avif")} as="image" type="image/avif" fetchpriority="high" />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;0,16..72,600;1,16..72,400&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,16..72,400;0,16..72,500;0,16..72,600;1,16..72,400&display=swap" />
+    </noscript>
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="theme-color" content="#1B5E20" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={new URL(ogImage, SITE.url).href} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+    {article && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: article.title,
+        description: article.description,
+        datePublished: article.datePublished.toISOString(),
+        dateModified: article.datePublished.toISOString(),
+        url,
+        image: new URL(ogImage, SITE.url).href,
+        author: { '@type': 'Organization', name: SITE.legalName, url: SITE.url },
+        publisher: {
+          '@type': 'Organization',
+          name: SITE.legalName,
+          logo: { '@type': 'ImageObject', url: new URL('/brand/mark_512.png', SITE.url).href },
+        },
+        keywords: article.tags?.join(', '),
+        mainEntityOfPage: url,
+      })} />
+    )}
+    <link rel="alternate" type="application/rss+xml" title="SVGE — News" href={asset("news/rss.xml")} />
+    <meta name="generator" content={Astro.generator} />
+    <ClientRouter fallback="animate" />
+  </head>
+  <body data-tone={tone}>
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-white focus:p-2 focus:rounded">Skip to content</a>
+    <Header />
+    <StatusStrip />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <!-- Scroll-reveal + hero parallax + stat count-up. Re-runs on every View-Transition navigation. -->
+    <script is:inline data-astro-rerun>
+      (function () {
+        var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ---- Scroll reveal ----
+        var revealEls = document.querySelectorAll('[data-reveal]:not([data-revealed])');
+        if (rm) {
+          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
+        } else if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.setAttribute('data-revealed', '');
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+          revealEls.forEach(function (el) { io.observe(el); });
+        } else {
+          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
+        }
+
+        // ---- Hero parallax ----
+        if (!rm) {
+          var parallaxEls = document.querySelectorAll('[data-parallax]');
+          if (parallaxEls.length) {
+            var ticking = false;
+            function onScroll() {
+              if (ticking) return;
+              ticking = true;
+              requestAnimationFrame(function () {
+                var y = window.scrollY;
+                parallaxEls.forEach(function (el) {
+                  var r = el.getBoundingClientRect();
+                  if (r.bottom > 0 && r.top < window.innerHeight) {
+                    var offset = Math.max(-30, Math.min(0, -y * 0.12));
+                    el.style.transform = 'translate3d(0,' + offset + 'px,0)';
+                  }
+                });
+                ticking = false;
+              });
+            }
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+          }
+        }
+
+        // ---- SVG draw-on-scroll ----
+        if (!rm && 'IntersectionObserver' in window) {
+          var drawEls = document.querySelectorAll('[data-draw]:not([data-drawn])');
+          var drawObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              var el = e.target;
+              drawObs.unobserve(el);
+              var paths = el.querySelectorAll('path');
+              paths.forEach(function (p) {
+                try {
+                  var len = p.getTotalLength();
+                  p.style.setProperty('--draw-length', len);
+                } catch (err) {}
+              });
+              requestAnimationFrame(function () { el.setAttribute('data-drawn', ''); });
+            });
+          }, { threshold: 0.18 });
+          drawEls.forEach(function (el) { drawObs.observe(el); });
+        } else {
+          document.querySelectorAll('[data-draw]').forEach(function (el) { el.setAttribute('data-drawn', ''); });
+        }
+
+        // ---- Stat count-up ----
+        if (!rm) {
+          var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
+          if ('IntersectionObserver' in window) {
+            var co = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                co.unobserve(el);
+                el.setAttribute('data-counted', '');
+                var to = parseFloat(el.getAttribute('data-count-to'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+                var thousands = el.getAttribute('data-thousands') === 'true';
+                var start = performance.now();
+                var dur = 1200;
+                function step(t) {
+                  var p = Math.min(1, (t - start) / dur);
+                  var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+                  var v = to * eased;
+                  var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
+                  if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                  el.textContent = prefix + s + suffix;
+                  if (p < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
+              });
+            }, { threshold: 0.4 });
+            countEls.forEach(function (el) { co.observe(el); });
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
