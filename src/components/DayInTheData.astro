@@ -1,52 +1,69 @@
 ---
 /**
- * Sticky-stat scrollytelling section: "What 24 hours look like."
- * Left rail pins; right column scrolls through the day.
+ * Sticky-stat scrollytelling: "What 24 hours look like."
+ * Left rail pins; right column scrolls through one operating day. As each
+ * moment crosses the viewport, the rail's stat/label updates.
+ *
+ * Reduced-motion: rail stays on the first moment; scroll still works.
+ * Used on the home page.
  */
 import { SITE } from '../lib/site';
 
 const mf = SITE.massFlow;
 const moments = [
-  { t: '00:00', stat: mf.feedstockTpd.toString(), unit: 'tonnes', label: 'Feedstock arrived', body: 'Napier grass, paddy straw and dung — within a 40-km radius — checked at the gate for moisture and contamination, weighed in, slip-numbered.' },
-  { t: '03:00', stat: mf.slurryToDigesterM3PerDay.toString(), unit: 'm³ slurry', label: 'Mixing tank → digester', body: 'Pre-blended with ' + mf.waterRecycledM3PerDay + ' m³ of recycled process water. The pre-digester homogenises before the CSTRs see it.' },
-  { t: 'all day', stat: '15,402', unit: 'm³ working volume', label: '4 × CSTR · HRT 34 d', body: 'The four digesters run the slow, anaerobic, methanogenic dance. Stirrers turn. Methanogens metabolise. No external heat input.' },
-  { t: '12:00', stat: mf.rawBiogasNm3PerDay.toLocaleString('en-IN'), unit: 'Nm³ raw biogas', label: 'Raw gas at outlet', body: 'Roughly 60 % methane out of the digester. Then through the scrubbers + 2-tower VPSA to land at ≥' + mf.cbgMethanePct + ' % CH₄.' },
-  { t: '14:00', stat: mf.cbgTpd.toString(), unit: 'TPD CBG', label: 'Compressed, dispatched', body: '250-bar cascade trucks fill at the outlet. Each load is dew-point-stamped and gas-analyser-cleared before it leaves. Out-of-spec gas is recycled, not dispatched.' },
-  { t: '17:00', stat: '~4', unit: 'cascades', label: 'On the road to IOCL', body: 'Dispatch to IOCL retail outlets within ~' + mf.dispatchKmCap + ' km of the plant per LoI clause 5. Slip in hand. Reconciled monthly.' },
-  { t: 'after-COD', stat: mf.fomSolidTph.toString(), unit: 'TPH FOM', label: 'Manure back to fields', body: 'Solid Fermented Organic Manure (' + mf.fomLiquidM3PerDay + ' m³/day liquid co-product) returns to farmer fields in the same 40-km radius we sourced from. The loop closes.' },
+  { t: '00:00', stat: mf.feedstockTpd.toString(),                    unit: 'tonnes feedstock',  label: 'Feedstock arrived',     body: 'Napier grass, paddy straw and dung — within a 40-km radius — checked at the gate for moisture and contamination, weighed in, slip-numbered.' },
+  { t: '03:00', stat: mf.slurryToDigesterM3PerDay.toString(),         unit: 'm³ slurry',          label: 'Mixing tank → digester', body: 'Pre-blended with ' + mf.waterRecycledM3PerDay + ' m³ of recycled process water. The pre-digester homogenises before the CSTRs see it.' },
+  { t: 'all day', stat: '15,402',                                     unit: 'm³ working volume',  label: '4× CSTR · HRT 34 d',     body: 'Four digesters run the slow, anaerobic, methanogenic dance. Stirrers turn. Methanogens metabolise. No external heat input.' },
+  { t: '12:00', stat: mf.rawBiogasNm3PerDay.toLocaleString('en-IN'),  unit: 'Nm³ raw biogas',     label: 'Raw gas at outlet',      body: 'Roughly 60 % methane out of the digester. Then through the scrubbers + 2-tower VPSA to land at ≥' + mf.cbgMethanePct + ' % CH₄.' },
+  { t: '14:00', stat: mf.cbgTpd.toString(),                           unit: 'TPD CBG',            label: 'Compressed, dispatched', body: '250-bar cascade trucks fill at the outlet. Each load is dew-point-stamped and gas-analyser-cleared before it leaves. Out-of-spec gas is recycled, not dispatched.' },
+  { t: '17:00', stat: '~4',                                            unit: 'cascade trips',      label: 'On the road to IOCL',    body: 'Dispatch to IOCL retail outlets within ~' + mf.dispatchKmCap + ' km of the plant per LoI clause 5. Slip in hand. Reconciled monthly.' },
+  { t: 'after-COD', stat: mf.fomSolidTph.toString(),                  unit: 'TPH solid FOM',      label: 'Manure back to fields',  body: 'Solid Fermented Organic Manure (' + mf.fomLiquidM3PerDay + ' m³/day liquid co-product) returns to farmer fields in the same 40-km radius we sourced from. The loop closes.' },
 ];
 ---
 <section class="svge-card overflow-hidden" data-reveal>
-  <div class="px-6 sm:px-10 py-8 sm:py-10 bg-[color:var(--color-ink)] text-[color:var(--color-paper)]">
-    <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">A day in the data</p>
-    <h3 class="mt-2 display text-[color:var(--color-paper)]" style="font-size: clamp(1.75rem, 4vw, 2.5rem);line-height:1.05;">What 24 hours look like.</h3>
-    <p class="mt-3 max-w-2xl text-[color:var(--color-paper)]/80 leading-relaxed">
-      A pre-construction plant, in motion. Scroll through one operating day.
+  <!-- Header band -->
+  <header class="px-6 sm:px-10 py-8 sm:py-10" style="background: var(--color-ink); color: var(--color-paper);">
+    <p class="eyebrow" style="color: var(--color-gold);">A day in the data</p>
+    <h3 class="mt-3 display" style="font-family: var(--font-display); color: var(--color-paper); font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.05; max-width: 22ch;">What 24 hours look like.</h3>
+    <span class="block mt-5 w-12 h-px" style="background: var(--color-saffron);" aria-hidden="true"></span>
+    <p class="mt-5 max-w-2xl" style="color: color-mix(in oklab, var(--color-paper) 82%, transparent);">
+      A pre-construction plant, in motion. Scroll through one operating day — the rail on the left updates with each moment.
     </p>
-  </div>
+  </header>
 
-  <div class="grid md:grid-cols-[260px_1fr] gap-0">
-    <aside class="md:sticky md:top-32 self-start h-fit p-6 sm:p-8 bg-[color:var(--color-paper-3)] border-r border-[color:var(--color-slate-2-soft)]/25" data-ditd-aside>
-      <p class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">Now showing</p>
-      <p class="mt-2 text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-saffron-text)]" data-ditd-time>{moments[0].t}</p>
-      <p class="mt-4 numeral-display text-4xl sm:text-5xl text-[color:var(--color-ink)]" data-ditd-stat>{moments[0].stat}</p>
-      <p class="mt-1 text-xs font-mono text-[color:var(--color-slate-2)]" data-ditd-unit>{moments[0].unit}</p>
-      <p class="mt-4 text-base font-semibold text-[color:var(--color-ink)]" data-ditd-label>{moments[0].label}</p>
+  <div class="grid md:grid-cols-[280px_1fr]">
+    <!-- Sticky rail -->
+    <aside
+      class="md:sticky self-start p-6 sm:p-8 border-b md:border-b-0 md:border-r"
+      style={`top: calc(var(--header-h) + var(--status-h) + 24px); background: var(--color-paper-3); border-color: var(--rule-color);`}
+      data-ditd-aside
+    >
+      <p class="eyebrow" style="color: var(--color-slate-2);">Now showing</p>
+      <p class="mt-2 eyebrow" style="color: var(--color-saffron-text);" data-ditd-time>{moments[0].t}</p>
+      <p class="mt-5 numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: clamp(2.5rem, 5vw, 3.5rem); letter-spacing: -0.02em; line-height: 1;" data-ditd-stat>{moments[0].stat}</p>
+      <p class="meta mt-1" style="color: var(--color-slate-2);" data-ditd-unit>{moments[0].unit}</p>
+      <p class="mt-5 text-base font-semibold" style="color: var(--color-ink);" data-ditd-label>{moments[0].label}</p>
+      <p class="mt-6 meta" style="color: var(--color-slate-2);">Step <span data-ditd-index>1</span> of {moments.length}</p>
     </aside>
-    <ol class="p-6 sm:p-10 space-y-12 sm:space-y-16">
+
+    <!-- Scrolling moments -->
+    <ol class="p-6 sm:p-10 space-y-14 sm:space-y-20">
       {moments.map((m, i) => (
-        <li class="grid grid-cols-[60px_1fr] gap-4 sm:gap-6 items-start" data-ditd-step
-            data-i={i}
-            data-time={m.t}
-            data-stat={m.stat}
-            data-unit={m.unit}
-            data-label={m.label}>
-          <span class="numeral-display text-2xl text-[color:var(--color-slate-2)] mt-1">{(i + 1).toString().padStart(2, '0')}</span>
+        <li
+          class="grid grid-cols-[56px_1fr] gap-4 sm:gap-6 items-start"
+          data-ditd-step
+          data-i={i + 1}
+          data-time={m.t}
+          data-stat={m.stat}
+          data-unit={m.unit}
+          data-label={m.label}
+        >
+          <span class="numeral mt-1" style="font-family: var(--font-mono); font-size: 1rem; color: var(--color-slate-2);">{(i + 1).toString().padStart(2, '0')}</span>
           <div>
-            <p class="text-xs font-mono uppercase tracking-widest text-[color:var(--tone-ink)]">{m.t}</p>
-            <h4 class="mt-1 text-xl sm:text-2xl text-[color:var(--color-ink)] font-semibold leading-snug">{m.label}</h4>
-            <p class="mt-1 numeral-display text-3xl text-[color:var(--color-ink)]">{m.stat} <span class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">{m.unit}</span></p>
-            <p class="mt-3 text-base text-[color:var(--color-slate)] leading-relaxed max-w-2xl">{m.body}</p>
+            <p class="eyebrow" style="color: var(--color-saffron-text);">{m.t}</p>
+            <h4 class="mt-2" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: clamp(1.375rem, 2.4vw, 1.75rem); line-height: 1.15; max-width: 22ch;">{m.label}</h4>
+            <p class="mt-3 numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.75rem;">{m.stat} <span class="meta ml-1" style="color: var(--color-slate-2); font-family: var(--font-mono); font-weight: 400;">{m.unit}</span></p>
+            <p class="mt-4 text-base leading-relaxed max-w-2xl" style="color: var(--color-slate);">{m.body}</p>
           </div>
         </li>
       ))}
@@ -62,17 +79,19 @@ const moments = [
     var stat = document.querySelector('[data-ditd-stat]');
     var unit = document.querySelector('[data-ditd-unit]');
     var label = document.querySelector('[data-ditd-label]');
+    var index = document.querySelector('[data-ditd-index]');
     var obs = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting && e.intersectionRatio > 0.4) {
+        if (e.isIntersecting && e.intersectionRatio > 0.35) {
           var el = e.target;
           if (time) time.textContent = el.dataset.time;
           if (stat) stat.textContent = el.dataset.stat;
           if (unit) unit.textContent = el.dataset.unit;
           if (label) label.textContent = el.dataset.label;
+          if (index) index.textContent = el.dataset.i;
         }
       });
-    }, { threshold: [0.4, 0.6], rootMargin: '-30% 0px -30% 0px' });
+    }, { threshold: [0.35, 0.55], rootMargin: '-30% 0px -30% 0px' });
     steps.forEach(function (s) { obs.observe(s); });
   })();
 </script>

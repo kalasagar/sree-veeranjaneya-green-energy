@@ -1,55 +1,80 @@
 ---
 /**
- * SATAT pipeline positioner — national + AP bars with SVGE marker.
+ * SATAT pipeline positioner — two stacked bars (national + AP) + the
+ * "5,000 plants / 15 MMTPA" headline target. SVGE marker sits at the end
+ * of the AP bar (we'll be the 8th commissioned plant in Andhra Pradesh).
+ *
+ * Used in: home, build.
  */
 import { SITE } from '../lib/site';
 
 const nat = SITE.industry;
-const totalNat = nat.satatCommissioned + nat.satatUnderConstruction;
-const commPct = Math.round((nat.satatCommissioned / totalNat) * 100);
-const apTotal = nat.andhraPlantsCommissioned + 1; // SVGE marker counts as the next one
+const totalPipeline = nat.satatCommissioned + nat.satatUnderConstruction;
+const commPct = Math.round((nat.satatCommissioned / totalPipeline) * 100);
+const targetPct = Math.round((totalPipeline / nat.satatTargetPlants) * 100);
+const apTotal = nat.andhraPlantsCommissioned + 1; // SVGE = the next
 const apCommPct = Math.round((nat.andhraPlantsCommissioned / apTotal) * 100);
 ---
 <section class="svge-card p-6 sm:p-8" data-reveal>
-  <p class="eyebrow text-[color:var(--tone-ink)]">Where SVGE sits in SATAT</p>
-  <h3 class="mt-2 text-2xl text-[color:var(--color-ink)]">India's CBG pipeline, and our slot in it.</h3>
+  <header class="pb-6 border-b" style="border-color: var(--rule-color);">
+    <p class="eyebrow" style="color: var(--color-saffron-text);">Where SVGE sits in SATAT</p>
+    <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem); max-width: 22ch;">India's CBG pipeline, and our slot in it.</h3>
+    <p class="mt-3 max-w-2xl" style="color: var(--color-slate);">
+      MoPNG's SATAT scheme targets <strong>{nat.satatTargetPlants.toLocaleString('en-IN')} plants</strong> and <strong>{nat.satatTargetMmtpa} MMTPA</strong> of CBG nationally. The pipeline today is {totalPipeline}; ~<span class="numeral">{targetPct}%</span> of the target.
+    </p>
+  </header>
 
-  <dl class="mt-6 space-y-6">
+  <dl class="mt-8 space-y-8">
+    <!-- National -->
     <div>
-      <div class="flex items-baseline justify-between mb-2">
-        <dt class="text-sm font-mono text-[color:var(--color-slate-2)]">National pipeline</dt>
-        <dd class="text-xs font-mono text-[color:var(--color-slate-2)]">as of {nat.satatCommissionedAsOfDate}</dd>
+      <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+        <dt class="eyebrow" style="color: var(--color-ink);">National pipeline · {totalPipeline} plants</dt>
+        <dd class="meta" style="color: var(--color-slate-2);">As of {nat.satatCommissionedAsOfDate}</dd>
       </div>
-      <div class="svge-bar" role="img" aria-label={`${nat.satatCommissioned} commissioned, ${nat.satatUnderConstruction} under construction`}>
-        <span style={`width:${commPct}%;background:var(--color-forest);`}></span>
-        <span style={`width:${100 - commPct}%;background:var(--tone);opacity:0.7;`}></span>
+      <div class="svge-bar" role="img" aria-label={`${nat.satatCommissioned} commissioned plants, ${nat.satatUnderConstruction} under construction`}>
+        <span style={`width:${commPct}%; background: var(--color-forest);`}></span>
+        <span style={`width:${100 - commPct}%; background: var(--color-saffron); opacity: 0.7;`}></span>
       </div>
-      <div class="mt-2 flex justify-between text-xs font-mono">
-        <span><span data-count-to={nat.satatCommissioned} data-thousands="true" class="text-[color:var(--color-forest)] font-semibold">{nat.satatCommissioned}</span> commissioned</span>
-        <span><span data-count-to={nat.satatUnderConstruction} data-thousands="true" class="text-[color:var(--tone-ink)] font-semibold">{nat.satatUnderConstruction}</span> under construction</span>
+      <div class="mt-3 grid sm:grid-cols-2 gap-4 text-sm">
+        <div class="flex items-baseline gap-2">
+          <span class="w-2.5 h-2.5 rounded-full" style="background: var(--color-forest);" aria-hidden="true"></span>
+          <span><span class="numeral font-semibold" style="color: var(--color-forest);" data-count-to={nat.satatCommissioned} data-thousands="true">{nat.satatCommissioned}</span> commissioned</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="w-2.5 h-2.5 rounded-full" style="background: var(--color-saffron);" aria-hidden="true"></span>
+          <span><span class="numeral font-semibold" style="color: var(--color-saffron-text);" data-count-to={nat.satatUnderConstruction} data-thousands="true">{nat.satatUnderConstruction}</span> under construction</span>
+        </div>
       </div>
     </div>
 
+    <!-- AP -->
     <div>
-      <div class="flex items-baseline justify-between mb-2">
-        <dt class="text-sm font-mono text-[color:var(--color-slate-2)]">Andhra Pradesh</dt>
-        <dd class="text-xs font-mono text-[color:var(--color-slate-2)]">SVGE = the next plant</dd>
+      <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+        <dt class="eyebrow" style="color: var(--color-ink);">Andhra Pradesh · SVGE is next</dt>
+        <dd class="meta" style="color: var(--color-slate-2);">GOBARdhan portal, end-2025</dd>
       </div>
-      <div class="svge-bar relative" role="img" aria-label={`${nat.andhraPlantsCommissioned} commissioned in AP`}>
-        <span style={`width:${apCommPct}%;background:var(--color-forest);`}></span>
-        <span style={`width:${100 - apCommPct}%;background:var(--tone);opacity:0.45;`}></span>
-        <span class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1 w-3 h-6 bg-[color:var(--color-saffron)] ring-2 ring-[color:var(--color-paper)] rounded-sm" aria-hidden="true"></span>
+      <div class="svge-bar relative" role="img" aria-label={`${nat.andhraPlantsCommissioned} plants commissioned in Andhra Pradesh, SVGE marker at end`}>
+        <span style={`width:${apCommPct}%; background: var(--color-forest);`}></span>
+        <span style={`width:${100 - apCommPct}%; background: color-mix(in oklab, var(--color-saffron) 35%, transparent);`}></span>
+        <!-- SVGE flag at the end -->
+        <span
+          class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-7 rounded-sm flex items-center justify-center"
+          style={`left:${apCommPct + (100 - apCommPct) * 0.5}%; background: var(--color-saffron); box-shadow: 0 0 0 2px var(--color-paper);`}
+          aria-hidden="true"
+        >
+          <span class="w-1 h-1 rounded-full" style="background: var(--color-paper);"></span>
+        </span>
       </div>
-      <div class="mt-2 flex justify-between text-xs font-mono">
-        <span><span data-count-to={nat.andhraPlantsCommissioned} class="text-[color:var(--color-forest)] font-semibold">{nat.andhraPlantsCommissioned}</span> in AP today</span>
-        <span class="text-[color:var(--color-saffron-text)] font-semibold">SVGE on the bar</span>
+      <div class="mt-3 flex justify-between text-sm flex-wrap gap-2">
+        <span><span class="numeral font-semibold" style="color: var(--color-forest);" data-count-to={nat.andhraPlantsCommissioned}>{nat.andhraPlantsCommissioned}</span> in AP today</span>
+        <span class="font-semibold" style="color: var(--color-saffron-text);">SVGE = #{nat.andhraPlantsCommissioned + 1}</span>
       </div>
     </div>
   </dl>
 
-  <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">
-    Target: 5,000 plants · 15 MMTPA nationally. Sources: {nat.sources.map((s: any, i: number) => (
-      <>{i > 0 && ' · '}<a href={s.url} class="underline">{s.label}</a></>
+  <p class="mt-8 meta pt-4 border-t" style="color: var(--color-slate-2); border-color: var(--rule-color);">
+    Sources: {nat.sources.map((s: any, i: number) => (
+      <>{i > 0 && ' · '}<a href={s.url} rel="noopener">{s.label}</a></>
     ))}.
   </p>
 </section>

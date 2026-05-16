@@ -1,13 +1,18 @@
 ---
+/**
+ * Hairline-divided stat grid. Editorial paper background, 1px ink rules
+ * between cells (achieved via `gap-px` + rule-coloured wrapper).
+ * Used in: about (company at a glance).
+ */
 interface Props { stats: { v: string; k: string; sub?: string }[]; }
 const { stats } = Astro.props;
 ---
-<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style="background: var(--rule-color);" data-reveal>
+<dl class="grid sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded" style="background: var(--rule-color);" data-reveal>
   {stats.map(s => (
-    <article class="p-6 sm:p-8" style="background: var(--color-paper);">
-      <p class="eyebrow mb-3">{s.k}</p>
-      <p class="display" style="font-size: clamp(2rem, 4vw, 3rem);">{s.v}</p>
-      {s.sub && <p class="meta mt-2">{s.sub}</p>}
-    </article>
+    <div class="p-6 sm:p-8 flex flex-col" style="background: var(--color-paper);">
+      <dt class="eyebrow mb-3">{s.k}</dt>
+      <dd class="display" style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.875rem, 3.5vw, 2.5rem); letter-spacing: -0.02em; color: var(--color-ink);">{s.v}</dd>
+      {s.sub && <p class="meta mt-3" style="color: var(--color-slate-2);">{s.sub}</p>}
+    </div>
   ))}
-</div>
+</dl>

@@ -1,6 +1,10 @@
 ---
 /**
- * Vertical timeline rail of dated milestones. State = done | now | next.
+ * Vertical timeline rail. Each item carries date + label + state (done | now | next).
+ * State is conveyed by colour AND a textual badge (accessibility rule:
+ * never colour-only).
+ *
+ * Used in: about (company story), build (where we are).
  */
 import { SITE } from '../lib/site';
 
@@ -12,20 +16,33 @@ const { compact = false, items = SITE.timeline as any } = Astro.props;
 
 const fmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 function fmtDate(d: string) {
-  if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return fmt.format(new Date(d + 'T00:00:00Z'));
-  return d;
+  return /^\d{4}-\d{2}-\d{2}$/.test(d) ? fmt.format(new Date(d + 'T00:00:00Z')) : d;
 }
-function stateOf(item: { done?: boolean; current?: boolean }) {
-  if (item.current) return 'now';
-  if (item.done) return 'done';
+function stateOf(it: { done?: boolean; current?: boolean }): 'done' | 'now' | 'next' {
+  if (it.current) return 'now';
+  if (it.done) return 'done';
   return 'next';
 }
+const stateLabel: Record<string, string> = { done: 'Done', now: 'Now', next: 'Upcoming' };
 ---
 <ol class="svge-rail" data-reveal>
-  {items.map((item: any) => (
-    <li class={`svge-rail-item ${compact ? 'py-3' : ''}`} data-state={stateOf(item)}>
-      <time class="block">{fmtDate(item.date)}</time>
-      <p class={`mt-1 ${compact ? 'text-base' : 'text-lg'} text-[color:var(--color-ink)]`}>{item.label}</p>
-    </li>
-  ))}
+  {items.map((item: any) => {
+    const st = stateOf(item);
+    return (
+      <li class={`svge-rail-item ${compact ? 'py-3' : ''}`} data-state={st}>
+        <div class="flex items-baseline gap-3 flex-wrap">
+          <time class="block">{fmtDate(item.date)}</time>
+          <span
+            class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] uppercase tracking-[0.18em]"
+            style={st === 'now'
+              ? 'background: color-mix(in oklab, var(--color-saffron) 18%, transparent); color: var(--color-saffron-text); font-family: var(--font-mono); font-weight: 600;'
+              : st === 'done'
+                ? 'background: color-mix(in oklab, var(--color-forest) 14%, transparent); color: var(--color-forest); font-family: var(--font-mono); font-weight: 500;'
+                : 'background: var(--color-paper-2); color: var(--color-slate-2); font-family: var(--font-mono);'}
+          >{stateLabel[st]}</span>
+        </div>
+        <p class={`mt-1 ${compact ? 'text-base' : 'text-lg'}`} style="color: var(--color-ink); line-height: 1.4;">{item.label}</p>
+      </li>
+    );
+  })}
 </ol>

@@ -1,25 +1,35 @@
 ---
 /**
- * Editorial section wrapper. Eyebrow + display title + slot.
+ * Editorial section wrapper. Eyebrow + display title + lede + slot.
+ *
+ * Variants:
+ *   bg='paper-2' — depth shift for alternating rhythm.
+ *   bg='ink'    — inverted (rare; closing CTA).
+ *   narrow      — reading-column max-width (44rem) for prose.
+ *   dense       — tighter top/bottom padding for stat / chart sections.
+ *   divider     — hairline rule across the top of the section.
  */
 interface Props {
   id?: string;
   eyebrow?: string;
   title?: string;
+  lede?: string;
   bg?: 'paper' | 'paper-2' | 'ink';
   narrow?: boolean;
-  lede?: string;
+  dense?: boolean;
+  divider?: boolean;
 }
-const { id, eyebrow, title, bg = 'paper', narrow = false, lede } = Astro.props;
+const { id, eyebrow, title, lede, bg = 'paper', narrow = false, dense = false, divider = false } = Astro.props;
 const bgClass = bg === 'paper-2' ? 'section-paper-2' : bg === 'ink' ? 'section-ink' : '';
+const densePad = dense ? 'py-12 lg:py-16' : '';
 ---
-<section id={id} class={`section ${bgClass}`}>
+<section id={id} class={`section ${bgClass} ${densePad} ${divider ? 'border-t' : ''}`} style={divider ? 'border-color: var(--rule-color);' : ''}>
   <div class={narrow ? 'container-narrow' : 'container-svge'}>
     {(eyebrow || title) && (
-      <header class="mb-8 sm:mb-12" data-reveal>
+      <header class="mb-8 sm:mb-12 max-w-4xl" data-reveal>
         {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-        {title && <h2 class="display max-w-[24ch]">{title}</h2>}
-        {lede && <p class="lede mt-5">{lede}</p>}
+        {title && <h2 class="display" style="max-width: 22ch;">{title}</h2>}
+        {lede && <p class="lede mt-5" style="max-width: 48ch;">{lede}</p>}
       </header>
     )}
     <slot />

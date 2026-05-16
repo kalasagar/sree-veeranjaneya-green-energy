@@ -1,15 +1,43 @@
 ---
-interface Props { quote: string; attribution?: string; draft?: boolean; }
+/**
+ * Editorial pull quote — large display serif, saffron rule on left.
+ * Used in: about (director notes), press (founder quotes).
+ *
+ * Renders an open-quote glyph as decoration above the blockquote (visual
+ * cue without re-using the same character inside the quote text).
+ */
+interface Props {
+  quote: string;
+  attribution?: string;
+  draft?: boolean;
+}
 const { quote, attribution, draft } = Astro.props;
 ---
-<figure class="my-8 pl-6 sm:pl-8 border-l-2 border-[color:var(--color-saffron)]" data-reveal>
-  <blockquote class="text-2xl sm:text-3xl leading-snug" style="font-family: var(--font-display); font-style: italic; color: var(--color-ink);">
-    "{quote}"
-  </blockquote>
-  {(attribution || draft) && (
-    <figcaption class="mt-3 meta">
-      {attribution && <span>— {attribution}</span>}
-      {draft && <span class="ml-2 px-2 py-0.5 rounded" style="background: var(--color-paper-3); color: var(--color-saffron-text);">[Draft — pending founder approval]</span>}
-    </figcaption>
-  )}
+<figure class="my-8 relative" data-reveal>
+  <span
+    class="absolute -top-2 -left-1 leading-none select-none"
+    style="font-family: var(--font-display); font-weight: 700; font-size: 5rem; color: var(--color-saffron); opacity: 0.18;"
+    aria-hidden="true"
+  >&ldquo;</span>
+  <div class="pl-6 sm:pl-8 border-l-2" style="border-color: var(--color-saffron);">
+    <blockquote
+      class="text-2xl sm:text-3xl leading-snug"
+      style="font-family: var(--font-display); font-style: italic; color: var(--color-ink); letter-spacing: -0.01em;"
+    >{quote}</blockquote>
+    {(attribution || draft) && (
+      <figcaption class="mt-4 flex items-center gap-3 flex-wrap">
+        {attribution && (
+          <span class="meta" style="color: var(--color-slate);">
+            <span aria-hidden="true">— </span>{attribution}
+          </span>
+        )}
+        {draft && (
+          <span
+            class="text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded-full"
+            style="background: var(--color-paper-3); color: var(--color-saffron-text); font-family: var(--font-mono);"
+          >Draft · pending founder approval</span>
+        )}
+      </figcaption>
+    )}
+  </div>
 </figure>

@@ -1,6 +1,11 @@
 ---
 /**
  * Plant clock — instrument-panel strip under header on every route.
+ * Four cells: D-day · phase · clearances · last update.
+ * Pulse saffron dot when commissioning deadline is < 90 days.
+ *
+ * On narrow viewports cells wrap; the "Last update" cell hides ≤ 640px to
+ * keep the strip a single row (clock + phase + clearances stay visible).
  */
 import { SITE } from '../lib/site';
 import { link } from '../lib/links';
@@ -13,20 +18,20 @@ const lastUpdate = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'sh
 const cleared = `${SITE.status.clearancesObtained}/${SITE.status.clearancesTotal}`;
 const pulse = daysLeft < 90;
 ---
-<div class="svge-status" role="status" aria-label="Plant build status">
-  <div class="container-svge flex flex-wrap items-stretch">
-    <a href={link('/build/')} class="cell" aria-label={`Days remaining to commissioning deadline: ${daysLeft}`}>
+<aside class="svge-status" aria-label="Plant build status">
+  <div class="container-svge flex items-stretch h-full">
+    <a href={link('/build/')} class="cell" aria-label={`D minus ${daysLeft} days to commissioning deadline`}>
       <span class={`dot ${pulse ? 'pulse' : ''}`} aria-hidden="true"></span>
-      <span>D−<span class="numeral">{daysLeft.toLocaleString('en-IN')}</span>d <span class="opacity-60">to commissioning</span></span>
+      <span><span class="numeral" style="color: var(--color-paper);">D−{daysLeft.toLocaleString('en-IN')}d</span> <span class="opacity-65">to commissioning</span></span>
     </a>
-    <a href={link('/build/')} class="cell">
-      <span>Phase · <span style="color:var(--color-paper);">{SITE.status.phaseLabel}</span></span>
+    <a href={link('/build/')} class="cell" aria-label={`Project phase: ${SITE.status.phaseLabel}`}>
+      <span>Phase · <span style="color: var(--color-paper);">{SITE.status.phaseLabel}</span></span>
     </a>
-    <a href={link('/build/#clearances')} class="cell">
-      <span>Clearances <span class="numeral" style="color:var(--color-paper);">{cleared}</span></span>
+    <a href={link('/build/#clearances')} class="cell" aria-label={`${SITE.status.clearancesObtained} of ${SITE.status.clearancesTotal} clearances obtained`}>
+      <span>Clearances · <span class="numeral" style="color: var(--color-paper);">{cleared}</span></span>
     </a>
-    <a href={link('/press/#journal')} class="cell ml-auto">
-      <span>Last update · <span style="color:var(--color-paper);">{lastUpdate}</span></span>
+    <a href={link('/press/#journal')} class="cell ml-auto hidden md:inline-flex" aria-label={`Last update ${lastUpdate}`}>
+      <span>Updated · <span style="color: var(--color-paper);">{lastUpdate}</span></span>
     </a>
   </div>
-</div>
+</aside>

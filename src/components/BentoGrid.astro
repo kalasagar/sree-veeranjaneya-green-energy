@@ -1,20 +1,42 @@
 ---
+/**
+ * Bento layout — one hero stat card (dark) + 2–3 supporting Stat cards.
+ * Used in: home (what's at stake).
+ */
 import Stat from './Stat.astro';
+
 interface Props {
   hero: { value: string; unit?: string; k: string; framing?: string };
   supporting: { value: string; unit?: string; k: string; framing?: string }[];
 }
 const { hero, supporting } = Astro.props;
+// Extract a pure numeric for count-up; preserves prefix/suffix from original value.
+const numMatch = hero.value.match(/^([₹$£€~]*)([\d,.]+)(.*)$/);
+const heroCount = numMatch ? parseFloat(numMatch[2].replace(/,/g, '')) : null;
 ---
 <div class="grid lg:grid-cols-[1.6fr_1fr] gap-4" data-reveal>
-  <article class="svge-card p-8 sm:p-12" style="background: var(--color-ink); color: var(--color-paper);">
+  <article class="svge-card p-8 sm:p-10 lg:p-12 flex flex-col" style="background: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink);">
     <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">{hero.k}</p>
-    <p class="mt-4 mega" style="color: var(--color-paper);" data-count-target>
-      <span data-count-to={hero.value.replace(/[^0-9.]/g, '')} data-thousands="true">{hero.value}</span>{hero.unit && <span class="ml-2 eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">{hero.unit}</span>}
+    <p class="mt-5 flex items-baseline gap-3 flex-wrap leading-none">
+      {heroCount !== null ? (
+        <span
+          style="font-family: var(--font-display); font-weight: 700; color: var(--color-paper); font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: -0.025em;"
+          data-count-to={heroCount}
+          data-prefix={numMatch![1]}
+          data-suffix={numMatch![3]}
+          data-thousands="true"
+        >{hero.value}</span>
+      ) : (
+        <span style="font-family: var(--font-display); font-weight: 700; color: var(--color-paper); font-size: clamp(3rem, 8vw, 5.5rem); letter-spacing: -0.025em;">{hero.value}</span>
+      )}
+      {hero.unit && <span class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">{hero.unit}</span>}
     </p>
-    {hero.framing && <p class="mt-5 max-w-[40ch] leading-relaxed" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">{hero.framing}</p>}
+    {hero.framing && (
+      <p class="mt-6 max-w-[44ch] leading-relaxed text-base sm:text-lg" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">{hero.framing}</p>
+    )}
+    <span class="block mt-auto pt-8 w-12 h-px" style="background: var(--color-saffron);" aria-hidden="true"></span>
   </article>
-  <div class="grid sm:grid-cols-1 gap-4">
+  <div class="grid gap-4">
     {supporting.map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
   </div>
 </div>

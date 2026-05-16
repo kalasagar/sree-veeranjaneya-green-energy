@@ -1,22 +1,52 @@
 ---
+/**
+ * Two-up editorial spread: image/figure + text block.
+ * Used in: home (3 differentiators), about, news posts.
+ *
+ * - Image is lazy-loaded; if omitted, the text occupies full reading column.
+ * - `side` flips image/text order on lg+; below lg image always renders first.
+ * - Numeral is a 3-digit-style mark (e.g. "01", "02") that establishes
+ *   editorial rhythm across stacked blocks.
+ */
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
 interface Props {
   side?: 'left' | 'right';
   numeral?: string;
   title?: string;
   image?: string | null;
   imageAlt?: string;
+  /** Override image aspect ratio (default 4:3 portraitable). */
+  aspect?: string;
 }
-const { side = 'left', numeral, title, image, imageAlt = '' } = Astro.props;
+const { side = 'left', numeral, title, image, imageAlt = '', aspect = '4 / 3' } = Astro.props;
+const imageFirst = side === 'left';
 ---
-<div class={`grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-16 items-start ${side === 'right' ? 'lg:[&>*:first-child]:order-2' : ''}`} data-reveal>
-  {image
-    ? <figure class="overflow-hidden rounded"><img src={asset(`banners/${image}.avif`)} alt={imageAlt} loading="lazy" class="w-full h-full object-cover" /></figure>
-    : <div class="hidden lg:block"></div>}
-  <div>
-    {numeral && <p class="numeral text-3xl" style="color: var(--color-saffron-text);">{numeral}</p>}
-    {title && <h3 class="display mt-3 max-w-[20ch]" style="font-size: clamp(1.75rem, 3vw, 2.5rem);">{title}</h3>}
+<article class="grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-16 items-start" data-reveal>
+  {image ? (
+    <figure class={`overflow-hidden rounded ${imageFirst ? 'lg:order-1' : 'lg:order-2'}`} style={`aspect-ratio: ${aspect};`}>
+      <img
+        src={asset(`banners/${image}.avif`)}
+        alt={imageAlt}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+      />
+    </figure>
+  ) : (
+    <div class={`hidden lg:block ${imageFirst ? 'lg:order-1' : 'lg:order-2'}`} aria-hidden="true"></div>
+  )}
+  <div class={imageFirst ? 'lg:order-2' : 'lg:order-1'}>
+    {numeral && (
+      <div class="flex items-baseline gap-3 mb-4">
+        <span class="numeral text-2xl sm:text-3xl" style="color: var(--color-saffron-text); font-weight: 600;">{numeral}</span>
+        <span class="flex-1 h-px" style="background: var(--rule-color);" aria-hidden="true"></span>
+      </div>
+    )}
+    {title && (
+      <h3 class="display max-w-[24ch]" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem); line-height: 1.1;">{title}</h3>
+    )}
     <div class="prose-svge mt-5"><slot /></div>
   </div>
-</div>
+</article>

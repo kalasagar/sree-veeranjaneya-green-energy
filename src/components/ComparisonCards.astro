@@ -1,23 +1,22 @@
 ---
 /**
- * "What 4 TPD looks like" — six cards with inline bar.
+ * "What 4 TPD looks like" — six editorial cards.
+ * Each card: label · display numeral · framing · source line.
+ * Used on /build #impact.
  */
 import { SITE } from '../lib/site';
 const cards = SITE.comparisons;
 ---
-<section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4" data-reveal>
-  {cards.map((c, i) => (
-    <article class="svge-card p-5 flex flex-col">
-      <p class="eyebrow text-[color:var(--tone-ink)]">{c.label}</p>
-      <p class="mt-3 flex items-baseline gap-2">
-        <span class="numeral-display text-3xl sm:text-4xl text-[color:var(--color-ink)]">{c.value}</span>
-        <span class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">{c.unit}</span>
+<section class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);" data-reveal role="list">
+  {cards.map((c) => (
+    <article class="p-6 sm:p-7 flex flex-col" style="background: var(--color-paper);" role="listitem">
+      <p class="eyebrow" style="color: var(--color-saffron-text);">{c.label}</p>
+      <p class="mt-4 leading-none">
+        <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: clamp(2rem, 3.5vw, 2.875rem); letter-spacing: -0.02em;">{c.value}</span>
       </p>
-      <p class="mt-3 text-sm text-[color:var(--color-slate)] leading-relaxed flex-1">{c.framing}</p>
-      <div class="mt-4 svge-bar h-1.5" aria-hidden="true">
-        <span style={`width:${(i + 1) * 14 + 10}%;background:var(--tone);`}></span>
-      </div>
-      <p class="mt-3 text-[10px] font-mono uppercase tracking-widest text-[color:var(--color-slate-2)]">{c.source}</p>
+      <p class="mt-2"><span class="meta inline-block px-2 py-0.5 rounded" style="background: var(--color-paper-2); color: var(--color-slate); font-family: var(--font-mono);">{c.unit}</span></p>
+      <p class="mt-5 text-sm leading-relaxed flex-1" style="color: var(--color-slate);">{c.framing}</p>
+      <p class="mt-5 pt-4 border-t meta" style="color: var(--color-slate-2); border-color: var(--rule-color); font-family: var(--font-mono);">{c.source}</p>
     </article>
   ))}
 </section>

@@ -1,6 +1,7 @@
 ---
 /**
- * Team composition — stacked bars per role band for plant + extended footprint.
+ * Stacked role-band bars — plant payroll + extended supply chain.
+ * Used in: build (#team), work (#careers paired with Countdown).
  */
 import { SITE } from '../lib/site';
 
@@ -10,43 +11,56 @@ const totalAll = bands.reduce((s, b) => s + b.plant + b.extended, 0);
 const colors = ['#1B5E20', '#2C5282', '#C98E2B', '#B7472A'];
 ---
 <section class="svge-card p-6 sm:p-8" data-reveal>
-  <p class="eyebrow text-[color:var(--tone-ink)]">Team composition</p>
-  <h3 class="mt-2 text-2xl text-[color:var(--color-ink)]">
-    <span data-count-to={plantTotal} class="numeral-display">{plantTotal}</span> plant roles · <span data-count-to={totalAll} class="numeral-display">{totalAll}</span> total
-  </h3>
-  <p class="mt-2 text-sm text-[color:var(--color-slate)]">{SITE.team.localHirePolicy}</p>
+  <header class="pb-5 border-b" style="border-color: var(--rule-color);">
+    <p class="eyebrow" style="color: var(--color-saffron-text);">Team composition</p>
+    <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem);">
+      <span class="numeral" data-count-to={plantTotal}>{plantTotal}</span> plant roles ·
+      <span class="numeral" data-count-to={totalAll}>{totalAll}</span> total jobs
+    </h3>
+    <p class="mt-3 max-w-2xl" style="color: var(--color-slate);">{SITE.team.localHirePolicy}</p>
+  </header>
 
-  <dl class="mt-6 space-y-5">
+  <dl class="mt-7 space-y-6">
     <div>
-      <p class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)] mb-2">On plant payroll · {plantTotal}</p>
-      <div class="svge-bar" role="img" aria-label={`Plant headcount split into ${bands.length} bands`}>
+      <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+        <dt class="eyebrow" style="color: var(--color-ink);">On plant payroll</dt>
+        <dd class="meta" style="color: var(--color-slate-2);"><span class="numeral">{plantTotal}</span> people · three shifts</dd>
+      </div>
+      <div class="svge-bar h-3.5" role="img" aria-label={`Plant headcount split into ${bands.length} role bands`}>
         {bands.map((b, i) => (
-          <span style={`width:${(b.plant / plantTotal) * 100}%;background:${colors[i % colors.length]};`} title={`${b.band}: ${b.plant}`}></span>
+          b.plant > 0 ? <span style={`width:${(b.plant / plantTotal) * 100}%; background:${colors[i % colors.length]};`} title={`${b.band}: ${b.plant}`}></span> : null
         ))}
       </div>
     </div>
     <div>
-      <p class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-slate-2)] mb-2">Plant + extended · {totalAll}</p>
-      <div class="svge-bar" role="img" aria-label="Total jobs including extended supply chain">
+      <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+        <dt class="eyebrow" style="color: var(--color-ink);">Plant + extended supply chain</dt>
+        <dd class="meta" style="color: var(--color-slate-2);"><span class="numeral">{totalAll}</span> people · {SITE.team.catchmentRadiusKm}-km radius</dd>
+      </div>
+      <div class="svge-bar h-3.5" role="img" aria-label="Total jobs including extended supply chain">
         {bands.map((b, i) => (
-          <span style={`width:${((b.plant + b.extended) / totalAll) * 100}%;background:${colors[i % colors.length]};opacity:0.85;`} title={`${b.band}: ${b.plant + b.extended}`}></span>
+          <span style={`width:${((b.plant + b.extended) / totalAll) * 100}%; background:${colors[i % colors.length]}; opacity:0.85;`} title={`${b.band}: ${b.plant + b.extended}`}></span>
         ))}
       </div>
     </div>
   </dl>
 
-  <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
+  <ul class="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-5" role="list">
     {bands.map((b, i) => (
-      <li class="flex items-baseline gap-3">
+      <li class="flex items-start gap-3">
         <span class="w-3 h-3 rounded-sm flex-none mt-1.5" style={`background:${colors[i % colors.length]};`} aria-hidden="true"></span>
-        <span>
-          <span class="font-semibold text-[color:var(--color-ink)]">{b.band}</span>
-          <span class="ml-1 font-mono text-xs text-[color:var(--color-slate-2)]">· {b.plant}{b.extended ? ` + ${b.extended} ext.` : ''}</span>
-          <p class="mt-0.5 text-xs text-[color:var(--color-slate)] leading-relaxed">{b.note}</p>
-        </span>
+        <div class="flex-1 min-w-0">
+          <p class="flex items-baseline gap-2 flex-wrap">
+            <span class="font-semibold" style="color: var(--color-ink);">{b.band}</span>
+            <span class="numeral meta" style="color: var(--color-slate-2);">{b.plant}{b.extended ? ` + ${b.extended} ext.` : ' on plant'}</span>
+          </p>
+          <p class="mt-1 text-sm leading-relaxed" style="color: var(--color-slate);">{b.note}</p>
+        </div>
       </li>
     ))}
   </ul>
 
-  <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">Catchment radius {SITE.team.catchmentRadiusKm} km · local hire first.</p>
+  <p class="mt-7 pt-4 meta border-t" style="color: var(--color-slate-2); border-color: var(--rule-color);">
+    Hiring begins around plant commissioning (target Q3 2026). First tranche prioritises local candidates from Vizianagaram + Srikakulam.
+  </p>
 </section>

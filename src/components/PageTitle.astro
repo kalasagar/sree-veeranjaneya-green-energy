@@ -1,11 +1,20 @@
 ---
-interface Props { eyebrow?: string; title: string; lede?: string; }
+/**
+ * Plain page-title block. Use on pages that don't have a FullBleedHero
+ * (privacy, terms, news posts). For hero pages, Kicker handles this role.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lede?: string;
+}
 const { eyebrow, title, lede } = Astro.props;
 ---
-<section class="section">
-  <div class="container-svge" data-reveal>
-    {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-    <h1 class="display max-w-[20ch]">{title}</h1>
-    {lede && <p class="lede mt-6 max-w-[55ch]">{lede}</p>}
+<section class="section" data-reveal>
+  <div class="container-svge">
+    {eyebrow && <p class="eyebrow mb-3" style="color: var(--color-saffron-text);">{eyebrow}</p>}
+    <h1 class="display" style="max-width: 20ch;">{title}</h1>
+    <div class="mt-5 w-16 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+    {lede && <p class="lede mt-6" style="max-width: 48ch;">{lede}</p>}
   </div>
 </section>

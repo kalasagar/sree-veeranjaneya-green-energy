@@ -319,8 +319,22 @@
   }
   .svge-header.is-over a { color: var(--color-paper); text-decoration-color: color-mix(in oklab, var(--color-paper) 40%, transparent); }
   .svge-header.is-over a:hover { color: var(--color-gold); }
+  .svge-header.is-over .svge-h-wordmark { color: var(--color-paper) !important; }
+  .svge-header.is-over .svge-h-tagline { color: color-mix(in oklab, var(--color-paper) 80%, transparent) !important; }
   .svge-header.is-over .btn-ghost { color: var(--color-paper); border-color: color-mix(in oklab, var(--color-paper) 50%, transparent); }
   .svge-header.is-over .btn-ghost:hover { background: color-mix(in oklab, var(--color-paper) 12%, transparent); border-color: var(--color-paper); }
+
+  /* Nav link active indicator — saffron hairline under the label */
+  .svge-h-link { color: var(--color-slate); }
+  .svge-h-link:hover { color: var(--color-saffron-text); }
+  .svge-h-link.is-active { color: var(--color-saffron-text); font-weight: 600; }
+  .svge-h-link.is-active::after {
+    content: ''; position: absolute; left: 12px; right: 12px; bottom: 6px;
+    height: 2px; background: var(--color-saffron); border-radius: 1px;
+  }
+  .svge-header.is-over .svge-h-link { color: var(--color-paper); }
+  .svge-header.is-over .svge-h-link.is-active { color: var(--color-gold); }
+  .svge-header.is-over .svge-h-link.is-active::after { background: var(--color-gold); }
 
   /* Kicker */
   .kicker {
@@ -340,11 +354,16 @@
   }
   .kicker .kicker-rule { width: 32px; height: 2px; background: var(--color-saffron); }
 
-  /* ChipRail */
+  /* ChipRail — sits directly under StatusStrip + Header; sticky when
+     scrolled. Uses --header-h + --status-h so it stays aligned regardless
+     of header height tweaks. */
   .svge-chiprail {
-    position: sticky; top: 64px; z-index: var(--z-rail);
-    background: color-mix(in oklab, var(--color-paper) 92%, transparent);
-    backdrop-filter: blur(6px);
+    position: sticky;
+    top: calc(var(--header-h) + var(--status-h));
+    z-index: var(--z-rail);
+    background: color-mix(in oklab, var(--color-paper) 94%, transparent);
+    backdrop-filter: saturate(120%) blur(8px);
+    -webkit-backdrop-filter: saturate(120%) blur(8px);
     border-bottom: 1px solid var(--rule-color);
   }
   .svge-chiprail ul { display: flex; gap: 4px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }

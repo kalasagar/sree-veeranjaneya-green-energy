@@ -35,10 +35,11 @@ const cardClass = dark
   ? 'bg-[color:var(--color-ink)] text-[color:var(--color-paper)] border border-[color:var(--color-paper)]/10'
   : 'bg-[color:var(--color-forest)] text-[color:var(--color-paper)] border border-[color:var(--color-forest)]';
 ---
-<aside class={`svge-notify svge-card p-6 sm:p-8 ${cardClass}`} data-reveal>
-  <p class="eyebrow mb-2" style="color: var(--color-gold);">{eyebrow}</p>
-  <h3 class="text-2xl sm:text-3xl leading-tight mb-3" style="letter-spacing: -0.01em;">{title}</h3>
-  {body && <p class="text-base text-[color:var(--color-paper)]/85 mb-5 leading-relaxed max-w-[55ch]">{body}</p>}
+<aside class={`svge-notify svge-card p-6 sm:p-10 ${cardClass}`} data-reveal>
+  <p class="eyebrow mb-3" style="color: var(--color-gold);">{eyebrow}</p>
+  <h3 class="text-2xl sm:text-3xl leading-tight mb-3" style="font-family: var(--font-display); font-weight: 700; letter-spacing: -0.015em; color: var(--color-paper);">{title}</h3>
+  <div class="mb-5 w-10 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+  {body && <p class="text-base text-[color:var(--color-paper)]/85 mb-6 leading-relaxed max-w-[55ch]">{body}</p>}
   <form
     action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID"
     method="POST"

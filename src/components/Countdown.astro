@@ -1,7 +1,13 @@
 ---
 /**
- * Live countdown to the LoI commissioning deadline. Renders SSR-stable digits,
- * then ticks on the client.
+ * Live countdown to the IOCL LoI commissioning deadline. SSR-stable on first
+ * render, then ticks every 30s on the client. Reduced-motion safe (just
+ * renders the static numbers, no live tick).
+ *
+ * Layout: massive day count on the left, small hh:mm digital clock below,
+ * caption + label on the right. Reads as an instrument panel, not a timer.
+ *
+ * Used on: home, build, work#careers (paired with TeamComposition).
  */
 import { SITE } from '../lib/site';
 
@@ -13,43 +19,63 @@ interface Props {
 }
 const {
   target = SITE.loi.commissioningDeadline,
-  label = 'to commissioning deadline',
-  caption = `LoI clause 2 · ${new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`,
+  label = 'to the IOCL commissioning deadline',
+  caption,
   size = 'md',
 } = Astro.props;
 
 const targetDate = new Date(target + 'T00:00:00Z');
+const captionText = caption ?? `LoI clause 2 · issued ${new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+
 const now = new Date();
 const ms = Math.max(0, targetDate.getTime() - now.getTime());
 const days = Math.floor(ms / 86_400_000);
 const hours = Math.floor((ms % 86_400_000) / 3_600_000);
 const minutes = Math.floor((ms % 3_600_000) / 60_000);
 
-const digitClass = size === 'lg' ? 'text-6xl sm:text-7xl' : size === 'sm' ? 'text-2xl' : 'text-4xl sm:text-5xl';
+const dayFont = size === 'lg' ? 'clamp(4rem, 12vw, 8rem)' : size === 'sm' ? 'clamp(2rem, 5vw, 3rem)' : 'clamp(3rem, 9vw, 5.5rem)';
+const pulse = days < 90;
 ---
-<div class="svge-card p-6 sm:p-8" data-countdown data-target={targetDate.toISOString()} data-reveal>
-  <p class="eyebrow mb-4 text-[color:var(--tone-ink)]">{caption}</p>
-  <div class="flex items-end gap-6 sm:gap-10 flex-wrap">
+<article class="svge-card p-6 sm:p-8" data-countdown data-target={targetDate.toISOString()} data-reveal>
+  <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">{captionText}</p>
+
+  <div class="grid sm:grid-cols-[auto_1fr] gap-x-8 gap-y-4 items-end">
+    <!-- Big day count -->
     <div>
-      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="days">{days.toLocaleString('en-IN')}</span>
-      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">days</span>
+      <div class="flex items-baseline gap-3">
+        <span class={`numeral leading-none ${pulse ? 'pulse-soft' : ''}`}
+              style={`font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: ${dayFont}; letter-spacing: -0.03em;`}
+              data-cd="days">{days.toLocaleString('en-IN')}</span>
+        <span class="eyebrow" style="color: var(--color-slate-2);">days</span>
+      </div>
+      <!-- hh:mm digital clock -->
+      <div class="mt-3 flex items-baseline gap-2">
+        <span class="numeral text-lg" style="color: var(--color-slate);" data-cd="hours">{hours.toString().padStart(2, '0')}</span>
+        <span class="numeral text-lg opacity-50" style="color: var(--color-slate);" aria-hidden="true">:</span>
+        <span class="numeral text-lg" style="color: var(--color-slate);" data-cd="mins">{minutes.toString().padStart(2, '0')}</span>
+        <span class="ml-2 eyebrow" style="color: var(--color-slate-2);">hh : mm</span>
+      </div>
     </div>
-    <div>
-      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="hours">{hours.toString().padStart(2, '0')}</span>
-      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">hrs</span>
+
+    <!-- Label + target date -->
+    <div class="sm:text-right sm:self-start sm:pt-2">
+      <p class="text-base leading-snug max-w-xs sm:ml-auto" style="color: var(--color-slate);">{label}</p>
+      <p class="mt-2 meta" style="color: var(--color-slate-2);">
+        Target · <time datetime={target}>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(targetDate)}</time>
+      </p>
     </div>
-    <div>
-      <span class={`numeral-display ${digitClass} text-[color:var(--color-ink)]`} data-cd="mins">{minutes.toString().padStart(2, '0')}</span>
-      <span class="ml-1 font-mono text-xs uppercase tracking-widest text-[color:var(--color-slate-2)]">min</span>
-    </div>
-    <p class="ml-auto max-w-xs text-sm font-mono text-[color:var(--color-slate-2)] leading-relaxed">{label}</p>
   </div>
-</div>
+</article>
+
+<style>
+  .pulse-soft { animation: cd-pulse 2.4s ease-in-out infinite; }
+  @keyframes cd-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.78; } }
+  @media (prefers-reduced-motion: reduce) { .pulse-soft { animation: none; } }
+</style>
 
 <script is:inline data-astro-rerun>
   (function () {
-    var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (rm) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     var roots = document.querySelectorAll('[data-countdown]:not([data-ticking])');
     roots.forEach(function (root) {
       root.setAttribute('data-ticking', '');
@@ -59,15 +85,12 @@ const digitClass = size === 'lg' ? 'text-6xl sm:text-7xl' : size === 'sm' ? 'tex
       var m = root.querySelector('[data-cd="mins"]');
       function tick() {
         var diff = Math.max(0, target - Date.now());
-        var dd = Math.floor(diff / 86400000);
-        var hh = Math.floor((diff % 86400000) / 3600000);
-        var mm = Math.floor((diff % 3600000) / 60000);
-        if (d) d.textContent = dd.toLocaleString('en-IN');
-        if (h) h.textContent = String(hh).padStart(2, '0');
-        if (m) m.textContent = String(mm).padStart(2, '0');
+        if (d) d.textContent = Math.floor(diff / 86400000).toLocaleString('en-IN');
+        if (h) h.textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+        if (m) m.textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
       }
       tick();
-      setInterval(tick, 30_000);
+      setInterval(tick, 30000);
     });
   })();
 </script>

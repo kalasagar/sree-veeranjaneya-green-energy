@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
           </p>
         </div>
         <div class="lg:col-span-4 lg:pl-6 lg:border-l" style="border-color: color-mix(in oklab, var(--color-paper) 20%, transparent);">
-          <Mark size={120} />
+          <Mark size={120} decorative />
           <p class="mt-6 meta" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Status</p>
           <p class="text-lg font-semibold" style="color: var(--color-paper);">{SITE.status.phaseLabel}</p>
           <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Construction begins Q3 2026</p>
@@ -45,10 +45,11 @@ const year = new Date().getFullYear();
     <div class="container-svge py-12">
       <div class="grid-12">
         <div class="col-3">
-          <Mark size={64} ariaLabel={null} />
+          <Mark size={64} decorative />
           <p class="mt-4 text-lg font-semibold" style="font-family: var(--font-display); color: var(--color-ink);">{SITE.short}</p>
           <p class="meta mt-1">{SITE.legalName}</p>
-          <p class="mt-3 eyebrow">SATAT · GOBARdhan · MNRE</p>
+          <div class="mt-3 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+          <p class="mt-3 eyebrow" style="color: var(--color-saffron-text);">SATAT · GOBARdhan · MNRE</p>
         </div>
         <div class="col-3">
           <p class="eyebrow mb-3">The build</p>
@@ -105,7 +106,7 @@ const year = new Date().getFullYear();
       <span class="flex items-center gap-3">
         <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--color-paper-3);">
           <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-saffron);" aria-hidden="true"></span>
-          V4 · published {SITE.status.lastUpdate}
+          V3.2 · published {SITE.status.lastUpdate}
         </span>
         <span class="hidden md:inline">Every number on this site reconciles with the DPR + IOCL LoI.</span>
       </span>

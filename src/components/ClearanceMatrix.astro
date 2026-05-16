@@ -1,7 +1,9 @@
 ---
 /**
- * Three-column clearance matrix: Obtained · Applied · After-COD.
- * Each cell = badge + authority + scope.
+ * Statutory clearance matrix — three columns (Obtained · Applied · After-COD).
+ * Header carries the count + CPCB category badge.
+ *
+ * Used in: build (#clearances), plant (compact), work (compact).
  */
 import { SITE } from '../lib/site';
 
@@ -11,56 +13,69 @@ interface Props {
 const { compact = false } = Astro.props;
 const c = SITE.clearances;
 const total = c.obtained.length + c.applied.length + c.afterCOD.length;
+
+const columns = [
+  { label: 'Obtained',  items: c.obtained, dot: 'var(--color-forest)',       weight: 'solid' as const },
+  { label: 'Applied',   items: c.applied,  dot: 'var(--color-saffron)',      weight: 'solid' as const },
+  { label: 'After COD', items: c.afterCOD, dot: 'var(--color-paper)',        weight: 'ring' as const },
+];
 ---
 <section class="svge-card p-6 sm:p-8" data-reveal id="clearances">
-  <div class="flex items-baseline justify-between flex-wrap gap-2">
+  <!-- Header: count + WHITE-category badge -->
+  <header class="flex items-end justify-between gap-4 flex-wrap pb-5 border-b" style="border-color: var(--rule-color);">
     <div>
-      <p class="eyebrow text-[color:var(--tone-ink)]">Statutory clearances</p>
-      <h3 class="mt-1 text-2xl text-[color:var(--color-ink)]">
-        <span class="numeral-display" data-count-to={c.obtained.length}>{c.obtained.length}</span> obtained · <span class="numeral-display" data-count-to={c.applied.length}>{c.applied.length}</span> applied · <span class="numeral-display" data-count-to={c.afterCOD.length}>{c.afterCOD.length}</span> after-COD
+      <p class="eyebrow" style="color: var(--color-saffron-text);">Statutory clearances</p>
+      <h3 class="mt-2 display" style="font-size: clamp(1.5rem, 2.6vw, 2rem); font-family: var(--font-display);">
+        <span class="numeral" data-count-to={c.obtained.length}>{c.obtained.length}</span> obtained ·
+        <span class="numeral" data-count-to={c.applied.length}>{c.applied.length}</span> applied ·
+        <span class="numeral" data-count-to={c.afterCOD.length}>{c.afterCOD.length}</span> after-COD
       </h3>
     </div>
-    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[color:var(--color-paper-3)] text-xs font-mono uppercase tracking-widest text-[color:var(--color-ink)]">
-      <span class="w-2 h-2 rounded-full" style="background: var(--color-paper);border:2px solid var(--color-ink);" aria-hidden="true"></span>
-      CPCB · {c.category} category
+    <span
+      class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs uppercase tracking-[0.18em]"
+      style="background: var(--color-ink); color: var(--color-paper); font-family: var(--font-mono); font-weight: 500;"
+      title={`CPCB ${c.category} category — ${c.categoryBasis}`}
+    >
+      <span class="w-2 h-2 rounded-full" style="background: var(--color-paper);" aria-hidden="true"></span>
+      CPCB · {c.category}
     </span>
-  </div>
-  {!compact && <p class="mt-2 text-sm text-[color:var(--color-slate)]">{c.categoryBasis}. Environmental clearance not required for energy-crop CBG plants.</p>}
+  </header>
 
-  <div class="mt-6 grid md:grid-cols-3 gap-4">
-    <div>
-      <p class="rule-hairline"><span class="rule-label">Obtained</span></p>
-      <ul class="mt-2 space-y-2">
-        {c.obtained.map(item => (
-          <li class="flex items-start gap-2 text-sm">
-            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--color-forest)] flex-none" aria-hidden="true"></span>
-            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div>
-      <p class="rule-hairline"><span class="rule-label">Applied</span></p>
-      <ul class="mt-2 space-y-2">
-        {c.applied.map(item => (
-          <li class="flex items-start gap-2 text-sm">
-            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--tone)] flex-none" aria-hidden="true"></span>
-            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div>
-      <p class="rule-hairline"><span class="rule-label">After-COD</span></p>
-      <ul class="mt-2 space-y-2">
-        {c.afterCOD.map(item => (
-          <li class="flex items-start gap-2 text-sm">
-            <span class="mt-1 w-2 h-2 rounded-full bg-[color:var(--color-paper-3)] ring-1 ring-[color:var(--color-slate-2-soft)] flex-none" aria-hidden="true"></span>
-            <span><span class="font-semibold text-[color:var(--color-ink)]">{item.item}</span><br/><span class="text-xs font-mono text-[color:var(--color-slate-2)]">{item.authority}</span></span>
-          </li>
-        ))}
-      </ul>
-    </div>
+  {!compact && (
+    <p class="mt-4 max-w-3xl" style="color: var(--color-slate);">
+      {c.categoryBasis}. Environmental Clearance is not required for energy-crop CBG plants under the EIA Notification 2006.
+    </p>
+  )}
+
+  <!-- Three-column matrix -->
+  <div class="mt-8 grid md:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);">
+    {columns.map(col => (
+      <div class="p-5 sm:p-6" style="background: var(--color-paper);">
+        <p class="eyebrow mb-4" style="color: var(--color-slate-2);">{col.label} · <span class="numeral" style="color: var(--color-ink);">{col.items.length}</span></p>
+        <ul class="space-y-4" role="list">
+          {col.items.map(item => (
+            <li class="flex items-start gap-3 text-sm">
+              <span
+                class="mt-1.5 w-2.5 h-2.5 rounded-full flex-none"
+                style={col.weight === 'ring'
+                  ? `background: ${col.dot}; border: 1.5px solid var(--color-slate-2);`
+                  : `background: ${col.dot};`}
+                aria-hidden="true"
+              ></span>
+              <span class="flex-1">
+                <span class="font-semibold" style="color: var(--color-ink);">{item.item}</span><br/>
+                <span class="meta" style="color: var(--color-slate-2);">{item.authority}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
   </div>
-  {!compact && <p class="mt-6 text-xs font-mono text-[color:var(--color-slate-2)]">{total} clearances total, sequenced against the LoI commissioning clock. Out-of-scope: state-fire NOC pre-construction (Andhra Pradesh exemption).</p>}
+
+  {!compact && (
+    <p class="mt-6 meta" style="color: var(--color-slate-2);">
+      {total} clearances total, sequenced against the LoI commissioning clock. Andhra Pradesh exempts CBG plants from a separate pre-construction fire NOC.
+    </p>
+  )}
 </section>

@@ -1,7 +1,13 @@
 ---
 /**
- * Concentric distance rings centred on Thatipadu (SVG, no map tiles).
- * Pass `highlight` to feature one ring (e.g. '40' for supply radius).
+ * Concentric distance rings centred on Thatipadu (hand-rolled SVG).
+ *
+ * Layout: SVG rings on the left (no overlapping labels — just a small km
+ * tick at the top of each ring), legend table on the right with the full
+ * km · label · kind. Highlighted ring gets a stronger saffron stroke, a
+ * filled tick chip, and a bold legend row.
+ *
+ * Used in: build (40-km supply + 75-km dispatch), farmers.
  */
 import { SITE } from '../lib/site';
 
@@ -13,42 +19,90 @@ interface Props {
 const { highlight, title = 'Distances from Thatipadu', caption = '' } = Astro.props;
 const distances = SITE.plant.distances;
 const maxKm = Math.max(...distances.map(d => d.km));
-const padding = 28;
-const size = 480;
+const size = 520;
 const cx = size / 2;
 const cy = size / 2;
+const padding = 36;
 const radiusFor = (km: number) => (km / maxKm) * (size / 2 - padding);
+
+const kindIcon: Record<string, string> = {
+  town: '◇',
+  office: '⊕',
+  supply: '◉',
+  dispatch: '▶',
+  port: '⚓',
+};
 ---
 <figure class="svge-card p-6 sm:p-8" data-reveal>
-  <figcaption class="mb-4">
-    <p class="eyebrow text-[color:var(--tone-ink)]">{title}</p>
-    {caption && <p class="text-sm text-[color:var(--color-slate)] mt-1">{caption}</p>}
+  <figcaption class="mb-6">
+    <p class="eyebrow" style="color: var(--color-saffron-text);">{title}</p>
+    {caption && <p class="mt-2 max-w-2xl" style="color: var(--color-slate);">{caption}</p>}
   </figcaption>
-  <div class="grid lg:grid-cols-[1fr_300px] gap-6 items-center">
-    <svg class="svge-ring w-full max-w-[480px] mx-auto" viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Distance rings from Thatipadu">
-      <g>
-        {distances.map(d => {
-          const r = radiusFor(d.km);
-          const isHi = highlight === d.km;
-          return (
-            <g class="ring-group">
-              <circle class="ring" cx={cx} cy={cy} r={r} style={isHi ? 'stroke:var(--tone);stroke-width:2;' : ''} />
-              <text class="ring-label" x={cx + 4} y={cy - r - 4} style={isHi ? 'fill:var(--tone-ink);font-weight:600;' : ''}>{d.km} km · {d.label}</text>
+
+  <div class="grid lg:grid-cols-[1fr_320px] gap-8 items-center">
+    <svg class="svge-ring w-full max-w-[520px] mx-auto" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={`Concentric distance rings centred on Thatipadu, ranging from ${distances[0].km} to ${maxKm} kilometres`}>
+      <defs>
+        <radialGradient id="rm-fade" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="var(--color-saffron)" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="var(--color-saffron)" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+      <!-- Soft saffron radial wash -->
+      <circle cx={cx} cy={cy} r={size / 2 - padding} fill="url(#rm-fade)" />
+
+      <!-- Rings + km ticks (no overlapping labels in SVG; legend on the right does the rest) -->
+      {distances.map(d => {
+        const r = radiusFor(d.km);
+        const isHi = highlight === d.km;
+        return (
+          <g class="ring-group" data-km={d.km}>
+            <circle
+              cx={cx}
+              cy={cy}
+              r={r}
+              fill="none"
+              stroke={isHi ? 'var(--color-saffron)' : 'color-mix(in oklab, var(--color-saffron) 45%, transparent)'}
+              stroke-width={isHi ? 2 : 1}
+              stroke-dasharray={isHi ? '0' : '4 4'}
+            />
+            <!-- km tick at top of ring -->
+            <g transform={`translate(${cx} ${cy - r})`}>
+              <rect
+                x="-18" y="-10" width="36" height="20" rx="10"
+                fill={isHi ? 'var(--color-saffron)' : 'var(--color-paper)'}
+                stroke={isHi ? 'var(--color-saffron)' : 'color-mix(in oklab, var(--color-ink) 14%, transparent)'}
+                stroke-width="1"
+              />
+              <text
+                x="0" y="4"
+                text-anchor="middle"
+                style={`font-family: var(--font-mono); font-size: 10px; fill: ${isHi ? 'var(--color-paper)' : 'var(--color-slate)'}; font-weight: ${isHi ? 600 : 400};`}
+              >{d.km}km</text>
             </g>
-          );
-        })}
-        <circle class="center" cx={cx} cy={cy} r="5" />
-        <text x={cx + 9} y={cy + 4} class="ring-label" style="fill:var(--tone-ink);font-weight:600;">Thatipadu</text>
-      </g>
+          </g>
+        );
+      })}
+
+      <!-- Centre dot + label -->
+      <circle cx={cx} cy={cy} r="6" fill="var(--color-ink)" />
+      <circle cx={cx} cy={cy} r="11" fill="none" stroke="var(--color-ink)" stroke-width="1" stroke-dasharray="2 2" />
+      <text x={cx + 16} y={cy + 5} style="font-family: var(--font-mono); font-size: 11px; fill: var(--color-ink); font-weight: 600;">Thatipadu</text>
     </svg>
-    <ul class="space-y-2 text-sm">
-      {distances.map(d => (
-        <li class={`flex items-baseline gap-2 ${highlight === d.km ? 'font-semibold' : ''}`}>
-          <span class="numeral-display text-[color:var(--color-ink)] w-12 text-right">{d.km}</span>
-          <span class="text-xs font-mono text-[color:var(--color-slate-2)]">km</span>
-          <span class="text-[color:var(--color-slate)] ml-2">{d.label}</span>
-        </li>
-      ))}
+
+    <ul class="text-sm" role="list">
+      {distances.map(d => {
+        const isHi = highlight === d.km;
+        return (
+          <li
+            class="grid grid-cols-[48px_24px_1fr] items-baseline gap-2 py-2.5 border-t"
+            style={`border-color: var(--rule-color); ${isHi ? 'font-weight: 600;' : ''}`}
+          >
+            <span class="numeral text-right" style={`color: ${isHi ? 'var(--color-saffron-text)' : 'var(--color-ink)'};`}>{d.km}<span class="meta ml-0.5" style="color: var(--color-slate-2);">km</span></span>
+            <span class="text-center text-base" aria-hidden="true" style={`color: ${isHi ? 'var(--color-saffron-text)' : 'var(--color-slate-2)'};`}>{kindIcon[d.kind] ?? '·'}</span>
+            <span style={`color: ${isHi ? 'var(--color-ink)' : 'var(--color-slate)'};`}>{d.label}</span>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </figure>

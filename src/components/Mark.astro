@@ -2,33 +2,50 @@
 /**
  * Mark — the canonical SVGE brand mark.
  *
- * Uses the raster mark_512.png (derived from the VTracer-traced mark.svg with
- * forest leaf, slate veins, saffron flame, gold accents on a paper tile). This
- * is the same artwork as the favicon and OG image — keeping it identical
- * everywhere for brand recall.
+ * Renders `brand/mark_512.png` (the same artwork as the favicon and OG
+ * image) as a rounded square tile. Paper background is baked into the
+ * raster so the mark reads correctly as a small paper badge on dark
+ * backgrounds (Footer closing statement, StatusStrip cells, etc.) —
+ * intentional, matches iOS app-icon convention.
  *
- * The mark is a square brand tile by design (paper background baked in). On
- * dark backgrounds it reads as a small paper badge, like Apple's app icon on
- * a dark website.
+ * Loads eagerly: this is a brand mark, not a content image. It appears
+ * in the header + footer on every page, so deferring it would delay
+ * recognisable LCP.
  */
 interface Props {
+  /** Pixel size (square). Default 36. */
   size?: number;
+  /** Optional class pass-through. */
   class?: string;
+  /** Accessible label. Pass null for decorative use (alt="" + aria-hidden). */
   ariaLabel?: string | null;
+  /** Alias for `ariaLabel={null}` — clearer at call sites. */
+  decorative?: boolean;
+  /** Round to iOS-style squircle. Default true. */
   rounded?: boolean;
 }
-const { size = 36, class: className = '', ariaLabel = 'SVGE', rounded = true } = Astro.props;
+const {
+  size = 36,
+  class: className = '',
+  ariaLabel = 'SVGE',
+  decorative = false,
+  rounded = true,
+} = Astro.props;
+
 const BASE = import.meta.env.BASE_URL;
 const src = `${BASE}brand/mark_512.png`.replace('//', '/');
-const radius = rounded ? Math.round(size * 0.18) : 0;
+// iOS squircle ratio. Matches the published favicon/OG tile.
+const radius = rounded ? Math.round(size * 0.2237) : 0;
+const isDecorative = decorative || ariaLabel === null;
 ---
 <img
   src={src}
-  alt={ariaLabel ?? ''}
+  alt={isDecorative ? '' : (ariaLabel ?? 'SVGE')}
+  aria-hidden={isDecorative ? 'true' : undefined}
   width={size}
   height={size}
-  class={`svge-mark inline-block shrink-0 ${className}`}
+  class={`svge-mark inline-block shrink-0 select-none ${className}`}
   style={`border-radius: ${radius}px;`}
-  loading="lazy"
+  draggable="false"
   decoding="async"
 />

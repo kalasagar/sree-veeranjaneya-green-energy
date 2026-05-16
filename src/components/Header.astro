@@ -12,22 +12,22 @@ const { heroOver = false } = Astro.props as { heroOver?: boolean };
 ---
 <header id="svge-header" class={`svge-header ${heroOver ? 'is-over' : ''}`} data-hero-page={heroOver ? '' : undefined}>
   <div class="container-svge flex items-center justify-between gap-6">
-    <a href={link('/')} class="flex items-center gap-3 no-underline" aria-label="SVGE — home">
-      <Mark size={36} ariaLabel={null} />
+    <a href={link('/')} class="svge-h-brand flex items-center gap-3 no-underline group" aria-label="SVGE — home">
+      <Mark size={36} decorative />
       <span class="flex flex-col leading-tight">
-        <span class="font-display font-semibold text-base text-[color:var(--color-ink)]" style="font-family: var(--font-display);">SVGE</span>
-        <span class="meta hidden sm:inline">Grass to Gas · Farm to Fuel</span>
+        <span class="svge-h-wordmark text-base font-semibold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink);">SVGE</span>
+        <span class="svge-h-tagline hidden sm:inline meta" style="color: var(--color-slate-2);">Grass to Gas · Farm to Fuel</span>
       </span>
     </a>
 
-    <nav class="hidden lg:flex items-center gap-1" aria-label="Primary">
+    <nav class="hidden lg:flex items-center gap-0" aria-label="Primary">
       {SITE.nav.slice(1).map(n => {
         const active = path === n.href || (path.startsWith(n.href) && n.href !== '/');
         return (
           <a
             href={link(n.href)}
             aria-current={active ? 'page' : undefined}
-            class={`px-3 py-2 min-h-[44px] inline-flex items-center text-sm no-underline transition-colors duration-150 ${active ? 'text-[color:var(--color-saffron-text)]' : ''}`}
+            class={`svge-h-link relative px-3 py-2 min-h-[44px] inline-flex items-center text-sm no-underline transition-colors duration-150 ${active ? 'is-active' : ''}`}
             style="text-decoration: none;"
           >{n.label}</a>
         );
@@ -35,7 +35,7 @@ const { heroOver = false } = Astro.props as { heroOver?: boolean };
     </nav>
 
     <div class="flex items-center gap-2">
-      <a href={link('/contact/')} class="btn btn-ghost hidden lg:inline-flex" style="height:40px;padding:0 18px;">
+      <a href={link('/contact/')} class="svge-h-cta btn btn-ghost hidden lg:inline-flex" style="height:40px;padding:0 18px;">
         Talk to us
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
@@ -54,8 +54,8 @@ const { heroOver = false } = Astro.props as { heroOver?: boolean };
        class="fixed top-0 right-0 z-50 h-full w-[min(88vw,360px)] bg-[color:var(--color-paper)] border-l-2 border-[color:var(--color-saffron)] shadow-2xl translate-x-full data-[open]:translate-x-0 transition-transform duration-250">
   <div class="flex items-center justify-between p-5 border-b border-[color:var(--rule-color)]">
     <a href={link('/')} class="flex items-center gap-3 no-underline">
-      <Mark size={36} ariaLabel={null} />
-      <span class="font-semibold text-[color:var(--color-ink)]" style="font-family: var(--font-display);">SVGE</span>
+      <Mark size={36} decorative />
+      <span class="font-semibold" style="font-family: var(--font-display); color: var(--color-ink);">SVGE</span>
     </a>
     <button id="svge-drawer-close" type="button" aria-label="Close navigation menu"
             class="inline-flex items-center justify-center w-11 h-11 rounded">

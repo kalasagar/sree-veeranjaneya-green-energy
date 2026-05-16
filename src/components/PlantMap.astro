@@ -1,26 +1,40 @@
 ---
+/**
+ * Leaflet OpenStreetMap of the plant site. Single marker, no scroll-zoom
+ * (UX rule: don't trap the page scroll), tab-to-zoom keyboard-navigable.
+ *
+ * Used on /build #site.
+ */
 import { SITE } from '../lib/site';
 const { lat, lng, village, mandal, district, state, pin } = SITE.plant;
 ---
-<div class="rounded-2xl overflow-hidden border border-black/10 bg-[color:var(--color-paper-2)]">
-  <div id="svge-map" style="height: 360px; width: 100%;"></div>
-  <div class="px-4 py-3 text-xs text-[color:var(--color-slate-2)] font-mono flex flex-wrap gap-3 items-center justify-between">
-    <span>{village}, {mandal}, {district}, {state} — {pin}</span>
-    <span>{lat.toFixed(4)}°N, {lng.toFixed(4)}°E</span>
-  </div>
-</div>
+<figure class="svge-card overflow-hidden">
+  <div id="svge-map" style="height: 400px; width: 100%; background: var(--color-paper-2);" role="img" aria-label={`Map of ${village} plant site at ${lat.toFixed(4)}, ${lng.toFixed(4)}`}></div>
+  <figcaption class="px-5 py-4 flex flex-wrap gap-3 items-center justify-between meta border-t" style="border-color: var(--rule-color); color: var(--color-slate-2);">
+    <span>{village}, {mandal} Mandal, {district}, {state} — {pin}</span>
+    <span class="numeral">{lat.toFixed(4)}°N, {lng.toFixed(4)}°E</span>
+  </figcaption>
+</figure>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script is:inline define:vars={{ lat, lng, village }}>
-  window.addEventListener('load', () => {
+  window.addEventListener('load', function () {
     if (!window.L || !document.getElementById('svge-map')) return;
-    const map = L.map('svge-map', { scrollWheelZoom: false }).setView([lat, lng], 13);
+    var map = L.map('svge-map', { scrollWheelZoom: false, zoomControl: true }).setView([lat, lng], 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 18
     }).addTo(map);
-    L.marker([lat, lng]).addTo(map).bindPopup('<b>SVGE CBG Plant Site</b><br/>' + village + ' (under construction)').openPopup();
+    // Custom saffron pin
+    var pin = L.divIcon({
+      className: 'svge-pin',
+      html: '<span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:#E65100;border:3px solid #FAFAF7;box-shadow:0 2px 6px rgba(0,0,0,0.35);"></span>',
+      iconSize: [18, 18],
+      iconAnchor: [9, 9],
+    });
+    L.marker([lat, lng], { icon: pin }).addTo(map)
+      .bindPopup('<b>SVGE CBG Plant Site</b><br/>' + village + ' · under construction');
   });
 </script>

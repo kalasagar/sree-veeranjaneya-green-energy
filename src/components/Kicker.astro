@@ -1,17 +1,27 @@
 ---
 /**
- * Magazine deck under each hero.
+ * Magazine deck under each hero. The first editorial moment after the photo.
+ *
+ * Composition: eyebrow → saffron hairline → display deck. Deck supports
+ * call-site HTML for inline accent spans. Wraps at ~22ch to enforce
+ * two-line magazine-cover shape.
  */
 interface Props {
+  /** Small mono caption above the deck (often "section · context · count"). */
   eyebrow?: string;
+  /** Bold one-line statement; may contain inline HTML for accents. */
   deck: string;
+  /** Override max-width of the deck (in characters). Default 22. */
+  maxCh?: number;
 }
-const { eyebrow, deck } = Astro.props;
+const { eyebrow, deck, maxCh = 22 } = Astro.props;
 ---
-<section class="kicker">
+<section class="kicker" aria-label="Page lede">
   <div class="container-svge">
     {eyebrow && <p class="eyebrow kicker-eyebrow">{eyebrow}</p>}
-    <div class="kicker-rule mt-3"></div>
-    <h2 class="kicker-deck mt-4"><Fragment set:html={deck} /></h2>
+    <div class="kicker-rule mt-3" aria-hidden="true"></div>
+    <h2 class="kicker-deck mt-5" style={`max-width: ${maxCh}ch;`}>
+      <Fragment set:html={deck} />
+    </h2>
   </div>
 </section>
