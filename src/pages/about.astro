@@ -6,6 +6,7 @@ import StatGrid from '../components/StatGrid.astro';
 import PullQuote from '../components/PullQuote.astro';
 import FounderAvatar from '../components/FounderAvatar.astro';
 import WhatOneTonneDoes from '../components/WhatOneTonneDoes.astro';
+import ComparisonCards from '../components/ComparisonCards.astro';
 import { SITE } from '../lib/site';
 
 const aboutStats = [
@@ -50,6 +51,11 @@ const aboutStats = [
   <!-- At a glance -->
   <Section eyebrow="At a glance" title="The company, in four numbers.">
     <StatGrid stats={aboutStats} />
+  </Section>
+
+  <!-- What 4 TPD looks like — comparison framing for general visitors. -->
+  <Section eyebrow="Scale, in plain terms" title="What four tonnes a day actually does." bg="paper-2">
+    <ComparisonCards />
   </Section>
 
   <!-- Founders -->

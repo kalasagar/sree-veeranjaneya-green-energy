@@ -5,7 +5,6 @@ import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import ChipRail from '../components/ChipRail.astro';
 import Mark from '../components/Mark.astro';
-import PullQuote from '../components/PullQuote.astro';
 import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 import { getCollection } from 'astro:content';
@@ -124,10 +123,9 @@ const facts: [string, string][] = [
     </div>
   </Section>
 
-  <Section id="quotes" eyebrow="Founder quotes" title="On the record." bg="paper-2">
-    <div class="grid lg:grid-cols-2 gap-6">
-      {SITE.promoters.map(p => <PullQuote quote={p.quote} attribution={`${p.name}, ${p.role}`} draft={p.quoteDraft} />)}
-    </div>
+  <Section id="quotes" eyebrow="Founder quotes" title="On the record." bg="paper-2" narrow>
+    <p class="prose-svge">Both founders are quoted on the record on the About page. The quotes carry their signed attribution and stay current as the company evolves.</p>
+    <p class="mt-6"><a href={link('/about/#founders')}>Founder quotes on /about →</a></p>
   </Section>
 
   <Section id="journal" eyebrow="Build journal" title="Monthly receipts.">

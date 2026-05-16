@@ -4,6 +4,7 @@ import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
 import RadiusMap from '../components/RadiusMap.astro';
+import IndiaMap from '../components/IndiaMap.astro';
 import Accordion from '../components/Accordion.astro';
 import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
@@ -39,6 +40,11 @@ const faqs = [
   <!-- Radius -->
   <Section eyebrow="Your land" title="If you farm within 40 km, this is the radius.">
     <RadiusMap highlight={40} caption="Concentric distances from Thatipadu. Vizianagaram + Srikakulam catchment within the 40-km belt." />
+  </Section>
+
+  <!-- Where this sits — paddy belt + smog corridor on the India map. -->
+  <Section eyebrow="Where this sits on the map of India" title="The paddy belt, the smog corridor, and one small dot in coastal Andhra." bg="paper-2">
+    <IndiaMap />
   </Section>
 
   <!-- What we buy -->

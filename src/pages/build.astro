@@ -7,12 +7,9 @@ import ChipRail from '../components/ChipRail.astro';
 import Countdown from '../components/Countdown.astro';
 import TimelineRail from '../components/TimelineRail.astro';
 import ClearanceMatrix from '../components/ClearanceMatrix.astro';
-import RadiusMap from '../components/RadiusMap.astro';
 import SATATPositioner from '../components/SATATPositioner.astro';
-import ComparisonCards from '../components/ComparisonCards.astro';
 import CapitalFlow from '../components/CapitalFlow.astro';
 import PlantMap from '../components/PlantMap.astro';
-import IndiaMap from '../components/IndiaMap.astro';
 import Stat from '../components/Stat.astro';
 import { SITE } from '../lib/site';
 
@@ -82,11 +79,6 @@ const chips = [
     <ClearanceMatrix />
   </Section>
 
-  <!-- Radius -->
-  <Section id="radius" eyebrow="Radius" title="A 40-km supply belt and a 75-km dispatch cap.">
-    <RadiusMap highlight={40} caption="Concentric distances from the plant site at Thatipadu." />
-  </Section>
-
   <!-- Site plan -->
   <Section id="site" eyebrow="Site plan" title="On the ground." bg="paper-2">
     <div class="grid lg:grid-cols-[2fr_1fr] gap-6 items-start">
@@ -106,15 +98,6 @@ const chips = [
   <!-- SATAT positioner -->
   <Section>
     <SATATPositioner />
-  </Section>
-
-  <!-- Impact -->
-  <Section id="impact" eyebrow="Impact" title="What 4 TPD looks like." bg="paper-2">
-    <ComparisonCards />
-  </Section>
-
-  <Section>
-    <IndiaMap />
   </Section>
 
   <!-- Timeline -->
