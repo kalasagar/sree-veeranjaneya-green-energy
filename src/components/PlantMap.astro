@@ -8,8 +8,8 @@
 import { SITE } from '../lib/site';
 const { lat, lng, village, mandal, district, state, pin } = SITE.plant;
 ---
-<figure class="svge-card overflow-hidden">
-  <div id="svge-map" style="height: 400px; width: 100%; background: var(--color-paper-2);" role="img" aria-label={`Map of ${village} plant site at ${lat.toFixed(4)}, ${lng.toFixed(4)}`}></div>
+<figure class="svge-card overflow-hidden" style="position: relative; isolation: isolate; z-index: 0;">
+  <div id="svge-map" style="height: 400px; width: 100%; background: var(--color-paper-2); position: relative; isolation: isolate; z-index: 0;" role="img" aria-label={`Map of ${village} plant site at ${lat.toFixed(4)}, ${lng.toFixed(4)}`}></div>
   <figcaption class="px-5 py-4 flex flex-wrap gap-3 items-center justify-between meta border-t" style="border-color: var(--rule-color); color: var(--color-slate-2);">
     <span>{village}, {mandal} Mandal, {district}, {state}, {pin}</span>
     <span class="numeral">{lat.toFixed(4)}°N, {lng.toFixed(4)}°E</span>
