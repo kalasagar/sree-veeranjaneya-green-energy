@@ -119,20 +119,21 @@ const plant = projectLatLng(SITE.plant.lat, SITE.plant.lng);
 </figure>
 
 <style>
-  /* Compact 2-column layout: map left, legend right.
-     The figure as a whole caps in height so the section doesn't dominate. */
+  /* 2-column layout: map on the left (bigger), legend + caption on
+     the right. The map takes ~60% of the row on md+ so the India outline
+     is large enough to read at a glance. */
   .svge-indiamap {
     margin: 0;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.75rem;
     align-items: center;
-    max-width: 56rem;
+    max-width: 72rem;
   }
   @media (min-width: 768px) {
     .svge-indiamap {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 2rem;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2.5rem;
     }
   }
 
@@ -140,37 +141,38 @@ const plant = projectLatLng(SITE.plant.lat, SITE.plant.lng);
     background: var(--color-paper);
     border: 1px solid var(--rule-color);
     border-radius: 0.5rem;
-    padding: 0.75rem;
+    padding: 1rem;
   }
+  @media (min-width: 768px) { .svge-indiamap-figure { padding: 1.5rem; } }
   .svge-indiamap-figure svg {
     width: 100%;
     height: auto;
-    max-height: 360px;
+    max-height: 560px;
     display: block;
   }
 
   .svge-indiamap-side {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
   }
   .svge-indiamap-legend {
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: 1.25rem;
     padding: 0;
     margin: 0;
   }
   .svge-indiamap-legend li {
     display: grid;
-    grid-template-columns: 28px 1fr;
-    gap: 0.875rem;
+    grid-template-columns: 32px 1fr;
+    gap: 1rem;
     align-items: start;
   }
   .swatch {
     margin-top: 0.25rem;
-    width: 22px;
-    height: 16px;
+    width: 26px;
+    height: 18px;
     border-radius: 3px;
     flex-shrink: 0;
   }
@@ -180,9 +182,9 @@ const plant = projectLatLng(SITE.plant.lat, SITE.plant.lng);
     background-color: color-mix(in oklab, var(--color-forest) 8%, transparent);
   }
   .swatch--pin {
-    width: 14px;
-    height: 14px;
-    margin-left: 4px;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
     margin-top: 0.375rem;
     border-radius: 50%;
     background: var(--color-saffron);
@@ -191,31 +193,31 @@ const plant = projectLatLng(SITE.plant.lat, SITE.plant.lng);
   }
   .svge-indiamap-legend .key {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-ink);
   }
   .svge-indiamap-legend .note {
-    margin-top: 0.25rem;
-    font-size: 0.8125rem;
-    line-height: 1.45;
+    margin-top: 0.375rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
     color: var(--color-slate);
   }
   .svge-indiamap-legend .note.numeral {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.06em;
   }
 
   .svge-indiamap-caption {
     margin-top: 0.5rem;
-    padding-top: 0.875rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--rule-color);
     font-family: var(--font-mono);
-    font-size: 11px;
-    line-height: 1.5;
+    font-size: 12px;
+    line-height: 1.55;
     letter-spacing: 0.08em;
     color: var(--color-slate-2);
   }
