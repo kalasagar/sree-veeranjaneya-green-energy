@@ -25,13 +25,13 @@ const pulse = daysLeft < 90;
       <span><span class="numeral" style="color: var(--color-paper);">D−{daysLeft.toLocaleString('en-IN')}d</span> <span class="opacity-65">to commissioning</span></span>
     </a>
     <a href={link('/build/')} class="cell" aria-label={`Project phase: ${SITE.status.phaseLabel}`}>
-      <span>Phase · <span style="color: var(--color-paper);">{SITE.status.phaseLabel}</span></span>
+      <span>Phase: <span style="color: var(--color-paper);">{SITE.status.phaseLabel}</span></span>
     </a>
     <a href={link('/build/#clearances')} class="cell" aria-label={`${SITE.status.clearancesObtained} of ${SITE.status.clearancesTotal} clearances obtained`}>
-      <span>Clearances · <span class="numeral" style="color: var(--color-paper);">{cleared}</span></span>
+      <span>Clearances <span class="numeral" style="color: var(--color-paper);">{cleared}</span></span>
     </a>
     <a href={link('/press/#journal')} class="cell ml-auto hidden md:inline-flex" aria-label={`Last update ${lastUpdate}`}>
-      <span>Updated · <span style="color: var(--color-paper);">{lastUpdate}</span></span>
+      <span>Updated <span style="color: var(--color-paper);">{lastUpdate}</span></span>
     </a>
   </div>
 </aside>

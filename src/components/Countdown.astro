@@ -25,7 +25,7 @@ const {
 } = Astro.props;
 
 const targetDate = new Date(target + 'T00:00:00Z');
-const captionText = caption ?? `LoI clause 2 · issued ${new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+const captionText = caption ?? `LoI clause 2, issued ${new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
 
 const now = new Date();
 const ms = Math.max(0, targetDate.getTime() - now.getTime());
@@ -61,7 +61,7 @@ const pulse = days < 90;
     <div class="sm:text-right sm:self-start sm:pt-2">
       <p class="text-base leading-snug max-w-xs sm:ml-auto" style="color: var(--color-slate);">{label}</p>
       <p class="mt-2 meta" style="color: var(--color-slate-2);">
-        Target · <time datetime={target}>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(targetDate)}</time>
+        Target: <time datetime={target}>{new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(targetDate)}</time>
       </p>
     </div>
   </div>

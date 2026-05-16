@@ -17,7 +17,7 @@ const inputs = [
 const outputs = [
   { id: 'cbg',  label: 'CBG to IOCL',           sub: `${mf.cbgTpd} TPD`,                                       share: 0.55, color: 'var(--color-saffron)' },
   { id: 'fom',  label: 'FOM back to fields',    sub: `${mf.fomSolidTph} TPH solid + ${mf.fomLiquidM3PerDay} m³/d liquid`, share: 0.35, color: 'var(--color-forest)' },
-  { id: 'loss', label: 'CO₂ vented · water',    sub: 'recovered / recycled where possible',                    share: 0.10, color: '#90A4AE' },
+  { id: 'loss', label: 'CO₂ and water vented',  sub: 'recovered or recycled where possible',                   share: 0.10, color: '#90A4AE' },
 ];
 
 const W = 880;

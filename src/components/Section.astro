@@ -26,10 +26,10 @@ const densePad = dense ? 'py-12 lg:py-16' : '';
 <section id={id} class={`section ${bgClass} ${densePad} ${divider ? 'border-t' : ''}`} style={divider ? 'border-color: var(--rule-color);' : ''}>
   <div class={narrow ? 'container-narrow' : 'container-svge'}>
     {(eyebrow || title) && (
-      <header class="mb-8 sm:mb-12 max-w-4xl" data-reveal>
-        {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
-        {title && <h2 class="display" style="max-width: 22ch;">{title}</h2>}
-        {lede && <p class="lede mt-5" style="max-width: 48ch;">{lede}</p>}
+      <header class="mb-7 sm:mb-10 max-w-4xl" data-reveal>
+        {eyebrow && <p class="eyebrow mb-2">{eyebrow}</p>}
+        {title && <h2 class="display" style="max-width: 24ch;">{title}</h2>}
+        {lede && <p class="lede mt-4" style="max-width: 54ch;">{lede}</p>}
       </header>
     )}
     <slot />

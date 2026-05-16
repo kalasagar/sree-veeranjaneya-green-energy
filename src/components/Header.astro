@@ -12,10 +12,10 @@ const { heroOver = false } = Astro.props as { heroOver?: boolean };
 ---
 <header id="svge-header" class={`svge-header ${heroOver ? 'is-over' : ''}`} data-hero-page={heroOver ? '' : undefined}>
   <div class="container-svge flex items-center justify-between gap-6">
-    <a href={link('/')} class="svge-h-brand flex items-center gap-3 no-underline group" aria-label="SVGE — home">
+    <a href={link('/')} class="svge-h-brand flex items-center gap-3 no-underline group" aria-label="SVGE, home">
       <Mark size={36} decorative />
       <span class="flex flex-col leading-tight">
-        <span class="svge-h-wordmark text-base font-semibold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink);">SVGE</span>
+        <span class="svge-h-wordmark text-xl font-bold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink); letter-spacing: -0.01em;">SVGE</span>
         <span class="svge-h-tagline hidden sm:inline meta" style="color: var(--color-slate-2);">Grass to Gas · Farm to Fuel</span>
       </span>
     </a>

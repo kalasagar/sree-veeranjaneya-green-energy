@@ -19,7 +19,7 @@ export const SITE = {
   short: 'SVGE',
   tagline: 'Grass to Gas. Farm to Fuel.',
   description:
-    "A 4-TPD Compressed Bio-Gas plant under SATAT in coastal Andhra Pradesh. Indian Oil Letter of Intent issued 04.10.2024 (ref IndianOil/SATAT/01/3931). Tech partner Raj Process Equipments, Pune. Built to IS 16087:2016 spec, WHITE pollution category, on a 2-year commissioning clock.",
+    "A 4-TPD Compressed Bio-Gas plant under SATAT in coastal Andhra Pradesh. Indian Oil Letter of Intent issued 04 October 2024 (ref IndianOil/SATAT/01/3931). Tech partner: Raj Process Equipments, Pune. Built to IS 16087:2016, classified WHITE by the CPCB, on a 2-year commissioning clock.",
   url: 'https://kalasagar.github.io/sree-veeranjaneya-green-energy',
   email: 'svge.india@gmail.com',
   // Phone intentionally not published until plant is operational.
@@ -31,7 +31,7 @@ export const SITE = {
     h1Mid: 'Burned in your engine tomorrow.',
     h1Bottom: "We're closing that loop.",
     sub:
-      'Every winter, India burns ~14 million tonnes of paddy straw. Every year, India imports 85% of its crude oil. One small Compressed Bio-Gas plant in Thatipadu, Vizianagaram is our answer to both — clean fuel for Indian Oil under a signed Letter of Intent, and organic manure back to the farmers we buy from.',
+      "Every winter, India burns about 14 million tonnes of paddy straw. Every year, India imports 85% of its crude oil. Our small CBG plant in Thatipadu, Vizianagaram is one answer to both. We sell clean fuel to Indian Oil under a signed Letter of Intent, and send organic manure back to the farmers we buy from.",
     ctas: [
       { label: 'Read the project', href: '/project/', tone: 'primary' as const },
       { label: 'Are you a farmer?', href: '/farmers/', tone: 'ghost' as const },
@@ -44,21 +44,21 @@ export const SITE = {
       value: '₹12',
       unit: 'lakh crore',
       k: "India's annual oil import bill",
-      framing: 'Roughly the size of Telangana\'s entire state GDP, sent abroad as cash every year.',
+      framing: "About the size of Telangana's whole state GDP, sent abroad as cash each year.",
       source: { label: 'PIB, FY24' },
     },
     {
       value: '~14',
       unit: 'Mt',
       k: 'Paddy straw burned each winter',
-      framing: 'The cheapest carbon-abatement opportunity in India today, going up in smoke.',
+      framing: "The cheapest carbon-abatement opportunity in India, going up in smoke.",
       source: { label: 'NITI Aayog, 2023' },
     },
     {
       value: '27',
       unit: 'μg/m³',
       k: 'Annual PM2.5, Indo-Gangetic Plain',
-      framing: 'Over five times the WHO safe limit. Straw burning is one big reason.',
+      framing: "Five times the WHO safe limit. Straw burning is one reason.",
       source: { label: 'CPCB' },
     },
   ] satisfies Stat[],
@@ -71,7 +71,7 @@ export const SITE = {
     { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, returned to farmer fields.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
     { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, public-sector term loan, ₹6.7 Cr confirmed central incentives.' },
-    { value: 'WHITE', k: 'CPCB category', framing: 'Lowest-impact tier — energy-crop CBG plants are classified WHITE.' },
+    { value: 'WHITE', k: 'CPCB category', framing: 'The lowest pollution tier. Energy-crop CBG plants are classified WHITE.' },
   ] satisfies Stat[],
 
   impactStats: [
@@ -105,17 +105,17 @@ export const SITE = {
     {
       title: 'The IOCL Letter of Intent is already in hand.',
       body:
-        'IOCL issued our Letter of Intent on 04.10.2024 (ref IndianOil/SATAT/01/3931). The plant we are building has a contracted buyer for every cubic metre of gas it produces. Commercial Agreement validity is 15 years, indexed to a published procurement price floor of Rs. 46/kg + taxes through 31.03.2029. Most plants approved under SATAT are still chasing offtake; we are not.',
+        "IOCL issued our Letter of Intent on 04 October 2024 (ref IndianOil/SATAT/01/3931). Every cubic metre of gas we produce has a contracted buyer. The Commercial Agreement runs 15 years, indexed to a published procurement floor of ₹46/kg plus taxes through 31 March 2029. Most plants approved under SATAT are still chasing offtake. We are not.",
     },
     {
       title: 'No fund clock. No exit pressure.',
       body:
-        'Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore of confirmed central-government incentives — MNRE Capital Financial Assistance, AGRL Ministry support, and the FOM Market Development Assistance scheme. There is no investor demanding we cut corners on a quarter. We finish what we start.',
+        "Construction is promoter-led. The build is backed by a 10-year public-sector term loan and ₹6.7 crore of confirmed central-government incentives (MNRE CFA, AGRL Ministry support, FOM Market Development Assistance). No investor is asking us to cut corners on a quarter. We finish what we start.",
     },
     {
       title: 'The feedstock is at the doorstep.',
       body:
-        'The plant runs on Napier grass grown within 40 km of Thatipadu, plus paddy straw and cattle dung from the same belt. Vizianagaram and Srikakulam together hold among the densest paddy-acreage concentrations in coastal Andhra Pradesh. Feedstock supply is not the question. Logistics, contracts, and 14-day payment discipline are. That is what we work on.',
+        "The plant runs on Napier grass grown within 40 km of Thatipadu, plus paddy straw and cattle dung from the same belt. Vizianagaram and Srikakulam together hold some of the densest paddy acreage in coastal Andhra Pradesh. Supply is not the question. Logistics, contracts, and 14-day payment discipline are. That is the work we focus on.",
     },
   ],
 
@@ -124,7 +124,7 @@ export const SITE = {
     {
       label: 'I want to supply feedstock',
       href: '/farmers/',
-      hint: 'Farmer, aggregator, FPO — Napier grass, paddy straw, cattle dung within 40 km.',
+      hint: 'Farmer, aggregator, or FPO with Napier grass, paddy straw, or cattle dung within 40 km.',
     },
     {
       label: "I'm an EPC / logistics / FOM partner",
@@ -260,7 +260,7 @@ export const SITE = {
   team: {
     plantHeadcount: 47,
     totalJobs: 120,
-    localHirePolicy: 'Local hire first — operations, lab, aggregation, accounts, driving, watchmen.',
+    localHirePolicy: 'Local hire first across operations, lab, aggregation, accounts, driving, and security.',
     catchmentRadiusKm: 40,
     // Coarse role-band split for TeamComposition. Plant + extended supply chain.
     roleBands: [
@@ -298,12 +298,12 @@ export const SITE = {
   partners: [
     {
       name: 'Indian Oil Corporation',
-      role: 'CBG offtake — Letter of Intent issued 04.10.2024',
+      role: 'CBG offtake. Letter of Intent issued 04 October 2024.',
       note: 'Under the Ministry of Petroleum & Natural Gas SATAT scheme. 15-year Commercial Agreement validity. Floor procurement price Rs. 46/kg through 31.03.2029, indexed thereafter to CNG retail prices.',
     },
     {
       name: 'Raj Process Equipments & Systems Pvt Ltd, Pune',
-      role: 'Plant technology partner — SATAT-approved EPC',
+      role: 'Plant technology partner. SATAT-approved EPC.',
       note: 'CSTR anaerobic digester, two-tower VPSA biogas upgrading, compression and cascade dispatch system, all-instrument SCADA. 1,500+ installations across 31+ countries.',
     },
     {
@@ -333,11 +333,11 @@ export const SITE = {
       din: '11358672',
       share: '30%',
       story:
-        'Deepika joined the SVGE board on 25.10.2025 as Director (DIN 11358672) when the company expanded from a single-director structure to a two-director Private Limited. She handles land, regulatory paperwork, and farmer relationships — the least romantic and most important work in any infrastructure project.',
+        "Deepika joined the SVGE board as Director on 25 October 2025 (DIN 11358672), when the company moved from a single-director structure to a two-director Private Limited. She handles land, regulatory paperwork, and farmer relationships. It is the least romantic work in an infrastructure project, and the most important.",
       quote:
         'My job is to make sure the paperwork never delays a payment.',
       quoteDraft: true,
-      credentials: 'Director, SVGE — joined October 2025.',
+      credentials: 'Director, SVGE. Joined October 2025.',
     },
   ],
 
@@ -367,10 +367,10 @@ export const SITE = {
     { date: '2024-07', label: 'Land secured: 2.63 acres, Thatipadu', done: true },
     { date: '2024-10-04', label: 'IOCL Letter of Intent issued (ref IndianOil/SATAT/01/3931)', done: true },
     { date: '2025-10-25', label: 'Converted to two-director Private Limited; Deepika joined as Director', done: true },
-    { date: '2026-Q2', label: 'Pre-construction · site readiness', done: true, current: true },
-    { date: '2026-Q3', label: 'Construction begins · first monthly public update', done: false },
+    { date: '2026-Q2', label: 'Pre-construction and site readiness', done: true, current: true },
+    { date: '2026-Q3', label: 'Construction begins. First monthly public update.', done: false },
     { date: '2026-10-04', label: 'IOCL commissioning deadline (LoI clause 2)', done: false },
-    { date: '2027', label: 'Commissioning + commercial dispatch to IOCL retail outlets', done: false },
+    { date: '2027', label: 'Commissioning and commercial dispatch to IOCL retail outlets', done: false },
   ],
 
   // ---- SOCIAL ----
@@ -398,9 +398,9 @@ export const SITE = {
   status: {
     phase: 'pre-construction' as 'pre-construction' | 'construction' | 'commissioning' | 'operational',
     phaseLabel: 'Pre-construction',
-    label: 'Pre-construction · LoI active',
+    label: 'Pre-construction, LoI active',
     lastUpdate: '2026-05-15',
-    note: 'Construction begins Q3 2026 · LoI commissioning deadline 04.10.2026',
+    note: 'Construction begins Q3 2026. LoI commissioning deadline 04 October 2026.',
     href: '/press/#journal',
     clearancesObtained: 4,
     clearancesTotal: 7,
@@ -440,29 +440,29 @@ export const SITE = {
 
   // ---- "WHAT 4 TPD LOOKS LIKE" (drives ComparisonCards) ----
   comparisons: [
-    { value: '~9,600', unit: 'Nm³/day', label: 'Raw biogas', framing: 'Volume at standard temperature & pressure.', source: 'DPR §4.2' },
-    { value: '~80', unit: 'buses/day', label: 'Equivalent CNG fuelling', framing: 'A 12-m city bus at typical CNG mileage uses ~50 kg/day.', source: 'Derived from CBG output × CNG bus consumption' },
-    { value: '~29,000', unit: 'TPA', label: 'Feedstock out of burn cycle', framing: 'Paddy straw + Napier + dung diverted from open-field burning or waste.', source: 'DPR §3.1 feedstock plan' },
-    { value: '~365', unit: 'TPA', label: 'Solid FOM returned to soil', framing: 'Fermented Organic Manure shipped back to farmer fields.', source: 'DPR §4.6 digestate' },
-    { value: '~10,000', unit: 'tCO₂e/yr', label: 'Avoided emissions', framing: 'Versus straw burning + diesel/CNG displacement. SATAT scheme indicative.', source: 'MoPNG SATAT prospectus' },
-    { value: '~120', unit: 'jobs', label: 'Direct + indirect roles', framing: '47 plant payroll + 73 aggregation/transport/farmer-side roles in the 40-km radius.', source: 'DPR §5 manpower plan' },
+    { value: '~9,600', unit: 'Nm³/day', label: 'Raw biogas', framing: 'Volume at standard temperature and pressure.', source: 'DPR §4.2' },
+    { value: '~80', unit: 'buses/day', label: 'Equivalent CNG fuelling', framing: 'A 12-metre city bus on CNG burns about 50 kg/day.', source: 'CBG output divided by typical CNG bus consumption' },
+    { value: '~29,000', unit: 'TPA', label: 'Feedstock out of burn cycle', framing: 'Paddy straw, Napier, and dung diverted from open-field burning or waste.', source: 'DPR §3.1 feedstock plan' },
+    { value: '~365', unit: 'TPA', label: 'Solid FOM returned to soil', framing: 'Fermented Organic Manure sent back to farmer fields.', source: 'DPR §4.6 digestate' },
+    { value: '~10,000', unit: 'tCO₂e/yr', label: 'Avoided emissions', framing: 'Versus straw burning and diesel/CNG displacement. Indicative under the SATAT scheme.', source: 'MoPNG SATAT prospectus' },
+    { value: '~120', unit: 'jobs', label: 'Direct and indirect roles', framing: '47 on the plant payroll, plus about 73 in aggregation, transport, and farmer-side roles within 40 km.', source: 'DPR §5 manpower plan' },
   ],
 
   // ---- FARMER CALCULATOR (yield × price constants) ----
   // Coarse, conservative ranges intended for "what could my plot earn" sketching,
   // not contract numbers. All in INR.
   crops: [
-    { id: 'napier', label: 'Napier grass (contract)', yieldTpaPerHa: 70, ratePerTonneInr: 1200, harvestsPerYear: 6, note: 'Perennial; 5-year offtake contract; 6 harvests/yr' },
-    { id: 'paddyStraw', label: 'Paddy straw (post-harvest)', yieldTpaPerHa: 4, ratePerTonneInr: 1800, harvestsPerYear: 2, note: 'Otherwise burned; cleared in 2 windows/yr' },
-    { id: 'dung', label: 'Cattle dung (per animal/yr)', yieldTpaPerHa: 2, ratePerTonneInr: 1500, harvestsPerYear: 12, note: 'Per cattle head/yr basis; monthly pickup' },
+    { id: 'napier', label: 'Napier grass (contract)', yieldTpaPerHa: 70, ratePerTonneInr: 1200, harvestsPerYear: 6, note: 'Perennial. 5-year offtake contract, 6 harvests a year.' },
+    { id: 'paddyStraw', label: 'Paddy straw (post-harvest)', yieldTpaPerHa: 4, ratePerTonneInr: 1800, harvestsPerYear: 2, note: 'Otherwise burned. Cleared in 2 windows a year.' },
+    { id: 'dung', label: 'Cattle dung (per animal a year)', yieldTpaPerHa: 2, ratePerTonneInr: 1500, harvestsPerYear: 12, note: 'Per cattle head per year. Monthly pickup.' },
   ],
 
   // ---- GLOSSARY (drives SpecGlossary) ----
   glossary: [
     { term: 'CBG', long: 'Compressed Bio-Gas', def: 'Upgraded biogas with ≥90% methane, compressed to 250 bar for transport in cascade cylinders. Spec defined by IS 16087:2016.' },
     { term: 'CSTR', long: 'Continuously Stirred Tank Reactor', def: 'Anaerobic digester design where slurry is kept in suspension by mechanical stirring. The SVGE plant runs four CSTRs of 26 m × 8.63 m each.' },
-    { term: 'HRT', long: 'Hydraulic Retention Time', def: 'Average time a unit of slurry spends inside the digester. SVGE design HRT is 34 days — long enough for methanogens to complete digestion.' },
-    { term: 'OLR', long: 'Organic Loading Rate', def: 'Mass of volatile solids fed per cubic metre of digester volume per day. SVGE design OLR is 1.75 kg VS/m³/day — conservative for CSTR.' },
+    { term: 'HRT', long: 'Hydraulic Retention Time', def: "Average time a unit of slurry spends inside the digester. SVGE's design HRT is 34 days, which gives methanogens time to complete digestion." },
+    { term: 'OLR', long: 'Organic Loading Rate', def: "Mass of volatile solids fed per cubic metre of digester volume per day. SVGE's design OLR is 1.75 kg VS/m³/day, conservative for CSTR." },
     { term: 'VS', long: 'Volatile Solids', def: 'The biodegradable fraction of feedstock dry matter. The digester only digests VS; the rest passes through as digestate.' },
     { term: 'VPSA', long: 'Vacuum Pressure Swing Adsorption', def: 'Two-tower process that separates methane from CO₂ + trace gases by alternately adsorbing under pressure and desorbing under vacuum. SVGE uses a 2-tower VPSA from Raj Process.' },
     { term: 'PSA', long: 'Pressure Swing Adsorption', def: 'Gas-drying technique using adsorbent beds cycled by pressure. Drops the dew point of CBG to −40 °C, well below IS 16087.' },
@@ -473,20 +473,20 @@ export const SITE = {
     { term: 'CFA', long: 'Capital Financial Assistance', def: 'A grant component under MNRE National Bioenergy Programme Phase-I. One of three central incentives contributing to SVGE\'s ₹6.7 Cr block.' },
     { term: 'MDA', long: 'Market Development Assistance', def: 'Ministry of Chemicals & Fertilizers subsidy for selling FOM (fermented organic manure). Applies per-tonne to dispatches off the plant.' },
     { term: 'PESO', long: 'Petroleum and Explosives Safety Organisation', def: 'Indian regulator under MoCI. Approves CBG cascade design, dispenser safety, and on-site storage under Gas Cylinder Rules 2016. SVGE has applied; approval is sequenced for pre-commissioning.' },
-    { term: 'WHITE category', long: 'CPCB pollution category', def: 'The lowest-impact CPCB tier. Energy-crop CBG plants are classified WHITE — only basic Consent to Establish + Consent to Operate are required.' },
+    { term: 'WHITE category', long: 'CPCB pollution category', def: 'The lowest-impact CPCB tier. Energy-crop CBG plants are classified WHITE; only basic Consent to Establish and Consent to Operate are required.' },
   ],
 
   // ---- RFP CATEGORIES (drives /work#rfps) ----
   rfps: [
-    { id: 'civil', label: 'Civil works & ground prep', status: 'open', scope: 'Site grading, CSTR foundations, control room, perimeter. ~2.63 acres at Thatipadu.', contact: 'svge.india@gmail.com' },
-    { id: 'epc', label: 'EPC integration support', status: 'awarded', scope: 'Process integration is awarded to Raj Process Equipments & Systems, Pune. Sub-contractor RFPs for specific skids may open.', contact: 'svge.india@gmail.com' },
-    { id: 'logistics', label: 'CBG cascade logistics', status: 'open', scope: 'Cascade trailers (250 bar IS 15319) for dispatch to IOCL retail outlets within ~75 km.', contact: 'svge.india@gmail.com' },
-    { id: 'feedstock', label: 'Feedstock aggregation', status: 'open', scope: 'Paddy-straw aggregation crews, Napier contract farming, dung pickup routes within 40 km radius.', contact: 'svge.india@gmail.com' },
-    { id: 'fom', label: 'FOM offtake & distribution', status: 'open', scope: 'Liquid + solid FOM offtake. ~365 TPA solid + ~52 m³/day liquid. MDA-eligible.', contact: 'svge.india@gmail.com' },
-    { id: 'instruments', label: 'Instrumentation & SCADA', status: 'discussion', scope: 'Gas analysers (CH₄ / CO₂ / O₂ / H₂S), dew-point sensors, integration with dispatch SCADA.', contact: 'svge.india@gmail.com' },
+    { id: 'civil', label: 'Civil works and ground prep', status: 'open', scope: 'Site grading, CSTR foundations, control room, perimeter wall. About 2.63 acres at Thatipadu.', contact: 'svge.india@gmail.com' },
+    { id: 'epc', label: 'EPC integration support', status: 'awarded', scope: 'Process integration is awarded to Raj Process Equipments & Systems, Pune. Sub-contractor RFPs for specific skids may open later.', contact: 'svge.india@gmail.com' },
+    { id: 'logistics', label: 'CBG cascade logistics', status: 'open', scope: 'IS 15319 cascade trailers at 250 bar for dispatch to IOCL retail outlets within about 75 km.', contact: 'svge.india@gmail.com' },
+    { id: 'feedstock', label: 'Feedstock aggregation', status: 'open', scope: 'Paddy-straw aggregation crews, Napier contract farming, and dung pickup routes inside the 40-km radius.', contact: 'svge.india@gmail.com' },
+    { id: 'fom', label: 'FOM offtake and distribution', status: 'open', scope: 'Liquid and solid FOM offtake. About 365 TPA solid plus 52 m³/day liquid. MDA-eligible.', contact: 'svge.india@gmail.com' },
+    { id: 'instruments', label: 'Instrumentation and SCADA', status: 'discussion', scope: 'Gas analysers (CH₄, CO₂, O₂, H₂S), dew-point sensors, integration with the dispatch SCADA.', contact: 'svge.india@gmail.com' },
   ] as { id: string; label: string; status: 'open' | 'discussion' | 'awarded'; scope: string; contact: string }[],
 
   // ---- BUILT-IN-PUBLIC PROMISE (used on /, /about/, footer) ----
   publicPromise:
-    'We are pre-construction. From the day concrete is poured we will publish a monthly update — photos, one milestone hit, one missed, one financial number, one thing that went wrong. That is the trust mechanic.',
+    "We are pre-construction. From the day concrete is poured, we will publish one update a month: a photo, a milestone hit, a milestone missed, one financial number, and one thing that went wrong. That is the trust mechanic.",
 };

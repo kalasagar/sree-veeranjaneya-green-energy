@@ -64,11 +64,11 @@ const chips = [
       <span style="color: var(--color-gold);">On one page.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      Eight engineering steps. One spec. One drawing. One glossary. Designed and integrated by Raj Process Equipments &amp; Systems, Pune — a SATAT-approved EPC.
+      Eight engineering steps, one spec, one drawing, one glossary. Designed and integrated by Raj Process Equipments &amp; Systems, Pune (a SATAT-approved EPC).
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Plant · 72 t/day in, 4 t/day out" deck='72 tonnes in. <span style="color: var(--color-saffron-text);">4 tonnes out.</span> Eight steps. One drawing.' />
+  <Kicker eyebrow="From a field of grass to a tank of fuel" deck='Seventy-two tonnes of feedstock go in. <span style="color: var(--color-saffron-text);">Four tonnes of clean fuel</span> come out. Eight steps in between.' maxCh={28} />
   <ChipRail items={chips} />
 
   <!-- Flow -->
@@ -140,7 +140,7 @@ const chips = [
         <div data-reveal>
           <dt class="flex items-baseline gap-2">
             <span class="numeral font-semibold text-base" style="color: var(--color-ink);">{g.term}</span>
-            <span class="meta">— {g.long}</span>
+            <span class="meta">{g.long}</span>
           </dt>
           <dd class="mt-1 text-sm leading-relaxed">{g.def}</dd>
         </div>
@@ -149,6 +149,6 @@ const chips = [
   </Section>
 
   <Section narrow>
-    <p class="text-sm">Capital, clearances, commissioning clock — <a href={link('/build/')}>see The Build →</a></p>
+    <p class="text-sm">For capital flow, clearance status, and the commissioning clock, <a href={link('/build/')}>see The Build →</a></p>
   </Section>
 </Base>

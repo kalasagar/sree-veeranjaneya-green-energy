@@ -45,7 +45,7 @@ const chips = [
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="The build · ₹33 Cr · 7 clearances · 120 jobs" deck='₹33 Cr. <span style="color: var(--color-saffron-text);">₹6.7 Cr in incentives.</span> Seven clearances. 120 jobs.' />
+  <Kicker eyebrow="The whole build, in numbers" deck='A thirty-three-crore build, with <span style="color: var(--color-saffron-text);">six and a half crore in incentives</span>, seven clearances, and a hundred and twenty jobs to come.' maxCh={34} />
   <ChipRail items={chips} />
 
   <!-- Status -->
@@ -97,7 +97,7 @@ const chips = [
         <ul class="text-sm">
           <li><strong>Village:</strong> {SITE.plant.village}</li>
           <li><strong>Mandal:</strong> {SITE.plant.mandal}</li>
-          <li><strong>District:</strong> {SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}</li>
+          <li><strong>District:</strong> {SITE.plant.district}, {SITE.plant.state}, {SITE.plant.pin}</li>
           <li><strong>Land:</strong> {SITE.plant.landAcres} ac, MD-owned</li>
         </ul>
       </aside>
@@ -134,7 +134,7 @@ const chips = [
   <Section id="dataroom" eyebrow="For lenders" title="The data room." bg="paper-2">
     <article class="svge-card p-8 max-w-3xl" data-reveal>
       <p class="eyebrow mb-3">Request the DPR</p>
-      <p class="leading-relaxed">The full Detailed Project Report — cost sheet, sensitivity, DSCR, IRR, working-capital plan, equipment vendor quotations — is available on email request to qualified lenders.</p>
+      <p class="leading-relaxed">The full Detailed Project Report (cost sheet, sensitivity, DSCR, IRR, working-capital plan, equipment vendor quotations) is available on email request to qualified lenders.</p>
       <ul class="mt-4 list-disc pl-5 space-y-1 text-sm leading-relaxed">
         <li>Total project cost ≈ ₹{SITE.financing.totalCr} Cr. {SITE.financing.structure}.</li>
         <li>Plant capacity {SITE.capacity.cbgTpd} TPD CBG · {SITE.capacity.rawGasNm3PerDay.toLocaleString('en-IN')} Nm³/day raw biogas · {SITE.capacity.workingHoursDay} h × {SITE.capacity.workingDaysYear} days · {SITE.capacity.standard}.</li>

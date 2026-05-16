@@ -13,7 +13,7 @@ import Logos from '../components/Logos.astro';
 import { SITE } from '../lib/site';
 
 const roles = [
-  { k: 'Plant operations', v: 'Shift engineers, biogas operators, instrumentation technicians. CBG plants run 24×360 — three shifts.' },
+  { k: 'Plant operations', v: 'Shift engineers, biogas operators, instrumentation technicians. CBG plants run 24×360, so the roles run in three shifts.' },
   { k: 'Lab & QC', v: 'Gas analysis chemists for daily IS 16087:2016 verification. CH₄, CO₂, O₂, H₂S, dew point.' },
   { k: 'Feedstock aggregation', v: 'Field supervisors managing farmer relationships and daily collection logistics in a 40-km radius. Telugu-speaking, farmer-facing.' },
   { k: 'Accounts & payments', v: 'The 14-day farmer-payment discipline lives here. Reconciliation, MIS, slip integrity.' },
@@ -23,11 +23,11 @@ const roles = [
 const tone: Record<string, string> = { open: 'var(--color-forest)', discussion: 'var(--color-saffron-text)', awarded: 'var(--color-slate-2)' };
 const chips = [{ id: 'rfps', label: 'RFPs' }, { id: 'careers', label: 'Careers' }, { id: 'clearances', label: 'Why now' }];
 ---
-<Base title="Work with us" description="Open RFPs by category. Careers from Q3 2026. Direct intake — no portals, no middlemen." heroOver={true}>
+<Base title="Work with us" description="Open RFPs by category. Careers from Q3 2026. Direct intake, no portals or middlemen." heroOver={true}>
   <FullBleedHero
     banner="about_founder_field"
     video="story_b2_people"
-    alt="People at the field — local hire first."
+    alt="People at the field. Local hire first."
     eyebrow="Work with us"
     objectPosition="50% 65%"
     height="xl"
@@ -41,7 +41,7 @@ const chips = [{ id: 'rfps', label: 'RFPs' }, { id: 'careers', label: 'Careers' 
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Work · six RFPs · 120 jobs" deck='Open RFPs. <span style="color: var(--color-saffron-text);">Hiring tranches.</span> Direct intake.' />
+  <Kicker eyebrow="Six open RFPs and a hundred and twenty jobs" deck='Open <span style="color: var(--color-saffron-text);">RFPs</span> and hiring tranches, taken in directly.' maxCh={26} />
   <ChipRail items={chips} />
 
   <!-- RFPs -->
@@ -75,7 +75,7 @@ const chips = [{ id: 'rfps', label: 'RFPs' }, { id: 'careers', label: 'Careers' 
     <div class="mt-12 max-w-3xl">
       {roles.map(r => <Accordion summary={r.k}><p>{r.v}</p></Accordion>)}
     </div>
-    <p class="mt-6 meta">For specialised roles — gas analysers, instrumentation, controls — we hire wherever we find competence. Local-first is the default.</p>
+    <p class="mt-6 meta">For specialised roles in gas analysis, instrumentation, and controls, we hire wherever we find competence. Local-first is the default, not the exception.</p>
   </Section>
 
   <Section narrow bg="paper-2">

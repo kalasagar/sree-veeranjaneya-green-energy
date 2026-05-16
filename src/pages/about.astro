@@ -10,7 +10,7 @@ import FounderAvatar from '../components/FounderAvatar.astro';
 import { SITE } from '../lib/site';
 
 const aboutStats = [
-  { v: '2024', k: 'Founded', sub: '12 June · ' + SITE.rocName },
+  { v: '2024', k: 'Founded', sub: '12 June, at ' + SITE.rocName },
   { v: '4 TPD', k: 'CBG capacity', sub: 'IS 16087:2016 spec' },
   { v: 'WHITE', k: 'CPCB category', sub: 'Lowest-impact tier' },
   { v: '2.63 ac', k: 'Plot owned', sub: 'Thatipadu, Vizianagaram' },
@@ -31,14 +31,14 @@ const aboutStats = [
     </h1>
   </FullBleedHero>
 
-  <Kicker eyebrow="About · two directors · one clock" deck='One company. <span style="color: var(--color-saffron-text);">Two directors.</span> A 24-month build.' />
+  <Kicker eyebrow="Who is on the line" deck='One small company, <span style="color: var(--color-saffron-text);">two directors</span>, twenty-four months to commission.' maxCh={28} />
 
   <!-- Lead paragraph (editorial) -->
   <Section narrow>
     <div class="prose-svge drop-cap">
-      <p>Sree Veeranjaneya Green Energy is a two-director Andhra Pradesh company building a 4 TPD Compressed Bio-Gas plant in Thatipadu village, Vizianagaram district. The Indian Oil Letter of Intent was issued on 04.10.2024 (ref IndianOil/SATAT/01/3931) under the SATAT scheme; commissioning is contracted within 2 years.</p>
-      <p>The plant is one of about 152 SATAT CBG projects currently in operation or under construction nationally, and one of seven in Andhra Pradesh. Tech partner Raj Process Equipments &amp; Systems, Pune. Built to IS 16087:2016 spec. Classified WHITE by the CPCB. Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore in confirmed central-government incentives.</p>
-      <p>We named the company after the local form of Lord Hanuman — Veeranjaneya — because Suresh's family has lived in this part of Andhra for as long as anyone can remember. The mark is secular: a leaf and a flame. The name carries the heritage; the mark does not need to.</p>
+      <p>Sree Veeranjaneya Green Energy is a two-director Andhra Pradesh company building a 4 TPD Compressed Bio-Gas plant in Thatipadu village, Vizianagaram district. The Indian Oil Letter of Intent was issued on 04 October 2024 (ref IndianOil/SATAT/01/3931) under the SATAT scheme. Commissioning is contracted within two years.</p>
+      <p>The plant is one of about 152 SATAT CBG projects in operation or under construction nationally, and one of seven in Andhra Pradesh. The technology partner is Raj Process Equipments &amp; Systems, Pune. The plant is built to IS 16087:2016 and classified WHITE by the CPCB. Construction is promoter-led, backed by a 10-year public-sector term loan and ₹6.7 crore in confirmed central-government incentives.</p>
+      <p>We named the company after the local form of Lord Hanuman, Veeranjaneya, because Suresh's family has lived in this part of Andhra for as long as anyone can remember. The mark itself is secular: a leaf and a flame. The name carries the heritage; the mark does not have to.</p>
     </div>
   </Section>
 
@@ -65,14 +65,14 @@ const aboutStats = [
               <div class="aspect-square rounded overflow-hidden grid place-items-center" style="background: var(--color-paper-3);">
                 <FounderAvatar name={avatarName} size={240} label={`Stylised portrait of ${p.name}`} />
               </div>
-              <p class="mt-3 meta">Stylised portrait · photograph pending.</p>
+              <p class="mt-3 meta">Stylised portrait. Photograph pending.</p>
             </div>
             <div class={i % 2 === 0 ? '' : 'lg:order-1'}>
-              <p class="eyebrow mb-2">{p.role} · {p.share}</p>
+              <p class="eyebrow mb-2">{p.role}, {p.share}</p>
               <h3 class="display" style="font-size: clamp(1.75rem, 3vw, 2.5rem);">{p.name}</h3>
               <p class="prose-svge mt-4">{p.story}</p>
               <PullQuote quote={p.quote} attribution={p.name} draft={p.quoteDraft} />
-              <p class="meta">DIN {p.din} · {p.credentials}</p>
+              <p class="meta">DIN {p.din}. {p.credentials}</p>
             </div>
           </div>
         );
@@ -101,8 +101,8 @@ const aboutStats = [
       {[
         { k: 'CIN', v: SITE.cin }, { k: 'GSTIN', v: SITE.gst },
         { k: 'UDYAM', v: SITE.udyam }, { k: 'Incorporated', v: '12 June 2024' },
-        { k: 'ROC', v: SITE.rocName + ' · ' + SITE.registrationNumber },
-        { k: 'PAN', v: SITE.pan }, { k: 'Class', v: 'Private · Small Company' },
+        { k: 'ROC', v: SITE.rocName + ', Reg. ' + SITE.registrationNumber },
+        { k: 'PAN', v: SITE.pan }, { k: 'Class', v: 'Private, Small Company' },
         { k: 'CPCB category', v: 'WHITE' },
       ].map(item => (
         <div class="col-3 pt-3 rule-bold">

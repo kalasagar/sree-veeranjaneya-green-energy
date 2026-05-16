@@ -39,7 +39,7 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
     </div>
   </FullBleedHero>
 
-  <Kicker eyebrow="One plant · two-year clock · 40 km" deck='4 TPD CBG. <span style="color:var(--color-saffron-text);">40-km supply radius.</span> A 2-year clock.' />
+  <Kicker eyebrow="A small plant on a tight clock" deck='Four tonnes of CBG a day, sourced from a <span style="color:var(--color-saffron-text);">forty-kilometre radius</span>, on a two-year build.' maxCh={30} />
 
   <!-- Countdown -->
   <Section narrow>
@@ -47,7 +47,7 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
   </Section>
 
   <!-- What's at stake -->
-  <Section eyebrow="What's at stake" title="Why this matters, in three numbers." bg="paper-2">
+  <Section eyebrow="What's at stake" title="Why this matters, in three numbers." bg="paper-2" lede="A small plant in coastal Andhra sits between two large national problems: the cost of imported oil, and the cost of burning what we should have used.">
     <div class="grid sm:grid-cols-3 gap-4">
       {SITE.stakeStats.map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
     </div>
@@ -64,7 +64,7 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
   </Section>
 
   <!-- Why this plant -->
-  <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant.">
+  <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant." lede="There are about 152 SATAT plants in the pipeline. Most are stuck. Here is what is different about ours.">
     <div class="space-y-20">
       {SITE.differentiators.map((d, i) => (
         <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={i === 0 ? 'hero_paddy_dawn' : null} imageAlt="">

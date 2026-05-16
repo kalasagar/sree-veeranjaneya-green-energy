@@ -10,14 +10,14 @@ const year = new Date().getFullYear();
 <footer class="mt-24">
   <!-- Closing statement -->
   <section style="background: var(--color-ink); color: var(--color-paper);">
-    <div class="container-svge py-20 sm:py-24">
+    <div class="container-svge py-14 sm:py-18 lg:py-20">
       <div class="grid lg:grid-cols-12 gap-y-10 lg:gap-x-12 items-end">
         <div class="lg:col-span-8">
           <p class="eyebrow" style="color: var(--color-gold);">Closing statement</p>
-          <p class="mega mt-4" style="color: var(--color-paper); font-family: var(--font-display); font-style: italic; line-height: 0.94;">Grass to Gas.<br/>Farm to Fuel.</p>
+          <p class="mt-4" style="color: var(--color-paper); font-family: var(--font-display); font-style: italic; line-height: 0.96; letter-spacing: -0.025em; font-weight: 700; font-size: clamp(3.25rem, 8.5vw, 6.5rem);">Grass to Gas.<br/>Farm to Fuel.</p>
           <span class="block mt-8 w-16 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
           <p class="mt-7 text-lg sm:text-xl leading-relaxed max-w-[58ch]" style="color: color-mix(in oklab, var(--color-paper) 88%, transparent);">
-            One Compressed Bio-Gas plant. Thatipadu, Vizianagaram. From the day concrete is poured, one update a month — one photo, one milestone hit, one missed, one financial number, one thing that went wrong.
+            One Compressed Bio-Gas plant in Thatipadu, Vizianagaram. From the day concrete is poured, one update a month: a photo, a milestone hit, a milestone missed, one financial number, one thing that went wrong.
           </p>
         </div>
         <div class="lg:col-span-4 lg:pl-6 lg:border-l" style="border-color: color-mix(in oklab, var(--color-paper) 20%, transparent);">
@@ -85,7 +85,7 @@ const year = new Date().getFullYear();
       <div class="mt-10 pt-8 border-t border-[color:var(--rule-color)] grid-12 text-xs meta leading-relaxed">
         <div class="col-4">
           <p class="eyebrow mb-2">Plant site</p>
-          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>{SITE.plant.district}, {SITE.plant.state} — {SITE.plant.pin}<br/><span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
+          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>{SITE.plant.district}, {SITE.plant.state}, {SITE.plant.pin}<br/><span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
         </div>
         <div class="col-4">
           <p class="eyebrow mb-2">Registered office</p>

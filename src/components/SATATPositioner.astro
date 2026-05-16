@@ -74,7 +74,7 @@ const apCommPct = Math.round((nat.andhraPlantsCommissioned / apTotal) * 100);
 
   <p class="mt-8 meta pt-4 border-t" style="color: var(--color-slate-2); border-color: var(--rule-color);">
     Sources: {nat.sources.map((s: any, i: number) => (
-      <>{i > 0 && ' · '}<a href={s.url} rel="noopener">{s.label}</a></>
+      <>{i > 0 && ', '}<a href={s.url} rel="noopener">{s.label}</a></>
     ))}.
   </p>
 </section>

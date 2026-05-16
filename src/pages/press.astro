@@ -24,26 +24,26 @@ const chips = [
 ];
 
 const facts: [string, string][] = [
-  ['Founded', '12 June 2024 · ROC Vijayawada'],
+  ['Founded', '12 June 2024, ROC Vijayawada'],
   ['CIN', SITE.cin],
-  ['Plant capacity', '4 TPD CBG · 9,600 Nm³/day raw biogas'],
+  ['Plant capacity', '4 TPD CBG, 9,600 Nm³/day raw biogas'],
   ['Standard', 'IS 16087:2016 (≥90% CH₄)'],
-  ['Site', 'Thatipadu village, Regidi Amadalavalasa mandal, Vizianagaram, AP — 532440'],
-  ['Land', '2.63 acres · MD-owned'],
+  ['Site', 'Thatipadu village, Regidi Amadalavalasa mandal, Vizianagaram, AP 532440'],
+  ['Land', '2.63 acres, owned by the Managing Director'],
   ['Captive solar', '0.5 MW'],
-  ['Project cost', '~₹33 crore · promoter-led with 10-year term loan'],
-  ['Confirmed incentives', '₹6.7 Cr (MNRE CFA · AGRL · FOM MDA) + 5-yr tax holiday'],
-  ['Offtake', 'IOCL · LoI 04.10.2024 · 15-year Commercial Agreement'],
-  ['Commissioning deadline', '04.10.2026 (LoI clause 2)'],
-  ['Tech partner', 'Raj Process Equipments & Systems Pvt Ltd, Pune · SATAT-approved'],
-  ['Feedstock', 'Napier (40-km radius, 5-yr farmer agreements), paddy straw, cattle dung'],
-  ['Co-product', '1 TPH solid + 52 m³/day liquid FOM'],
-  ['CPCB category', 'WHITE (lowest pollution tier)'],
-  ['Team', '47 plant-payroll, ~120 direct + indirect at steady state'],
-  ['SATAT context', '80 commissioned + 72 under construction (MoPNG, Nov 2024)'],
+  ['Project cost', 'About ₹33 crore. Promoter-led, with a 10-year term loan.'],
+  ['Confirmed incentives', '₹6.7 Cr (MNRE CFA, AGRL, FOM MDA), plus a 5-year income-tax holiday'],
+  ['Offtake', 'Indian Oil, LoI 04 October 2024, 15-year Commercial Agreement'],
+  ['Commissioning deadline', '04 October 2026 (LoI clause 2)'],
+  ['Tech partner', 'Raj Process Equipments & Systems Pvt Ltd, Pune (SATAT-approved)'],
+  ['Feedstock', 'Napier (40-km radius, 5-yr farmer agreements), paddy straw, and cattle dung'],
+  ['Co-product', '1 TPH solid FOM, plus 52 m³/day liquid'],
+  ['CPCB category', 'WHITE (the lowest pollution tier)'],
+  ['Team', '47 on plant payroll, about 120 direct and indirect at steady state'],
+  ['SATAT context', '80 plants commissioned and 72 under construction (MoPNG, Nov 2024)'],
 ];
 ---
-<Base title="Press" description="Press kit, fast facts, brand pack, build journal — for journalists covering SVGE." heroOver={true}>
+<Base title="Press" description="Press kit, fast facts, brand pack, and build journal for journalists covering SVGE." heroOver={true}>
   <FullBleedHero banner="press_kit" alt="Press kit folder on a dark slate desk." eyebrow="Press" height="xl">
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2.75rem, 6vw, 5rem);">Press kit.</h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
@@ -51,7 +51,7 @@ const facts: [string, string][] = [
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Press · kit · facts · journal" deck='Boilerplate. <span style="color: var(--color-saffron-text);">Brand pack.</span> Build journal.' />
+  <Kicker eyebrow="Everything a journalist usually asks" deck='Boilerplate, fast facts, the <span style="color: var(--color-saffron-text);">brand pack</span>, and the build journal.' maxCh={28} />
   <ChipRail items={chips} />
 
   <Section id="boilerplate" eyebrow="Boilerplate" title="Two lengths. Drop in and use.">
@@ -89,10 +89,10 @@ const facts: [string, string][] = [
     <div class="grid lg:grid-cols-[2fr_1fr] gap-6">
       <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
         {[
-          ['Mark — SVG', '/brand/mark.svg'],
-          ['Mark — PNG 2048', '/brand/mark_2048.png'],
-          ['Mark — PNG 1024', '/brand/mark_1024.png'],
-          ['Mark — PNG 512', '/brand/mark_512.png'],
+          ['Mark (SVG)', '/brand/mark.svg'],
+          ['Mark (PNG 2048)', '/brand/mark_2048.png'],
+          ['Mark (PNG 1024)', '/brand/mark_1024.png'],
+          ['Mark (PNG 512)', '/brand/mark_512.png'],
           ['LinkedIn banner', '/brand/linkedin_banner.png'],
           ['OG / social card', '/brand/og_image.png'],
         ].map(([label, href]) => (
@@ -118,7 +118,7 @@ const facts: [string, string][] = [
   </Section>
 
   <Section id="journal" eyebrow="Build journal" title="Monthly receipts.">
-    {posts.length === 0 && <p class="meta">No posts yet. The first one lands the day construction begins — target Q3 2026.</p>}
+    {posts.length === 0 && <p class="meta">No posts yet. The first one lands the day construction begins. Target: Q3 2026.</p>}
     {posts.map(post => (
       <article class="rule-bold pt-5 pb-8 max-w-3xl" data-reveal>
         <p class="meta">{fmt.format(post.data.date)}</p>

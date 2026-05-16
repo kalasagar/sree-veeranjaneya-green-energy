@@ -11,7 +11,7 @@ import { SITE } from '../lib/site';
 
 const mf = SITE.massFlow;
 const moments = [
-  { t: '00:00', stat: mf.feedstockTpd.toString(),                    unit: 'tonnes feedstock',  label: 'Feedstock arrived',     body: 'Napier grass, paddy straw and dung — within a 40-km radius — checked at the gate for moisture and contamination, weighed in, slip-numbered.' },
+  { t: '00:00', stat: mf.feedstockTpd.toString(),                    unit: 'tonnes feedstock',  label: 'Feedstock arrived',     body: 'Napier grass, paddy straw and dung from within a 40-km radius. Checked at the gate for moisture and contamination, weighed in, slip-numbered.' },
   { t: '03:00', stat: mf.slurryToDigesterM3PerDay.toString(),         unit: 'm³ slurry',          label: 'Mixing tank → digester', body: 'Pre-blended with ' + mf.waterRecycledM3PerDay + ' m³ of recycled process water. The pre-digester homogenises before the CSTRs see it.' },
   { t: 'all day', stat: '15,402',                                     unit: 'm³ working volume',  label: '4× CSTR · HRT 34 d',     body: 'Four digesters run the slow, anaerobic, methanogenic dance. Stirrers turn. Methanogens metabolise. No external heat input.' },
   { t: '12:00', stat: mf.rawBiogasNm3PerDay.toLocaleString('en-IN'),  unit: 'Nm³ raw biogas',     label: 'Raw gas at outlet',      body: 'Roughly 60 % methane out of the digester. Then through the scrubbers + 2-tower VPSA to land at ≥' + mf.cbgMethanePct + ' % CH₄.' },
@@ -27,7 +27,7 @@ const moments = [
     <h3 class="mt-3 display" style="font-family: var(--font-display); color: var(--color-paper); font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.05; max-width: 22ch;">What 24 hours look like.</h3>
     <span class="block mt-5 w-12 h-px" style="background: var(--color-saffron);" aria-hidden="true"></span>
     <p class="mt-5 max-w-2xl" style="color: color-mix(in oklab, var(--color-paper) 82%, transparent);">
-      A pre-construction plant, in motion. Scroll through one operating day — the rail on the left updates with each moment.
+      A pre-construction plant, in motion. Scroll through one operating day. The rail on the left updates with each moment.
     </p>
   </header>
 

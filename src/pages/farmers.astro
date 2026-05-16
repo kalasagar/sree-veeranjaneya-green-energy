@@ -9,11 +9,11 @@ import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 
 const faqs = [
-  { q: 'Do I have to sign a long-term contract?', a: 'No. For paddy straw, every supply is on its own slip. For Napier grass, we offer a season-long contract because we want to know we will have feedstock — but it is renewable per season, never multi-year-locked.' },
+  { q: 'Do I have to sign a long-term contract?', a: 'No. For paddy straw, every supply is on its own slip. For Napier grass, we offer a season-long contract because we want to know the feedstock is there, but it is renewable per season. Never multi-year-locked.' },
   { q: "How do I know you'll actually pay in 14 days?", a: 'Every payment is bank-transfer against a numbered supply slip you keep a copy of. From the day concrete is poured, we will publish farmer-payments-made as one of the monthly numbers on /press/#journal.' },
-  { q: 'What if my paddy straw is wet from rain?', a: "We don't pay for wet straw — it kills the digester economics. But if a forecast tells you the rain is coming, call us before harvest. We have flexibility on timing." },
-  { q: 'Do I get Fermented Organic Manure for free?', a: 'FOM is sold back at a fair market rate — significantly below chemical fertilizer for the equivalent nutrient load.' },
-  { q: 'Will Napier grass work on my land?', a: 'Napier handles most coastal-Andhra soils, including stony or low-water plots that struggle with paddy. We will visit your land before signing — at our cost.' },
+  { q: 'What if my paddy straw is wet from rain?', a: "We don't pay for wet straw. It kills the digester economics. But if a forecast says rain is coming, call us before harvest. We have flexibility on timing." },
+  { q: 'Do I get Fermented Organic Manure for free?', a: 'FOM is sold back at a fair market rate, significantly below chemical fertilizer for the equivalent nutrient load.' },
+  { q: 'Will Napier grass work on my land?', a: 'Napier handles most coastal-Andhra soils, including stony or low-water plots that struggle with paddy. We visit your land before signing, at our cost.' },
   { q: 'When does this actually start?', a: 'The plant is in pre-construction today. Email us now to be on the contact list when first feedstock collection begins (target Q3 2026).' },
 ];
 ---
@@ -30,11 +30,11 @@ const faqs = [
       <span style="color: var(--color-gold);">what you would have burned.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      If you farm within 40 km of Thatipadu in Vizianagaram or Srikakulam district — we want to talk to you.
+      If you farm within 40 km of Thatipadu in Vizianagaram or Srikakulam district, we want to talk to you.
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Farmers · 40 km · 14-day pay" deck='40-km radius. <span style="color: var(--color-saffron-text);">14-day payment.</span> Bank transfer, every slip.' />
+  <Kicker eyebrow="If your land is inside the radius" deck='We pay in <span style="color: var(--color-saffron-text);">fourteen days</span>, by bank transfer, against every supply slip.' maxCh={28} />
 
   <!-- Radius -->
   <Section eyebrow="Your land" title="If you farm within 40 km, this is the radius.">
@@ -47,18 +47,18 @@ const faqs = [
       <div class="svge-card p-8" style="background: var(--color-forest); color: var(--color-paper);" data-reveal>
         <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">We pay for</p>
         <ul class="mt-4 space-y-4">
-          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">01</span><div><strong class="text-lg">Paddy straw</strong> — dry, baled or loose, post-harvest.</div></li>
-          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">02</span><div><strong class="text-lg">Napier grass</strong> — under a contract-farming agreement on your land or ours.</div></li>
-          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">03</span><div><strong class="text-lg">Cattle dung</strong> — fresh, in volume, from your shed.</div></li>
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">01</span><div><strong class="text-lg">Paddy straw.</strong> Dry, baled or loose, post-harvest.</div></li>
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">02</span><div><strong class="text-lg">Napier grass</strong> under a contract-farming agreement, on your land or ours.</div></li>
+          <li class="flex items-baseline gap-3"><span class="numeral text-2xl" style="color: var(--color-paper);">03</span><div><strong class="text-lg">Cattle dung.</strong> Fresh, in volume, from your shed.</div></li>
         </ul>
       </div>
       <div class="svge-card p-8" data-reveal>
         <p class="eyebrow">We won't pay for</p>
         <ul class="mt-4 space-y-2 list-disc list-inside">
-          <li>Wet or rotting straw — must be dry and clean.</li>
+          <li>Wet or rotting straw. Must be dry and clean.</li>
           <li>Plastic-contaminated bales.</li>
           <li>Pre-burned or charred residue (defeats the point).</li>
-          <li>Anything supplied through a paid middleman — we go direct.</li>
+          <li>Anything supplied through a paid middleman. We go direct.</li>
         </ul>
       </div>
     </div>
@@ -70,7 +70,7 @@ const faqs = [
       {[
         ['Contact us', 'Email, WhatsApp (once construction starts), or walk-in once we are on site.'],
         ['Agree a rate', 'In writing, in plain Telugu or English. Per tonne. No verbal-only deals.'],
-        ['Deliver + sign', 'You deliver to the plant or our pickup point. You sign a numbered supply slip; we keep a copy.'],
+        ['Deliver and sign', 'You deliver to the plant or our pickup point, sign a numbered supply slip, and keep a copy. So do we.'],
         ['Get paid', '14 days. Bank transfer. To the account on the slip.'],
       ].map(([t, d], i) => (
         <li class="col-3 rule-bold pt-4" data-reveal>
