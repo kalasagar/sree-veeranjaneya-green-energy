@@ -137,12 +137,27 @@ const fights = [
       <!-- Faint ghost ring for tonal anchor -->
       <circle cx="500" cy="380" r="220" fill="none" stroke="var(--rule-color)" stroke-width="1" stroke-dasharray="2 6" opacity="0.55"></circle>
 
-      <!-- The saffron ring: four clockwise quadrants with mid-arc arrow markers -->
+      <!-- The saffron ring: four clockwise quadrants with mid-arc arrow markers.
+           The S->W arc is the byproduct (FOM return) and rides a thinner stroke. -->
       <g class="loop-ring" fill="none" stroke="var(--color-saffron)" stroke-width="4" stroke-linecap="round" data-draw>
         <path d="M 500 160 A 220 220 0 0 1 720 380" marker-end="url(#loopArrow)"></path>
         <path d="M 720 380 A 220 220 0 0 1 500 600" marker-end="url(#loopArrow)"></path>
-        <path d="M 500 600 A 220 220 0 0 1 280 380" marker-end="url(#loopArrow)"></path>
+        <path class="loop-arc-byproduct" d="M 500 600 A 220 220 0 0 1 280 380" marker-end="url(#loopArrow)"></path>
         <path d="M 280 380 A 220 220 0 0 1 500 160" marker-end="url(#loopArrow)"></path>
+      </g>
+
+      <!-- Static directional chevrons along each arc — two per quadrant.
+           Reads the clockwise direction even before flow particles animate
+           and stays legible under prefers-reduced-motion. -->
+      <g class="loop-chevrons" fill="none" stroke="var(--color-saffron)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(610,189.5) rotate(30)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(690.5,270) rotate(60)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(690.5,490) rotate(120)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(610,570.5) rotate(150)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(390,570.5) rotate(210)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(309.5,490) rotate(240)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(309.5,270) rotate(300)"/>
+        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(390,189.5) rotate(330)"/>
       </g>
 
       <!-- Flow particles riding the loop. Four saffron dots, evenly
@@ -236,12 +251,26 @@ const fights = [
         <text x="152" y="390" text-anchor="end" font-size="10" fill="var(--color-slate)">+ 52 m³/day liquid manure</text>
       </g>
 
-      <!-- Flow labels on the saffron arcs -->
-      <g class="loop-flow-labels" font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.16em" fill="var(--color-saffron-text)" text-anchor="middle" style="text-transform: uppercase;">
-        <text x="664" y="510">CBG dispatch →</text>
-        <text x="336" y="510">← FOM return</text>
-        <text x="336" y="270">↑ Soil rebuilds</text>
-        <text x="664" y="270">↓ Mass-flow in</text>
+      <!-- Sequence labels — four ordinal + verb tags at each arc midpoint
+           (45°/135°/225°/315°, radius 285). Sub-line marks primary product
+           on the CBG arc and byproduct on the FOM arc. -->
+      <g class="loop-sequence" font-family="var(--font-mono)" font-weight="600" letter-spacing="0.14em" text-anchor="middle" style="text-transform: uppercase;">
+        <g transform="translate(702,179)">
+          <text font-size="13" fill="var(--color-saffron-text)">01 · Harvest</text>
+          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.18em">Field → Plant</text>
+        </g>
+        <g transform="translate(702,582)">
+          <text font-size="13" fill="var(--color-saffron-text)">02 · Dispatch</text>
+          <text y="16" font-size="9" fill="var(--color-ink)" letter-spacing="0.18em" font-weight="700">Primary product · CBG</text>
+        </g>
+        <g transform="translate(299,582)">
+          <text font-size="13" fill="var(--color-saffron-text)">03 · Return</text>
+          <text y="16" font-size="9" fill="var(--color-slate-2)" letter-spacing="0.18em" font-weight="700">Byproduct · FOM</text>
+        </g>
+        <g transform="translate(299,179)">
+          <text font-size="13" fill="var(--color-saffron-text)">04 · Rebuild</text>
+          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.18em">Soil → Field</text>
+        </g>
       </g>
 
       <!-- Centre heart: the headline figure -->
@@ -308,6 +337,12 @@ const fights = [
     transition: stroke-dashoffset 1.2s cubic-bezier(0.65, 0, 0.35, 1);
   }
   [data-drawn] .loop-ring path { stroke-dashoffset: 0; }
+  /* Byproduct arc: thinner + slightly softer than the main product arc,
+     so the FOM-return path reads as the secondary leg pre-textually. */
+  .loop-ring path.loop-arc-byproduct {
+    stroke-width: 3;
+    opacity: 0.78;
+  }
 
   /* Node links: keyboard focus + hover affordance. */
   .loop-node-link {
