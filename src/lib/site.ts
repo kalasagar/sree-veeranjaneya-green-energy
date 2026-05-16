@@ -70,7 +70,7 @@ export const SITE = {
     { value: '52', unit: 'm³/day', k: 'Liquid manure' },
     { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, sold as a soil amendment under the MDA scheme.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
-    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, with a public-sector term loan and three confirmed central incentives. Per-source rupees in the data room.' },
+    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Three confirmed central-government incentives anchor the public side. Private-side structure reconciles in the data room on request.' },
     { value: 'WHITE', k: 'CPCB category', framing: 'The lowest pollution tier. Energy-crop CBG plants are classified WHITE.' },
   ] satisfies Stat[],
 
@@ -110,7 +110,7 @@ export const SITE = {
     {
       title: 'No fund clock. No exit pressure.',
       body:
-        "Construction is promoter-led. The build is backed by a 10-year public-sector term loan and three confirmed central-government incentives (MNRE CFA, AGRL Ministry support, FOM Market Development Assistance). No investor is asking us to cut corners on a quarter. We finish what we start.",
+        "The build is privately financed, with three confirmed central-government incentives on the public side (MNRE CFA, AGRL Ministry support, FOM Market Development Assistance). No outside investor is asking us to cut corners on a quarter. We finish what we start.",
     },
     {
       title: 'The feedstock is at the doorstep.',
@@ -209,7 +209,7 @@ export const SITE = {
   // ---- FINANCING (qualitative shape only — no rupee line items) ----
   financing: {
     totalCr: 33.27,
-    structure: 'promoter-led with a 10-year public-sector term loan and family contribution',
+    structure: 'private financing with confirmed central-government incentives (details in the data room)',
     termYears: 10,
     incentivesCr: 6.7,
     incentivesDetail: 'MNRE Capital Financial Assistance + AGRL Ministry support + FOM Market Development Assistance under Ministry of Chemicals & Fertilizers',

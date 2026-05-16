@@ -1,36 +1,14 @@
 ---
 /**
- * Capital flow — qualitative structure of the capital stack. Specific
- * rupee figures (promoter equity, term loan, per-scheme incentive sizing)
- * are not published on the public site; they sit in the lender data room.
- *
- * Shows: three sources (promoter + term loan + central incentives) and the
- * three scheme names funding the incentive block (MNRE CFA, AGRL, FOM MDA).
+ * Capital flow — public-side only. Shows the three central-government
+ * incentive schemes that anchor the public side of the capital stack
+ * (MNRE CFA, AGRL, FOM MDA). Private-side structure (source names,
+ * sizing, lender identity) is not published on the public site; it
+ * sits with qualified lenders in the data room on request.
  *
  * Used on /build #capital.
  */
 import { SITE } from '../lib/site';
-
-const sources = [
-  {
-    id: 'promoter',
-    label: 'Promoter equity',
-    headline: 'Family capital',
-    note: 'Promoter-led. No outside investor on the cap table, no quarterly exit pressure, no clock other than the construction one.',
-  },
-  {
-    id: 'loan',
-    label: 'Term loan',
-    headline: '10-year tenor',
-    note: 'Public-sector term loan with a 10-year amortisation. The lender is named in the data room.',
-  },
-  {
-    id: 'incent',
-    label: 'Central incentives',
-    headline: 'Confirmed, not applied-for',
-    note: 'Three central-government incentives, all confirmed against the project. Three schemes are named below.',
-  },
-];
 
 const incentSchemes = [
   {
@@ -52,33 +30,18 @@ const incentSchemes = [
 ---
 <section class="svge-card p-6 sm:p-8" data-reveal id="capital-flow">
   <header class="pb-5 border-b" style="border-color: var(--rule-color);">
-    <p class="eyebrow" style="color: var(--color-saffron-text);">Capital flow</p>
-    <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem); max-width: 24ch;">
-      Three sources, one build. No outside investor on the cap table.
+    <p class="eyebrow" style="color: var(--color-saffron-text);">Capital · public side</p>
+    <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem); max-width: 26ch;">
+      Three central-government incentives. All confirmed against the project.
     </h3>
     <p class="mt-3 max-w-2xl" style="color: var(--color-slate);">
-      The capital stack is promoter equity, a public-sector term loan, and three confirmed central-government incentives. Rupee figures and the lender's name reconcile in the lender data room; everything below is the structure, not the line items.
+      The public-money side of the capital stack is on this page. The private-financing structure (sources, sizing, lender identity) sits with qualified lenders in the data room — not on the public site.
     </p>
   </header>
 
-  <!-- Three funding sources, hairline grid -->
-  <ol class="mt-7 grid sm:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);" role="list">
-    {sources.map((s, i) => (
-      <li class="flex flex-col p-5 sm:p-6" style="background: var(--color-paper);">
-        <div class="flex items-baseline gap-3">
-          <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--color-saffron-text);">0{i + 1}</span>
-          <span class="flex-1 h-px" style="background: var(--rule-color);" aria-hidden="true"></span>
-        </div>
-        <p class="eyebrow mt-3" style="color: var(--color-ink);">{s.label}</p>
-        <p class="mt-3" style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -0.015em; line-height: 1.1; color: var(--color-ink);">{s.headline}</p>
-        <p class="mt-3 text-sm leading-relaxed flex-1" style="color: var(--color-slate);">{s.note}</p>
-      </li>
-    ))}
-  </ol>
-
   <!-- Central incentive schemes (named, no rupees) -->
-  <div class="mt-10 pt-6 border-t" style="border-color: var(--rule-color);">
-    <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">Central incentive schemes · all confirmed</p>
+  <div class="mt-7">
+    <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">Central incentive schemes</p>
     <div class="grid sm:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);">
       {incentSchemes.map(s => (
         <article class="p-5 sm:p-6 flex flex-col" style="background: var(--color-paper);">
@@ -91,6 +54,6 @@ const incentSchemes = [
   </div>
 
   <p class="mt-6 meta" style="color: var(--color-slate-2);">
-    Plus a <span class="numeral">{SITE.financing.taxHolidayYears}</span>-year income-tax holiday for CBG plants under the Income Tax Act. Full capital stack — rupee figures per source, per-bucket capex deployment, lender identity, incentive sizing — sits with qualified lenders in the <a href="#dataroom">data room</a>.
+    Plus a <span class="numeral">{SITE.financing.taxHolidayYears}</span>-year income-tax holiday for CBG plants under the Income Tax Act. The full capital structure reconciles in the <a href="#dataroom">data room</a> on request.
   </p>
 </section>

@@ -56,12 +56,12 @@ const today = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short',
     <section class="mt-8">
       <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Capital structure</h2>
       <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-        <div><dt class="meta">Total project cost</dt><dd class="font-semibold numeral">~₹{SITE.financing.totalCr} crore (headline figure; per-source rupees on request)</dd></div>
+        <div><dt class="meta">Total project cost</dt><dd class="font-semibold numeral">~₹{SITE.financing.totalCr} crore (headline figure)</dd></div>
         <div><dt class="meta">Structure</dt><dd class="font-semibold">{SITE.financing.structure}</dd></div>
-        <div><dt class="meta">Term loan</dt><dd class="font-semibold numeral">{SITE.financing.termYears}-year, public-sector lender (named on request)</dd></div>
         <div><dt class="meta">Confirmed incentives</dt><dd class="font-semibold">Three central schemes, all approved against the project</dd></div>
         <div class="sm:col-span-2"><dt class="meta">Incentive composition</dt><dd>{SITE.financing.incentivesDetail}</dd></div>
         <div><dt class="meta">Tax holiday</dt><dd class="font-semibold">{SITE.financing.taxHolidayYears}-year ({SITE.financing.taxHolidayBasis})</dd></div>
+        <div><dt class="meta">Full capital stack</dt><dd>Available to qualified lenders on request via {SITE.email}.</dd></div>
       </dl>
     </section>
 
