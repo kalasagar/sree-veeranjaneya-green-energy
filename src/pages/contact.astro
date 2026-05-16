@@ -3,8 +3,19 @@ import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import { SITE } from '../lib/site';
+
+const topics = [
+  'Farmer / aggregator (40 km belt)',
+  'EPC / logistics / FOM partner',
+  'Term lender / investor',
+  'Journalist / press',
+  'Future hire',
+  'IOCL / SATAT official',
+  'State / district official',
+  'Something else',
+];
 ---
-<Base title="Contact" description="Tell us who you are (farmer, partner, journalist, future hire) and we route your message." heroOver={true}>
+<Base title="Contact" description="A single inbox reaches both directors. Tell us who you are and we route within two business days." heroOver={true}>
   <FullBleedHero
     banner="contact_doorway"
     alt="A weathered wooden village office doorway slightly ajar at golden hour, terracotta pot of marigolds at the threshold."
@@ -13,39 +24,150 @@ import { SITE } from '../lib/site';
     height="xl"
   >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2rem, 6vw, 5rem);">
-      <span class="block">Seven audiences.</span>
-      <span class="block" style="color: var(--color-gold);">One inbox.</span>
-      <span class="block">Pick a door.</span>
+      <span class="block">One inbox.</span>
+      <span class="block" style="color: var(--color-gold);">Both directors.</span>
+      <span class="block">Reply in two days.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      Seven audiences come to SVGE for different reasons: IOCL on spec compliance, lenders on the data room, farmers on supply terms, EPC partners on sub-contract scope, future hires on the next tranche, journalists on the press kit, and state officials on clearance status. Pick the door that fits and we'll route the message.
+      No intake portal, no middlemen. Every message lands in one inbox that both directors read. Use the form below or email directly. A reply, even if just to acknowledge, comes within two business days.
     </p>
   </FullBleedHero>
 
-  <Section eyebrow="Send a message" title="One inbox, both directors.">
-    <div class="grid lg:grid-cols-[2fr_1fr] gap-8">
-      <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" class="space-y-5 max-w-2xl">
-        <label class="block">
-          <span class="eyebrow">Your name</span>
-          <input required name="name" type="text" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3" />
+  <Section eyebrow="Send a message" title="Tell us who you are. We route from there.">
+    <div class="svge-contact-grid">
+      <!-- Form column (left, wider) -->
+      <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" class="svge-contact-form svge-card p-6 sm:p-8" novalidate>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <label class="block">
+            <span class="eyebrow">Your name</span>
+            <input required name="name" type="text" autocomplete="name" class="svge-input" />
+          </label>
+          <label class="block">
+            <span class="eyebrow">Email</span>
+            <input required name="email" type="email" autocomplete="email" class="svge-input" />
+          </label>
+        </div>
+
+        <label class="block mt-5">
+          <span class="eyebrow">You are</span>
+          <select required name="topic" class="svge-input">
+            <option value="">Pick the door that fits</option>
+            {topics.map(t => <option value={t}>{t}</option>)}
+          </select>
         </label>
-        <label class="block">
-          <span class="eyebrow">Email</span>
-          <input required name="email" type="email" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3" />
-        </label>
-        <label class="block">
+
+        <label class="block mt-5">
           <span class="eyebrow">Message</span>
-          <textarea required name="message" rows="6" class="mt-2 w-full rounded border border-[color:var(--rule-color)] bg-[color:var(--color-paper)] px-4 py-3"></textarea>
+          <textarea required name="message" rows="7" placeholder="Field plot near Thatipadu, RFP question, press query — say what you came for." class="svge-input"></textarea>
         </label>
-        <button type="submit" class="btn btn-primary">Send →</button>
+
+        <!-- Honeypot — hidden from humans, catches bots -->
+        <label class="hidden" aria-hidden="true">
+          Leave this empty <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <p class="meta" style="color: var(--color-slate-2);">No tracking pixels. No newsletter signup hidden in the submit.</p>
+          <button type="submit" class="btn btn-primary">Send →</button>
+        </div>
       </form>
-      <aside class="svge-card p-6">
-        <p class="eyebrow mb-2">Email directly</p>
-        <p class="text-lg"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-        <p class="meta mt-3">Reply within two business days.</p>
-        <p class="eyebrow mt-6 mb-2">Office hours</p>
-        <p class="text-sm">Mon-Sat · 09:00-18:00 IST</p>
+
+      <!-- Direct contact column (right) -->
+      <aside class="svge-contact-aside" aria-label="Direct contact channels">
+        <article class="svge-contact-block">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Email directly</p>
+          <p class="mt-2">
+            <a href={`mailto:${SITE.email}`} class="svge-contact-email">{SITE.email}</a>
+          </p>
+          <p class="meta mt-3" style="color: var(--color-slate-2);">Reply within two business days. Both directors read every thread.</p>
+        </article>
+
+        <article class="svge-contact-block">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Office hours</p>
+          <p class="mt-2 text-base" style="color: var(--color-ink);">Mon-Sat, 09:00-18:00 IST</p>
+          <p class="meta mt-3" style="color: var(--color-slate-2);">Phone deferred to plant commissioning. Email is the fastest route.</p>
+        </article>
+
+        <article class="svge-contact-block">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Registered office</p>
+          <address class="mt-2 not-italic text-sm leading-relaxed" style="color: var(--color-ink);">
+            {SITE.registeredOffice.line1},<br/>
+            {SITE.registeredOffice.line2},<br/>
+            {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.
+          </address>
+          <p class="meta mt-3" style="color: var(--color-slate-2);">No drop-in visits at the construction site — please schedule.</p>
+        </article>
       </aside>
     </div>
   </Section>
 </Base>
+
+<style>
+  .svge-contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (min-width: 1024px) {
+    .svge-contact-grid {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .svge-contact-form { background: var(--color-paper); }
+
+  .svge-input {
+    margin-top: 0.5rem;
+    width: 100%;
+    border: 1px solid var(--rule-color);
+    background: var(--color-paper);
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-ink);
+    line-height: 1.4;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .svge-input:focus {
+    outline: none;
+    border-color: var(--color-saffron);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-saffron) 22%, transparent);
+  }
+  select.svge-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2337474F' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+  textarea.svge-input { resize: vertical; min-height: 9rem; }
+
+  .svge-contact-aside {
+    display: grid;
+    gap: 1px;
+    background: var(--rule-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  .svge-contact-block {
+    background: var(--color-paper);
+    padding: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .svge-contact-block { padding: 1.75rem; }
+  }
+
+  .svge-contact-email {
+    font-family: var(--font-mono);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-saffron);
+    transition: color 0.15s ease;
+  }
+  .svge-contact-email:hover { color: var(--color-saffron-text); }
+</style>
