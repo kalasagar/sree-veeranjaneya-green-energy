@@ -66,20 +66,46 @@ const faqs = [
 
   <!-- Four steps -->
   <Section eyebrow="How it works" title="Four steps. No paperwork tricks.">
-    <ol class="grid-12">
+    {/*
+      Connected timeline: four cells in a hairline gap-px grid (matches the
+      site's other gap-px patterns). Each cell carries a forest-filled
+      numeral chip (40 px circle) and a saffron arrow on its right edge that
+      visually points into the next cell. Mobile: stacks vertically and the
+      arrow rotates 90° to point down between cards.
+    */}
+    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px overflow-hidden rounded relative" style="background: var(--rule-color);">
       {[
-        ['Contact us', 'Email, WhatsApp (once construction starts), or walk-in once we are on site.'],
-        ['Agree a rate', 'In writing, in plain Telugu or English. Per tonne. No verbal-only deals.'],
+        ['Contact us',       'Email, WhatsApp (once construction starts), or walk-in once we are on site.'],
+        ['Agree a rate',     'In writing, in plain Telugu or English. Per tonne. No verbal-only deals.'],
         ['Deliver and sign', 'You deliver to the plant or our pickup point, sign a numbered supply slip, and keep a copy. So do we.'],
-        ['Get paid', '14 days. Bank transfer. To the account on the slip.'],
-      ].map(([t, d], i) => (
-        <li class="col-3 rule-bold pt-4" data-reveal>
-          <p class="numeral text-3xl" style="color: var(--color-saffron-text);">0{i + 1}</p>
-          <h3 class="mt-2" style="font-family: var(--font-display); font-size: 1.25rem;">{t}</h3>
-          <p class="mt-2 text-sm leading-relaxed">{d}</p>
+        ['Get paid',         '14 days. Bank transfer. To the account on the slip.'],
+      ].map(([t, d], i, arr) => (
+        <li class="p-6 sm:p-7 flex flex-col relative" style="background: var(--color-paper);" data-reveal>
+          <!-- numeral chip + connector arrow -->
+          <div class="flex items-center justify-between mb-5">
+            <span
+              class="inline-flex items-center justify-center rounded-full numeral"
+              style="width: 44px; height: 44px; background: var(--color-forest); color: var(--color-paper); font-family: var(--font-mono); font-weight: 600; font-size: 14px; letter-spacing: 0.06em;"
+              aria-hidden="true"
+            >{(i + 1).toString().padStart(2, '0')}</span>
+            {i < arr.length - 1 && (
+              <span
+                class="text-[color:var(--color-saffron)] hidden lg:inline-flex"
+                aria-hidden="true"
+                style="font-family: var(--font-mono);"
+              >
+                <svg width="32" height="14" viewBox="0 0 32 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="0" y1="7" x2="28" y2="7" /><polyline points="22 2 28 7 22 12" /></svg>
+              </span>
+            )}
+          </div>
+
+          <h3 style="font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--color-ink); letter-spacing: -0.01em; line-height: 1.2; min-height: 2.4em;">{t}</h3>
+          <div class="mt-3 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+          <p class="mt-4 text-sm leading-relaxed flex-1" style="color: var(--color-slate);">{d}</p>
         </li>
       ))}
     </ol>
+    <p class="meta mt-5" style="color: var(--color-slate-2);">No agents. No middlemen. Every step in writing.</p>
   </Section>
 
   <!-- Notify -->

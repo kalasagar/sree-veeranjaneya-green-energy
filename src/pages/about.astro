@@ -101,23 +101,65 @@ const aboutStats = [
 
   <!-- Registration -->
   <Section eyebrow="Registration" title="The paperwork, in plain sight." bg="paper-2">
-    <dl class="grid-12 numeral text-sm">
+    <!-- Identifier grid: hairline cells (gap-px on rule-color bg) so the
+         data sheet reads as one card with internal divisions, not a row
+         of bordered tiles. Codes use the mono numeral treatment;
+         categorical facts use the body text. -->
+    <dl class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-px overflow-hidden rounded max-w-5xl" style="background: var(--rule-color);">
       {[
-        { k: 'CIN', v: SITE.cin }, { k: 'GSTIN', v: SITE.gst },
-        { k: 'UDYAM', v: SITE.udyam }, { k: 'Incorporated', v: '12 June 2024' },
-        { k: 'ROC', v: SITE.rocName + ', Reg. ' + SITE.registrationNumber },
-        { k: 'PAN', v: SITE.pan }, { k: 'Class', v: 'Private, Small Company' },
-        { k: 'CPCB category', v: 'WHITE' },
+        { k: 'CIN',           v: SITE.cin,                                                kind: 'code' },
+        { k: 'GSTIN',         v: SITE.gst,                                                kind: 'code' },
+        { k: 'UDYAM',         v: SITE.udyam,                                              kind: 'code' },
+        { k: 'PAN',           v: SITE.pan,                                                kind: 'code' },
+        { k: 'Incorporated',  v: '12 June 2024',                                          kind: 'fact' },
+        { k: 'ROC',           v: SITE.rocName + ', Reg. ' + SITE.registrationNumber,      kind: 'fact' },
+        { k: 'Class',         v: 'Private, Small Company',                                kind: 'fact' },
+        { k: 'CPCB category', v: 'WHITE',                                                 kind: 'badge' },
       ].map(item => (
-        <div class="col-3 pt-3 rule-bold">
-          <dt class="eyebrow mb-1" style="font-family: var(--font-mono);">{item.k}</dt>
-          <dd class="text-base font-semibold" style="color: var(--color-forest);">{item.v}</dd>
+        <div
+          class={`p-4 sm:p-5 flex flex-col justify-between ${item.kind === 'badge' ? 'is-badge' : ''}`}
+          style={item.kind === 'badge'
+            ? 'background: var(--color-ink); color: var(--color-paper);'
+            : 'background: var(--color-paper);'}
+        >
+          <dt
+            class="eyebrow"
+            style={item.kind === 'badge'
+              ? 'color: color-mix(in oklab, var(--color-paper) 70%, transparent);'
+              : 'color: var(--color-slate-2);'}
+          >{item.k}</dt>
+          <dd
+            class="mt-3"
+            style={item.kind === 'code'
+              ? 'font-family: var(--font-mono); font-weight: 500; font-size: 0.875rem; color: var(--color-ink); word-break: break-all;'
+              : item.kind === 'badge'
+                ? 'font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; letter-spacing: 0.04em; color: var(--color-paper);'
+                : 'font-family: var(--font-body); font-weight: 600; font-size: 0.9375rem; color: var(--color-ink); line-height: 1.35;'}
+          >
+            {item.kind === 'badge' && <span class="inline-flex items-center gap-2 align-middle"><span class="w-2 h-2 rounded-full" style="background: var(--color-paper); border: 2px solid var(--color-paper);" aria-hidden="true"></span>{item.v}</span>}
+            {item.kind !== 'badge' && item.v}
+          </dd>
         </div>
       ))}
     </dl>
-    <p class="meta mt-8">
-      Registered office: {SITE.registeredOffice.line1}, {SITE.registeredOffice.line2}, {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.
-      Incorporated as a One Person Company on 12.06.2024; converted to a two-director Private Limited on 25.10.2025.
-    </p>
+
+    <!-- Registered office + incorporation timeline as a paired card row.
+         Same hairline-grid pattern, two cells. -->
+    <div class="mt-6 grid sm:grid-cols-2 gap-px overflow-hidden rounded max-w-5xl" style="background: var(--rule-color);">
+      <article class="p-5" style="background: var(--color-paper);">
+        <p class="eyebrow" style="color: var(--color-slate-2);">Registered office</p>
+        <address class="mt-3 not-italic text-sm leading-relaxed" style="color: var(--color-ink);">
+          {SITE.registeredOffice.line1},<br/>
+          {SITE.registeredOffice.line2},<br/>
+          {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}.
+        </address>
+      </article>
+      <article class="p-5" style="background: var(--color-paper);">
+        <p class="eyebrow" style="color: var(--color-slate-2);">Incorporation history</p>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-ink);">
+          Filed as a One Person Company on 12.06.2024. Converted to a two-director Private Limited on 25.10.2025 when Deepika joined as Director.
+        </p>
+      </article>
+    </div>
   </Section>
 </Base>
