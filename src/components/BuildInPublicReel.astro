@@ -9,6 +9,10 @@ import { SITE } from '../lib/site';
 import { link } from '../lib/links';
 import { getCollection } from 'astro:content';
 
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+const image = 'news_journal';
+
 const all = await getCollection('news', ({ data }) => !data.draft);
 const posts = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 3);
 const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
@@ -16,6 +20,13 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
 <div class="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start" data-reveal>
   <!-- Editorial lead-in -->
   <div>
+    <figure class="overflow-hidden rounded mb-6" style="aspect-ratio: 4 / 3;">
+      <picture>
+        <source type="image/avif" srcset={`${asset(`banners/${image}-640.avif`)} 640w, ${asset(`banners/${image}-1024.avif`)} 1024w, ${asset(`banners/${image}-1600.avif`)} 1600w`} sizes="(max-width: 1024px) 100vw, 380px" />
+        <source type="image/webp" srcset={`${asset(`banners/${image}-640.webp`)} 640w, ${asset(`banners/${image}-1024.webp`)} 1024w, ${asset(`banners/${image}-1600.webp`)} 1600w`} sizes="(max-width: 1024px) 100vw, 380px" />
+        <img src={asset(`banners/${image}.webp`)} alt="A small olive-green field journal open on a slate-grey wooden table, a saffron fountain pen resting across the gutter." loading="lazy" decoding="async" class="w-full h-full object-cover" />
+      </picture>
+    </figure>
     <p class="eyebrow" style="color: var(--color-saffron-text);">Built in public</p>
     <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.6vw, 2rem); max-width: 18ch; line-height: 1.1;">No glossy reveal. Monthly receipts.</h3>
     <div class="mt-4 w-10 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>

@@ -89,11 +89,19 @@ import { SITE } from '../lib/site';
     lede="There are about 152 SATAT plants in the pipeline. Most are stuck. Here is what is different about ours."
   >
     <div class="space-y-20">
-      {SITE.differentiators.map((d, i) => (
-        <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={i === 0 ? 'hero_paddy_dawn' : null} imageAlt="">
-          <p>{d.body}</p>
-        </EditorialBlock>
-      ))}
+      {SITE.differentiators.map((d, i) => {
+        const banner = ['hero_paddy_dawn', 'promoter_ledger', 'feedstock_catchment_aerial'][i];
+        const alt = [
+          'A paddy field at golden hour with a digester flame at the far edge.',
+          'A small ledger book open on a slate-wood table at golden hour.',
+          'Aerial view of paddy and Napier-grass plots stitched together by earth bunds in coastal Andhra Pradesh.',
+        ][i];
+        return (
+          <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={banner} imageAlt={alt}>
+            <p>{d.body}</p>
+          </EditorialBlock>
+        );
+      })}
     </div>
   </Section>
 
