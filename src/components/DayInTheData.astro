@@ -113,12 +113,12 @@ const initial = moments[0].totals;
       </div>
 
       <!-- Three running gauges -->
-      <dl class="space-y-5">
+      <div class="space-y-5">
         {/* Feedstock processed */}
         <div data-gauge="feedstock" data-max={dailyMax.feedstock}>
           <div class="flex items-baseline justify-between gap-2">
-            <dt class="meta" style="color: var(--color-slate-2);">Feedstock processed</dt>
-            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.feedstock / dailyMax.feedstock) * 100)}</span>%</dd>
+            <p class="meta" style="color: var(--color-slate-2);">Feedstock processed</p>
+            <p class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.feedstock / dailyMax.feedstock) * 100)}</span>%</p>
           </div>
           <p class="mt-2 flex items-baseline gap-2">
             <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.feedstock}</span>
@@ -132,8 +132,8 @@ const initial = moments[0].totals;
         {/* Raw biogas produced */}
         <div data-gauge="biogas" data-max={dailyMax.biogas}>
           <div class="flex items-baseline justify-between gap-2">
-            <dt class="meta" style="color: var(--color-slate-2);">Raw biogas produced</dt>
-            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.biogas / dailyMax.biogas) * 100)}</span>%</dd>
+            <p class="meta" style="color: var(--color-slate-2);">Raw biogas produced</p>
+            <p class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.biogas / dailyMax.biogas) * 100)}</span>%</p>
           </div>
           <p class="mt-2 flex items-baseline gap-2">
             <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.biogas.toLocaleString('en-IN')}</span>
@@ -147,8 +147,8 @@ const initial = moments[0].totals;
         {/* CBG dispatched */}
         <div data-gauge="cbg" data-max={dailyMax.cbg}>
           <div class="flex items-baseline justify-between gap-2">
-            <dt class="meta" style="color: var(--color-slate-2);">CBG dispatched</dt>
-            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.cbg / dailyMax.cbg) * 100)}</span>%</dd>
+            <p class="meta" style="color: var(--color-slate-2);">CBG dispatched</p>
+            <p class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.cbg / dailyMax.cbg) * 100)}</span>%</p>
           </div>
           <p class="mt-2 flex items-baseline gap-2">
             <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.cbg}</span>
@@ -158,7 +158,7 @@ const initial = moments[0].totals;
             <div class="h-full" style={`width: ${(initial.cbg / dailyMax.cbg) * 100}%; background: var(--color-saffron); transition: width 600ms ease;`} data-gauge-bar></div>
           </div>
         </div>
-      </dl>
+      </div>
 
       <p class="meta mt-6 pt-4 border-t leading-relaxed" style="color: var(--color-slate-2); border-color: var(--rule-color);">
         Steady-state targets. At commissioning, real numbers replace these and the rail starts citing the dispatch slip.

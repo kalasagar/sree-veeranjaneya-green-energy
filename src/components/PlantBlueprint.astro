@@ -30,8 +30,8 @@ const initial = hotspots[2]; // CSTR is default
   </header>
 
   <div class="mt-7 grid lg:grid-cols-[1.4fr_1fr] gap-6">
-    <div class="rounded-2xl bg-[color:var(--color-paper-3)] p-4">
-      <svg viewBox="0 0 900 360" class="w-full h-auto" data-plant-svg role="img" aria-label="Interactive plant blueprint">
+    <div class="rounded-2xl bg-[color:var(--color-paper-3)] p-4 overflow-x-auto">
+      <svg viewBox="0 0 900 360" class="w-full h-auto min-w-[600px] sm:min-w-0" data-plant-svg role="img" aria-label="Interactive plant blueprint">
         {/* Ground line */}
         <line x1="20" y1="320" x2="880" y2="320" stroke="var(--color-slate-2-soft)" stroke-width="1" stroke-dasharray="3 4" />
         {/* Flow line */}

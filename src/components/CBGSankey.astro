@@ -66,7 +66,37 @@ function curve(x1: number, y1: number, x2: number, y2: number, h: number) {
     </p>
   </header>
 
-  <div class="mt-7 overflow-x-auto svge-sankey">
+  <!-- Mobile fallback: feedstock list → CSTR → outputs as a vertical chain.
+       Hides the Sankey itself below md (too cramped to read on a phone). -->
+  <div class="mt-6 md:hidden grid grid-cols-1 gap-4 text-sm">
+    <div>
+      <p class="eyebrow mb-2" style="color: var(--color-slate);">Feedstock in</p>
+      <ul class="space-y-2" role="list">
+        {inputs.map(i => (
+          <li class="flex items-baseline justify-between border-l-2 pl-3" style={`border-color: ${i.color};`}>
+            <span class="font-semibold" style={`color: ${i.color};`}>{i.label}</span>
+            <span class="numeral meta" style="color: var(--color-slate);">{i.value} TPD</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="text-center py-3 rounded" style="background: var(--color-ink); color: var(--color-paper);">
+      <p class="meta" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent); font-family: var(--font-mono);">4× CSTR · 15,402 m³ · HRT 34 d · OLR 1.75</p>
+    </div>
+    <div>
+      <p class="eyebrow mb-2" style="color: var(--color-slate);">Outputs</p>
+      <ul class="space-y-2" role="list">
+        {outputs.map(o => (
+          <li class="border-l-2 pl-3" style={`border-color: ${o.color};`}>
+            <p class="font-semibold" style={`color: ${o.color};`}>{o.label}</p>
+            <p class="meta mt-0.5" style="color: var(--color-slate);">{o.sub}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <div class="mt-7 overflow-x-auto svge-sankey hidden md:block">
     <svg viewBox={`0 0 ${W} ${H}`} class="w-full min-w-[760px]" role="img" aria-label="Mass-flow Sankey from feedstock through digester to CBG and FOM">
       <!-- Inputs → digester -->
       {iBlocks.map(b => {

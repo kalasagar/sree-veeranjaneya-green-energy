@@ -24,12 +24,12 @@ const apCommPct = Math.round((nat.andhraPlantsCommissioned / apTotal) * 100);
     </p>
   </header>
 
-  <dl class="mt-8 space-y-8">
+  <div class="mt-8 space-y-8">
     <!-- National -->
     <div>
       <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-        <dt class="eyebrow" style="color: var(--color-ink);">National pipeline · {totalPipeline} plants</dt>
-        <dd class="meta" style="color: var(--color-slate-2);">As of {nat.satatCommissionedAsOfDate}</dd>
+        <p class="eyebrow" style="color: var(--color-ink);">National pipeline · {totalPipeline} plants</p>
+        <p class="meta" style="color: var(--color-slate-2);">As of {nat.satatCommissionedAsOfDate}</p>
       </div>
       <div class="svge-bar" role="img" aria-label={`${nat.satatCommissioned} commissioned plants, ${nat.satatUnderConstruction} under construction`}>
         <span style={`width:${commPct}%; background: var(--color-forest);`}></span>
@@ -50,8 +50,8 @@ const apCommPct = Math.round((nat.andhraPlantsCommissioned / apTotal) * 100);
     <!-- AP -->
     <div>
       <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-        <dt class="eyebrow" style="color: var(--color-ink);">Andhra Pradesh · SVGE is next</dt>
-        <dd class="meta" style="color: var(--color-slate-2);">GOBARdhan portal, end-2025</dd>
+        <p class="eyebrow" style="color: var(--color-ink);">Andhra Pradesh · SVGE is next</p>
+        <p class="meta" style="color: var(--color-slate-2);">GOBARdhan portal, end-2025</p>
       </div>
       <div class="svge-bar relative" role="img" aria-label={`${nat.andhraPlantsCommissioned} plants commissioned in Andhra Pradesh, SVGE marker at end`}>
         <span style={`width:${apCommPct}%; background: var(--color-forest);`}></span>
@@ -70,7 +70,7 @@ const apCommPct = Math.round((nat.andhraPlantsCommissioned / apTotal) * 100);
         <span class="font-semibold" style="color: var(--color-saffron-text);">SVGE = #{nat.andhraPlantsCommissioned + 1}</span>
       </div>
     </div>
-  </dl>
+  </div>
 
   <p class="mt-8 meta pt-4 border-t" style="color: var(--color-slate-2); border-color: var(--rule-color);">
     Sources: {nat.sources.map((s: any, i: number) => (

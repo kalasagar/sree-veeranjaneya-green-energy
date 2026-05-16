@@ -219,9 +219,9 @@
     margin: 0.08em 0.12em 0 -0.04em;
     color: var(--color-saffron-text);
   }
-  .prose-svge { max-width: 65ch; font-size: var(--text-body-lg); line-height: 1.7; }
+  .prose-svge { max-width: 65ch; font-size: var(--text-body-lg); line-height: 1.7; overflow-wrap: anywhere; }
   .prose-svge p + p { margin-top: 1rem; }
-  .prose-svge a { color: var(--color-saffron-text); }
+  .prose-svge a { color: var(--color-saffron-text); overflow-wrap: anywhere; }
 }
 
 /* =========================================================
@@ -531,21 +531,22 @@
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 600;
-    font-size: clamp(2.5rem, 6.5vw, 4.75rem);
-    line-height: 0.98;
-    letter-spacing: -0.025em;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    line-height: 1.0;
+    letter-spacing: -0.022em;
   }
   .svge-footer-cta {
-    background: var(--color-saffron);
+    background: var(--color-saffron-text);     /* darker variant for AA contrast on paper text */
     color: var(--color-paper);
     font-family: var(--font-mono);
     font-size: 11px;
+    font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     text-decoration: none;
     transition: background 180ms ease;
   }
-  .svge-footer-cta:hover { background: var(--color-saffron-light); color: var(--color-paper); }
+  .svge-footer-cta:hover { background: var(--color-saffron); color: var(--color-paper); }
 
   .svge-footer-colophon { background: var(--color-paper-2); }
   .svge-footer-colophon a {

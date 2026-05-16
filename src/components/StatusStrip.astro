@@ -20,17 +20,17 @@ const pulse = daysLeft < 90;
 ---
 <aside class="svge-status" aria-label="Plant build status">
   <div class="container-svge flex items-stretch h-full">
-    <a href={link('/build/')} class="cell" aria-label={`D minus ${daysLeft} days to commissioning deadline`}>
+    <a href={link('/build/')} class="cell">
       <span class={`dot ${pulse ? 'pulse' : ''}`} aria-hidden="true"></span>
       <span><span class="numeral" style="color: var(--color-paper);">D−{daysLeft.toLocaleString('en-IN')}d</span> <span class="opacity-65">to commissioning</span></span>
     </a>
-    <a href={link('/build/')} class="cell" aria-label={`Project phase: ${SITE.status.phaseLabel}`}>
+    <a href={link('/build/')} class="cell">
       <span>Phase: <span style="color: var(--color-paper);">{SITE.status.phaseLabel}</span></span>
     </a>
-    <a href={link('/build/#clearances')} class="cell" aria-label={`${SITE.status.clearancesObtained} of ${SITE.status.clearancesTotal} clearances obtained`}>
+    <a href={link('/build/#clearances')} class="cell">
       <span>Clearances <span class="numeral" style="color: var(--color-paper);">{cleared}</span></span>
     </a>
-    <a href={link('/press/#journal')} class="cell ml-auto hidden md:inline-flex" aria-label={`Last update ${lastUpdate}`}>
+    <a href={link('/press/#journal')} class="cell ml-auto hidden md:inline-flex">
       <span>Updated <span style="color: var(--color-paper);">{lastUpdate}</span></span>
     </a>
   </div>

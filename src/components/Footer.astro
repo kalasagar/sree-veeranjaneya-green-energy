@@ -10,7 +10,7 @@ import { link } from '../lib/links';
 import Mark from './Mark.astro';
 
 const year = new Date().getFullYear();
-const version = 'V3.6';
+const version = 'V3.7';
 const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
   .format(new Date(SITE.status.lastUpdate + 'T00:00:00Z'));
 ---
@@ -32,7 +32,8 @@ const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 's
         </div>
 
         <aside class="lg:col-span-4 lg:col-start-9 lg:pl-6 lg:border-l self-start" style="border-color: color-mix(in oklab, var(--color-paper) 18%, transparent);">
-          <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Current status</p>
+          <Mark size={120} decorative />
+          <p class="eyebrow mt-6" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Current status</p>
           <p class="mt-2 text-lg font-semibold" style="color: var(--color-paper); font-family: var(--font-display); letter-spacing: -0.01em;">{SITE.status.phaseLabel}</p>
           <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 65%, transparent);">Construction begins Q3 2026. Commissioning deadline 04 Oct 2026.</p>
 
@@ -135,7 +136,7 @@ const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 's
         <span class="svge-footer-pill" title="Site version and last publish date">
           <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-saffron);" aria-hidden="true"></span>
           <span class="numeral">{version}</span>
-          <span class="meta opacity-70">published {lastUpdated}</span>
+          <span class="meta" style="color: var(--color-slate-2);">published {lastUpdated}</span>
         </span>
         <p class="meta hidden md:inline">Every number reconciles with the DPR and the IOCL LoI.</p>
       </div>

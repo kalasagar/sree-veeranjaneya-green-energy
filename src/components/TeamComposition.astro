@@ -20,11 +20,11 @@ const colors = ['#1B5E20', '#2C5282', '#C98E2B', '#B7472A'];
     <p class="mt-3 max-w-2xl" style="color: var(--color-slate);">{SITE.team.localHirePolicy}</p>
   </header>
 
-  <dl class="mt-7 space-y-6">
+  <div class="mt-7 space-y-6">
     <div>
       <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-        <dt class="eyebrow" style="color: var(--color-ink);">On plant payroll</dt>
-        <dd class="meta" style="color: var(--color-slate-2);"><span class="numeral">{plantTotal}</span> people · three shifts</dd>
+        <p class="eyebrow" style="color: var(--color-ink);">On plant payroll</p>
+        <p class="meta" style="color: var(--color-slate-2);"><span class="numeral">{plantTotal}</span> people · three shifts</p>
       </div>
       <div class="svge-bar h-3.5" role="img" aria-label={`Plant headcount split into ${bands.length} role bands`}>
         {bands.map((b, i) => (
@@ -34,8 +34,8 @@ const colors = ['#1B5E20', '#2C5282', '#C98E2B', '#B7472A'];
     </div>
     <div>
       <div class="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-        <dt class="eyebrow" style="color: var(--color-ink);">Plant + extended supply chain</dt>
-        <dd class="meta" style="color: var(--color-slate-2);"><span class="numeral">{totalAll}</span> people · {SITE.team.catchmentRadiusKm}-km radius</dd>
+        <p class="eyebrow" style="color: var(--color-ink);">Plant + extended supply chain</p>
+        <p class="meta" style="color: var(--color-slate-2);"><span class="numeral">{totalAll}</span> people · {SITE.team.catchmentRadiusKm}-km radius</p>
       </div>
       <div class="svge-bar h-3.5" role="img" aria-label="Total jobs including extended supply chain">
         {bands.map((b, i) => (
@@ -43,7 +43,7 @@ const colors = ['#1B5E20', '#2C5282', '#C98E2B', '#B7472A'];
         ))}
       </div>
     </div>
-  </dl>
+  </div>
 
   <ul class="mt-8 grid sm:grid-cols-2 gap-x-6 gap-y-5" role="list">
     {bands.map((b, i) => (

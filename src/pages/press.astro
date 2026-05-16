@@ -45,7 +45,7 @@ const facts: [string, string][] = [
 ---
 <Base title="Press" description="Press kit, fast facts, brand pack, and build journal for journalists covering SVGE." heroOver={true}>
   <FullBleedHero banner="press_kit" alt="Press kit folder on a dark slate desk." eyebrow="Press" height="xl">
-    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2.75rem, 6vw, 5rem);">
+    <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2rem, 6vw, 5rem);">
       <span class="block">Boilerplate.</span>
       <span class="block" style="color: var(--color-gold);">Brand pack.</span>
       <span class="block">Build journal.</span>
@@ -90,6 +90,17 @@ const facts: [string, string][] = [
         <p class="text-lg leading-relaxed max-w-[40ch]">Forest leaf · saffron flame · paper field. The leaf is the feedstock; the flame is what we turn it into.</p>
       </div>
     </div>
+    <!-- Whole-kit zip — generated at build time by scripts/build_brand_pack.mjs -->
+    <a
+      href={link('/brand/svge-brand-pack.zip')}
+      class="mb-6 inline-flex items-center justify-between gap-3 px-5 py-3 rounded-full no-underline"
+      style="background: var(--color-ink); color: var(--color-paper); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;"
+      download
+    >
+      <span>Download the full brand pack (.zip)</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v14"/><polyline points="6 11 12 17 18 11"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
+    </a>
+
     <div class="grid lg:grid-cols-[2fr_1fr] gap-6">
       <ul class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
         {[
