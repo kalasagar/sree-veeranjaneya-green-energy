@@ -70,7 +70,7 @@ export const SITE = {
     { value: '52', unit: 'm³/day', k: 'Liquid manure' },
     { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, sold as a soil amendment under the MDA scheme.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
-    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Three confirmed central-government incentives anchor the public side. Private-side structure reconciles in the data room on request.' },
+    { value: 'Private', k: 'Capital structure', framing: 'Three confirmed central-government incentives anchor the public side. Project cost and private-side structure reconcile in the data room on request.' },
     { value: 'WHITE', k: 'CPCB category', framing: 'The lowest pollution tier. Energy-crop CBG plants are classified WHITE.' },
   ] satisfies Stat[],
 
@@ -206,12 +206,11 @@ export const SITE = {
     compressionBar: 250,
   },
 
-  // ---- FINANCING (qualitative shape only — no rupee line items) ----
+  // ---- FINANCING (public-side only — no project cost, no source sizing,
+  // no lender identity. Full structure sits with qualified lenders in the
+  // data room on request via SITE.email.) ----
   financing: {
-    totalCr: 33.27,
     structure: 'private financing with confirmed central-government incentives (details in the data room)',
-    termYears: 10,
-    incentivesCr: 6.7,
     incentivesDetail: 'MNRE Capital Financial Assistance + AGRL Ministry support + FOM Market Development Assistance under Ministry of Chemicals & Fertilizers',
     taxHolidayYears: 5,
     taxHolidayBasis: 'Income Tax Act provision for CBG plants',
