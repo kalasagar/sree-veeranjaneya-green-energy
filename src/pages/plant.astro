@@ -6,6 +6,7 @@ import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
 import ChipRail from '../components/ChipRail.astro';
 import CBGSankey from '../components/CBGSankey.astro';
+import CircularLoop from '../components/CircularLoop.astro';
 import DayInTheData from '../components/DayInTheData.astro';
 import PlantBlueprint from '../components/PlantBlueprint.astro';
 import Accordion from '../components/Accordion.astro';
@@ -72,6 +73,11 @@ const chips = [
 
   <Kicker eyebrow="From a field of grass to a tank of fuel" deck='Seventy-two tonnes of feedstock go in. <span style="color: var(--color-saffron-text);">Four tonnes of clean fuel</span> come out. Eight steps in between.' maxCh={28} />
   <ChipRail items={chips} />
+
+  <!-- Circular loop diagram — visual spine, before the technical depth begins. -->
+  <Section eyebrow="The loop" title="What goes in, what comes out, where it goes.">
+    <CircularLoop compact />
+  </Section>
 
   <!-- Flow -->
   <Section id="flow" eyebrow="Mass-flow Sankey" title="From field to fill point.">

@@ -1,0 +1,245 @@
+---
+/**
+ * The spine of V4.1: the circularity story in one drawing + five
+ * national-importance "fights" the plant takes on.
+ *
+ * Row 1 — an inline SVG closed-loop diagram. Four cardinal stops
+ *   (Field, Plant, Indian Oil, 40 km catchment) tied by a saffron
+ *   ring. Three inflows on the NE quadrant (paddy straw, Napier,
+ *   cattle dung).
+ * Row 2 — five "fight-cards" keyed to existing SITE numbers. Each
+ *   card = one national fight + one mechanism + one number.
+ *
+ * Props:
+ *   compact?: boolean  — diagram-only (no cards). Used on /plant.
+ */
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
+interface Props {
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
+
+const fights = [
+  {
+    eyebrow: 'Oil import bill',
+    headline: '~80 buses/day',
+    detail:
+      "4 TPD CBG to Indian Oil — about a day's CNG for 80 city buses. India sends ~₹12 lakh crore abroad every year buying crude. Every cubic metre we make stays here.",
+  },
+  {
+    eyebrow: 'Burn cycle',
+    headline: '~29,000 TPA',
+    detail:
+      'Feedstock bought, not burned. ~14 Mt of paddy straw is set on fire across India every winter; we take ours out of that pile and pay for it.',
+  },
+  {
+    eyebrow: 'Air quality',
+    headline: '5× WHO limit',
+    detail:
+      'Annual PM2.5 in the Indo-Gangetic plain runs five times the WHO safe limit. Stubble burning is one named cause. We remove the match in our belt.',
+  },
+  {
+    eyebrow: 'Soil & fertilizer',
+    headline: '~365 TPA FOM',
+    detail:
+      "~365 TPA of solid Fermented Organic Manure plus 52 m³/day of liquid manure goes back to the same 40 km belt we buy from. Rebuilds the organic carbon decades of chemical farming stripped out.",
+  },
+  {
+    eyebrow: 'Rural cash',
+    headline: '~120 jobs',
+    detail:
+      "47 on plant payroll, ~73 in aggregation, transport, and farmer-side roles inside 40 km. Napier at ₹1,200/t × 6 harvests/yr; payments cleared in 14 days.",
+  },
+];
+---
+<div class={compact ? 'svge-circular-loop svge-circular-loop--compact' : 'svge-circular-loop'} data-reveal>
+  <!-- The loop, in one drawing -->
+  <figure class="loop-figure">
+    <svg viewBox="0 0 1000 640" role="img" aria-labelledby="loopTitle loopDesc" preserveAspectRatio="xMidYMid meet">
+      <title id="loopTitle">The SVGE circular loop</title>
+      <desc id="loopDesc">
+        Farmer's field at the top, our plant at the right, Indian Oil at the bottom, the same forty-kilometre catchment at the left. A saffron ring runs clockwise between them. Three inflows on the upper right — paddy straw, Napier grass, cattle dung — feed into the plant.
+      </desc>
+
+      <defs>
+        <marker id="loopArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+          <path d="M0,1 L10,6 L0,11 z" fill="var(--color-saffron)"></path>
+        </marker>
+        <marker id="inflowArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+          <path d="M0,2 L10,6 L0,10 z" fill="var(--color-slate)"></path>
+        </marker>
+      </defs>
+
+      <!-- The saffron ring — four clockwise quadrants with end-arrow markers -->
+      <g class="loop-ring" fill="none" stroke="var(--color-saffron)" stroke-width="2.5" stroke-linecap="round">
+        <!-- N (500,140) → E (760,360) -->
+        <path d="M 500 140 A 220 220 0 0 1 760 360" marker-end="url(#loopArrow)"></path>
+        <!-- E (760,360) → S (500,580) -->
+        <path d="M 760 360 A 220 220 0 0 1 500 580" marker-end="url(#loopArrow)"></path>
+        <!-- S (500,580) → W (240,360) -->
+        <path d="M 500 580 A 220 220 0 0 1 240 360" marker-end="url(#loopArrow)"></path>
+        <!-- W (240,360) → N (500,140) -->
+        <path d="M 240 360 A 220 220 0 0 1 500 140" marker-end="url(#loopArrow)"></path>
+      </g>
+
+      <!-- Inflows from outside the ring (top-right) -->
+      <g class="loop-inflows" fill="none" stroke="var(--color-slate)" stroke-width="1.5" stroke-dasharray="4 4">
+        <line x1="920" y1="100" x2="700" y2="220" marker-end="url(#inflowArrow)"></line>
+        <line x1="960" y1="220" x2="740" y2="290" marker-end="url(#inflowArrow)"></line>
+        <line x1="960" y1="360" x2="760" y2="360" marker-end="url(#inflowArrow)"></line>
+      </g>
+      <g class="loop-inflow-labels" font-family="var(--font-mono)" font-size="13" font-weight="600" letter-spacing="0.12em" fill="var(--color-saffron-text)" text-anchor="end" style="text-transform: uppercase;">
+        <text x="918" y="92">Paddy straw</text>
+        <text x="958" y="212">Napier grass</text>
+        <text x="958" y="352">Cattle dung</text>
+      </g>
+
+      <!-- Four cardinal nodes (ink-filled discs) -->
+      <g class="loop-nodes">
+        <circle cx="500" cy="140" r="64" fill="var(--color-ink)"></circle>
+        <circle cx="760" cy="360" r="64" fill="var(--color-ink)"></circle>
+        <circle cx="500" cy="580" r="64" fill="var(--color-ink)"></circle>
+        <circle cx="240" cy="360" r="64" fill="var(--color-ink)"></circle>
+      </g>
+
+      <!-- Node labels (paper text inside ink discs) -->
+      <g class="loop-node-labels" font-family="var(--font-display)" font-weight="700" font-size="20" fill="var(--color-paper)" text-anchor="middle" dominant-baseline="middle">
+        <text x="500" y="134">Farmer's</text>
+        <text x="500" y="158">field</text>
+
+        <text x="760" y="354">Our</text>
+        <text x="760" y="378">plant</text>
+
+        <text x="500" y="574">Indian</text>
+        <text x="500" y="598">Oil</text>
+
+        <text x="240" y="354">40 km</text>
+        <text x="240" y="378">belt</text>
+      </g>
+
+      <!-- Outflow labels (mono caps on the saffron arcs) -->
+      <g class="loop-flow-labels" font-family="var(--font-mono)" font-size="12" font-weight="600" letter-spacing="0.14em" fill="var(--color-saffron-text)" text-anchor="middle" style="text-transform: uppercase;">
+        <text x="690" y="490">CBG dispatch</text>
+        <text x="310" y="490">FOM return</text>
+        <text x="310" y="240">Soil rebuilds</text>
+        <text x="690" y="240">Mass-flow in</text>
+      </g>
+    </svg>
+
+    <figcaption class="loop-caption">
+      <p class="loop-caption-line">Nothing leaves the belt.</p>
+      <p class="loop-caption-sub">The money, the fuel, and the soil all circulate inside the same forty-kilometre catchment we source from.</p>
+    </figcaption>
+  </figure>
+
+  {!compact && (
+    <ol class="loop-fights" role="list">
+      {fights.map(f => (
+        <li>
+          <div class="loop-fight-cell">
+            <p class="eyebrow" style="color: var(--color-gold);">{f.eyebrow}</p>
+            <p class="loop-fight-headline">{f.headline}</p>
+            <p class="loop-fight-detail">{f.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  )}
+</div>
+
+<style>
+  .svge-circular-loop {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .loop-figure {
+    margin: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    .loop-figure {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 3rem;
+    }
+  }
+  .loop-figure svg {
+    width: 100%;
+    height: auto;
+    max-height: 560px;
+    display: block;
+  }
+  .loop-caption {
+    text-align: left;
+  }
+  .loop-caption-line {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    max-width: 18ch;
+  }
+  .loop-caption-line::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: 0.875rem;
+    background: var(--color-saffron);
+  }
+  .loop-caption-sub {
+    margin-top: 1rem;
+    color: var(--color-slate);
+    line-height: 1.6;
+    max-width: 36ch;
+  }
+
+  .loop-fights {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: color-mix(in oklab, var(--color-paper) 12%, transparent);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) {
+    .loop-fights { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 1024px) {
+    .loop-fights { grid-template-columns: repeat(5, 1fr); }
+  }
+  .loop-fight-cell {
+    display: block;
+    height: 100%;
+    padding: 1.25rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  @media (min-width: 640px) { .loop-fight-cell { padding: 1.5rem; } }
+
+  .loop-fight-headline {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--color-paper);
+  }
+  .loop-fight-detail {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: color-mix(in oklab, var(--color-paper) 82%, transparent);
+  }
+
+  /* Compact variant: diagram only, no fight cards. */
+  .svge-circular-loop--compact .loop-figure svg { max-height: 420px; }
+</style>

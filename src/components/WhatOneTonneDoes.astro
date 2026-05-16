@@ -1,0 +1,37 @@
+---
+/**
+ * One tonne of paddy straw, walked through the loop in plain English.
+ *
+ * Editorial unit for /about. Photo-on-left, prose-on-right, the same
+ * grid pattern as PromiseBlock. No new SITE keys. The image carries
+ * the emotional weight — the prose is restrained.
+ */
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+const image = 'loop_straw_burning_dusk';
+---
+<article class="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-center" data-reveal>
+  <figure class="overflow-hidden rounded order-2 lg:order-1" style="aspect-ratio: 4 / 3;">
+    <picture>
+      <source type="image/avif" srcset={`${asset(`banners/${image}-640.avif`)} 640w, ${asset(`banners/${image}-1024.avif`)} 1024w, ${asset(`banners/${image}-1600.avif`)} 1600w`} sizes="(max-width: 1024px) 100vw, 600px" />
+      <source type="image/webp" srcset={`${asset(`banners/${image}-640.webp`)} 640w, ${asset(`banners/${image}-1024.webp`)} 1024w, ${asset(`banners/${image}-1600.webp`)} 1600w`} sizes="(max-width: 1024px) 100vw, 600px" />
+      <img src={asset(`banners/${image}.webp`)} alt="A line of paddy stubble burning at dusk across a harvested field in coastal Andhra Pradesh." loading="lazy" decoding="async" class="w-full h-full object-cover" />
+    </picture>
+  </figure>
+
+  <div class="order-1 lg:order-2">
+    <p class="eyebrow mb-3" style="color: var(--color-saffron-text);">What one tonne does</p>
+    <p class="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1" style="font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-saffron-text); font-weight: 600;">
+      <span>Burn avoided</span>
+      <span aria-hidden="true" style="color: var(--color-slate-2-soft); font-weight: 400;">/</span>
+      <span>Fuel made</span>
+      <span aria-hidden="true" style="color: var(--color-slate-2-soft); font-weight: 400;">/</span>
+      <span>Soil returned</span>
+    </p>
+    <div class="prose-svge">
+      <p style="font-size: 1.25rem; line-height: 1.55; color: var(--color-ink);">A tonne of paddy straw, set on fire on a winter dusk in our belt, costs the country in three currencies — the air it dirties, the soil it leaves bare, and the fuel India then pays a foreign supplier for.</p>
+      <p class="mt-4" style="color: var(--color-slate);">The same tonne, bought from the same farmer for around ₹1,800 and trucked to our digester, becomes roughly fifty cubic metres of clean Compressed Bio-Gas for Indian Oil and a sack of Fermented Organic Manure that goes back to soil within forty kilometres.</p>
+      <p class="mt-4" style="color: var(--color-slate);">Multiply by twenty-nine thousand tonnes a year. That is the scope of one small plant — and a fight worth taking on at this size before scaling.</p>
+    </div>
+  </div>
+</article>
