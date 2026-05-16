@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
@@ -144,7 +145,11 @@ const chips = [
         <li>UDYAM-registered MSME: {SITE.udyam}. ROC Vijayawada, Reg. No. {SITE.registrationNumber}.</li>
         <li>CPCB pollution category: WHITE. 4 clearances obtained, 3 applied, 1 after-COD.</li>
       </ul>
-      <p class="mt-5 text-sm">Email <a href={`mailto:${SITE.email}?subject=DPR%20request`}>{SITE.email}</a> with subject <em>DPR request</em>.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href={link('/build/data-room/')} class="btn btn-primary">View the one-pager →</a>
+        <a href={`mailto:${SITE.email}?subject=DPR%20request`} class="btn btn-ghost">Email for the full DPR</a>
+      </div>
+      <p class="meta mt-4">The one-pager prints to a single A4 PDF (⌘P). The full DPR is shared on email request to qualified lenders with a brief intro to your institution.</p>
     </article>
   </Section>
 </Base>

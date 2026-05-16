@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { ClientRouter } from 'astro:transitions';
+import '../styles/print.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import StatusStrip from '../components/StatusStrip.astro';
@@ -70,11 +70,11 @@ const orgJsonLd = {
     <link
       rel="preload"
       as="style"
-      href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@600;700&family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
       onload="this.onload=null;this.rel='stylesheet'"
     />
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;500;600;700&family=Public+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@600;700&family=Public+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
     </noscript>
 
     <title>{fullTitle}</title>
@@ -105,7 +105,6 @@ const orgJsonLd = {
     )}
     <link rel="alternate" type="application/rss+xml" title="SVGE — Build journal" href={asset('news/rss.xml')} />
     <meta name="generator" content={Astro.generator} />
-    <ClientRouter fallback="animate" />
   </head>
   <body data-path={path}>
     <a href="#main" class="skip-link">Skip to content</a>
@@ -118,26 +117,43 @@ const orgJsonLd = {
       (function () {
         var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // Reveal observer
-        var revealEls = document.querySelectorAll('[data-reveal]:not([data-revealed])');
+        // Reduced-motion fast path: mark everything visible immediately,
+        // skip all observers.
         if (rm) {
-          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
-        } else if ('IntersectionObserver' in window) {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (e.isIntersecting) {
-                e.target.setAttribute('data-revealed', '');
-                io.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-          revealEls.forEach(function (el) { io.observe(el); });
-        } else {
-          revealEls.forEach(function (el) { el.setAttribute('data-revealed', ''); });
+          document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(function (el) { el.setAttribute('data-revealed', ''); });
+          document.querySelectorAll('[data-draw]:not([data-drawn])').forEach(function (el) { el.setAttribute('data-drawn', ''); });
+          return;
         }
 
-        // Hero parallax (only on hero pages — looks for [data-hero-bg])
-        if (!rm) {
+        // Above-the-fold critical path: mark reveal-eligible elements
+        // already in the initial viewport as revealed BEFORE the observer
+        // wires up. Stops first paint from showing translucent text.
+        var vh = window.innerHeight || 800;
+        document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          if (r.top < vh && r.bottom > 0) el.setAttribute('data-revealed', '');
+        });
+
+        // Defer all observer wiring past LCP so they don't compete on the
+        // main thread with first paint + LCP.
+        var rIC = window.requestIdleCallback || function (fn) { setTimeout(fn, 200); };
+        rIC(function init() {
+          // Reveal observer (for elements below the initial viewport)
+          if ('IntersectionObserver' in window) {
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                  e.target.setAttribute('data-revealed', '');
+                  io.unobserve(e.target);
+                }
+              });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(function (el) { io.observe(el); });
+          } else {
+            document.querySelectorAll('[data-reveal]:not([data-revealed])').forEach(function (el) { el.setAttribute('data-revealed', ''); });
+          }
+
+          // Hero parallax
           var pxEls = document.querySelectorAll('[data-hero-bg]:not([data-hero-bg-bound])');
           pxEls.forEach(function (el) {
             el.setAttribute('data-hero-bg-bound', '');
@@ -155,71 +171,59 @@ const orgJsonLd = {
             window.addEventListener('scroll', onScroll, { passive: true });
             onScroll();
           });
-        }
 
-        // Count-up
-        if (!rm && 'IntersectionObserver' in window) {
-          var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
-          var co = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (!e.isIntersecting) return;
-              var el = e.target;
-              co.unobserve(el);
-              el.setAttribute('data-counted', '');
-              var to = parseFloat(el.getAttribute('data-count-to'));
-              var prefix = el.getAttribute('data-prefix') || '';
-              var suffix = el.getAttribute('data-suffix') || '';
-              var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-              var thousands = el.getAttribute('data-thousands') === 'true';
-              var start = performance.now();
-              var dur = 1200;
-              function step(t) {
-                var p = Math.min(1, (t - start) / dur);
-                var eased = 1 - Math.pow(1 - p, 3);
-                var v = to * eased;
-                var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
-                if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                el.textContent = prefix + s + suffix;
-                if (p < 1) requestAnimationFrame(step);
-              }
-              requestAnimationFrame(step);
-            });
-          }, { threshold: 0.4 });
-          countEls.forEach(function (el) { co.observe(el); });
-        }
-
-        // SVG draw-on-scroll
-        if (!rm && 'IntersectionObserver' in window) {
-          var drawEls = document.querySelectorAll('[data-draw]:not([data-drawn])');
-          var drawObs = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (!e.isIntersecting) return;
-              var el = e.target;
-              drawObs.unobserve(el);
-              el.querySelectorAll('path').forEach(function (p) {
-                try { p.style.setProperty('--draw-length', p.getTotalLength()); } catch (err) {}
+          // Count-up
+          if ('IntersectionObserver' in window) {
+            var countEls = document.querySelectorAll('[data-count-to]:not([data-counted])');
+            var co = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                co.unobserve(el);
+                el.setAttribute('data-counted', '');
+                var to = parseFloat(el.getAttribute('data-count-to'));
+                var prefix = el.getAttribute('data-prefix') || '';
+                var suffix = el.getAttribute('data-suffix') || '';
+                var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+                var thousands = el.getAttribute('data-thousands') === 'true';
+                var start = performance.now();
+                var dur = 1200;
+                function step(t) {
+                  var p = Math.min(1, (t - start) / dur);
+                  var eased = 1 - Math.pow(1 - p, 3);
+                  var v = to * eased;
+                  var s = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString();
+                  if (thousands) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                  el.textContent = prefix + s + suffix;
+                  if (p < 1) requestAnimationFrame(step);
+                }
+                requestAnimationFrame(step);
               });
-              requestAnimationFrame(function () { el.setAttribute('data-drawn', ''); });
-            });
-          }, { threshold: 0.18 });
-          drawEls.forEach(function (el) { drawObs.observe(el); });
-        }
+            }, { threshold: 0.4 });
+            countEls.forEach(function (el) { co.observe(el); });
+          }
 
-        // Hero video lazy-load (data-hero-bg-video)
-        if (!rm) {
-          var vids = document.querySelectorAll('[data-hero-bg-video]:not([data-vid-bound])');
-          vids.forEach(function (v) {
-            v.setAttribute('data-vid-bound', '');
-            var src = v.getAttribute('data-src');
-            if (!src) return;
-            v.src = src;
-            v.load();
-            v.addEventListener('canplay', function () {
-              v.style.opacity = v.getAttribute('data-target-opacity') || '1';
-              v.play().catch(function () {});
-            }, { once: true });
-          });
-        }
+          // SVG draw-on-scroll
+          if ('IntersectionObserver' in window) {
+            var drawEls = document.querySelectorAll('[data-draw]:not([data-drawn])');
+            var drawObs = new IntersectionObserver(function (entries) {
+              entries.forEach(function (e) {
+                if (!e.isIntersecting) return;
+                var el = e.target;
+                drawObs.unobserve(el);
+                el.querySelectorAll('path').forEach(function (p) {
+                  try { p.style.setProperty('--draw-length', p.getTotalLength()); } catch (err) {}
+                });
+                requestAnimationFrame(function () { el.setAttribute('data-drawn', ''); });
+              });
+            }, { threshold: 0.18 });
+            drawEls.forEach(function (el) { drawObs.observe(el); });
+          }
+          // Note: hero video lazy-load lives in FullBleedHero.astro — it
+          // gates on min-width: 768px so mobile never fetches the 3.5 MB
+          // MP4. The duplicate handler that used to live here was redundant
+          // and bypassed the mobile gate.
+        }, { timeout: 800 });
       })();
     </script>
   </body>

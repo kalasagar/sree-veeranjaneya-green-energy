@@ -144,7 +144,14 @@ const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
     // Banner stays as the poster underneath. Once the video is actually
     // playing, fade it in and crossfade the banner out so they don't both
     // show. On error / autoplay-blocked / reduced-motion, banner stays.
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    //
+    // Mobile gate: below 768 px we skip the video entirely. Saves ~3.5 MB
+    // of fetch on phones (the single biggest LCP cost on slow networks).
+    // The <video> tag still renders so there's no layout shift, but it
+    // never gets src and never fetches.
+    var allowVideo = matchMedia('(min-width: 768px)').matches
+      && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (allowVideo) {
       var vids = document.querySelectorAll('[data-hero-bg-video]:not([data-armed])');
       if (vids.length && 'IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {

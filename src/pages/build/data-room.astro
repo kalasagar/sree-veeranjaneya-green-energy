@@ -1,0 +1,123 @@
+---
+/**
+ * One-page data-room summary for lenders. Designed to print to a single
+ * A4 PDF via the browser's Save as PDF (no toolchain).
+ *
+ * Everything here is drawn from src/lib/site.ts. No private numbers
+ * (per-promoter rupee equity, sanction account, IRR/DSCR, etc.) — those
+ * stay in the DPR sent on email request.
+ */
+import Base from '../../layouts/Base.astro';
+import { link } from '../../lib/links';
+import { SITE } from '../../lib/site';
+
+const today = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date());
+---
+<Base
+  title="Data room (one-pager)"
+  description="Single-page lender summary for SVGE. Print to PDF via your browser."
+>
+  <article class="container-narrow py-16 print:py-0">
+    <!-- Header -->
+    <header class="pb-6 border-b" style="border-color: var(--rule-color);">
+      <p class="eyebrow" style="color: var(--color-saffron-text);">Data room · one-pager</p>
+      <h1 class="display mt-3" style="font-size: clamp(1.875rem, 3vw, 2.5rem); max-width: 22ch;">{SITE.legalName}</h1>
+      <p class="meta mt-3">{SITE.short} · CIN {SITE.cin} · Generated {today}</p>
+      <p class="meta">Site: <a href={SITE.url}>{SITE.url}</a> · Press contact: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    </header>
+
+    <!-- Snapshot -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Snapshot</h2>
+      <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="meta">Capacity</dt><dd class="font-semibold">{SITE.capacity.cbgTpd} TPD CBG, {SITE.capacity.rawGasNm3PerDay.toLocaleString('en-IN')} Nm³/day raw biogas</dd></div>
+        <div><dt class="meta">Standard</dt><dd class="font-semibold">{SITE.capacity.standard} (≥{SITE.capacity.methaneMinPct}% CH₄)</dd></div>
+        <div><dt class="meta">Operating profile</dt><dd class="font-semibold">{SITE.capacity.workingHoursDay} h × {SITE.capacity.workingDaysYear} d / year</dd></div>
+        <div><dt class="meta">CPCB category</dt><dd class="font-semibold">{SITE.clearances.category} (lowest pollution tier)</dd></div>
+        <div><dt class="meta">Site</dt><dd class="font-semibold">{SITE.plant.village}, {SITE.plant.mandal}, {SITE.plant.district}, {SITE.plant.state} {SITE.plant.pin}</dd></div>
+        <div><dt class="meta">Land</dt><dd class="font-semibold">{SITE.plant.landAcres} acres, MD-owned</dd></div>
+      </dl>
+    </section>
+
+    <!-- Offtake -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Offtake (Indian Oil Corporation, SATAT)</h2>
+      <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="meta">LoI reference</dt><dd class="font-semibold numeral">{SITE.loi.reference}</dd></div>
+        <div><dt class="meta">LoI date</dt><dd class="font-semibold">{new Date(SITE.loi.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</dd></div>
+        <div><dt class="meta">Commissioning deadline</dt><dd class="font-semibold">{new Date(SITE.loi.commissioningDeadline).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })} (LoI cl. 2)</dd></div>
+        <div><dt class="meta">Commercial Agreement</dt><dd class="font-semibold">{SITE.loi.commercialAgreementYears} years validity</dd></div>
+        <div><dt class="meta">Price floor</dt><dd class="font-semibold numeral">₹{SITE.loi.priceFloorRsKg}/kg + taxes through {new Date(SITE.loi.priceFloorThrough).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</dd></div>
+        <div><dt class="meta">CNG linkage thereafter</dt><dd class="font-semibold numeral">{SITE.loi.iocCnglinkagePct}%</dd></div>
+      </dl>
+    </section>
+
+    <!-- Capital -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Capital structure</h2>
+      <dl class="grid sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="meta">Total project cost</dt><dd class="font-semibold numeral">~₹{SITE.financing.totalCr} crore</dd></div>
+        <div><dt class="meta">Structure</dt><dd class="font-semibold">{SITE.financing.structure}</dd></div>
+        <div><dt class="meta">Term loan</dt><dd class="font-semibold numeral">{SITE.financing.termYears}-year, public-sector lender</dd></div>
+        <div><dt class="meta">Confirmed incentives</dt><dd class="font-semibold numeral">₹{SITE.financing.incentivesCr} crore</dd></div>
+        <div class="sm:col-span-2"><dt class="meta">Incentive composition</dt><dd>{SITE.financing.incentivesDetail}</dd></div>
+        <div><dt class="meta">Tax holiday</dt><dd class="font-semibold">{SITE.financing.taxHolidayYears}-year ({SITE.financing.taxHolidayBasis})</dd></div>
+      </dl>
+    </section>
+
+    <!-- Clearances -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Statutory clearances</h2>
+      <p class="text-sm mb-3">
+        <strong>Obtained ({SITE.clearances.obtained.length}):</strong> {SITE.clearances.obtained.map(o => o.item).join('; ')}.
+      </p>
+      <p class="text-sm mb-3">
+        <strong>Applied ({SITE.clearances.applied.length}):</strong> {SITE.clearances.applied.map(o => o.item).join('; ')}.
+      </p>
+      <p class="text-sm">
+        <strong>After-COD ({SITE.clearances.afterCOD.length}):</strong> {SITE.clearances.afterCOD.map(o => o.item).join('; ')}.
+      </p>
+      <p class="meta mt-3">{SITE.clearances.categoryBasis}. Environmental Clearance not required for energy-crop CBG plants under EIA Notification 2006.</p>
+    </section>
+
+    <!-- Promoters -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Directors</h2>
+      {SITE.promoters.map(p => (
+        <div class="mb-3 text-sm">
+          <p><strong>{p.name}</strong>, {p.role} · DIN {p.din} · holds {p.share}</p>
+        </div>
+      ))}
+      <p class="meta">Two-director Private Limited (converted from One Person Company on 25.10.2025).</p>
+    </section>
+
+    <!-- Team -->
+    <section class="mt-8">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Team and supply belt</h2>
+      <dl class="grid sm:grid-cols-3 gap-x-8 gap-y-3 text-sm">
+        <div><dt class="meta">Plant payroll</dt><dd class="font-semibold numeral">{SITE.team.plantHeadcount} roles</dd></div>
+        <div><dt class="meta">Total direct + indirect jobs</dt><dd class="font-semibold numeral">~{SITE.team.totalJobs}</dd></div>
+        <div><dt class="meta">Catchment radius</dt><dd class="font-semibold numeral">{SITE.team.catchmentRadiusKm} km</dd></div>
+      </dl>
+      <p class="meta mt-3">Feedstock: {SITE.feedstock.join('; ')}. Sourcing under 5-year contract farming + direct supply slips within the 40-km catchment.</p>
+    </section>
+
+    <!-- Identifiers -->
+    <footer class="mt-10 pt-6 border-t" style="border-color: var(--rule-color);">
+      <h2 class="eyebrow mb-3" style="color: var(--color-saffron-text);">Identifiers</h2>
+      <dl class="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-2 numeral text-xs">
+        <div><dt class="meta">CIN</dt><dd>{SITE.cin}</dd></div>
+        <div><dt class="meta">GSTIN</dt><dd>{SITE.gst}</dd></div>
+        <div><dt class="meta">UDYAM</dt><dd>{SITE.udyam}</dd></div>
+        <div><dt class="meta">PAN</dt><dd>{SITE.pan}</dd></div>
+      </dl>
+      <p class="meta mt-4">
+        For the full Detailed Project Report (cost sheet, DSCR, IRR, working-capital plan, equipment vendor quotations), email <a href={`mailto:${SITE.email}?subject=DPR%20request`}>{SITE.email}</a> with subject <em>DPR request</em>.
+      </p>
+      <p class="meta mt-2 print:hidden">
+        <a href={link('/build/')}>← Back to /build</a>
+        &nbsp;·&nbsp; Print with <kbd>⌘P</kbd> → Save as PDF
+      </p>
+    </footer>
+  </article>
+</Base>

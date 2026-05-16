@@ -264,8 +264,12 @@
   .btn-primary:hover { background: var(--color-saffron-text); color: var(--color-paper); }
   .btn-ghost { background: transparent; color: var(--color-ink); border: 1px solid var(--color-ink); }
   .btn-ghost:hover { background: var(--color-ink); color: var(--color-paper); }
-  .btn-on-dark { background: var(--color-saffron); color: var(--color-paper); }
-  .btn-on-dark:hover { background: var(--color-saffron-light); }
+  .btn-on-dark {
+    background: var(--color-saffron-text);   /* AA-safe with paper text */
+    color: var(--color-paper);
+    font-weight: 600;
+  }
+  .btn-on-dark:hover { background: var(--color-saffron); }
 
   /* Section wrapper. Tighter on mobile (no wasted vertical), generous but
      not airy on desktop. */

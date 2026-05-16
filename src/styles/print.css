@@ -1,0 +1,139 @@
+/* =========================================================
+   Print stylesheet
+   Journalists print /press/ and /project/. Lenders print /project/
+   to attach to investment memos. Today the site prints with broken
+   layout, dark backgrounds, and hidden navigation. This sheet makes
+   it readable on A4 with ink-economy.
+   ========================================================= */
+@media print {
+  :root {
+    /* Override brand palette toward print-friendly ink. */
+    --color-paper: #ffffff;
+    --color-paper-2: #ffffff;
+    --color-paper-3: #ffffff;
+    --color-forest: #1B5E20;
+    --color-forest-dark: #1B5E20;
+    --color-saffron: #B34200;
+    --color-saffron-text: #B34200;
+    --color-ink: #000000;
+    --color-slate: #000000;
+    --color-slate-2: #444444;
+  }
+
+  /* Avoid color-burn on inkjets; let the printer choose. */
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #111 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    -webkit-print-color-adjust: economy;
+    print-color-adjust: economy;
+  }
+
+  body {
+    padding: 0 !important;
+    font: 11pt/1.45 Georgia, 'Newsreader', serif;
+    color: #111;
+  }
+
+  /* Hide all chrome */
+  #svge-status,
+  #svge-header,
+  #svge-drawer,
+  #svge-drawer-backdrop,
+  footer,
+  .svge-hero video,
+  [data-hero-bg-video],
+  .skip-to-content,
+  a[href="#main"] {
+    display: none !important;
+  }
+
+  /* Collapse hero to its text only */
+  section.svge-hero {
+    margin: 0 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+  section.svge-hero picture,
+  section.svge-hero img,
+  section.svge-hero .absolute,
+  section.svge-hero video {
+    display: none !important;
+  }
+  section.svge-hero .container-svge {
+    padding: 8mm 0 6mm !important;
+    color: #111 !important;
+  }
+  section.svge-hero h1,
+  section.svge-hero p {
+    color: #111 !important;
+    text-shadow: none !important;
+  }
+  section.svge-hero h1 {
+    font-size: 24pt !important;
+    line-height: 1.1 !important;
+    margin: 0 0 4mm !important;
+  }
+  section.svge-hero p {
+    font-size: 11pt !important;
+    max-width: none !important;
+  }
+  .eyebrow {
+    color: #B34200 !important;
+    font-size: 9pt;
+  }
+
+  /* Section spacing */
+  section.section { padding: 6mm 0 !important; }
+  h2 { font-size: 16pt !important; margin: 0 0 3mm !important; page-break-after: avoid; }
+  h3 { font-size: 13pt !important; page-break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+
+  /* Show every <details> open */
+  details { display: block !important; }
+  details > summary { display: block !important; font-weight: 600; margin-bottom: 2mm; cursor: default; }
+  details > summary::-webkit-details-marker { display: none; }
+  details[open] > summary { margin-bottom: 2mm; }
+
+  /* Make tables print well */
+  table { width: 100% !important; border-collapse: collapse !important; page-break-inside: avoid; }
+  th, td { border: 1px solid #999 !important; padding: 2mm 3mm !important; }
+
+  /* Links: show URLs in parentheses for context */
+  a {
+    color: #1B5E20 !important;
+    text-decoration: underline !important;
+  }
+  a[href^="http"]::after,
+  a[href^="mailto:"]::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    color: #555;
+  }
+  a[href^="#"]::after,
+  a[href^="/sree-veeranjaneya-green-energy/"]::after {
+    content: '';
+  }
+
+  /* Page breaks */
+  .page-break { page-break-before: always; }
+  img, figure { page-break-inside: avoid; max-width: 100% !important; height: auto !important; }
+
+  /* Reveal everything (defeat the [data-reveal] opacity:0 starting state) */
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  [data-count-to] { opacity: 1 !important; }
+
+  /* Grid collapse — single column on print */
+  .grid-12, .grid { display: block !important; }
+  .grid-12 > *, .grid > * { width: 100% !important; margin: 0 0 4mm !important; }
+
+  @page {
+    margin: 14mm 12mm 16mm;
+    @bottom-center {
+      content: 'SVGE — Sree Veeranjaneya Green Energy Pvt Ltd · Pre-construction · ' counter(page);
+      font: 8pt monospace;
+      color: #555;
+    }
+  }
+}
