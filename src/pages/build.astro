@@ -17,10 +17,8 @@ const chips = [
   { id: 'status', label: 'Status' },
   { id: 'capital', label: 'Capital' },
   { id: 'clearances', label: 'Clearances' },
-  { id: 'radius', label: 'Radius' },
   { id: 'site', label: 'Site' },
-  { id: 'impact', label: 'Impact' },
-  { id: 'team', label: 'Team' },
+  { id: 'timeline', label: 'Timeline' },
   { id: 'dataroom', label: 'Data room' },
 ];
 ---
@@ -75,7 +73,7 @@ const chips = [
   </Section>
 
   <!-- Clearances -->
-  <Section bg="paper-2">
+  <Section id="clearances" eyebrow="Clearances" title="Statutory clearances obtained and sequenced." bg="paper-2">
     <ClearanceMatrix />
   </Section>
 
@@ -101,7 +99,7 @@ const chips = [
   </Section>
 
   <!-- Timeline -->
-  <Section eyebrow="Timeline" title="Where we are on the rail.">
+  <Section id="timeline" eyebrow="Timeline" title="Where we are on the rail.">
     <div class="max-w-3xl">
       <TimelineRail />
     </div>
