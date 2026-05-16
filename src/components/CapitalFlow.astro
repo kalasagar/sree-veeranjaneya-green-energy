@@ -1,174 +1,96 @@
 ---
 /**
- * Capital flow — hand-rolled SVG Sankey: sources (promoter / term loan /
- * incentives) → build buckets (civil / digesters / upgrade / utilities /
- * working). Indicative allocation derived from the DPR cost sheet.
+ * Capital flow — qualitative structure of the capital stack. Specific
+ * rupee figures (promoter equity, term loan, per-scheme incentive sizing)
+ * are not published on the public site; they sit in the lender data room.
  *
- * Plus the ₹6.7 Cr incentive sub-split (MNRE CFA / AGRL / FOM MDA) and a
- * note about the 5-yr income-tax holiday.
+ * Shows: three sources (promoter + term loan + central incentives) and the
+ * three scheme names funding the incentive block (MNRE CFA, AGRL, FOM MDA).
  *
  * Used on /build #capital.
  */
 import { SITE } from '../lib/site';
 
-const total = SITE.financing.totalCr;
-const incentives = SITE.financing.incentivesCr;
-const promoter = +(total * 0.32).toFixed(1);
-const termLoan = +(total - incentives - promoter).toFixed(1);
-
 const sources = [
-  { id: 'promoter', label: 'Promoter equity', cr: promoter, color: 'var(--color-forest)' },
-  { id: 'loan',     label: '10-yr term loan',  cr: termLoan, color: '#2C5282' },
-  { id: 'incent',   label: 'Central incentives', cr: incentives, color: 'var(--color-saffron)' },
+  {
+    id: 'promoter',
+    label: 'Promoter equity',
+    headline: 'Family capital',
+    note: 'Promoter-led. No outside investor on the cap table, no quarterly exit pressure, no clock other than the construction one.',
+  },
+  {
+    id: 'loan',
+    label: 'Term loan',
+    headline: '10-year tenor',
+    note: 'Public-sector term loan with a 10-year amortisation. The lender is named in the data room.',
+  },
+  {
+    id: 'incent',
+    label: 'Central incentives',
+    headline: 'Confirmed, not applied-for',
+    note: 'Three central-government incentives, all confirmed against the project. Three schemes are named below.',
+  },
 ];
 
-const buckets = [
-  { id: 'digester',  label: 'Digesters + ancillaries',       cr: 11.0 },
-  { id: 'upgrade',   label: 'VPSA + compression + dispatch', cr: 8.0 },
-  { id: 'civil',     label: 'Civil works & ground prep',     cr: 6.5 },
-  { id: 'utilities', label: 'Utilities + solar + SCADA',     cr: 4.5 },
-  { id: 'working',   label: 'Working cap + contingency',     cr: total - 11 - 8 - 6.5 - 4.5 },
+const incentSchemes = [
+  {
+    label: 'MNRE CFA',
+    issuer: 'Ministry of New & Renewable Energy',
+    note: 'Capital Financial Assistance under the Phase-I National Bioenergy Programme.',
+  },
+  {
+    label: 'AGRL Ministry',
+    issuer: 'Agriculture & Rural support',
+    note: 'Central-government rural support component, sequenced against the build clock.',
+  },
+  {
+    label: 'FOM MDA',
+    issuer: 'Ministry of Chemicals & Fertilizers',
+    note: 'Market Development Assistance, applied per tonne of Fermented Organic Manure dispatched after commissioning.',
+  },
 ];
-
-const incentSplit = [
-  { id: 'cfa',  label: 'MNRE CFA',           cr: 2.8, note: 'Capital Financial Assistance under the Phase-I National Bioenergy Programme.' },
-  { id: 'agrl', label: 'AGRL Ministry',       cr: 2.0, note: 'Agri and Rural support.' },
-  { id: 'fom',  label: 'FOM MDA',             cr: 1.9, note: 'Market Development Assistance from the Ministry of Chemicals & Fertilizers.' },
-];
-
-const W = 880;
-const H = 380;
-const padX = 18;
-const padY = 28;
-const colW = 230;
-const nodeW = 14;
-const gap = 8;
-
-const sourceTotal = sources.reduce((s, x) => s + x.cr, 0);
-const bucketTotal = buckets.reduce((s, x) => s + x.cr, 0);
-
-let sy = padY;
-const sBlocks = sources.map(s => {
-  const h = (s.cr / sourceTotal) * (H - 2 * padY - (sources.length - 1) * gap);
-  const b = { ...s, y: sy, h };
-  sy += h + gap;
-  return b;
-});
-
-let by = padY;
-const bBlocks = buckets.map(b => {
-  const h = (b.cr / bucketTotal) * (H - 2 * padY - (buckets.length - 1) * gap);
-  const blk = { ...b, y: by, h };
-  by += h + gap;
-  return blk;
-});
-
-function curve(x1: number, y1: number, x2: number, y2: number, h: number) {
-  const cx = (x1 + x2) / 2;
-  return `M${x1},${y1} C${cx},${y1} ${cx},${y2} ${x2},${y2} L${x2},${y2 + h} C${cx},${y2 + h} ${cx},${y1 + h} ${x1},${y1 + h} Z`;
-}
 ---
 <section class="svge-card p-6 sm:p-8" data-reveal id="capital-flow">
   <header class="pb-5 border-b" style="border-color: var(--rule-color);">
     <p class="eyebrow" style="color: var(--color-saffron-text);">Capital flow</p>
     <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.8vw, 2.25rem); max-width: 24ch;">
-      Promoter + term loan + <span class="numeral">₹{incentives}</span> Cr incentives = <span class="numeral">~₹{total}</span> Cr build.
+      Three sources, one build. No outside investor on the cap table.
     </h3>
     <p class="mt-3 max-w-2xl" style="color: var(--color-slate);">
-      Indicative allocation derived from the DPR cost sheet. Headline ratios are public; per-line rupees stay with qualified lenders.
+      The capital stack is promoter equity, a public-sector term loan, and three confirmed central-government incentives. Rupee figures and the lender's name reconcile in the lender data room; everything below is the structure, not the line items.
     </p>
   </header>
 
-  <!-- Mobile fallback: two ordered lists side-by-side (sources → buckets).
-       Below the md breakpoint the Sankey itself is hidden — too small to read,
-       too wide to scroll comfortably on a phone. -->
-  <div class="mt-6 md:hidden grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
-    <div>
-      <p class="eyebrow mb-3" style="color: var(--color-slate);">Sources</p>
-      <ul class="space-y-3" role="list">
-        {sources.map(s => (
-          <li class="border-l-2 pl-3" style={`border-color: ${s.color};`}>
-            <p class="font-semibold" style={`color: ${s.color};`}>{s.label}</p>
-            <p class="meta numeral mt-0.5">₹{s.cr} Cr · {Math.round(s.cr / total * 100)}%</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div>
-      <p class="eyebrow mb-3" style="color: var(--color-slate);">Buckets</p>
-      <ul class="space-y-3" role="list">
-        {buckets.map(b => (
-          <li class="border-l-2 pl-3" style="border-color: var(--color-ink);">
-            <p class="font-semibold" style="color: var(--color-ink);">{b.label}</p>
-            <p class="meta numeral mt-0.5">₹{b.cr.toFixed(2)} Cr</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
+  <!-- Three funding sources, hairline grid -->
+  <ol class="mt-7 grid sm:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);" role="list">
+    {sources.map((s, i) => (
+      <li class="flex flex-col p-5 sm:p-6" style="background: var(--color-paper);">
+        <div class="flex items-baseline gap-3">
+          <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--color-saffron-text);">0{i + 1}</span>
+          <span class="flex-1 h-px" style="background: var(--rule-color);" aria-hidden="true"></span>
+        </div>
+        <p class="eyebrow mt-3" style="color: var(--color-ink);">{s.label}</p>
+        <p class="mt-3" style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.25rem, 2vw, 1.5rem); letter-spacing: -0.015em; line-height: 1.1; color: var(--color-ink);">{s.headline}</p>
+        <p class="mt-3 text-sm leading-relaxed flex-1" style="color: var(--color-slate);">{s.note}</p>
+      </li>
+    ))}
+  </ol>
 
-  <!-- Sankey (desktop / md+) -->
-  <div class="mt-7 overflow-x-auto svge-sankey hidden md:block">
-    <svg viewBox={`0 0 ${W} ${H}`} class="w-full min-w-[760px]" role="img" aria-label="Capital flow Sankey diagram showing sources funding plant build buckets">
-      <!-- Streams -->
-      {sBlocks.map(s => {
-        const elements: any[] = [];
-        let cursorS = s.y;
-        bBlocks.forEach(b => {
-          // Proportion of this source going to this bucket = bucket share of total
-          const portion = b.cr / bucketTotal;
-          const streamH = s.h * portion;
-          // Target cursor on bucket side = bucket y + offset proportional to source share
-          const sourceIdx = sBlocks.indexOf(s);
-          const sourceShareBefore = sBlocks.slice(0, sourceIdx).reduce((acc, x) => acc + x.cr / sourceTotal, 0);
-          const tStart = b.y + b.h * sourceShareBefore;
-          const tStreamH = b.h * (s.cr / sourceTotal);
-          elements.push(
-            <path
-              d={curve(padX + nodeW, cursorS, W - padX - nodeW, tStart, Math.min(streamH, tStreamH))}
-              style={`fill:${s.color}; fill-opacity: 0.35;`}
-            />
-          );
-          cursorS += streamH;
-        });
-        return elements;
-      })}
-
-      <!-- Source nodes -->
-      {sBlocks.map(s => (
-        <g>
-          <rect x={padX} y={s.y} width={nodeW} height={s.h} style={`fill:${s.color};`} />
-          <text x={padX + nodeW + 8} y={s.y + 14} style={`font-family: var(--font-mono); font-size: 12px; font-weight: 600; fill: ${s.color};`}>{s.label}</text>
-          <text x={padX + nodeW + 8} y={s.y + 30} style="font-family: var(--font-mono); font-size: 11px; fill: var(--color-slate);">₹{s.cr} Cr · {Math.round(s.cr / total * 100)}%</text>
-        </g>
-      ))}
-
-      <!-- Bucket nodes -->
-      {bBlocks.map(b => (
-        <g>
-          <rect x={W - padX - nodeW} y={b.y} width={nodeW} height={b.h} style="fill: var(--color-ink);" />
-          <text x={W - padX - nodeW - 8} y={b.y + 14} text-anchor="end" style="font-family: var(--font-mono); font-size: 12px; font-weight: 600; fill: var(--color-ink);">{b.label}</text>
-          <text x={W - padX - nodeW - 8} y={b.y + 30} text-anchor="end" style="font-family: var(--font-mono); font-size: 11px; fill: var(--color-slate);">₹{b.cr.toFixed(2)} Cr</text>
-        </g>
-      ))}
-    </svg>
-  </div>
-
-  <!-- Incentive sub-split -->
+  <!-- Central incentive schemes (named, no rupees) -->
   <div class="mt-10 pt-6 border-t" style="border-color: var(--rule-color);">
-    <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">₹{incentives} Cr incentive split</p>
+    <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">Central incentive schemes · all confirmed</p>
     <div class="grid sm:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);">
-      {incentSplit.map(i => (
-        <article class="p-5 flex flex-col" style="background: var(--color-paper);">
-          <p class="eyebrow" style="color: var(--color-ink);">{i.label}</p>
-          <p class="mt-3 numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 2rem; letter-spacing: -0.02em;">₹{i.cr} Cr</p>
-          <p class="mt-3 meta leading-relaxed flex-1" style="color: var(--color-slate-2);">{i.note}</p>
+      {incentSchemes.map(s => (
+        <article class="p-5 sm:p-6 flex flex-col" style="background: var(--color-paper);">
+          <p class="eyebrow" style="color: var(--color-ink);">{s.label}</p>
+          <p class="mt-3 text-sm" style="color: var(--color-slate-2); font-family: var(--font-mono); letter-spacing: 0.06em;">{s.issuer}</p>
+          <p class="mt-3 meta leading-relaxed flex-1" style="color: var(--color-slate-2);">{s.note}</p>
         </article>
       ))}
     </div>
   </div>
 
   <p class="mt-6 meta" style="color: var(--color-slate-2);">
-    Plus a <span class="numeral">{SITE.financing.taxHolidayYears}</span>-year income-tax holiday for CBG plants under the Income Tax Act. Numbers above are public disclosure ranges; the full breakdown reconciles in the <a href="#dataroom">data room</a>.
+    Plus a <span class="numeral">{SITE.financing.taxHolidayYears}</span>-year income-tax holiday for CBG plants under the Income Tax Act. Full capital stack — rupee figures per source, per-bucket capex deployment, lender identity, incentive sizing — sits with qualified lenders in the <a href="#dataroom">data room</a>.
   </p>
 </section>

@@ -70,7 +70,7 @@ export const SITE = {
     { value: '52', unit: 'm³/day', k: 'Liquid manure' },
     { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, sold as a soil amendment under the MDA scheme.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
-    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, public-sector term loan, ₹6.7 Cr confirmed central incentives.' },
+    { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, with a public-sector term loan and three confirmed central incentives. Per-source rupees in the data room.' },
     { value: 'WHITE', k: 'CPCB category', framing: 'The lowest pollution tier. Energy-crop CBG plants are classified WHITE.' },
   ] satisfies Stat[],
 
@@ -110,7 +110,7 @@ export const SITE = {
     {
       title: 'No fund clock. No exit pressure.',
       body:
-        "Construction is promoter-led. The build is backed by a 10-year public-sector term loan and ₹6.7 crore of confirmed central-government incentives (MNRE CFA, AGRL Ministry support, FOM Market Development Assistance). No investor is asking us to cut corners on a quarter. We finish what we start.",
+        "Construction is promoter-led. The build is backed by a 10-year public-sector term loan and three confirmed central-government incentives (MNRE CFA, AGRL Ministry support, FOM Market Development Assistance). No investor is asking us to cut corners on a quarter. We finish what we start.",
     },
     {
       title: 'The feedstock is at the doorstep.',
@@ -470,7 +470,7 @@ export const SITE = {
     { term: 'FOM', long: 'Fermented Organic Manure', def: 'The solid digestate fraction after slurry separation. Stable, fibrous, sold back to farmers as a soil amendment under the Ministry of C&F MDA scheme.' },
     { term: 'SATAT', long: 'Sustainable Alternative Towards Affordable Transportation', def: 'MoPNG scheme launched 2018 to procure CBG via Letters of Intent issued by OMCs (IOCL/BPCL/HPCL). Targets 5,000 plants and 15 MMTPA CBG nationally.' },
     { term: 'LoI', long: 'Letter of Intent', def: "Indian Oil's commitment to procure CBG at a published floor price for a defined Commercial Agreement validity. SVGE's LoI was issued 04.10.2024, ref IndianOil/SATAT/01/3931." },
-    { term: 'CFA', long: 'Capital Financial Assistance', def: 'A grant component under MNRE National Bioenergy Programme Phase-I. One of three central incentives contributing to SVGE\'s ₹6.7 Cr block.' },
+    { term: 'CFA', long: 'Capital Financial Assistance', def: 'A grant component under MNRE National Bioenergy Programme Phase-I. One of three confirmed central incentives in the SVGE capital stack.' },
     { term: 'MDA', long: 'Market Development Assistance', def: 'Ministry of Chemicals & Fertilizers subsidy for selling FOM (fermented organic manure). Applies per-tonne to dispatches off the plant.' },
     { term: 'PESO', long: 'Petroleum and Explosives Safety Organisation', def: 'Indian regulator under MoCI. Approves CBG cascade design, dispenser safety, and on-site storage under Gas Cylinder Rules 2016. SVGE has applied; approval is sequenced for pre-commissioning.' },
     { term: 'WHITE category', long: 'CPCB pollution category', def: 'The lowest-impact CPCB tier. Energy-crop CBG plants are classified WHITE; only basic Consent to Establish and Consent to Operate are required.' },

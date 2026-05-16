@@ -22,7 +22,7 @@ const chips = [
   { id: 'dataroom', label: 'Data room' },
 ];
 ---
-<Base title="The Build" description="₹33 Cr. ₹6.7 Cr in incentives. Seven clearances. 120 jobs. The whole build, in numbers." heroOver={true}>
+<Base title="The Build" description="The whole build, in structure: promoter-led financing, three confirmed central incentives, seven clearances, ~120 jobs in the belt." heroOver={true}>
   <FullBleedHero
     banner="build_concrete_pour"
     alt="A crew guiding wet concrete down a chute at golden hour on a rural Andhra plant site."
@@ -36,7 +36,7 @@ const chips = [
       <span class="block">A 2-year clock.</span>
     </h1>
     <p class="mt-6 text-lg max-w-2xl text-[color:var(--color-paper)]/90 leading-relaxed">
-      About ₹33 crore of total project cost, with ₹6.7 crore in confirmed central incentives (MNRE CFA, AGRL, FOM MDA) and a 10-year public-sector term loan. Four statutory clearances obtained, three sequenced against the commissioning clock. The Indian Oil Letter of Intent runs 15 years, with a procurement floor of ₹46/kg + taxes through 31 March 2029.
+      Promoter-led financing, three confirmed central-government incentives (MNRE CFA, AGRL, FOM MDA), and a 10-year public-sector term loan. Four statutory clearances obtained, three sequenced against the commissioning clock. The Indian Oil Letter of Intent runs 15 years, with a procurement floor of ₹46/kg + taxes through 31 March 2029.
     </p>
   </FullBleedHero>
 
@@ -81,14 +81,35 @@ const chips = [
   <Section id="site" eyebrow="Site plan" title="On the ground." bg="paper-2">
     <div class="grid lg:grid-cols-[2fr_1fr] gap-6 items-start">
       <PlantMap />
-      <aside class="prose-svge">
-        <h3 style="font-size: 1.25rem;">Site &amp; connectivity</h3>
-        <ul class="text-sm">
-          <li><strong>Village:</strong> {SITE.plant.village}</li>
-          <li><strong>Mandal:</strong> {SITE.plant.mandal}</li>
-          <li><strong>District:</strong> {SITE.plant.district}, {SITE.plant.state}, {SITE.plant.pin}</li>
-          <li><strong>Land:</strong> {SITE.plant.landAcres} ac, MD-owned</li>
-        </ul>
+      <aside aria-label="Site and connectivity data sheet">
+        <p class="eyebrow mb-4" style="color: var(--color-saffron-text);">Site &amp; connectivity</p>
+        <dl class="grid grid-cols-2 gap-px overflow-hidden rounded" style="background: var(--rule-color);">
+          <div class="p-4 flex flex-col gap-2" style="background: var(--color-paper);">
+            <dt class="eyebrow" style="color: var(--color-slate-2);">Village</dt>
+            <dd style="font-family: var(--font-display); font-weight: 700; font-size: 1.125rem; color: var(--color-ink); line-height: 1.2;">{SITE.plant.village}</dd>
+          </div>
+          <div class="p-4 flex flex-col gap-2" style="background: var(--color-paper);">
+            <dt class="eyebrow" style="color: var(--color-slate-2);">Mandal</dt>
+            <dd style="font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--color-ink); line-height: 1.2;">{SITE.plant.mandal}</dd>
+          </div>
+          <div class="col-span-2 p-4 flex flex-col gap-2" style="background: var(--color-paper);">
+            <dt class="eyebrow" style="color: var(--color-slate-2);">District</dt>
+            <dd style="font-family: var(--font-body); font-weight: 500; font-size: 0.9375rem; color: var(--color-ink); line-height: 1.4;">{SITE.plant.district}, {SITE.plant.state} <span style="font-family: var(--font-mono); color: var(--color-slate-2);">· {SITE.plant.pin}</span></dd>
+          </div>
+          <div class="p-4 flex flex-col gap-2" style="background: var(--color-ink); color: var(--color-paper);">
+            <dt class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Land</dt>
+            <dd>
+              <span style="font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--color-paper); letter-spacing: -0.02em;">{SITE.plant.landAcres}</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; color: var(--color-gold); text-transform: uppercase; margin-left: 4px;">ac</span>
+            </dd>
+            <p class="meta" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Owned by the MD</p>
+          </div>
+          <div class="p-4 flex flex-col gap-2" style="background: var(--color-paper);">
+            <dt class="eyebrow" style="color: var(--color-slate-2);">Coordinates</dt>
+            <dd style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-ink); line-height: 1.4;">{SITE.plant.lat.toFixed(4)}°N<br/>{SITE.plant.lng.toFixed(4)}°E</dd>
+          </div>
+        </dl>
+        <p class="meta mt-4" style="color: var(--color-slate-2);">Concentric distances from the site are shown on the radius map at <a href="/sree-veeranjaneya-green-energy/farmers/#radius" style="color: var(--color-slate);">/farmers</a>.</p>
       </aside>
     </div>
   </Section>
@@ -114,7 +135,7 @@ const chips = [
         <li>Total project cost ≈ ₹{SITE.financing.totalCr} Cr. {SITE.financing.structure}.</li>
         <li>Plant capacity {SITE.capacity.cbgTpd} TPD CBG · {SITE.capacity.rawGasNm3PerDay.toLocaleString('en-IN')} Nm³/day raw biogas · {SITE.capacity.workingHoursDay} h × {SITE.capacity.workingDaysYear} days · {SITE.capacity.standard}.</li>
         <li>IOCL LoI dated 04.10.2024 · {SITE.loi.commercialAgreementYears}-year Commercial Agreement · commissioning deadline 04.10.2026.</li>
-        <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme · ₹{SITE.financing.incentivesCr} Cr confirmed central incentives · {SITE.financing.taxHolidayYears}-year tax holiday.</li>
+        <li>CFA eligibility: MNRE Phase-I National Bioenergy Programme · three confirmed central incentives (MNRE CFA, AGRL, FOM MDA) · {SITE.financing.taxHolidayYears}-year tax holiday.</li>
         <li>UDYAM-registered MSME: {SITE.udyam}. ROC Vijayawada, Reg. No. {SITE.registrationNumber}.</li>
         <li>CPCB pollution category: WHITE. 4 clearances obtained, 3 applied, 1 after-COD.</li>
       </ul>
