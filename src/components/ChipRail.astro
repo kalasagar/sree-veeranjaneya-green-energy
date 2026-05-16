@@ -23,46 +23,49 @@ const { items } = Astro.props;
 
 <script is:inline data-astro-rerun>
   (function () {
-    var links = Array.from(document.querySelectorAll('.svge-chiprail a[data-chip-target]'));
-    if (!links.length) return;
-    var sections = links
-      .map(function (a) { return { a: a, el: document.getElementById(a.getAttribute('data-chip-target')) }; })
-      .filter(function (x) { return x.el; });
-    if (!sections.length) return;
+    // The chiprail is rendered above the sections it links to, so deferring
+    // to DOMContentLoaded is required — section elements with id="status",
+    // id="capital", etc. don't exist yet when this script first parses.
+    function wire() {
+      var links = Array.from(document.querySelectorAll('.svge-chiprail a[data-chip-target]'));
+      if (!links.length) return;
+      var sections = links
+        .map(function (a) { return { a: a, el: document.getElementById(a.getAttribute('data-chip-target')) }; })
+        .filter(function (x) { return x.el; });
+      if (!sections.length) return;
 
-    function setActive(id) {
-      links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-chip-target') === id); });
-    }
-
-    // Smooth scroll that accounts for sticky header + status + chiprail (~165px)
-    var stickyOffset = 165;
-    links.forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var id = a.getAttribute('data-chip-target');
-        var t = document.getElementById(id);
-        if (!t) return;
-        e.preventDefault();
-        var y = t.getBoundingClientRect().top + window.scrollY - stickyOffset + 8;
-        window.scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-        history.replaceState(null, '', '#' + id);
-        setActive(id);
-      });
-    });
-
-    if (!('IntersectionObserver' in window)) {
-      setActive(sections[0].a.getAttribute('data-chip-target'));
-      return;
-    }
-    // Pick the topmost section whose top has passed the sticky band.
-    function onScroll() {
-      var y = window.scrollY + stickyOffset + 20;
-      var current = sections[0];
-      for (var i = 0; i < sections.length; i++) {
-        if (sections[i].el.offsetTop <= y) current = sections[i];
+      function setActive(id) {
+        links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-chip-target') === id); });
       }
-      setActive(current.a.getAttribute('data-chip-target'));
+
+      // Smooth scroll that accounts for sticky header + status + chiprail (~165px)
+      var stickyOffset = 165;
+      links.forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var id = a.getAttribute('data-chip-target');
+          var t = document.getElementById(id);
+          if (!t) return;
+          e.preventDefault();
+          var y = t.getBoundingClientRect().top + window.scrollY - stickyOffset + 8;
+          window.scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+          history.replaceState(null, '', '#' + id);
+          setActive(id);
+        });
+      });
+
+      // Pick the topmost section whose top has passed the sticky band.
+      function onScroll() {
+        var y = window.scrollY + stickyOffset + 20;
+        var current = sections[0];
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].el.offsetTop <= y) current = sections[i];
+        }
+        setActive(current.a.getAttribute('data-chip-target'));
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wire);
+    else wire();
   })();
 </script>
