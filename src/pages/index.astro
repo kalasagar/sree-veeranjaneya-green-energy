@@ -3,22 +3,16 @@ import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
-import Kicker from '../components/Kicker.astro';
-import Countdown from '../components/Countdown.astro';
+import PromiseBlock from '../components/PromiseBlock.astro';
 import Stat from '../components/Stat.astro';
+import TrustBand from '../components/TrustBand.astro';
 import EditorialBlock from '../components/EditorialBlock.astro';
-import SATATPositioner from '../components/SATATPositioner.astro';
-import DayInTheData from '../components/DayInTheData.astro';
+import BuildInPublicReel from '../components/BuildInPublicReel.astro';
 import Stakeholders from '../components/Stakeholders.astro';
 import { SITE } from '../lib/site';
-import { getCollection } from 'astro:content';
-
-const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-).slice(0, 3);
-const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
 ---
 <Base heroOver={true}>
+  <!-- 1 · Hero -->
   <FullBleedHero
     banner="hero_paddy_dawn"
     alt="A paddy field at dawn in coastal Andhra Pradesh."
@@ -27,8 +21,6 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
     height="xl"
     priority
   >
-    {/* Breathing room above the H1, where the eyebrow + mark used to sit.
-        Encoded as padding on the heading itself so the DOM stays clean. */}
     <h1
       class="display text-[color:var(--color-paper)] space-y-2 sm:space-y-3 pt-12 sm:pt-16"
       style="font-size: clamp(2rem, 5.25vw, 4.5rem); line-height: 1;"
@@ -44,32 +36,48 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
     </div>
   </FullBleedHero>
 
-  <Kicker eyebrow="A small plant on a tight clock" deck='Four tonnes of CBG a day, sourced from a <span style="color:var(--color-saffron-text);">forty-kilometre radius</span>, on a two-year build.' maxCh={30} />
-
-  <!-- Countdown -->
-  <Section narrow>
-    <Countdown label="to the IOCL commissioning deadline" />
+  <!-- 2 · The shift (plain-English framing) -->
+  <Section>
+    <PromiseBlock
+      eyebrow="Plainly, what this is"
+      anchors={["We buy", "We make fuel", "We return value"]}
+      paragraphs={[
+        "We buy what farmers in Vizianagaram and Srikakulam would otherwise burn — paddy straw, Napier grass, cattle dung — and turn it into clean Compressed Bio-Gas for Indian Oil under a signed Letter of Intent.",
+        "The organic manure that comes out alongside is sold in the same forty-kilometre catchment we sourced from, at a fair market rate. Nothing leaves the belt; the money, the fuel, and the soil all circulate.",
+      ]}
+      image="impact_fom_soil"
+      imageAlt="A hand spreading organic manure on Andhra soil at golden hour."
+    />
   </Section>
 
-  <!-- What's at stake -->
-  <Section eyebrow="What's at stake" title="Why this matters, in three numbers." bg="paper-2" lede="A small plant in coastal Andhra sits between two large national problems: the cost of imported oil, and the cost of burning what we should have used.">
+  <!-- 3 · What's at stake (macro framing, three editorial stats) -->
+  <Section
+    eyebrow="What's at stake"
+    title="Why this matters, in three numbers."
+    bg="paper-2"
+    lede="A small plant in coastal Andhra sits between two large national problems: the cost of imported oil, and the cost of burning what we should have used."
+  >
     <div class="grid sm:grid-cols-3 gap-4">
       {SITE.stakeStats.map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
     </div>
   </Section>
 
-  <!-- A day in the data -->
-  <Section eyebrow="A day in the data" title="One operating day, in numbers.">
-    <DayInTheData />
+  <!-- 4 · Hard credentials (trust band) -->
+  <Section
+    eyebrow="Hard credentials"
+    title="Real, not vapour."
+    lede="The signals lenders, journalists, and SATAT officials usually have to dig for. Surfaced here, with dates and names."
+  >
+    <TrustBand />
   </Section>
 
-  <!-- SATAT positioner -->
-  <Section bg="paper-2">
-    <SATATPositioner />
-  </Section>
-
-  <!-- Why this plant -->
-  <Section eyebrow="Why this plant, why now" title="Three reasons this is not just another approved SATAT plant." lede="There are about 152 SATAT plants in the pipeline. Most are stuck. Here is what is different about ours.">
+  <!-- 5 · Why this plant, why now (3 narrative differentiators) -->
+  <Section
+    eyebrow="Why this plant, why now"
+    title="Three reasons this is not just another approved SATAT plant."
+    bg="paper-2"
+    lede="There are about 152 SATAT plants in the pipeline. Most are stuck. Here is what is different about ours."
+  >
     <div class="space-y-20">
       {SITE.differentiators.map((d, i) => (
         <EditorialBlock side={i % 2 === 0 ? 'left' : 'right'} numeral={`0${i + 1}`} title={d.title} image={i === 0 ? 'hero_paddy_dawn' : null} imageAlt="">
@@ -79,24 +87,13 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
     </div>
   </Section>
 
-  <!-- Build journal -->
-  {posts.length > 0 && (
-    <Section eyebrow="From the build journal" title="Monthly receipts." bg="paper-2">
-      <div class="grid sm:grid-cols-3 gap-4">
-        {posts.map(p => (
-          <a href={link(`/news/${p.id}/`)} class="svge-card p-6 no-underline">
-            <p class="meta">{fmt.format(p.data.date)}</p>
-            <h3 class="mt-3 text-xl leading-snug">{p.data.title}</h3>
-            <p class="mt-3 text-sm leading-relaxed">{p.data.summary}</p>
-          </a>
-        ))}
-      </div>
-      <p class="mt-6 text-sm"><a href={link('/press/#journal')}>The full build journal →</a></p>
-    </Section>
-  )}
+  <!-- 6 · Built in public -->
+  <Section>
+    <BuildInPublicReel />
+  </Section>
 
-  <!-- Stakeholders -->
-  <Section eyebrow="Talk to us" title="Pick the door that fits.">
+  <!-- 7 · Pick the door (Stakeholders router) -->
+  <Section eyebrow="Talk to us" title="Pick the door that fits." bg="paper-2">
     <Stakeholders />
   </Section>
 </Base>

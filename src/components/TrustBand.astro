@@ -1,0 +1,74 @@
+---
+/**
+ * Hard-credentials band for the home page. Five hairline-divided
+ * cells, each one a single load-bearing fact (numbers + dates + names).
+ * Lender / journalist / official audiences should be able to assess
+ * project credibility in one glance.
+ *
+ * Data drawn from existing SITE keys: loi, financing, clearances,
+ * partners, status. No new site.ts keys required.
+ */
+import { SITE } from '../lib/site';
+import { link } from '../lib/links';
+
+const loiDateFmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(SITE.loi.date));
+const priceFloorEnd = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(SITE.loi.priceFloorThrough));
+const commissioningDate = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(SITE.loi.commissioningDeadline));
+
+const cells = [
+  {
+    eyebrow: 'Signed offtake',
+    headline: `${SITE.loi.commercialAgreementYears} yrs`,
+    detail: `IOCL LoI · ${loiDateFmt} · ₹${SITE.loi.priceFloorRsKg}/kg floor through ${priceFloorEnd}`,
+    href: '/build/#status',
+  },
+  {
+    eyebrow: 'Central incentives',
+    headline: `₹${SITE.financing.incentivesCr} Cr`,
+    detail: 'MNRE CFA · AGRL · FOM MDA — confirmed, not applied-for.',
+    href: '/build/#capital',
+  },
+  {
+    eyebrow: 'CPCB category',
+    headline: SITE.clearances.category,
+    detail: `${SITE.clearances.obtained.length} clearances obtained · ${SITE.clearances.applied.length} sequenced against the build clock.`,
+    href: '/build/#clearances',
+  },
+  {
+    eyebrow: 'Tech partner',
+    headline: 'Raj Process',
+    detail: 'Pune-based, SATAT-approved EPC. 1,500+ installations across 31+ countries.',
+    href: '/plant/',
+  },
+  {
+    eyebrow: 'Commissioning clock',
+    headline: commissioningDate,
+    detail: 'Q3 2026 construction start. LoI clause 2 deadline.',
+    href: '/press/#journal',
+  },
+];
+---
+<section class="svge-trustband rounded overflow-hidden" data-reveal>
+  <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px" style="background: color-mix(in oklab, var(--color-paper) 12%, transparent);" role="list">
+    {cells.map(c => (
+      <li>
+        <a
+          href={link(c.href)}
+          class="block h-full p-5 sm:p-6 no-underline transition-colors duration-150 svge-trustband-cell"
+          style="background: var(--color-ink); color: var(--color-paper);"
+        >
+          <p class="eyebrow" style="color: var(--color-gold);">{c.eyebrow}</p>
+          <p class="mt-3" style="font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 2.4vw, 1.875rem); letter-spacing: -0.02em; line-height: 1.05; color: var(--color-paper);">{c.headline}</p>
+          <p class="mt-3 text-sm leading-relaxed" style="color: color-mix(in oklab, var(--color-paper) 82%, transparent);">{c.detail}</p>
+        </a>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .svge-trustband-cell:hover {
+    background: var(--color-ink-soft) !important;
+  }
+  .svge-trustband-cell:hover .eyebrow { color: var(--color-saffron) !important; }
+</style>

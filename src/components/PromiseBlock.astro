@@ -1,0 +1,55 @@
+---
+/**
+ * Plain-English editorial block. Two paragraphs + optional pull-out
+ * anchor words on the left, an editorial figure on the right.
+ *
+ * Job: tell a first-time visitor in two paragraphs and zero jargon
+ * what SVGE actually does. Sits directly under the home hero.
+ */
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
+interface Props {
+  eyebrow?: string;
+  /** 2–3 short paragraphs of plain prose. */
+  paragraphs: string[];
+  /** Optional 3 pull-out anchor words rendered in saffron caps above the prose. */
+  anchors?: string[];
+  /** Optional banner-id for the figure (matches public/banners/<id>-*). */
+  image?: string;
+  imageAlt?: string;
+}
+const { eyebrow, paragraphs, anchors, image, imageAlt = '' } = Astro.props;
+---
+<article class="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-center" data-reveal>
+  {image && (
+    <figure class="overflow-hidden rounded order-2 lg:order-1" style="aspect-ratio: 4 / 3;">
+      <picture>
+        <source type="image/avif" srcset={`${asset(`banners/${image}-640.avif`)} 640w, ${asset(`banners/${image}-1024.avif`)} 1024w, ${asset(`banners/${image}-1600.avif`)} 1600w`} sizes="(max-width: 1024px) 100vw, 600px" />
+        <source type="image/webp" srcset={`${asset(`banners/${image}-640.webp`)} 640w, ${asset(`banners/${image}-1024.webp`)} 1024w, ${asset(`banners/${image}-1600.webp`)} 1600w`} sizes="(max-width: 1024px) 100vw, 600px" />
+        <img src={asset(`banners/${image}.webp`)} alt={imageAlt} loading="lazy" decoding="async" class="w-full h-full object-cover" />
+      </picture>
+    </figure>
+  )}
+
+  <div class={image ? 'order-1 lg:order-2' : ''}>
+    {eyebrow && <p class="eyebrow mb-3" style="color: var(--color-saffron-text);">{eyebrow}</p>}
+
+    {anchors && anchors.length > 0 && (
+      <p class="mb-5 flex flex-wrap items-baseline gap-x-3 gap-y-1" style="font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-saffron-text); font-weight: 600;">
+        {anchors.map((a, i) => (
+          <>
+            {i > 0 && <span aria-hidden="true" style="color: var(--color-slate-2-soft); font-weight: 400;">/</span>}
+            <span>{a}</span>
+          </>
+        ))}
+      </p>
+    )}
+
+    <div class="prose-svge">
+      {paragraphs.map((p, i) => (
+        <p class={i === 0 ? '' : 'mt-4'} style={i === 0 ? 'font-size: 1.25rem; line-height: 1.55; color: var(--color-ink);' : 'color: var(--color-slate);'}>{p}</p>
+      ))}
+    </div>
+  </div>
+</article>

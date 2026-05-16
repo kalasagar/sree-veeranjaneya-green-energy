@@ -1,0 +1,44 @@
+---
+/**
+ * Built-in-public section: editorial promise lead-in + latest 3 journal
+ * post cards in a hairline-grid row.
+ *
+ * Reads news from the content collection at build time.
+ */
+import { SITE } from '../lib/site';
+import { link } from '../lib/links';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('news', ({ data }) => !data.draft);
+const posts = all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()).slice(0, 3);
+const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
+---
+<div class="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-12 items-start" data-reveal>
+  <!-- Editorial lead-in -->
+  <div>
+    <p class="eyebrow" style="color: var(--color-saffron-text);">Built in public</p>
+    <h3 class="mt-3 display" style="font-size: clamp(1.625rem, 2.6vw, 2rem); max-width: 18ch; line-height: 1.1;">No glossy reveal. Monthly receipts.</h3>
+    <div class="mt-4 w-10 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+    <p class="mt-5 leading-relaxed" style="color: var(--color-slate); max-width: 38ch;">{SITE.publicPromise}</p>
+    <p class="mt-6 text-sm"><a href={link('/press/#journal')}>The full build journal →</a></p>
+  </div>
+
+  <!-- Latest 3 posts in a hairline grid -->
+  {posts.length > 0 && (
+    <ol class="grid sm:grid-cols-2 lg:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);" role="list">
+      {posts.map(p => (
+        <li>
+          <a href={link(`/news/${p.id}/`)} class="block h-full p-5 no-underline" style="background: var(--color-paper);">
+            <p class="meta" style="color: var(--color-slate-2);">{fmt.format(p.data.date)}</p>
+            <h4 class="mt-3 leading-snug" style="font-family: var(--font-display); font-weight: 700; font-size: 1.0625rem; color: var(--color-ink); letter-spacing: -0.005em;">{p.data.title}</h4>
+            <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-slate);">{p.data.summary}</p>
+          </a>
+        </li>
+      ))}
+    </ol>
+  )}
+
+  {posts.length === 0 && (
+    <p class="meta" style="color: var(--color-slate-2);">First post lands the day concrete is poured.</p>
+  )}
+</div>

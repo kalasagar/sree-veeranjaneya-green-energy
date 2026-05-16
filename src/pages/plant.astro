@@ -6,6 +6,7 @@ import FullBleedHero from '../components/FullBleedHero.astro';
 import Kicker from '../components/Kicker.astro';
 import ChipRail from '../components/ChipRail.astro';
 import CBGSankey from '../components/CBGSankey.astro';
+import DayInTheData from '../components/DayInTheData.astro';
 import PlantBlueprint from '../components/PlantBlueprint.astro';
 import Accordion from '../components/Accordion.astro';
 import ClearanceMatrix from '../components/ClearanceMatrix.astro';
@@ -75,6 +76,12 @@ const chips = [
   <!-- Flow -->
   <Section id="flow" eyebrow="Mass-flow Sankey" title="From field to fill point.">
     <CBGSankey />
+  </Section>
+
+  <!-- A day in the data — scrollytelling. Belongs here on /plant rather
+       than the home page (mass-flow numbers are technical depth). -->
+  <Section eyebrow="A day in the data" title="One operating day, in numbers." bg="paper-2">
+    <DayInTheData />
   </Section>
 
   <!-- Eight steps -->
