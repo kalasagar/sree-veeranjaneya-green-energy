@@ -1,16 +1,16 @@
 ---
 /**
- * Static SVG India outline (very simplified) showing:
- *   - the Indo-Gangetic smog corridor (light saffron shading)
- *   - the paddy belt (forest-green hatching)
- *   - SVGE plant location pin (saffron flag)
+ * Static SVG India outline showing the paddy belt + Indo-Gangetic
+ * smog corridor + SVGE plant pin. Compact layout: map on the left,
+ * legend + caption on the right (stacks on mobile).
+ *
+ * Used on /farmers under the Section's own eyebrow+title — so no
+ * inner card header here, no double titling.
  *
  * Pure SVG, no JS, no external tile fetches.
  */
 import { SITE } from '../lib/site';
 
-// Lat/lng to a hand-tuned SVG coordinate system covering mainland India.
-// Origin top-left, viewBox 0 0 600 700.
 const projectLatLng = (lat: number, lng: number) => {
   const minLng = 68, maxLng = 97;
   const minLat = 6, maxLat = 37;
@@ -20,86 +20,203 @@ const projectLatLng = (lat: number, lng: number) => {
 };
 const plant = projectLatLng(SITE.plant.lat, SITE.plant.lng);
 ---
-<figure class="svge-card p-6 sm:p-8" data-reveal>
-  <header class="pb-5 mb-5 border-b" style="border-color: var(--rule-color);">
-    <p class="eyebrow" style="color: var(--color-saffron-text);">India in context</p>
-    <h3 class="mt-3 display" style="font-size: clamp(1.5rem, 2.6vw, 2rem); max-width: 28ch;">Paddy belt · smog corridor · SVGE.</h3>
-  </header>
-  <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto" role="img" aria-label="Map of India with paddy belt, smog corridor, and SVGE plant location.">
-    <defs>
-      <pattern id="paddy-hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(40)">
-        <line x1="0" y1="0" x2="0" y2="8" stroke="#1B5E20" stroke-width="1.2" opacity="0.45"/>
-      </pattern>
-    </defs>
+<figure class="svge-indiamap" data-reveal>
+  <!-- Map -->
+  <div class="svge-indiamap-figure">
+    <svg viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of India with paddy belt, Indo-Gangetic smog corridor, and the SVGE plant pin in coastal Andhra Pradesh.">
+      <defs>
+        <pattern id="paddy-hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(40)">
+          <line x1="0" y1="0" x2="0" y2="8" stroke="#1B5E20" stroke-width="1.2" opacity="0.45"/>
+        </pattern>
+      </defs>
 
-    <!-- Simplified India outline (hand-traced approximation, mainland only) -->
-    <path d="
-      M 230 60
-      C 250 30, 320 30, 360 70
-      L 420 100
-      C 460 120, 490 160, 500 200
-      L 520 260
-      C 540 300, 540 340, 520 380
-      L 480 440
-      C 460 500, 420 560, 360 620
-      L 320 660
-      L 280 680
-      L 240 660
-      L 200 600
-      L 170 520
-      L 140 440
-      L 110 360
-      L 90 280
-      L 100 200
-      L 130 140
-      L 180 90
-      Z
-    " fill="#FAFAF7" stroke="#37474F" stroke-width="2.2" opacity="0.9"/>
+      <!-- Simplified India outline -->
+      <path d="
+        M 230 60
+        C 250 30, 320 30, 360 70
+        L 420 100
+        C 460 120, 490 160, 500 200
+        L 520 260
+        C 540 300, 540 340, 520 380
+        L 480 440
+        C 460 500, 420 560, 360 620
+        L 320 660
+        L 280 680
+        L 240 660
+        L 200 600
+        L 170 520
+        L 140 440
+        L 110 360
+        L 90 280
+        L 100 200
+        L 130 140
+        L 180 90
+        Z
+      " fill="#FAFAF7" stroke="#37474F" stroke-width="2.2" opacity="0.9"/>
 
-    <!-- Indo-Gangetic smog corridor (Punjab to West Bengal arc) -->
-    <path d="
-      M 160 180
-      Q 250 140, 360 150
-      Q 440 170, 470 220
-      L 460 250
-      Q 380 200, 290 200
-      Q 220 210, 175 230
-      Z
-    " fill="#E65100" opacity="0.18"/>
+      <!-- Indo-Gangetic smog corridor (Punjab to West Bengal arc) -->
+      <path d="
+        M 160 180
+        Q 250 140, 360 150
+        Q 440 170, 470 220
+        L 460 250
+        Q 380 200, 290 200
+        Q 220 210, 175 230
+        Z
+      " fill="#E65100" opacity="0.18"/>
 
-    <!-- Paddy belt (very rough — east India + AP) -->
-    <path d="
-      M 320 180
-      Q 430 200, 460 270
-      Q 470 360, 440 430
-      Q 410 510, 360 560
-      L 320 540
-      Q 340 460, 360 380
-      Q 340 280, 320 180
-      Z
-    " fill="url(#paddy-hatch)" opacity="0.7"/>
+      <!-- Paddy belt (east India + AP) -->
+      <path d="
+        M 320 180
+        Q 430 200, 460 270
+        Q 470 360, 440 430
+        Q 410 510, 360 560
+        L 320 540
+        Q 340 460, 360 380
+        Q 340 280, 320 180
+        Z
+      " fill="url(#paddy-hatch)" opacity="0.7"/>
 
-    <!-- Plant location pin -->
-    <g transform={`translate(${plant.x}, ${plant.y})`}>
-      <circle r="9" fill="#E65100" stroke="#FAFAF7" stroke-width="2"/>
-      <line x1="0" y1="-8" x2="0" y2="-26" stroke="#E65100" stroke-width="2.5"/>
-      <polygon points="0,-26 14,-22 0,-18" fill="#E65100"/>
-    </g>
-    <text x={plant.x + 18} y={plant.y + 4} font-family="ui-monospace, monospace" font-size="14" fill="#37474F" font-weight="600">SVGE · Thatipadu</text>
+      <!-- Plant location pin -->
+      <g transform={`translate(${plant.x}, ${plant.y})`}>
+        <circle r="9" fill="#E65100" stroke="#FAFAF7" stroke-width="2"/>
+        <line x1="0" y1="-8" x2="0" y2="-26" stroke="#E65100" stroke-width="2.5"/>
+        <polygon points="0,-26 14,-22 0,-18" fill="#E65100"/>
+      </g>
+      <text x={plant.x + 18} y={plant.y + 4} font-family="ui-monospace, monospace" font-size="14" fill="#37474F" font-weight="600">SVGE · Thatipadu</text>
+    </svg>
+  </div>
 
-    <!-- Legend -->
-    <g transform="translate(40, 540)">
-      <rect width="18" height="14" fill="#E65100" opacity="0.25" rx="2"/>
-      <text x="26" y="12" font-family="ui-monospace, monospace" font-size="12" fill="#37474F">Indo-Gangetic smog corridor</text>
-
-      <rect y="22" width="18" height="14" fill="url(#paddy-hatch)" rx="2"/>
-      <text x="26" y="34" font-family="ui-monospace, monospace" font-size="12" fill="#37474F">Paddy belt</text>
-
-      <circle cx="9" cy="52" r="6" fill="#E65100" stroke="#FAFAF7" stroke-width="1.5"/>
-      <text x="26" y="56" font-family="ui-monospace, monospace" font-size="12" fill="#37474F">SVGE plant</text>
-    </g>
-  </svg>
-  <figcaption class="mt-5 pt-4 meta border-t" style="color: var(--color-slate-2); border-color: var(--rule-color);">
-    Simplified outline. Sources: paddy belt (Min. of Agriculture &amp; Farmers' Welfare); smog corridor (CPCB / IIT-Kanpur source apportionment studies). SVGE pin at <span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span>.
-  </figcaption>
+  <!-- Legend + caption — HTML-side, so a11y reads them as text -->
+  <div class="svge-indiamap-side">
+    <ul class="svge-indiamap-legend" role="list" aria-label="Map legend">
+      <li>
+        <span class="swatch swatch--smog" aria-hidden="true"></span>
+        <div>
+          <p class="key">Indo-Gangetic smog corridor</p>
+          <p class="note">Annual PM2.5 across this arc runs roughly 5× the WHO safe limit.</p>
+        </div>
+      </li>
+      <li>
+        <span class="swatch swatch--paddy" aria-hidden="true"></span>
+        <div>
+          <p class="key">Paddy belt</p>
+          <p class="note">Eastern India + Andhra Pradesh. Where the straw is grown.</p>
+        </div>
+      </li>
+      <li>
+        <span class="swatch swatch--pin" aria-hidden="true"></span>
+        <div>
+          <p class="key">SVGE plant</p>
+          <p class="note numeral">Thatipadu, Vizianagaram · {SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</p>
+        </div>
+      </li>
+    </ul>
+    <figcaption class="svge-indiamap-caption">
+      Simplified outline. Sources: paddy belt (Min. of Agriculture &amp; Farmers' Welfare); smog corridor (CPCB / IIT-Kanpur source apportionment studies).
+    </figcaption>
+  </div>
 </figure>
+
+<style>
+  /* Compact 2-column layout: map left, legend right.
+     The figure as a whole caps in height so the section doesn't dominate. */
+  .svge-indiamap {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    max-width: 56rem;
+  }
+  @media (min-width: 768px) {
+    .svge-indiamap {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .svge-indiamap-figure {
+    background: var(--color-paper);
+    border: 1px solid var(--rule-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+  }
+  .svge-indiamap-figure svg {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    display: block;
+  }
+
+  .svge-indiamap-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .svge-indiamap-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: 0;
+    margin: 0;
+  }
+  .svge-indiamap-legend li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 0.875rem;
+    align-items: start;
+  }
+  .swatch {
+    margin-top: 0.25rem;
+    width: 22px;
+    height: 16px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+  .swatch--smog { background: color-mix(in oklab, var(--color-saffron) 25%, transparent); }
+  .swatch--paddy {
+    background-image: repeating-linear-gradient(40deg, var(--color-forest) 0 1.2px, transparent 1.2px 6px);
+    background-color: color-mix(in oklab, var(--color-forest) 8%, transparent);
+  }
+  .swatch--pin {
+    width: 14px;
+    height: 14px;
+    margin-left: 4px;
+    margin-top: 0.375rem;
+    border-radius: 50%;
+    background: var(--color-saffron);
+    border: 2px solid var(--color-paper);
+    box-shadow: 0 0 0 1px var(--color-saffron);
+  }
+  .svge-indiamap-legend .key {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+  .svge-indiamap-legend .note {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--color-slate);
+  }
+  .svge-indiamap-legend .note.numeral {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .svge-indiamap-caption {
+    margin-top: 0.5rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--rule-color);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    color: var(--color-slate-2);
+  }
+</style>
