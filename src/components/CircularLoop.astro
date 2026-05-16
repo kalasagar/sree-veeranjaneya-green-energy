@@ -1,22 +1,20 @@
 ---
 /**
- * The spine of V4.1: the circularity story in one drawing + five
- * national-importance "fights" the plant takes on.
+ * The SVGE flow, hub-and-spokes.
  *
- * Row 1 — an inline SVG closed-loop diagram. Four cardinal stops
- *   (Field, Plant, Indian Oil, 40 km catchment) tied by a saffron
- *   ring. Three inflows on the NE quadrant (paddy straw, Napier,
- *   cattle dung).
- * Row 2 — five "fight-cards" keyed to existing SITE numbers. Each
- *   card = one national fight + one mechanism + one number.
+ * Three feedstock inputs on the left feed into a central Plant node.
+ * The Plant has two outputs on the right: CBG (primary product) to
+ * Indian Oil, and FOM (byproduct) to the 40 km belt. A long saffron
+ * return arc loops from the belt back to the farms, closing the loop.
+ *
+ * Geometrically honest to the physical Y-flow (a plant has two
+ * outputs, not a forced clockwise circle). Reads left-to-right.
  *
  * Props:
- *   compact?: boolean  — diagram-only (no cards). Used on /plant.
+ *   compact?: boolean — diagram only, no fight cards. Reserved for
+ *     future inner-page use; not currently consumed.
  */
 import { link } from '../lib/links';
-
-const BASE = import.meta.env.BASE_URL;
-const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
 interface Props {
   compact?: boolean;
@@ -49,46 +47,36 @@ const fights = [
     eyebrow: 'Soil & fertilizer',
     headline: '~365 TPA FOM',
     detail:
-      "~365 TPA of solid Fermented Organic Manure plus 52 m³/day of liquid manure goes back to the same 40 km belt we buy from. Rebuilds the organic carbon decades of chemical farming stripped out.",
+      '~365 TPA of solid Fermented Organic Manure plus 52 m³/day of liquid manure goes back to the same 40 km belt we buy from. Rebuilds the organic carbon decades of chemical farming stripped out.',
     href: '/plant/#glossary',
   },
   {
     eyebrow: 'Rural cash',
     headline: '~120 jobs',
     detail:
-      "47 on plant payroll, ~73 in aggregation, transport, and farmer-side roles inside 40 km. Napier at ₹1,200/t × 6 harvests/yr; payments cleared in 14 days.",
+      '47 on plant payroll, ~73 in aggregation, transport, and farmer-side roles inside 40 km. Napier at ₹1,200/t × 6 harvests/yr; payments cleared in 14 days.',
     href: '/work/',
   },
 ];
 ---
-<div class={compact ? 'svge-circular-loop svge-circular-loop--compact' : 'svge-circular-loop'} data-reveal>
-  <!-- The loop, in one drawing -->
-  <figure class="loop-figure">
-    <svg viewBox="0 0 1000 720" role="img" aria-labelledby="loopTitle loopDesc" preserveAspectRatio="xMidYMid meet">
-      <title id="loopTitle">The SVGE circular loop</title>
-      <desc id="loopDesc">
-        Farmer's field at the top, our plant at the right, Indian Oil at the bottom, the same forty-kilometre catchment at the left. A saffron ring runs clockwise between them. Three inflows from the upper right (paddy straw, Napier grass, cattle dung) feed into the plant. At the centre, 4 TPD of CBG and FOM leave each day.
+<div class={compact ? 'svge-flow svge-flow--compact' : 'svge-flow'} data-reveal>
+  <figure class="flow-figure">
+    <svg viewBox="0 0 1100 580" role="img" aria-labelledby="flowTitle flowDesc" preserveAspectRatio="xMidYMid meet">
+      <title id="flowTitle">SVGE flow: from farms, through the plant, out to fuel and back to soil</title>
+      <desc id="flowDesc">
+        Three feedstock inputs on the left — paddy straw, Napier grass, cattle dung — feed into a central plant. From the plant two outputs branch right: Compressed Bio-Gas to Indian Oil as the primary product (upper arrow), and Fermented Organic Manure back to the same 40 km belt as the byproduct (lower arrow). A long saffron return arc loops from the belt back to the farms on the left, closing the loop.
       </desc>
 
       <defs>
-        <radialGradient id="loopWash" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="var(--color-paper-2)" stop-opacity="0.7"/>
-          <stop offset="70%" stop-color="var(--color-paper)" stop-opacity="0.4"/>
-          <stop offset="100%" stop-color="var(--color-paper)" stop-opacity="0"/>
-        </radialGradient>
-        <!-- One closed loop path the flow particles ride. Keep coords
-             matching the four-arc segments below. -->
-        <path id="loopFullPath" d="M 500 160 A 220 220 0 0 1 720 380 A 220 220 0 0 1 500 600 A 220 220 0 0 1 280 380 A 220 220 0 0 1 500 160" fill="none"/>
-        <marker id="loopArrow" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
-          <path d="M0,1 L12,7 L0,13 z" fill="var(--color-saffron)"></path>
+        <marker id="flowArrow" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="11" markerHeight="11" orient="auto">
+          <path d="M0,1 L12,7 L0,13 z" fill="var(--color-saffron)"/>
         </marker>
-        <marker id="inflowArrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
-          <path d="M0,2 L10,6 L0,10 z" fill="var(--color-saffron)"></path>
+        <marker id="flowArrowSm" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+          <path d="M0,1 L10,6 L0,11 z" fill="var(--color-saffron)"/>
         </marker>
 
-        <!-- Decorative iconography. Drawn at unit scale and translated to each node. -->
+        <!-- Node iconography. Drawn at unit scale, translated per use. -->
         <g id="iconPaddy">
-          <!-- a single paddy stalk with grains -->
           <path d="M 0,18 Q 0,4 0,-18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
           <g fill="currentColor">
             <ellipse cx="-3" cy="-14" rx="2" ry="3.5" transform="rotate(-20 -3 -14)"/>
@@ -97,205 +85,145 @@ const fights = [
             <ellipse cx="3" cy="-2" rx="2" ry="3.5" transform="rotate(20 3 -2)"/>
           </g>
         </g>
+        <g id="iconNapier">
+          <path d="M -10,18 Q -6,2 -2,-14" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 0,18 Q 0,0 0,-18" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M 10,18 Q 6,2 2,-14" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        </g>
+        <g id="iconDung">
+          <ellipse cx="0" cy="0" rx="14" ry="9" fill="currentColor"/>
+          <ellipse cx="0" cy="0" rx="9" ry="5" fill="var(--color-ink)"/>
+        </g>
         <g id="iconDigester">
-          <!-- a digester dome with a small flame -->
-          <path d="M -14,8 L -14,-2 A 14,14 0 0 1 14,-2 L 14,8 z" fill="currentColor"/>
-          <line x1="0" y1="-16" x2="0" y2="-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M 0,-18 Q -3,-22 0,-26 Q 3,-22 0,-18 z" fill="var(--color-saffron)"/>
+          <path d="M -22,12 L -22,-4 A 22,22 0 0 1 22,-4 L 22,12 z" fill="currentColor"/>
+          <line x1="0" y1="-22" x2="0" y2="-10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path d="M 0,-26 Q -4,-32 0,-38 Q 4,-32 0,-26 z" fill="var(--color-saffron)"/>
         </g>
         <g id="iconFlame">
-          <!-- the IOCL flame: a stylised CBG flame -->
-          <path d="M 0,16 Q -10,4 -6,-8 Q -2,-4 -1,-12 Q 4,-2 8,2 Q 12,12 0,16 z" fill="var(--color-saffron)"/>
-          <path d="M 0,10 Q -3,4 -1,-2 Q 2,2 3,-4 Q 6,2 5,8 Q 3,12 0,10 z" fill="var(--color-gold)" opacity="0.85"/>
+          <path d="M 0,18 Q -12,4 -8,-10 Q -3,-5 -1,-14 Q 5,-2 10,3 Q 14,14 0,18 z" fill="var(--color-saffron)"/>
+          <path d="M 0,12 Q -3,5 -1,-2 Q 2,2 3,-4 Q 6,2 5,8 Q 3,12 0,12 z" fill="var(--color-gold)" opacity="0.85"/>
         </g>
         <g id="iconSeedling">
-          <!-- a single seedling rising from soil -->
           <path d="M -16,12 L 16,12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           <path d="M 0,12 L 0,-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
           <path d="M 0,-2 Q -6,-6 -8,-12 Q -2,-10 0,-4" fill="currentColor"/>
           <path d="M 0,-4 Q 6,-8 8,-14 Q 2,-12 0,-6" fill="currentColor"/>
         </g>
-
-        <!-- Inflow chip icons (small) -->
-        <g id="chipStraw" fill="var(--color-saffron-text)">
-          <rect x="-9" y="-2" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
-          <rect x="-9" y="2" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
-          <rect x="-9" y="-6" width="18" height="3" rx="1.2" transform="rotate(-15)"/>
-        </g>
-        <g id="chipNapier" fill="var(--color-saffron-text)">
-          <path d="M -8,8 Q -4,-4 0,-10 Q 4,-4 8,8 z"/>
-        </g>
-        <g id="chipDung" fill="var(--color-saffron-text)">
-          <ellipse cx="0" cy="0" rx="8" ry="5"/>
-          <ellipse cx="0" cy="0" rx="5" ry="3" fill="var(--color-paper)" opacity="0.35"/>
-        </g>
       </defs>
 
-      <!-- Soft radial wash behind the ring for depth -->
-      <circle cx="500" cy="380" r="280" fill="url(#loopWash)"></circle>
-
-      <!-- Faint ghost ring for tonal anchor -->
-      <circle cx="500" cy="380" r="220" fill="none" stroke="var(--rule-color)" stroke-width="1" stroke-dasharray="2 6" opacity="0.55"></circle>
-
-      <!-- The saffron ring: four clockwise quadrants with mid-arc arrow markers.
-           The S->W arc is the byproduct (FOM return) and rides a thinner stroke. -->
-      <g class="loop-ring" fill="none" stroke="var(--color-saffron)" stroke-width="4" stroke-linecap="round" data-draw>
-        <path d="M 500 160 A 220 220 0 0 1 720 380" marker-end="url(#loopArrow)"></path>
-        <path d="M 720 380 A 220 220 0 0 1 500 600" marker-end="url(#loopArrow)"></path>
-        <path class="loop-arc-byproduct" d="M 500 600 A 220 220 0 0 1 280 380" marker-end="url(#loopArrow)"></path>
-        <path d="M 280 380 A 220 220 0 0 1 500 160" marker-end="url(#loopArrow)"></path>
+      <!-- COLUMN HEADERS — three numbered phases above the diagram -->
+      <g class="flow-phases" font-family="var(--font-mono)" font-weight="600" letter-spacing="0.18em" text-anchor="middle" style="text-transform: uppercase;">
+        <g transform="translate(140,40)">
+          <text font-size="12" fill="var(--color-saffron-text)">01 · We take</text>
+          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.14em">From farms inside 40 km</text>
+        </g>
+        <g transform="translate(550,40)">
+          <text font-size="12" fill="var(--color-saffron-text)">02 · We process</text>
+          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.14em">9,600 Nm³/day raw biogas</text>
+        </g>
+        <g transform="translate(960,40)">
+          <text font-size="12" fill="var(--color-saffron-text)">03 · We return</text>
+          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.14em">Fuel out, soil back</text>
+        </g>
       </g>
 
-      <!-- Static directional chevrons along each arc — two per quadrant.
-           Reads the clockwise direction even before flow particles animate
-           and stays legible under prefers-reduced-motion. -->
-      <g class="loop-chevrons" fill="none" stroke="var(--color-saffron)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.75">
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(610,189.5) rotate(30)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(690.5,270) rotate(60)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(690.5,490) rotate(120)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(610,570.5) rotate(150)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(390,570.5) rotate(210)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(309.5,490) rotate(240)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(309.5,270) rotate(300)"/>
-        <path d="M -6 -6 L 0 0 L -6 6" transform="translate(390,189.5) rotate(330)"/>
+      <!-- CONVERGING INPUT ARROWS — three feedstock paths into the plant -->
+      <g class="flow-inputs" fill="none" stroke="var(--color-saffron)" stroke-width="3" stroke-linecap="round" data-draw>
+        <path d="M 200 150 Q 340 200, 458 270" marker-end="url(#flowArrow)"/>
+        <path d="M 200 300 Q 340 300, 450 300" marker-end="url(#flowArrow)"/>
+        <path d="M 200 450 Q 340 400, 458 330" marker-end="url(#flowArrow)"/>
       </g>
 
-      <!-- Flow particles riding the loop. Four saffron dots, evenly
-           spaced by negative-begin offsets, looping every 16s. Hidden
-           under prefers-reduced-motion via CSS. -->
-      <g class="loop-particles" aria-hidden="true">
-        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
-          <animateMotion dur="16s" repeatCount="indefinite" begin="0s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
-        </circle>
-        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
-          <animateMotion dur="16s" repeatCount="indefinite" begin="-4s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
-        </circle>
-        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
-          <animateMotion dur="16s" repeatCount="indefinite" begin="-8s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
-        </circle>
-        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
-          <animateMotion dur="16s" repeatCount="indefinite" begin="-12s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
-        </circle>
-      </g>
-
-      <!-- Inflow rail: 3 dashed lines from chips into the plant node -->
-      <g class="loop-inflows" fill="none" stroke="var(--color-saffron-text)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.7">
-        <line x1="900" y1="120" x2="700" y2="260" marker-end="url(#inflowArrow)"></line>
-        <line x1="940" y1="220" x2="700" y2="340" marker-end="url(#inflowArrow)"></line>
-        <line x1="940" y1="340" x2="720" y2="400" marker-end="url(#inflowArrow)"></line>
-      </g>
-
-      <!-- Inflow chips (icon + label) -->
-      <g class="loop-inflow-chips" font-family="var(--font-mono)" font-size="13" font-weight="600" letter-spacing="0.12em" fill="var(--color-saffron-text)" text-anchor="end" style="text-transform: uppercase;">
-        <g transform="translate(900,120)"><use href="#chipStraw" transform="translate(20,0)"/></g>
-        <text x="888" y="115">Paddy straw</text>
-        <g transform="translate(940,220)"><use href="#chipNapier" transform="translate(20,0)"/></g>
-        <text x="928" y="215">Napier grass</text>
-        <g transform="translate(940,340)"><use href="#chipDung" transform="translate(20,0)"/></g>
-        <text x="928" y="335">Cattle dung</text>
-      </g>
-
-      <!-- Four cardinal nodes — clickable, ink-filled, iconographic. Plant
-           node sits at slightly larger radius (heart-of-operation cue). -->
-      <g class="loop-nodes">
-        <a href={link('/farmers/')} class="loop-node-link" aria-label="Farmer's field — 72 TPD feedstock harvested">
-          <g transform="translate(500,160)">
-            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
-            <circle r="70" fill="var(--color-ink)"></circle>
-            <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconPaddy"/></g>
-            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="20" style="text-transform: uppercase;">Farmer's field</text>
+      <!-- INPUT NODES (left column) — clickable, route to /farmers -->
+      <g class="flow-input-nodes">
+        <a href={link('/farmers/')} class="flow-node-link" aria-label="Paddy straw — bought from farmers within 40 km">
+          <g transform="translate(140,150)">
+            <circle class="flow-node-halo" r="58" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="48" fill="var(--color-ink)"/>
+            <g transform="translate(0,-6)" color="var(--color-gold)"><use href="#iconPaddy"/></g>
+            <text y="24" font-size="10" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" style="text-transform: uppercase;">Paddy straw</text>
           </g>
         </a>
-        <a href={link('/plant/')} class="loop-node-link" aria-label="Our plant — 4 CSTR digesters, 9,600 Nm³/day raw biogas">
-          <g transform="translate(720,380)">
-            <circle class="loop-node-halo" r="90" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
-            <circle r="78" fill="var(--color-ink)"></circle>
-            <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconDigester"/></g>
-            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">Our plant</text>
+        <a href={link('/farmers/')} class="flow-node-link" aria-label="Napier grass — contract-farmed within 40 km">
+          <g transform="translate(140,300)">
+            <circle class="flow-node-halo" r="58" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="48" fill="var(--color-ink)"/>
+            <g transform="translate(0,-4)" color="var(--color-gold)"><use href="#iconNapier"/></g>
+            <text y="24" font-size="10" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" style="text-transform: uppercase;">Napier grass</text>
           </g>
         </a>
-        <a href={link('/build/#capital')} class="loop-node-link" aria-label="Indian Oil offtake — 4 TPD CBG dispatched">
-          <g transform="translate(500,600)">
-            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
-            <circle r="70" fill="var(--color-ink)"></circle>
-            <g transform="translate(0,-12)"><use href="#iconFlame"/></g>
-            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Indian Oil</text>
-          </g>
-        </a>
-        <a href={link('/plant/#glossary')} class="loop-node-link" aria-label="40 km belt — ~365 TPA FOM returned to soil">
-          <g transform="translate(280,380)">
-            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
-            <circle r="70" fill="var(--color-ink)"></circle>
-            <g transform="translate(0,-8)" color="var(--color-gold)"><use href="#iconSeedling"/></g>
-            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">40 km belt</text>
+        <a href={link('/farmers/')} class="flow-node-link" aria-label="Cattle dung — collected on monthly pickup routes">
+          <g transform="translate(140,450)">
+            <circle class="flow-node-halo" r="58" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="48" fill="var(--color-ink)"/>
+            <g transform="translate(0,-2)" color="var(--color-gold)"><use href="#iconDung"/></g>
+            <text y="24" font-size="10" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" style="text-transform: uppercase;">Cattle dung</text>
           </g>
         </a>
       </g>
 
-      <!-- Throughput tags — small mono-cap numerals outside each node. -->
-      <g class="loop-throughput" font-family="var(--font-mono)" font-weight="600" letter-spacing="0.12em" fill="var(--color-ink)" style="text-transform: uppercase;">
-        <!-- Field: above (north) -->
-        <text x="500" y="62" text-anchor="middle" font-size="13" fill="var(--color-saffron-text)">72 TPD feedstock</text>
-        <text x="500" y="82" text-anchor="middle" font-size="10" fill="var(--color-slate)">harvested inside 40 km</text>
+      <!-- PLANT (centre) — clickable, larger node as the heart of the operation -->
+      <a href={link('/plant/')} class="flow-node-link" aria-label="Our plant — 4 CSTR digesters, 4 TPD CBG output">
+        <g transform="translate(550,300)">
+          <circle class="flow-node-halo" r="115" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+          <circle r="100" fill="var(--color-ink)"/>
+          <g transform="translate(0,-22)" color="var(--color-gold)"><use href="#iconDigester"/></g>
+          <text y="22" font-size="16" font-weight="700" letter-spacing="0.04em" fill="var(--color-paper)" font-family="var(--font-display)" text-anchor="middle">PLANT</text>
+          <text y="46" font-size="9" font-weight="600" letter-spacing="0.16em" fill="var(--color-gold)" font-family="var(--font-mono)" text-anchor="middle" style="text-transform: uppercase;">4 × CSTR · 4 TPD</text>
+        </g>
+      </a>
 
-        <!-- Plant: right (east) -->
-        <text x="848" y="370" text-anchor="start" font-size="13" fill="var(--color-saffron-text)">9,600 Nm³/day</text>
-        <text x="848" y="390" text-anchor="start" font-size="10" fill="var(--color-slate)">raw biogas · ≥90% CH₄</text>
-
-        <!-- Indian Oil: below (south) -->
-        <text x="500" y="694" text-anchor="middle" font-size="13" fill="var(--color-saffron-text)">4 TPD CBG · ₹46/kg floor</text>
-        <text x="500" y="712" text-anchor="middle" font-size="10" fill="var(--color-slate)">15-yr Commercial Agreement</text>
-
-        <!-- 40 km belt: left (west) -->
-        <text x="152" y="370" text-anchor="end" font-size="13" fill="var(--color-saffron-text)">~365 TPA FOM</text>
-        <text x="152" y="390" text-anchor="end" font-size="10" fill="var(--color-slate)">+ 52 m³/day liquid manure</text>
+      <!-- DIVERGING OUTPUT ARROWS — CBG up (primary, thick), FOM down (byproduct, thinner + dashed) -->
+      <g class="flow-outputs" fill="none" stroke="var(--color-saffron)" stroke-linecap="round" data-draw>
+        <path d="M 645 245 Q 770 215, 880 200" stroke-width="5" marker-end="url(#flowArrow)"/>
+        <path class="flow-arc-byproduct" d="M 645 355 Q 770 385, 880 400" stroke-width="3" stroke-dasharray="9 5" marker-end="url(#flowArrowSm)"/>
       </g>
 
-      <!-- Sequence labels — four ordinal + verb tags at each arc midpoint
-           (45°/135°/225°/315°, radius 285). Sub-line marks primary product
-           on the CBG arc and byproduct on the FOM arc. -->
-      <g class="loop-sequence" font-family="var(--font-mono)" font-weight="600" letter-spacing="0.14em" text-anchor="middle" style="text-transform: uppercase;">
-        <g transform="translate(702,179)">
-          <text font-size="13" fill="var(--color-saffron-text)">01 · Harvest</text>
-          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.18em">Field → Plant</text>
-        </g>
-        <g transform="translate(702,582)">
-          <text font-size="13" fill="var(--color-saffron-text)">02 · Dispatch</text>
-          <text y="16" font-size="9" fill="var(--color-ink)" letter-spacing="0.18em" font-weight="700">Primary product · CBG</text>
-        </g>
-        <g transform="translate(299,582)">
-          <text font-size="13" fill="var(--color-saffron-text)">03 · Return</text>
-          <text y="16" font-size="9" fill="var(--color-slate-2)" letter-spacing="0.18em" font-weight="700">Byproduct · FOM</text>
-        </g>
-        <g transform="translate(299,179)">
-          <text font-size="13" fill="var(--color-saffron-text)">04 · Rebuild</text>
-          <text y="16" font-size="9" fill="var(--color-slate)" letter-spacing="0.18em">Soil → Field</text>
-        </g>
+      <!-- OUTPUT ARROW TAGS — primary vs byproduct, named pre-textually -->
+      <g class="flow-output-tags" font-family="var(--font-mono)" font-size="10" font-weight="700" letter-spacing="0.18em" text-anchor="middle" style="text-transform: uppercase;">
+        <text x="765" y="190" fill="var(--color-ink)">Primary product · CBG</text>
+        <text x="765" y="408" fill="var(--color-slate-2)">Byproduct · FOM</text>
       </g>
 
-      <!-- Centre heart: the headline figure -->
-      <g class="loop-heart" text-anchor="middle">
-        <circle cx="500" cy="380" r="86" fill="var(--color-paper)" stroke="var(--color-saffron)" stroke-width="1.5"></circle>
-        <text x="500" y="368" font-family="var(--font-display)" font-weight="700" font-size="36" fill="var(--color-ink)" letter-spacing="-0.02em">4 TPD</text>
-        <text x="500" y="395" font-family="var(--font-mono)" font-size="10" font-weight="600" letter-spacing="0.22em" fill="var(--color-saffron-text)" style="text-transform: uppercase;">CBG · FOM</text>
-        <text x="500" y="416" font-family="var(--font-body)" font-size="10" fill="var(--color-slate)">every operating day</text>
+      <!-- OUTPUT NODES (right column) -->
+      <a href={link('/build/#capital')} class="flow-node-link" aria-label="Indian Oil — 4 TPD CBG dispatched under 15-year LoI">
+        <g transform="translate(960,200)">
+          <circle class="flow-node-halo" r="78" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+          <circle r="68" fill="var(--color-ink)"/>
+          <g transform="translate(0,-10)"><use href="#iconFlame"/></g>
+          <text y="26" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" style="text-transform: uppercase;">Indian Oil</text>
+        </g>
+      </a>
+      <a href={link('/plant/#glossary')} class="flow-node-link" aria-label="40 km belt — FOM returned to soil">
+        <g transform="translate(960,400)">
+          <circle class="flow-node-halo" r="78" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+          <circle r="68" fill="var(--color-ink)"/>
+          <g transform="translate(0,-8)" color="var(--color-gold)"><use href="#iconSeedling"/></g>
+          <text y="26" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" style="text-transform: uppercase;">40 km belt</text>
+        </g>
+      </a>
+
+      <!-- RETURN ARC — long saffron curve from belt back to farms, closing the loop -->
+      <g class="flow-return" fill="none" stroke="var(--color-saffron)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 6" opacity="0.8">
+        <path d="M 960 470 Q 960 555, 550 555 Q 140 555, 140 520" marker-end="url(#flowArrowSm)"/>
       </g>
+      <text x="550" y="551" text-anchor="middle" font-family="var(--font-mono)" font-size="11" font-weight="700" letter-spacing="0.22em" fill="var(--color-saffron-text)" style="text-transform: uppercase;">Soil rebuilt · back to the same farms</text>
     </svg>
 
-    <figcaption class="loop-caption">
-      <p class="loop-caption-line">Nothing leaves the belt.</p>
-      <p class="loop-caption-sub">The money, the fuel, and the soil all circulate inside the same forty-kilometre catchment we source from.</p>
+    <figcaption class="flow-caption">
+      <p class="flow-caption-line">Nothing leaves the belt.</p>
+      <p class="flow-caption-sub">The money, the fuel, and the soil all circulate inside the same forty-kilometre catchment we source from.</p>
     </figcaption>
   </figure>
 
   {!compact && (
-    <ol class="loop-fights" role="list">
+    <ol class="flow-fights" role="list">
       {fights.map(f => (
         <li>
-          <a href={link(f.href)} class="loop-fight-cell">
+          <a href={link(f.href)} class="flow-fight-cell">
             <p class="eyebrow" style="color: var(--color-gold);">{f.eyebrow}</p>
-            <p class="loop-fight-headline">{f.headline}</p>
-            <p class="loop-fight-detail">{f.detail}</p>
+            <p class="flow-fight-headline">{f.headline}</p>
+            <p class="flow-fight-detail">{f.detail}</p>
           </a>
         </li>
       ))}
@@ -304,101 +232,83 @@ const fights = [
 </div>
 
 <style>
-  .svge-circular-loop {
+  .svge-flow {
     display: grid;
     gap: 2.5rem;
   }
-  .loop-figure {
+  .flow-figure {
     margin: 0;
-    position: relative;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    align-items: center;
+    gap: 1.75rem;
   }
-  @media (min-width: 1024px) {
-    .loop-figure {
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-      gap: 3rem;
-    }
-  }
-  .loop-figure svg {
+  .flow-figure svg {
     width: 100%;
     height: auto;
-    max-height: 640px;
+    max-height: 620px;
     display: block;
   }
-  /* Saffron arc draws in when the SVG enters view (uses Base.astro's
-     data-draw observer; respects prefers-reduced-motion via the
-     fast-path in Base which immediately marks [data-drawn]). */
-  .loop-ring path {
-    stroke-dasharray: var(--draw-length, 1000);
-    stroke-dashoffset: var(--draw-length, 1000);
-    transition: stroke-dashoffset 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  .flow-caption {
+    max-width: 56ch;
+    margin: 0 auto;
+    text-align: center;
   }
-  [data-drawn] .loop-ring path { stroke-dashoffset: 0; }
-  /* Byproduct arc: thinner + slightly softer than the main product arc,
-     so the FOM-return path reads as the secondary leg pre-textually. */
-  .loop-ring path.loop-arc-byproduct {
-    stroke-width: 3;
-    opacity: 0.78;
-  }
-
-  /* Node links: keyboard focus + hover affordance. */
-  .loop-node-link {
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .loop-node-link .loop-node-halo {
-    transition: opacity 0.18s ease;
-  }
-  .loop-node-link:hover .loop-node-halo,
-  .loop-node-link:focus-visible .loop-node-halo {
-    opacity: 0.55;
-  }
-  .loop-node-link:focus { outline: none; }
-  .loop-node-link:focus-visible { outline: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    .loop-ring path {
-      stroke-dasharray: none;
-      stroke-dashoffset: 0;
-      transition: none;
-    }
-    /* Hide flow particles entirely; SMIL keeps running but the dots
-       are not visible. */
-    .loop-particles { display: none; }
-    .loop-node-link .loop-node-halo,
-    .loop-node-link:hover .loop-node-halo { transition: none; }
-  }
-  .loop-caption {
-    text-align: left;
-  }
-  .loop-caption-line {
+  .flow-caption-line {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-size: clamp(1.375rem, 2.4vw, 1.875rem);
     line-height: 1.1;
     letter-spacing: -0.015em;
     color: var(--color-ink);
-    max-width: 18ch;
   }
-  .loop-caption-line::after {
+  .flow-caption-line::after {
     content: "";
     display: block;
     width: 2.5rem;
     height: 2px;
-    margin-top: 0.875rem;
+    margin: 0.875rem auto 0;
     background: var(--color-saffron);
   }
-  .loop-caption-sub {
+  .flow-caption-sub {
     margin-top: 1rem;
     color: var(--color-slate);
-    line-height: 1.6;
-    max-width: 36ch;
+    line-height: 1.55;
   }
 
-  .loop-fights {
+  /* Draw-on-scroll for the saffron arrows. Uses the data-draw observer
+     in Base.astro which sets --draw-length per path. */
+  .flow-inputs path,
+  .flow-outputs path,
+  .flow-return path {
+    stroke-dasharray: var(--draw-length, 1000);
+    stroke-dashoffset: var(--draw-length, 1000);
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  [data-drawn].flow-inputs path,
+  [data-drawn].flow-outputs path,
+  [data-drawn] .flow-inputs path,
+  [data-drawn] .flow-outputs path {
+    stroke-dashoffset: 0;
+  }
+  /* Byproduct arrow keeps its dashed look post-draw (overrides). */
+  .flow-outputs path.flow-arc-byproduct {
+    stroke-dasharray: 9 5;
+    stroke-dashoffset: 0;
+    opacity: 0.78;
+  }
+  /* Return arc dash pattern is its own (closes the loop visually) — not part
+     of the draw-on-scroll set. */
+  .flow-return path { stroke-dasharray: 3 6; stroke-dashoffset: 0; transition: none; }
+
+  /* Node link affordance */
+  .flow-node-link { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .flow-node-link .flow-node-halo { transition: opacity 0.18s ease; }
+  .flow-node-link:hover .flow-node-halo,
+  .flow-node-link:focus-visible .flow-node-halo { opacity: 0.55; }
+  .flow-node-link:focus { outline: none; }
+  .flow-node-link:focus-visible { outline: none; }
+
+  /* Five fight cards — same hairline grid pattern as TrustBand */
+  .flow-fights {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1px;
@@ -407,12 +317,12 @@ const fights = [
     overflow: hidden;
   }
   @media (min-width: 640px) {
-    .loop-fights { grid-template-columns: 1fr 1fr; }
+    .flow-fights { grid-template-columns: 1fr 1fr; }
   }
   @media (min-width: 1024px) {
-    .loop-fights { grid-template-columns: repeat(5, 1fr); }
+    .flow-fights { grid-template-columns: repeat(5, 1fr); }
   }
-  .loop-fight-cell {
+  .flow-fight-cell {
     display: block;
     height: 100%;
     padding: 1.25rem;
@@ -421,15 +331,12 @@ const fights = [
     text-decoration: none;
     transition: background-color 0.15s ease;
   }
-  @media (min-width: 640px) { .loop-fight-cell { padding: 1.5rem; } }
-  .loop-fight-cell:hover { background: var(--color-ink-soft); }
-  .loop-fight-cell:hover .eyebrow { color: var(--color-saffron) !important; }
-  .loop-fight-cell:focus-visible {
-    outline: 2px solid var(--color-saffron);
-    outline-offset: 2px;
-  }
+  @media (min-width: 640px) { .flow-fight-cell { padding: 1.5rem; } }
+  .flow-fight-cell:hover { background: var(--color-ink-soft); }
+  .flow-fight-cell:hover .eyebrow { color: var(--color-saffron) !important; }
+  .flow-fight-cell:focus-visible { outline: 2px solid var(--color-saffron); outline-offset: 2px; }
 
-  .loop-fight-headline {
+  .flow-fight-headline {
     margin-top: 0.75rem;
     font-family: var(--font-display);
     font-weight: 700;
@@ -438,13 +345,21 @@ const fights = [
     line-height: 1.05;
     color: var(--color-paper);
   }
-  .loop-fight-detail {
+  .flow-fight-detail {
     margin-top: 0.75rem;
     font-size: 0.875rem;
     line-height: 1.55;
     color: color-mix(in oklab, var(--color-paper) 82%, transparent);
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .flow-inputs path,
+    .flow-outputs path { stroke-dasharray: none; stroke-dashoffset: 0; transition: none; }
+    .flow-outputs path.flow-arc-byproduct { stroke-dasharray: 9 5; }
+    .flow-node-link .flow-node-halo,
+    .flow-node-link:hover .flow-node-halo { transition: none; }
+  }
+
   /* Compact variant: diagram only, no fight cards. */
-  .svge-circular-loop--compact .loop-figure svg { max-height: 420px; }
+  .svge-flow--compact .flow-figure svg { max-height: 460px; }
 </style>
