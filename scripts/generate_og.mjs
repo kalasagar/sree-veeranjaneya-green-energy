@@ -24,21 +24,21 @@ const PAPER = '#FAFAF7';
 const SLATE = '#37474F';
 
 // Slug -> { title, sub, banner (basename in public/banners, or null) }
+// Slug list matches the current 7-route IA (V4.1).
 const PAGES = [
-  { slug: 'home',     title: 'Burned in the field today. Burned in your engine tomorrow.', sub: 'Compressed Bio-Gas, built in public — Vizianagaram, Andhra Pradesh.', banner: 'hero_paddy_dawn' },
-  { slug: 'about',    title: 'A small family company.',           sub: 'Two directors. One plant. ₹8.37 Cr personal equity.',                   banner: 'about_founder_field' },
-  { slug: 'project',  title: 'The project.',                       sub: '4 TPD CBG · 2.63 acres · IOCL LoI in hand.',                            banner: 'project_plant_render' },
-  { slug: 'process',  title: 'Three points of view.',              sub: 'Farmer. Driver. Auditor.',                                              banner: 'project_plant_render' },
-  { slug: 'process-engineering', title: 'Engineering detail.',     sub: 'IS 16087:2016 spec. CSTR digester, VPSA scrubbing.',                    banner: 'project_plant_render' },
-  { slug: 'impact',   title: 'Three concrete impacts.',            sub: 'Farmer income. Cleaner air. Soil organic carbon.',                      banner: 'impact_fom_soil' },
-  { slug: 'farmers',  title: 'Pay in 14 days. By bank transfer.',  sub: 'Paddy straw, Napier grass, cattle dung — within 50 km of Thatipadu.',   banner: 'farmers_hands_straw' },
-  { slug: 'partners', title: 'For partners.',                      sub: 'EPC sub-contracting, cascade logistics, FOM offtake.',                  banner: null },
-  { slug: 'press',    title: 'Press kit.',                         sub: 'Boilerplate, fact sheet, brand pack, founder quotes.',                  banner: 'press_kit' },
-  { slug: 'careers',  title: 'Hiring opens with construction.',    sub: 'Plant ops, lab, aggregation, accounts.',                                banner: null },
-  { slug: 'contact',  title: 'Pick the door that fits.',           sub: 'Routes faster than a generic form.',                                    banner: null },
-  { slug: 'news',     title: 'Built in public. Monthly receipts.', sub: 'One photo. One milestone hit. One missed. One thing that went wrong.', banner: null },
-  { slug: 'privacy',  title: 'Privacy policy.',                    sub: 'What we collect, what we keep, how to delete.',                         banner: null },
-  { slug: 'terms',    title: 'Terms of use.',                      sub: 'Editorial use, accuracy, contract scope.',                              banner: null },
+  { slug: 'home',             title: 'Burned in the field today. Burned in your engine tomorrow.', sub: 'Compressed Bio-Gas, built in public — Vizianagaram, Andhra Pradesh.',         banner: 'hero_paddy_dawn' },
+  { slug: 'about',            title: 'One plant. Two directors. A 2-year clock.',                  sub: 'A two-director Andhra company on a 24-month commissioning clock from IOCL.',   banner: 'about_founder_field' },
+  { slug: 'plant',            title: 'Feedstock to fuel. Eight steps. One drawing.',               sub: '4 TPD CBG · IS 16087:2016 spec · 2-tower VPSA · Raj Process, Pune.',           banner: 'project_plant_render' },
+  { slug: 'build',            title: 'The capital, the clearances, the clock.',                    sub: '₹33 Cr promoter-led · ₹6.7 Cr central incentives · WHITE category.',          banner: 'build_concrete_pour' },
+  { slug: 'build-data-room',  title: 'Lender data room.',                                          sub: 'One-pager: LoI, financing, clearances, commissioning timeline.',              banner: null },
+  { slug: 'farmers',          title: 'Pay in 14 days. By bank transfer.',                          sub: 'Paddy straw, Napier grass, cattle dung — within 40 km of Thatipadu.',          banner: 'farmers_hands_straw' },
+  { slug: 'work',             title: 'Work with us.',                                              sub: 'Open RFPs · careers · partner intake. EPC sub-contracting, cascade logistics, FOM offtake.', banner: 'work_meeting_table' },
+  { slug: 'press',            title: 'Press kit.',                                                 sub: 'Boilerplate, fact sheet, brand pack, founder quotes.',                         banner: 'press_kit' },
+  { slug: 'contact',          title: 'Pick the door that fits.',                                   sub: 'Routes faster than a generic form.',                                           banner: null },
+  { slug: 'news',             title: 'Built in public. Monthly receipts.',                         sub: 'One photo. One milestone hit. One missed. One thing that went wrong.',         banner: null },
+  { slug: 'privacy',          title: 'Privacy policy.',                                            sub: 'What we collect, what we keep, how to delete.',                                banner: null },
+  { slug: 'terms',            title: 'Terms of use.',                                              sub: 'Editorial use, accuracy, contract scope.',                                     banner: null },
+  { slug: '404',              title: 'That page is not here.',                                     sub: 'The IA was consolidated. Try /plant, /build, /work, or /press.',               banner: null },
 ];
 
 function svgOverlay(title, sub) {
