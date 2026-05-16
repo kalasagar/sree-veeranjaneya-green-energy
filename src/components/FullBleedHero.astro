@@ -106,6 +106,10 @@ const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
        no mirror, no fake band — just a soft cap under the chrome. -->
   <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background: linear-gradient(180deg, rgba(10,20,16,0) 35%, rgba(10,20,16,0.32) 68%, rgba(10,20,16,0.76) 100%), linear-gradient(90deg, rgba(10,20,16,0.45) 0%, rgba(10,20,16,0.16) 45%, rgba(10,20,16,0) 70%);"></div>
   <div class="absolute top-0 inset-x-0 pointer-events-none h-[110px]" aria-hidden="true" style="background: linear-gradient(180deg, rgba(10,20,16,0.55) 0%, rgba(10,20,16,0.18) 65%, rgba(10,20,16,0) 100%);"></div>
+  {/* Lower-left vignette intensifier — concentrated where the H1 sits, so
+       bright video frames (sun, flame) don't eat the paper-coloured text.
+       Transparent in the upper-right where the photo still gets to breathe. */}
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true" style="background: radial-gradient(ellipse 70% 60% at 22% 82%, rgba(10,20,16,0.55) 0%, rgba(10,20,16,0.25) 45%, rgba(10,20,16,0) 70%);"></div>
 
   {video && (
     <button
@@ -124,10 +128,7 @@ const url = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
   <div class="container-svge relative pb-12 sm:pb-16 lg:pb-20 pt-20">
     <div class="max-w-[64ch] text-[color:var(--color-paper)] svge-hero-content-mark">
       {eyebrow && (
-        <div class="flex items-center gap-3 mb-4">
-          <Mark size={28} ariaLabel={null} />
-          <p class="eyebrow mb-0" style="color:#FFB300;">{eyebrow}</p>
-        </div>
+        <p class="eyebrow mb-4" style="color:#FFB300;">{eyebrow}</p>
       )}
       {title && (
         <h1 class="display text-[color:var(--color-paper)]">{title}</h1>

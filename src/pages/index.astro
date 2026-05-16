@@ -22,15 +22,19 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
   <FullBleedHero
     banner="hero_paddy_dawn"
     alt="A paddy field at dawn in coastal Andhra Pradesh."
-    eyebrow={SITE.hero.eyebrow}
     video="hero_dawn_paddy_to_flame"
     height="xl"
     priority
   >
-    <h1 class="display text-[color:var(--color-paper)] mt-3" style="font-size: clamp(2.75rem, 6vw, 5rem);">
-      {SITE.hero.h1Top}<br/>
-      <span style="color: var(--color-gold);">{SITE.hero.h1Mid}</span><br/>
-      {SITE.hero.h1Bottom}
+    {/* Breathing room above the H1, where the eyebrow + mark used to sit.
+        Encoded as padding on the heading itself so the DOM stays clean. */}
+    <h1
+      class="display text-[color:var(--color-paper)] space-y-2 sm:space-y-3 pt-12 sm:pt-16"
+      style="font-size: clamp(2rem, 5.25vw, 4.5rem); line-height: 1;"
+    >
+      <span class="block">{SITE.hero.h1Top}</span>
+      <span class="block" style="color: var(--color-gold);">{SITE.hero.h1Mid}</span>
+      <span class="block">{SITE.hero.h1Bottom}</span>
     </h1>
     <p class="mt-6 text-lg sm:text-xl max-w-2xl text-[color:var(--color-paper)]/95 leading-relaxed">{SITE.hero.sub}</p>
     <div class="mt-8 flex flex-wrap gap-3">

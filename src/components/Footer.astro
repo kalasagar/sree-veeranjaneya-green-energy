@@ -1,115 +1,144 @@
 ---
 /**
- * Editorial colophon — masthead, sitemap, registration, build info.
+ * Editorial colophon — three bands:
+ *   1. Closing statement (ink). Italic display sign-off + status line.
+ *   2. Sitemap + colophon (paper-2). Mark, sitemap, address blocks.
+ *   3. Utility bar (paper). Copyright, version, integrity line.
  */
 import { SITE } from '../lib/site';
 import { link } from '../lib/links';
 import Mark from './Mark.astro';
+
 const year = new Date().getFullYear();
+const version = 'V3.5';
+const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
+  .format(new Date(SITE.status.lastUpdate + 'T00:00:00Z'));
 ---
-<footer class="mt-24">
-  <!-- Closing statement -->
-  <section style="background: var(--color-ink); color: var(--color-paper);">
-    <div class="container-svge py-14 sm:py-18 lg:py-20">
+<footer class="svge-footer mt-16 sm:mt-20">
+
+  <!-- BAND 1 · Closing statement -->
+  <section class="svge-footer-closing">
+    <div class="container-svge py-12 sm:py-16 lg:py-20">
       <div class="grid lg:grid-cols-12 gap-y-10 lg:gap-x-12 items-end">
-        <div class="lg:col-span-8">
+        <div class="lg:col-span-7">
           <p class="eyebrow" style="color: var(--color-gold);">Closing statement</p>
-          <p class="mt-4" style="color: var(--color-paper); font-family: var(--font-display); font-style: italic; line-height: 0.96; letter-spacing: -0.025em; font-weight: 700; font-size: clamp(3.25rem, 8.5vw, 6.5rem);">Grass to Gas.<br/>Farm to Fuel.</p>
-          <span class="block mt-8 w-16 h-px bg-[color:var(--color-saffron)]" aria-hidden="true"></span>
-          <p class="mt-7 text-lg sm:text-xl leading-relaxed max-w-[58ch]" style="color: color-mix(in oklab, var(--color-paper) 88%, transparent);">
+          <p class="svge-footer-signoff mt-4">
+            Grass to Gas.<br/>Farm to Fuel.
+          </p>
+          <span class="block mt-7 w-12 h-px" style="background: var(--color-saffron);" aria-hidden="true"></span>
+          <p class="mt-6 text-base sm:text-lg leading-relaxed max-w-[56ch]" style="color: color-mix(in oklab, var(--color-paper) 85%, transparent);">
             One Compressed Bio-Gas plant in Thatipadu, Vizianagaram. From the day concrete is poured, one update a month: a photo, a milestone hit, a milestone missed, one financial number, one thing that went wrong.
           </p>
         </div>
-        <div class="lg:col-span-4 lg:pl-6 lg:border-l" style="border-color: color-mix(in oklab, var(--color-paper) 20%, transparent);">
-          <Mark size={120} decorative />
-          <p class="mt-6 meta" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Status</p>
-          <p class="text-lg font-semibold" style="color: var(--color-paper);">{SITE.status.phaseLabel}</p>
-          <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 70%, transparent);">Construction begins Q3 2026</p>
-          <div class="mt-6 flex flex-col gap-2 max-w-xs">
-            <a href={link('/press/#journal')} class="btn btn-on-dark justify-between" style="background: var(--color-saffron); color: var(--color-paper);">
-              <span>Read the build journal</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-            <a href={link('/contact/')} class="btn justify-between" style="border: 1px solid color-mix(in oklab, var(--color-paper) 40%, transparent); color: var(--color-paper);">
-              <span>Talk to us</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </a>
-          </div>
-        </div>
+
+        <aside class="lg:col-span-4 lg:col-start-9 lg:pl-6 lg:border-l self-start" style="border-color: color-mix(in oklab, var(--color-paper) 18%, transparent);">
+          <p class="eyebrow" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Current status</p>
+          <p class="mt-2 text-lg font-semibold" style="color: var(--color-paper); font-family: var(--font-display); letter-spacing: -0.01em;">{SITE.status.phaseLabel}</p>
+          <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 65%, transparent);">Construction begins Q3 2026. Commissioning deadline 04 Oct 2026.</p>
+
+          <a href={link('/press/#journal')} class="svge-footer-cta mt-6 inline-flex items-center justify-between gap-2 min-h-[44px] px-5 rounded-full">
+            <span>Read the build journal</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </aside>
       </div>
     </div>
   </section>
 
-  <!-- Colophon -->
-  <section style="background: var(--color-paper-2);">
-    <div class="container-svge py-12">
-      <div class="grid-12">
-        <div class="col-3">
-          <Mark size={64} decorative />
-          <p class="mt-4 text-lg font-semibold" style="font-family: var(--font-display); color: var(--color-ink);">{SITE.short}</p>
-          <p class="meta mt-1">{SITE.legalName}</p>
-          <div class="mt-3 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
-          <p class="mt-3 eyebrow" style="color: var(--color-saffron-text);">SATAT · GOBARdhan · MNRE</p>
+  <!-- BAND 2 · Sitemap + colophon -->
+  <section class="svge-footer-colophon">
+    <div class="container-svge py-12 sm:py-14">
+      <!-- Sitemap grid (4 columns: brand + 3 link lists) -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-10">
+        <div class="lg:col-span-4">
+          <Mark size={56} decorative />
+          <p class="mt-4 text-lg font-bold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink); letter-spacing: -0.01em;">{SITE.short}</p>
+          <p class="meta mt-1 max-w-[28ch]">{SITE.legalName}</p>
+          <div class="mt-4 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+          <p class="mt-4 eyebrow" style="color: var(--color-saffron-text);">SATAT · GOBARdhan · MNRE</p>
+          <p class="meta mt-3 max-w-[32ch]">A 4 TPD CBG plant being built in coastal Andhra Pradesh, with monthly receipts from the day concrete is poured.</p>
         </div>
-        <div class="col-3">
-          <p class="eyebrow mb-3">The build</p>
-          <ul class="space-y-1.5 text-sm">
+
+        <nav class="lg:col-span-2" aria-label="Build">
+          <p class="eyebrow mb-4">The build</p>
+          <ul class="space-y-2.5 text-sm" role="list">
             <li><a href={link('/about/')}>About</a></li>
             <li><a href={link('/plant/')}>Plant</a></li>
             <li><a href={link('/build/')}>Build</a></li>
             <li><a href={link('/build/#impact')}>Impact</a></li>
           </ul>
-        </div>
-        <div class="col-3">
-          <p class="eyebrow mb-3">Audiences</p>
-          <ul class="space-y-1.5 text-sm">
+        </nav>
+
+        <nav class="lg:col-span-3" aria-label="Audiences">
+          <p class="eyebrow mb-4">Audiences</p>
+          <ul class="space-y-2.5 text-sm" role="list">
             <li><a href={link('/farmers/')}>For farmers</a></li>
-            <li><a href={link('/work/#rfps')}>RFPs</a></li>
+            <li><a href={link('/work/#rfps')}>Open RFPs</a></li>
             <li><a href={link('/work/#careers')}>Careers</a></li>
             <li><a href={link('/press/')}>Press kit</a></li>
-            <li><a href={link('/press/#journal')}>Build journal</a> · <a href={link('/news/rss.xml')} class="text-xs">RSS</a></li>
+            <li>
+              <a href={link('/press/#journal')}>Build journal</a>
+              <a href={link('/news/rss.xml')} class="ml-2 meta" style="text-decoration: underline; text-underline-offset: 3px;">RSS</a>
+            </li>
             <li><a href={link('/contact/')}>Contact</a></li>
           </ul>
-        </div>
-        <div class="col-3">
-          <p class="eyebrow mb-3">Legal &amp; data</p>
-          <ul class="space-y-1.5 text-sm">
+        </nav>
+
+        <nav class="lg:col-span-3" aria-label="Legal and data">
+          <p class="eyebrow mb-4">Legal &amp; data</p>
+          <ul class="space-y-2.5 text-sm" role="list">
             <li><a href={link('/privacy/')}>Privacy policy</a></li>
             <li><a href={link('/terms/')}>Terms of use</a></li>
             <li><a href={`mailto:${SITE.email}?subject=DPR%20request`}>Request the DPR</a></li>
-            <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn ↗</a></li>
+            <li><a href={SITE.social.linkedin} rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a></li>
           </ul>
-        </div>
+        </nav>
       </div>
 
-      <div class="mt-10 pt-8 border-t border-[color:var(--rule-color)] grid-12 text-xs meta leading-relaxed">
-        <div class="col-4">
-          <p class="eyebrow mb-2">Plant site</p>
-          <p>{SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>{SITE.plant.district}, {SITE.plant.state}, {SITE.plant.pin}<br/><span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span></p>
+      <!-- Address + identifiers block -->
+      <div class="mt-12 pt-8 border-t grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-6 text-xs leading-relaxed" style="border-color: var(--rule-color); color: var(--color-slate-2);">
+        <div>
+          <p class="eyebrow mb-2" style="color: var(--color-slate);">Plant site</p>
+          <address class="not-italic">
+            {SITE.plant.village}, {SITE.plant.mandal} Mandal,<br/>
+            {SITE.plant.district}, {SITE.plant.state} {SITE.plant.pin}<br/>
+            <span class="numeral">{SITE.plant.lat.toFixed(4)}°N, {SITE.plant.lng.toFixed(4)}°E</span>
+          </address>
         </div>
-        <div class="col-4">
-          <p class="eyebrow mb-2">Registered office</p>
-          <p>{SITE.registeredOffice.line1},<br/>{SITE.registeredOffice.line2},<br/>{SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}<br/><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <div>
+          <p class="eyebrow mb-2" style="color: var(--color-slate);">Registered office</p>
+          <address class="not-italic">
+            {SITE.registeredOffice.line1},<br/>
+            {SITE.registeredOffice.line2},<br/>
+            {SITE.registeredOffice.district}, {SITE.registeredOffice.state} {SITE.registeredOffice.pin}<br/>
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+          </address>
         </div>
-        <div class="col-4 numeral">
-          <p class="eyebrow mb-2" style="font-family: var(--font-mono);">Identifiers</p>
-          <p>CIN: {SITE.cin}<br/>GSTIN: {SITE.gst}<br/>UDYAM: {SITE.udyam}<br/>PAN: {SITE.pan}</p>
+        <div>
+          <p class="eyebrow mb-2" style="color: var(--color-slate);">Identifiers</p>
+          <dl class="numeral grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+            <dt class="meta">CIN</dt><dd>{SITE.cin}</dd>
+            <dt class="meta">GSTIN</dt><dd>{SITE.gst}</dd>
+            <dt class="meta">UDYAM</dt><dd>{SITE.udyam}</dd>
+            <dt class="meta">PAN</dt><dd>{SITE.pan}</dd>
+          </dl>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Utility -->
-  <section style="background: var(--color-paper); border-top: 1px solid var(--rule-color);">
-    <div class="container-svge py-5 flex flex-wrap items-center justify-between gap-2 text-xs" style="color: var(--color-slate-2); font-family: var(--font-mono);">
-      <span>© {year} {SITE.legalName}. All rights reserved.</span>
-      <span class="flex items-center gap-3">
-        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full" style="background: var(--color-paper-3);">
+  <!-- BAND 3 · Utility -->
+  <section class="svge-footer-utility">
+    <div class="container-svge py-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+      <p class="meta">© {year} {SITE.legalName}. All rights reserved.</p>
+      <div class="flex items-center gap-3 flex-wrap">
+        <span class="svge-footer-pill" title="Site version and last publish date">
           <span class="w-1.5 h-1.5 rounded-full" style="background: var(--color-saffron);" aria-hidden="true"></span>
-          V3.2 · published {SITE.status.lastUpdate}
+          <span class="numeral">{version}</span>
+          <span class="meta opacity-70">published {lastUpdated}</span>
         </span>
-        <span class="hidden md:inline">Every number on this site reconciles with the DPR + IOCL LoI.</span>
-      </span>
+        <p class="meta hidden md:inline">Every number reconciles with the DPR and the IOCL LoI.</p>
+      </div>
     </div>
   </section>
 </footer>

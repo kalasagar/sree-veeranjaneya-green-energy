@@ -1,49 +1,168 @@
 ---
 /**
  * Sticky-stat scrollytelling: "What 24 hours look like."
- * Left rail pins; right column scrolls through one operating day. As each
- * moment crosses the viewport, the rail's stat/label updates.
+ * Left rail pins. As each moment crosses the viewport, the rail updates
+ * THREE cumulative gauges (feedstock in, raw biogas produced, CBG dispatched)
+ * — not a duplicate of the moment's number. So the rail is a running
+ * dashboard, not a snapshot.
  *
- * Reduced-motion: rail stays on the first moment; scroll still works.
+ * Reduced-motion: rail stays on step 1; scroll still works.
  * Used on the home page.
  */
 import { SITE } from '../lib/site';
 
 const mf = SITE.massFlow;
+
+// Per-step cumulative totals through the day. Hand-tuned so each gauge
+// progresses realistically as you scroll the moments.
 const moments = [
-  { t: '00:00', stat: mf.feedstockTpd.toString(),                    unit: 'tonnes feedstock',  label: 'Feedstock arrived',     body: 'Napier grass, paddy straw and dung from within a 40-km radius. Checked at the gate for moisture and contamination, weighed in, slip-numbered.' },
-  { t: '03:00', stat: mf.slurryToDigesterM3PerDay.toString(),         unit: 'm³ slurry',          label: 'Mixing tank → digester', body: 'Pre-blended with ' + mf.waterRecycledM3PerDay + ' m³ of recycled process water. The pre-digester homogenises before the CSTRs see it.' },
-  { t: 'all day', stat: '15,402',                                     unit: 'm³ working volume',  label: '4× CSTR · HRT 34 d',     body: 'Four digesters run the slow, anaerobic, methanogenic dance. Stirrers turn. Methanogens metabolise. No external heat input.' },
-  { t: '12:00', stat: mf.rawBiogasNm3PerDay.toLocaleString('en-IN'),  unit: 'Nm³ raw biogas',     label: 'Raw gas at outlet',      body: 'Roughly 60 % methane out of the digester. Then through the scrubbers + 2-tower VPSA to land at ≥' + mf.cbgMethanePct + ' % CH₄.' },
-  { t: '14:00', stat: mf.cbgTpd.toString(),                           unit: 'TPD CBG',            label: 'Compressed, dispatched', body: '250-bar cascade trucks fill at the outlet. Each load is dew-point-stamped and gas-analyser-cleared before it leaves. Out-of-spec gas is recycled, not dispatched.' },
-  { t: '17:00', stat: '~4',                                            unit: 'cascade trips',      label: 'On the road to IOCL',    body: 'Dispatch to IOCL retail outlets within ~' + mf.dispatchKmCap + ' km of the plant per LoI clause 5. Slip in hand. Reconciled monthly.' },
-  { t: 'after-COD', stat: mf.fomSolidTph.toString(),                  unit: 'TPH solid FOM',      label: 'Manure back to fields',  body: 'Solid Fermented Organic Manure (' + mf.fomLiquidM3PerDay + ' m³/day liquid co-product) returns to farmer fields in the same 40-km radius we sourced from. The loop closes.' },
+  {
+    t: '00:00',
+    label: 'Feedstock arrived',
+    stat: mf.feedstockTpd.toString(),
+    unit: 'tonnes feedstock',
+    body: 'Napier grass, paddy straw and dung from within a 40-km radius. Checked at the gate for moisture and contamination, weighed in, slip-numbered.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 0,    cbg: 0 },
+  },
+  {
+    t: '03:00',
+    label: 'Mixing tank → digester',
+    stat: mf.slurryToDigesterM3PerDay.toString(),
+    unit: 'm³ slurry',
+    body: 'Pre-blended with ' + mf.waterRecycledM3PerDay + ' m³ of recycled process water. The pre-digester homogenises before the CSTRs see it.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 0,    cbg: 0 },
+  },
+  {
+    t: 'all day',
+    label: '4× CSTR, HRT 34 days',
+    stat: '15,402',
+    unit: 'm³ working volume',
+    body: 'Four digesters run the slow, anaerobic, methanogenic dance. Stirrers turn. Methanogens metabolise. No external heat input.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 2400, cbg: 0 },
+  },
+  {
+    t: '12:00',
+    label: 'Raw gas at outlet',
+    stat: mf.rawBiogasNm3PerDay.toLocaleString('en-IN'),
+    unit: 'Nm³ raw biogas',
+    body: 'Roughly 60 % methane out of the digester. Then through the scrubbers and 2-tower VPSA to land at ≥' + mf.cbgMethanePct + ' % CH₄.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 4800, cbg: 0 },
+  },
+  {
+    t: '14:00',
+    label: 'Compressed, dispatched',
+    stat: mf.cbgTpd.toString(),
+    unit: 'TPD CBG',
+    body: '250-bar cascade trucks fill at the outlet. Each load is dew-point-stamped and gas-analyser-cleared before it leaves. Out-of-spec gas is recycled, not dispatched.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 7200, cbg: 2 },
+  },
+  {
+    t: '17:00',
+    label: 'On the road to IOCL',
+    stat: '~4',
+    unit: 'cascade trips',
+    body: 'Dispatch to IOCL retail outlets within about ' + mf.dispatchKmCap + ' km of the plant, per LoI clause 5. Slip in hand. Reconciled monthly.',
+    totals: { feedstock: mf.feedstockTpd, biogas: 9000, cbg: 4 },
+  },
+  {
+    t: 'after-COD',
+    label: 'Manure for the catchment',
+    stat: mf.fomSolidTph.toString(),
+    unit: 'TPH solid FOM',
+    body: 'Solid Fermented Organic Manure, plus ' + mf.fomLiquidM3PerDay + ' m³/day of liquid co-product, sold as an organic soil amendment in the same 40-km belt we source from. The loop closes commercially: straw and dung leave the field as either fuel or fertilizer.',
+    totals: { feedstock: mf.feedstockTpd, biogas: mf.rawBiogasNm3PerDay, cbg: mf.cbgTpd },
+  },
 ];
+
+// Daily targets the gauges progress against.
+const dailyMax = {
+  feedstock: mf.feedstockTpd,
+  biogas:    mf.rawBiogasNm3PerDay,
+  cbg:       mf.cbgTpd,
+};
+
+const initial = moments[0].totals;
 ---
-<section class="svge-card overflow-hidden" data-reveal>
-  <!-- Header band -->
-  <header class="px-6 sm:px-10 py-8 sm:py-10" style="background: var(--color-ink); color: var(--color-paper);">
+<section class="svge-card" data-reveal>
+  <!-- Header band. Rounds its own top corners (matching .svge-card) so the
+       dark fill stays clipped without needing overflow-hidden on the parent
+       — which would kill the sticky rail below. -->
+  <header class="px-6 sm:px-10 py-8 sm:py-10" style="background: var(--color-ink); color: var(--color-paper); border-top-left-radius: 4px; border-top-right-radius: 4px;">
     <p class="eyebrow" style="color: var(--color-gold);">A day in the data</p>
     <h3 class="mt-3 display" style="font-family: var(--font-display); color: var(--color-paper); font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.05; max-width: 22ch;">What 24 hours look like.</h3>
     <span class="block mt-5 w-12 h-px" style="background: var(--color-saffron);" aria-hidden="true"></span>
     <p class="mt-5 max-w-2xl" style="color: color-mix(in oklab, var(--color-paper) 82%, transparent);">
-      A pre-construction plant, in motion. Scroll through one operating day. The rail on the left updates with each moment.
+      Scroll through one operating day. The rail on the left keeps a running tally of feedstock processed, biogas produced, and CBG dispatched, so far in the day.
     </p>
   </header>
 
-  <div class="grid md:grid-cols-[280px_1fr]">
-    <!-- Sticky rail -->
+  <div class="grid md:grid-cols-[300px_1fr]">
+    <!-- Sticky running-totals dashboard -->
     <aside
-      class="md:sticky self-start p-6 sm:p-8 border-b md:border-b-0 md:border-r"
+      class="md:sticky self-start p-6 sm:p-7 border-b md:border-b-0 md:border-r"
       style={`top: calc(var(--header-h) + var(--status-h) + 24px); background: var(--color-paper-3); border-color: var(--rule-color);`}
       data-ditd-aside
+      aria-label="Cumulative running totals through the operating day"
     >
-      <p class="eyebrow" style="color: var(--color-slate-2);">Now showing</p>
-      <p class="mt-2 eyebrow" style="color: var(--color-saffron-text);" data-ditd-time>{moments[0].t}</p>
-      <p class="mt-5 numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: clamp(2.5rem, 5vw, 3.5rem); letter-spacing: -0.02em; line-height: 1;" data-ditd-stat>{moments[0].stat}</p>
-      <p class="meta mt-1" style="color: var(--color-slate-2);" data-ditd-unit>{moments[0].unit}</p>
-      <p class="mt-5 text-base font-semibold" style="color: var(--color-ink);" data-ditd-label>{moments[0].label}</p>
-      <p class="mt-6 meta" style="color: var(--color-slate-2);">Step <span data-ditd-index>1</span> of {moments.length}</p>
+      <!-- Progress header -->
+      <div class="flex items-baseline justify-between pb-4 mb-5 border-b" style="border-color: var(--rule-color);">
+        <p class="eyebrow" style="color: var(--color-saffron-text);">
+          Step <span class="numeral" data-ditd-index>1</span> / {moments.length}
+        </p>
+        <p class="meta numeral" style="color: var(--color-slate-2);" data-ditd-time>{moments[0].t}</p>
+      </div>
+
+      <!-- Three running gauges -->
+      <dl class="space-y-5">
+        {/* Feedstock processed */}
+        <div data-gauge="feedstock" data-max={dailyMax.feedstock}>
+          <div class="flex items-baseline justify-between gap-2">
+            <dt class="meta" style="color: var(--color-slate-2);">Feedstock processed</dt>
+            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.feedstock / dailyMax.feedstock) * 100)}</span>%</dd>
+          </div>
+          <p class="mt-2 flex items-baseline gap-2">
+            <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.feedstock}</span>
+            <span class="meta" style="color: var(--color-slate-2);">/ {dailyMax.feedstock} t</span>
+          </p>
+          <div class="mt-2 h-1 rounded-full overflow-hidden" style="background: color-mix(in oklab, var(--color-ink) 8%, transparent);">
+            <div class="h-full transition-all" style={`width: ${(initial.feedstock / dailyMax.feedstock) * 100}%; background: var(--color-forest); transition: width 600ms ease;`} data-gauge-bar></div>
+          </div>
+        </div>
+
+        {/* Raw biogas produced */}
+        <div data-gauge="biogas" data-max={dailyMax.biogas}>
+          <div class="flex items-baseline justify-between gap-2">
+            <dt class="meta" style="color: var(--color-slate-2);">Raw biogas produced</dt>
+            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.biogas / dailyMax.biogas) * 100)}</span>%</dd>
+          </div>
+          <p class="mt-2 flex items-baseline gap-2">
+            <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.biogas.toLocaleString('en-IN')}</span>
+            <span class="meta" style="color: var(--color-slate-2);">/ {dailyMax.biogas.toLocaleString('en-IN')} Nm³</span>
+          </p>
+          <div class="mt-2 h-1 rounded-full overflow-hidden" style="background: color-mix(in oklab, var(--color-ink) 8%, transparent);">
+            <div class="h-full" style={`width: ${(initial.biogas / dailyMax.biogas) * 100}%; background: #2C5282; transition: width 600ms ease;`} data-gauge-bar></div>
+          </div>
+        </div>
+
+        {/* CBG dispatched */}
+        <div data-gauge="cbg" data-max={dailyMax.cbg}>
+          <div class="flex items-baseline justify-between gap-2">
+            <dt class="meta" style="color: var(--color-slate-2);">CBG dispatched</dt>
+            <dd class="meta numeral" style="color: var(--color-slate-2);"><span data-gauge-pct>{Math.round((initial.cbg / dailyMax.cbg) * 100)}</span>%</dd>
+          </div>
+          <p class="mt-2 flex items-baseline gap-2">
+            <span class="numeral" style="font-family: var(--font-display); font-weight: 700; color: var(--color-ink); font-size: 1.625rem; letter-spacing: -0.02em; line-height: 1;" data-gauge-value>{initial.cbg}</span>
+            <span class="meta" style="color: var(--color-slate-2);">/ {dailyMax.cbg} TPD</span>
+          </p>
+          <div class="mt-2 h-1 rounded-full overflow-hidden" style="background: color-mix(in oklab, var(--color-ink) 8%, transparent);">
+            <div class="h-full" style={`width: ${(initial.cbg / dailyMax.cbg) * 100}%; background: var(--color-saffron); transition: width 600ms ease;`} data-gauge-bar></div>
+          </div>
+        </div>
+      </dl>
+
+      <p class="meta mt-6 pt-4 border-t leading-relaxed" style="color: var(--color-slate-2); border-color: var(--rule-color);">
+        Steady-state targets. At commissioning, real numbers replace these and the rail starts citing the dispatch slip.
+      </p>
     </aside>
 
     <!-- Scrolling moments -->
@@ -54,9 +173,9 @@ const moments = [
           data-ditd-step
           data-i={i + 1}
           data-time={m.t}
-          data-stat={m.stat}
-          data-unit={m.unit}
-          data-label={m.label}
+          data-feedstock={m.totals.feedstock}
+          data-biogas={m.totals.biogas}
+          data-cbg={m.totals.cbg}
         >
           <span class="numeral mt-1" style="font-family: var(--font-mono); font-size: 1rem; color: var(--color-slate-2);">{(i + 1).toString().padStart(2, '0')}</span>
           <div>
@@ -73,25 +192,71 @@ const moments = [
 
 <script is:inline data-astro-rerun>
   (function () {
-    var steps = document.querySelectorAll('[data-ditd-step]');
-    if (!steps.length || !('IntersectionObserver' in window)) return;
-    var time = document.querySelector('[data-ditd-time]');
-    var stat = document.querySelector('[data-ditd-stat]');
-    var unit = document.querySelector('[data-ditd-unit]');
-    var label = document.querySelector('[data-ditd-label]');
-    var index = document.querySelector('[data-ditd-index]');
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting && e.intersectionRatio > 0.35) {
-          var el = e.target;
-          if (time) time.textContent = el.dataset.time;
-          if (stat) stat.textContent = el.dataset.stat;
-          if (unit) unit.textContent = el.dataset.unit;
-          if (label) label.textContent = el.dataset.label;
-          if (index) index.textContent = el.dataset.i;
-        }
-      });
-    }, { threshold: [0.35, 0.55], rootMargin: '-30% 0px -30% 0px' });
-    steps.forEach(function (s) { obs.observe(s); });
+    var steps = Array.from(document.querySelectorAll('[data-ditd-step]'));
+    if (!steps.length) return;
+
+    var time   = document.querySelector('[data-ditd-time]');
+    var index  = document.querySelector('[data-ditd-index]');
+    var gauges = Array.from(document.querySelectorAll('[data-gauge]'));
+
+    function gaugeOf(name) {
+      return gauges.filter(function (g) { return g.getAttribute('data-gauge') === name; })[0];
+    }
+    var gFeedstock = gaugeOf('feedstock');
+    var gBiogas    = gaugeOf('biogas');
+    var gCbg       = gaugeOf('cbg');
+
+    function setGauge(g, value) {
+      if (!g) return;
+      var max = parseFloat(g.getAttribute('data-max')) || 1;
+      var pct = Math.min(100, Math.round((value / max) * 100));
+      var valEl = g.querySelector('[data-gauge-value]');
+      var pctEl = g.querySelector('[data-gauge-pct]');
+      var bar   = g.querySelector('[data-gauge-bar]');
+      if (valEl) {
+        var formatted = value >= 1000 ? value.toLocaleString('en-IN') : (Number.isInteger(value) ? value.toString() : value.toFixed(1));
+        valEl.textContent = formatted;
+      }
+      if (pctEl) pctEl.textContent = pct;
+      if (bar)   bar.style.width = pct + '%';
+    }
+
+    function applyStep(el) {
+      if (!el) return;
+      if (time)  time.textContent  = el.dataset.time;
+      if (index) index.textContent = el.dataset.i;
+      setGauge(gFeedstock, parseFloat(el.dataset.feedstock));
+      setGauge(gBiogas,    parseFloat(el.dataset.biogas));
+      setGauge(gCbg,       parseFloat(el.dataset.cbg));
+    }
+
+    // Deterministic: on each scroll tick, the active step is the LAST one whose
+    // top has crossed an anchor line (40 % from the viewport top). This means
+    // scrolling down always advances 1 → 2 → … → 7 in order, and scrolling up
+    // always goes 7 → 6 → … → 1. No race condition between IntersectionObserver
+    // entries.
+    var lastIdx = -1;
+    var ticking = false;
+    function compute() {
+      var anchorY = window.innerHeight * 0.4;
+      var idx = 0;
+      for (var i = 0; i < steps.length; i++) {
+        if (steps[i].getBoundingClientRect().top <= anchorY) idx = i;
+        else break;
+      }
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        applyStep(steps[idx]);
+      }
+      ticking = false;
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(compute);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    compute();
   })();
 </script>

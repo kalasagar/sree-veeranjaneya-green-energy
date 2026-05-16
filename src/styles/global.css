@@ -450,6 +450,64 @@
   /* SVG draw-on-scroll */
   [data-draw] path { stroke-dasharray: var(--draw-length, 1200); stroke-dashoffset: var(--draw-length, 1200); transition: stroke-dashoffset 1.6s ease 0.05s; }
   [data-draw][data-drawn] path { stroke-dashoffset: 0; }
+
+  /* ---- Footer ---- */
+  .svge-footer { color: var(--color-slate); }
+
+  .svge-footer-closing {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .svge-footer-signoff {
+    color: var(--color-paper);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .svge-footer-cta {
+    background: var(--color-saffron);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 180ms ease;
+  }
+  .svge-footer-cta:hover { background: var(--color-saffron-light); color: var(--color-paper); }
+
+  .svge-footer-colophon { background: var(--color-paper-2); }
+  .svge-footer-colophon a {
+    color: var(--color-slate);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .svge-footer-colophon a:hover {
+    color: var(--color-saffron-text);
+    border-bottom-color: var(--color-saffron-text);
+  }
+
+  .svge-footer-utility {
+    background: var(--color-paper);
+    border-top: 1px solid var(--rule-color);
+  }
+  .svge-footer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--color-paper-2);
+    border: 1px solid var(--rule-color);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--color-slate);
+  }
 }
 
 /* =========================================================
@@ -482,6 +540,18 @@
     display: flex; flex-direction: column; justify-content: flex-end;
     padding-bottom: var(--space-6);
   }
+
+  /* Hero text legibility halo. Paired with the vignette intensifier in
+     FullBleedHero, this keeps paper-coloured H1/sub/CTA text readable over
+     bright video frames (sun, flame, sky) without darkening the video. */
+  .svge-hero-content-mark h1,
+  .svge-hero-content-mark h1 span,
+  .svge-hero-content-mark p {
+    text-shadow:
+      0 1px 2px  rgba(10, 20, 16, 0.45),
+      0 2px 18px rgba(10, 20, 16, 0.55);
+  }
+  .svge-hero-content-mark .btn { text-shadow: 0 1px 2px rgba(10, 20, 16, 0.35); }
 }
 
 /* =========================================================

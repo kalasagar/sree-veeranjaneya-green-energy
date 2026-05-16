@@ -31,7 +31,7 @@ export const SITE = {
     h1Mid: 'Burned in your engine tomorrow.',
     h1Bottom: "We're closing that loop.",
     sub:
-      "Every winter, India burns about 14 million tonnes of paddy straw. Every year, India imports 85% of its crude oil. Our small CBG plant in Thatipadu, Vizianagaram is one answer to both. We sell clean fuel to Indian Oil under a signed Letter of Intent, and send organic manure back to the farmers we buy from.",
+      "Every winter, India burns about 14 million tonnes of paddy straw. The country imports 85% of its crude oil. Our 4-TPD Compressed Bio-Gas plant in Thatipadu, Vizianagaram is one answer to both. We hold an Indian Oil Letter of Intent dated 04 October 2024 and a 24-month clock to commission. The fuel is sold to IOCL; the organic manure that comes out alongside is sold across the same forty-kilometre farmer catchment we source from.",
     ctas: [
       { label: 'Read the project', href: '/project/', tone: 'primary' as const },
       { label: 'Are you a farmer?', href: '/farmers/', tone: 'ghost' as const },
@@ -68,7 +68,7 @@ export const SITE = {
     { value: '9,600', unit: 'Nm³/day', k: 'Raw biogas' },
     { value: '500', unit: 'kW', k: 'Captive solar', framing: 'Plant runs on its own power.' },
     { value: '52', unit: 'm³/day', k: 'Liquid manure' },
-    { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, returned to farmer fields.' },
+    { value: '1', unit: 'TPH', k: 'Solid FOM', framing: 'Fermented Organic Manure, sold as a soil amendment under the MDA scheme.' },
     { value: '2.63', unit: 'ac', k: 'Plant land', framing: 'Owned outright by the Managing Director.' },
     { value: '~₹33', unit: 'Cr', k: 'Total project cost', framing: 'Promoter-led, public-sector term loan, ₹6.7 Cr confirmed central incentives.' },
     { value: 'WHITE', k: 'CPCB category', framing: 'The lowest pollution tier. Energy-crop CBG plants are classified WHITE.' },
@@ -84,8 +84,8 @@ export const SITE = {
     {
       value: '~365',
       unit: 'TPA',
-      k: 'Organic manure returning to soil',
-      framing: 'Rebuilding the soil organic carbon decades of chemical farming stripped out.',
+      k: 'Organic manure for the catchment',
+      framing: 'Sold as a soil amendment in the same belt we source from. Rebuilds organic carbon that decades of chemical farming stripped out.',
     },
     {
       value: '4',
@@ -443,7 +443,7 @@ export const SITE = {
     { value: '~9,600', unit: 'Nm³/day', label: 'Raw biogas', framing: 'Volume at standard temperature and pressure.', source: 'DPR §4.2' },
     { value: '~80', unit: 'buses/day', label: 'Equivalent CNG fuelling', framing: 'A 12-metre city bus on CNG burns about 50 kg/day.', source: 'CBG output divided by typical CNG bus consumption' },
     { value: '~29,000', unit: 'TPA', label: 'Feedstock out of burn cycle', framing: 'Paddy straw, Napier, and dung diverted from open-field burning or waste.', source: 'DPR §3.1 feedstock plan' },
-    { value: '~365', unit: 'TPA', label: 'Solid FOM returned to soil', framing: 'Fermented Organic Manure sent back to farmer fields.', source: 'DPR §4.6 digestate' },
+    { value: '~365', unit: 'TPA', label: 'Solid FOM for the catchment', framing: 'Fermented Organic Manure, sold as a soil amendment to farmers across the same supply belt.', source: 'DPR §4.6 digestate' },
     { value: '~10,000', unit: 'tCO₂e/yr', label: 'Avoided emissions', framing: 'Versus straw burning and diesel/CNG displacement. Indicative under the SATAT scheme.', source: 'MoPNG SATAT prospectus' },
     { value: '~120', unit: 'jobs', label: 'Direct and indirect roles', framing: '47 on the plant payroll, plus about 73 in aggregation, transport, and farmer-side roles within 40 km.', source: 'DPR §5 manpower plan' },
   ],
