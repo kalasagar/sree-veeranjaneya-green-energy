@@ -76,6 +76,9 @@ const fights = [
           <stop offset="70%" stop-color="var(--color-paper)" stop-opacity="0.4"/>
           <stop offset="100%" stop-color="var(--color-paper)" stop-opacity="0"/>
         </radialGradient>
+        <!-- One closed loop path the flow particles ride. Keep coords
+             matching the four-arc segments below. -->
+        <path id="loopFullPath" d="M 500 160 A 220 220 0 0 1 720 380 A 220 220 0 0 1 500 600 A 220 220 0 0 1 280 380 A 220 220 0 0 1 500 160" fill="none"/>
         <marker id="loopArrow" viewBox="0 0 14 14" refX="11" refY="7" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
           <path d="M0,1 L12,7 L0,13 z" fill="var(--color-saffron)"></path>
         </marker>
@@ -142,6 +145,24 @@ const fights = [
         <path d="M 280 380 A 220 220 0 0 1 500 160" marker-end="url(#loopArrow)"></path>
       </g>
 
+      <!-- Flow particles riding the loop. Four saffron dots, evenly
+           spaced by negative-begin offsets, looping every 16s. Hidden
+           under prefers-reduced-motion via CSS. -->
+      <g class="loop-particles" aria-hidden="true">
+        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
+          <animateMotion dur="16s" repeatCount="indefinite" begin="0s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
+        </circle>
+        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
+          <animateMotion dur="16s" repeatCount="indefinite" begin="-4s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
+        </circle>
+        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
+          <animateMotion dur="16s" repeatCount="indefinite" begin="-8s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
+        </circle>
+        <circle r="6" fill="var(--color-saffron)" opacity="0.9">
+          <animateMotion dur="16s" repeatCount="indefinite" begin="-12s" rotate="auto"><mpath href="#loopFullPath"/></animateMotion>
+        </circle>
+      </g>
+
       <!-- Inflow rail: 3 dashed lines from chips into the plant node -->
       <g class="loop-inflows" fill="none" stroke="var(--color-saffron-text)" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.7">
         <line x1="900" y1="120" x2="700" y2="260" marker-end="url(#inflowArrow)"></line>
@@ -159,28 +180,60 @@ const fights = [
         <text x="928" y="335">Cattle dung</text>
       </g>
 
-      <!-- Four cardinal nodes (ink-filled discs with iconography + label) -->
+      <!-- Four cardinal nodes — clickable, ink-filled, iconographic. Plant
+           node sits at slightly larger radius (heart-of-operation cue). -->
       <g class="loop-nodes">
-        <g transform="translate(500,160)">
-          <circle r="70" fill="var(--color-ink)"></circle>
-          <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconPaddy"/></g>
-          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="20" style="text-transform: uppercase;">Farmer's field</text>
-        </g>
-        <g transform="translate(720,380)">
-          <circle r="70" fill="var(--color-ink)"></circle>
-          <g transform="translate(0,-10)" color="var(--color-gold)"><use href="#iconDigester"/></g>
-          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Our plant</text>
-        </g>
-        <g transform="translate(500,600)">
-          <circle r="70" fill="var(--color-ink)"></circle>
-          <g transform="translate(0,-12)"><use href="#iconFlame"/></g>
-          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Indian Oil</text>
-        </g>
-        <g transform="translate(280,380)">
-          <circle r="70" fill="var(--color-ink)"></circle>
-          <g transform="translate(0,-8)" color="var(--color-gold)"><use href="#iconSeedling"/></g>
-          <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">40 km belt</text>
-        </g>
+        <a href={link('/farmers/')} class="loop-node-link" aria-label="Farmer's field — 72 TPD feedstock harvested">
+          <g transform="translate(500,160)">
+            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="70" fill="var(--color-ink)"></circle>
+            <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconPaddy"/></g>
+            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="20" style="text-transform: uppercase;">Farmer's field</text>
+          </g>
+        </a>
+        <a href={link('/plant/')} class="loop-node-link" aria-label="Our plant — 4 CSTR digesters, 9,600 Nm³/day raw biogas">
+          <g transform="translate(720,380)">
+            <circle class="loop-node-halo" r="90" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="78" fill="var(--color-ink)"></circle>
+            <g transform="translate(0,-12)" color="var(--color-gold)"><use href="#iconDigester"/></g>
+            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">Our plant</text>
+          </g>
+        </a>
+        <a href={link('/build/#capital')} class="loop-node-link" aria-label="Indian Oil offtake — 4 TPD CBG dispatched">
+          <g transform="translate(500,600)">
+            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="70" fill="var(--color-ink)"></circle>
+            <g transform="translate(0,-12)"><use href="#iconFlame"/></g>
+            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="22" style="text-transform: uppercase;">Indian Oil</text>
+          </g>
+        </a>
+        <a href={link('/plant/#glossary')} class="loop-node-link" aria-label="40 km belt — ~365 TPA FOM returned to soil">
+          <g transform="translate(280,380)">
+            <circle class="loop-node-halo" r="80" fill="none" stroke="var(--color-saffron)" stroke-width="2" opacity="0"></circle>
+            <circle r="70" fill="var(--color-ink)"></circle>
+            <g transform="translate(0,-8)" color="var(--color-gold)"><use href="#iconSeedling"/></g>
+            <text font-family="var(--font-mono)" font-size="11" font-weight="600" letter-spacing="0.14em" fill="var(--color-paper)" text-anchor="middle" y="24" style="text-transform: uppercase;">40 km belt</text>
+          </g>
+        </a>
+      </g>
+
+      <!-- Throughput tags — small mono-cap numerals outside each node. -->
+      <g class="loop-throughput" font-family="var(--font-mono)" font-weight="600" letter-spacing="0.12em" fill="var(--color-ink)" style="text-transform: uppercase;">
+        <!-- Field: above (north) -->
+        <text x="500" y="62" text-anchor="middle" font-size="13" fill="var(--color-saffron-text)">72 TPD feedstock</text>
+        <text x="500" y="82" text-anchor="middle" font-size="10" fill="var(--color-slate)">harvested inside 40 km</text>
+
+        <!-- Plant: right (east) -->
+        <text x="848" y="370" text-anchor="start" font-size="13" fill="var(--color-saffron-text)">9,600 Nm³/day</text>
+        <text x="848" y="390" text-anchor="start" font-size="10" fill="var(--color-slate)">raw biogas · ≥90% CH₄</text>
+
+        <!-- Indian Oil: below (south) -->
+        <text x="500" y="694" text-anchor="middle" font-size="13" fill="var(--color-saffron-text)">4 TPD CBG · ₹46/kg floor</text>
+        <text x="500" y="712" text-anchor="middle" font-size="10" fill="var(--color-slate)">15-yr Commercial Agreement</text>
+
+        <!-- 40 km belt: left (west) -->
+        <text x="152" y="370" text-anchor="end" font-size="13" fill="var(--color-saffron-text)">~365 TPA FOM</text>
+        <text x="152" y="390" text-anchor="end" font-size="10" fill="var(--color-slate)">+ 52 m³/day liquid manure</text>
       </g>
 
       <!-- Flow labels on the saffron arcs -->
@@ -255,12 +308,33 @@ const fights = [
     transition: stroke-dashoffset 1.2s cubic-bezier(0.65, 0, 0.35, 1);
   }
   [data-drawn] .loop-ring path { stroke-dashoffset: 0; }
+
+  /* Node links: keyboard focus + hover affordance. */
+  .loop-node-link {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .loop-node-link .loop-node-halo {
+    transition: opacity 0.18s ease;
+  }
+  .loop-node-link:hover .loop-node-halo,
+  .loop-node-link:focus-visible .loop-node-halo {
+    opacity: 0.55;
+  }
+  .loop-node-link:focus { outline: none; }
+  .loop-node-link:focus-visible { outline: none; }
+
   @media (prefers-reduced-motion: reduce) {
     .loop-ring path {
       stroke-dasharray: none;
       stroke-dashoffset: 0;
       transition: none;
     }
+    /* Hide flow particles entirely; SMIL keeps running but the dots
+       are not visible. */
+    .loop-particles { display: none; }
+    .loop-node-link .loop-node-halo,
+    .loop-node-link:hover .loop-node-halo { transition: none; }
   }
   .loop-caption {
     text-align: left;

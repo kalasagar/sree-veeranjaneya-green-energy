@@ -40,7 +40,7 @@ const fmt = new Intl.DateTimeFormat('en-IN', { dateStyle: 'long' });
 
   <!-- Latest 3 posts in a hairline grid, full width below the spread -->
   {posts.length > 0 && (
-    <ol class="mt-10 lg:mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-px overflow-hidden rounded" style="background: var(--rule-color);" role="list">
+    <ol class={`mt-10 lg:mt-12 grid gap-px overflow-hidden rounded ${posts.length >= 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : posts.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-1'}`} style="background: var(--rule-color);" role="list">
       {posts.map(p => (
         <li>
           <a href={link(`/news/${p.id}/`)} class="block h-full p-5 no-underline" style="background: var(--color-paper);">
