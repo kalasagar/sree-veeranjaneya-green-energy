@@ -7,6 +7,7 @@ import PullQuote from '../components/PullQuote.astro';
 import FounderAvatar from '../components/FounderAvatar.astro';
 import WhatOneTonneDoes from '../components/WhatOneTonneDoes.astro';
 import ComparisonCards from '../components/ComparisonCards.astro';
+import Mark from '../components/Mark.astro';
 import { SITE } from '../lib/site';
 
 const aboutStats = [
@@ -35,12 +36,67 @@ const aboutStats = [
     </p>
   </FullBleedHero>
 
-  <!-- Lead paragraph (editorial) -->
-  <Section narrow>
-    <div class="prose-svge drop-cap">
-      <p>The plant is one of about 152 SATAT CBG projects in operation or under construction nationally, and one of seven in Andhra Pradesh. The technology partner is Raj Process Equipments &amp; Systems, Pune. The plant is built to IS 16087:2016 and classified WHITE by the CPCB. The build is privately financed, with three confirmed central-government incentives (MNRE CFA, AGRL, FOM MDA) on the public side.</p>
-      <p>We named the company after the local form of Lord Hanuman, Veeranjaneya, because Suresh's family has lived in this part of Andhra for as long as anyone can remember. The mark itself is secular: a leaf and a flame. The name carries the heritage; the mark does not have to.</p>
-    </div>
+  <!-- Where SVGE sits — facts as a data sheet, not a paragraph. -->
+  <Section eyebrow="Where SVGE sits" title="One small plant in a large national pipeline.">
+    <dl class="svge-about-facts" aria-label="Project context facts">
+      <div class="svge-about-fact">
+        <dt class="eyebrow">Pipeline position</dt>
+        <dd>
+          <span class="svge-about-fact-numeral">1 of ~152</span>
+          <span class="svge-about-fact-meta">SATAT CBG plants nationally</span>
+          <span class="svge-about-fact-meta">1 of 7 in Andhra Pradesh</span>
+        </dd>
+      </div>
+      <div class="svge-about-fact">
+        <dt class="eyebrow">CPCB pollution category</dt>
+        <dd>
+          <span class="svge-about-fact-numeral svge-about-fact-badge">WHITE</span>
+          <span class="svge-about-fact-meta">The lowest-impact tier. Energy-crop CBG plants are classified WHITE.</span>
+        </dd>
+      </div>
+      <div class="svge-about-fact">
+        <dt class="eyebrow">Engineering spec</dt>
+        <dd>
+          <span class="svge-about-fact-numeral">IS 16087:2016</span>
+          <span class="svge-about-fact-meta">BIS specification for compressed bio-gas as automotive fuel.</span>
+        </dd>
+      </div>
+      <div class="svge-about-fact">
+        <dt class="eyebrow">Technology partner</dt>
+        <dd>
+          <span class="svge-about-fact-numeral svge-about-fact-numeral--text">Raj Process</span>
+          <span class="svge-about-fact-meta">Equipments &amp; Systems Pvt Ltd, Pune. SATAT-approved EPC.</span>
+        </dd>
+      </div>
+      <div class="svge-about-fact">
+        <dt class="eyebrow">Capital structure</dt>
+        <dd>
+          <span class="svge-about-fact-numeral svge-about-fact-numeral--text">Privately financed</span>
+          <span class="svge-about-fact-meta">Full capital structure shared with qualified lenders on request.</span>
+        </dd>
+      </div>
+      <div class="svge-about-fact">
+        <dt class="eyebrow">Central incentives</dt>
+        <dd>
+          <span class="svge-about-fact-numeral svge-about-fact-numeral--text">3 schemes</span>
+          <span class="svge-about-fact-meta">MNRE CFA · AGRL · FOM MDA. All confirmed, not applied-for.</span>
+        </dd>
+      </div>
+    </dl>
+  </Section>
+
+  <!-- The name and the mark — heritage block, editorial register. -->
+  <Section bg="paper-2">
+    <article class="svge-about-heritage" data-reveal>
+      <div class="svge-about-heritage-mark" aria-hidden="true">
+        <Mark size={120} decorative />
+      </div>
+      <div class="svge-about-heritage-text">
+        <p class="eyebrow" style="color: var(--color-saffron-text);">The name &amp; the mark</p>
+        <p class="svge-about-heritage-headline">A leaf and a flame.</p>
+        <p class="svge-about-heritage-body">We named the company after the local form of Lord Hanuman, <em>Veeranjaneya</em>, because Suresh's family has lived in this part of Andhra for as long as anyone can remember. The mark itself is secular: a leaf and a flame. The name carries the heritage; the mark does not have to.</p>
+      </div>
+    </article>
   </Section>
 
   <!-- What one tonne does — the circularity story in three sentences. -->
@@ -163,3 +219,107 @@ const aboutStats = [
     </div>
   </Section>
 </Base>
+
+<style>
+  /* Where SVGE sits — 6-cell hairline data sheet */
+  .svge-about-facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--rule-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .svge-about-facts { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .svge-about-facts { grid-template-columns: repeat(3, 1fr); } }
+  .svge-about-fact {
+    background: var(--color-paper);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .svge-about-fact dt { color: var(--color-slate-2); }
+  .svge-about-fact dd { display: flex; flex-direction: column; gap: 0.5rem; margin: 0; }
+  .svge-about-fact-numeral {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--color-ink);
+  }
+  .svge-about-fact-numeral--text {
+    font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+  }
+  .svge-about-fact-badge {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    padding: 0.25rem 0.65rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+  }
+  .svge-about-fact-meta {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--color-slate);
+  }
+
+  /* Heritage — editorial spread, mark + naming story */
+  .svge-about-heritage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 768px) {
+    .svge-about-heritage {
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+    }
+  }
+  .svge-about-heritage-mark {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    border: 1px solid var(--rule-color);
+    border-radius: 0.5rem;
+    background: var(--color-paper);
+  }
+  @media (min-width: 768px) {
+    .svge-about-heritage-mark { padding: 1.5rem; }
+  }
+  .svge-about-heritage-text { max-width: 52ch; }
+  .svge-about-heritage-headline {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--color-ink);
+  }
+  .svge-about-heritage-headline::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    margin-top: 0.875rem;
+    background: var(--color-saffron);
+  }
+  .svge-about-heritage-body {
+    margin-top: 1.25rem;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--color-ink);
+  }
+  .svge-about-heritage-body em {
+    font-style: italic;
+    color: var(--color-saffron-text);
+  }
+</style>

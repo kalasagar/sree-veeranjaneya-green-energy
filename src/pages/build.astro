@@ -8,14 +8,12 @@ import Countdown from '../components/Countdown.astro';
 import TimelineRail from '../components/TimelineRail.astro';
 import ClearanceMatrix from '../components/ClearanceMatrix.astro';
 import SATATPositioner from '../components/SATATPositioner.astro';
-import CapitalFlow from '../components/CapitalFlow.astro';
 import PlantMap from '../components/PlantMap.astro';
 import Stat from '../components/Stat.astro';
 import { SITE } from '../lib/site';
 
 const chips = [
   { id: 'status', label: 'Status' },
-  { id: 'capital', label: 'Capital' },
   { id: 'clearances', label: 'Clearances' },
   { id: 'site', label: 'Site' },
   { id: 'timeline', label: 'Timeline' },
@@ -65,11 +63,6 @@ const chips = [
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {SITE.plantStats.slice(0, 4).map(s => <Stat value={s.value} unit={s.unit} label={s.k} framing={s.framing} />)}
     </div>
-  </Section>
-
-  <!-- Capital -->
-  <Section id="capital" eyebrow="Capital" title="How the project is funded.">
-    <CapitalFlow />
   </Section>
 
   <!-- Clearances -->
