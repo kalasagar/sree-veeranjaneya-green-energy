@@ -7,7 +7,7 @@ export async function GET(context: { site: string | URL }) {
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
   return rss({
-    title: `${SITE.name} — News`,
+    title: `${SITE.name} · News`,
     description: 'Monthly receipts from the SVGE construction record.',
     site: context.site,
     items: posts.map(p => ({

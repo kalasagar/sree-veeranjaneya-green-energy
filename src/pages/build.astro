@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
-import Kicker from '../components/Kicker.astro';
 import ChipRail from '../components/ChipRail.astro';
 import Countdown from '../components/Countdown.astro';
 import TimelineRail from '../components/TimelineRail.astro';
@@ -31,10 +30,10 @@ const chips = [
 ---
 <Base title="The Build" description="₹33 Cr. ₹6.7 Cr in incentives. Seven clearances. 120 jobs. The whole build, in numbers." heroOver={true}>
   <FullBleedHero
-    banner="project_plant_render"
-    alt="Aerial view of the plant site surrounded by paddy fields."
+    banner="build_concrete_pour"
+    alt="A crew guiding wet concrete down a chute at golden hour on a rural Andhra plant site."
     eyebrow="The Build"
-    objectPosition="50% 20%"
+    objectPosition="50% 50%"
     height="xl"
   >
     <h1 class="display text-[color:var(--color-paper)] mt-3 max-w-4xl" style="font-size: clamp(2rem, 6vw, 5rem);">
@@ -47,7 +46,6 @@ const chips = [
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="The whole build, in numbers" deck='A thirty-three-crore build, with <span style="color: var(--color-saffron-text);">six and a half crore in incentives</span>, seven clearances, and a hundred and twenty jobs to come.' maxCh={34} />
   <ChipRail items={chips} />
 
   <!-- Status -->

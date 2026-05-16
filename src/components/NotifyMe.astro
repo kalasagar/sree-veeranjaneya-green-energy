@@ -86,7 +86,7 @@ const cardClass = dark
       const status = form.parentElement?.querySelector<HTMLElement>('.svge-notify-status');
       const btn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
       const orig = btn?.textContent;
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
       if (status) { status.textContent = ''; status.style.color = ''; }
       try {
         const r = await fetch(form.action, {
@@ -96,7 +96,7 @@ const cardClass = dark
         });
         if (r.ok) {
           form.reset();
-          if (status) { status.textContent = 'Thanks — you\'re on the list. We\'ll be in touch.'; status.style.color = '#FFB300'; }
+          if (status) { status.textContent = "Thanks. You're on the list. We'll be in touch."; status.style.color = '#FFB300'; }
         } else if (form.action.includes('REPLACE_WITH_FORMSPREE_ID')) {
           if (status) { status.textContent = 'Form not yet wired in dev. Email svge.india@gmail.com.'; status.style.color = '#FFB300'; }
         } else {

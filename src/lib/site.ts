@@ -33,7 +33,7 @@ export const SITE = {
     sub:
       "Every winter, India burns about 14 million tonnes of paddy straw. The country imports 85% of its crude oil. Our 4-TPD Compressed Bio-Gas plant in Thatipadu, Vizianagaram is one answer to both. We hold an Indian Oil Letter of Intent dated 04 October 2024 and a 24-month clock to commission. The fuel is sold to IOCL; the organic manure that comes out alongside is sold across the same forty-kilometre farmer catchment we source from.",
     ctas: [
-      { label: 'Read the project', href: '/project/', tone: 'primary' as const },
+      { label: 'Read the build', href: '/build/', tone: 'primary' as const },
       { label: 'Are you a farmer?', href: '/farmers/', tone: 'ghost' as const },
     ],
   },
@@ -138,7 +138,7 @@ export const SITE = {
     },
     {
       label: 'I want to work at SVGE',
-      href: '/careers/',
+      href: '/work/#careers',
       hint: 'First hiring tranche begins around plant commissioning (target Q3 2026).',
     },
     {

@@ -15,7 +15,7 @@ const hotspots = [
   { id: 'scrub', x: 540, y: 170, label: 'Scrubbers and activated carbon', body: 'Water scrubber, then chemical scrubber, then activated-carbon polish. Strips CO₂, H₂S, and moisture before VPSA.', meta: 'Step 05a' },
   { id: 'vpsa', x: 620, y: 170, label: '2-tower VPSA', body: 'Vacuum Pressure Swing Adsorption. Outlet stays at ≥' + cap.methaneMinPct + ' % CH₄. The PSA dryer drops dew point to ' + cap.gasDryerDewPointC + ' °C.', meta: 'Step 05b, upgrade' },
   { id: 'comp', x: 710, y: 200, label: 'Compression and surge', body: 'CBG is compressed to ' + cap.compressionBar + ' bar. The surge vessel buffers between VPSA cycles and the compressor draw.', meta: 'Step 06' },
-  { id: 'dispatch', x: 800, y: 220, label: 'Cascade dispatch', body: 'IS 15319 cascade trailers. Gas analyser + dew-point sensor stamp every dispatch slip. Out-of-spec gas is recycled, never loaded.', meta: 'Step 07–08' },
+  { id: 'dispatch', x: 800, y: 220, label: 'Cascade dispatch', body: 'IS 15319 cascade trailers. Gas analyser + dew-point sensor stamp every dispatch slip. Out-of-spec gas is recycled, never loaded.', meta: 'Step 07-08' },
 ];
 
 const initial = hotspots[2]; // CSTR is default

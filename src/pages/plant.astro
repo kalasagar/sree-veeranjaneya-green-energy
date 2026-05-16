@@ -15,10 +15,10 @@ import Stat from '../components/Stat.astro';
 import { SITE } from '../lib/site';
 
 const eightSteps = [
-  { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20–25% solids, or paddy straw + cattle dung mix. Sourced via 5-year contract farming and direct supply from farmers within a 40-km radius of the plant.' },
+  { n: '01', t: 'Feedstock receipt', d: '72 TPD Napier grass at 20-25% solids, or paddy straw + cattle dung mix. Sourced via 5-year contract farming and direct supply from farmers within a 40-km radius of the plant.' },
   { n: '02', t: 'Mixing tank', d: 'Feedstock combined with ~145 m³/day of recycled process water. Total ~216 m³/day slurry flows to the digester.' },
   { n: '03', t: 'Anaerobic digestion', d: '4 × CSTR-type digesters (26 m × 8.63 m, total 15,402 m³). 34-day residence. Outputs 9,500 Nm³/day of raw biogas.' },
-  { n: '04', t: 'Slurry separation', d: 'Solid–liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM).' },
+  { n: '04', t: 'Slurry separation', d: 'Solid-liquid separator yields 52 m³/day liquid manure and 1 TPH solid Fermented Organic Manure (FOM).' },
   { n: '05', t: 'Gas purification', d: 'Water scrubber → chemical scrubber → activated carbon filter → two-tower VPSA system. Strips CO₂, H₂S, and moisture to ≥90% methane.' },
   { n: '06', t: 'Compression & buffer', d: 'Purified CBG compressed to 250 bar and stored in a surge vessel.' },
   { n: '07', t: 'Dispatch QC', d: 'Continuous gas analysers (CH₄, CO₂, O₂, H₂S) and a dew-point sensor stamp each dispatch slip. Out-of-spec gas is recycled, not loaded.' },
@@ -35,14 +35,14 @@ const isSpec = [
 
 const machinery = [
   ['Anaerobic Digester (CSTR Type)', '4 No.', 'RCC/MS with Balloon', 'The heart of the plant. Four units of 26 m × 8.63 m each, total 15,402 m³.'],
-  ['Biogas Blower with FLP Motor & VFD', '2 No. (1W+1S)', '—', 'Flameproof motor on VFD, one working + one standby for 24×360 ops.'],
+  ['Biogas Blower with FLP Motor & VFD', '2 No. (1W+1S)', 'n/a', 'Flameproof motor on VFD, one working + one standby for 24×360 ops.'],
   ['Water Scrubber', '1 No.', 'HDPE', 'High-pressure water scrubbing strips bulk CO₂ before fine cleanup.'],
   ['Chemical Scrubber', '1 No.', 'SS304', 'Polishes residual H₂S with a chemical sorbent. SS304 needed for sulphidic service.'],
   ['Activated Carbon Filter', '1 No.', 'C.S.', 'Last polishing stage for trace H₂S and VOCs before the VPSA inlet.'],
-  ['2-Tower VPSA Biogas Purification Plant', '2 No.', 'S.S./C.S.', 'The methane-vs-CO₂ separator. 96–98% methane recovery in industry; SVGE contracted floor is ≥90%.'],
+  ['2-Tower VPSA Biogas Purification Plant', '2 No.', 'S.S./C.S.', 'The methane-vs-CO₂ separator. 96-98% methane recovery in industry; SVGE contracted floor is ≥90%.'],
   ['Biogas Surge Vessel', '1 No.', 'C.S.', 'Levels pressure between VPSA cycles and compressor draw.'],
-  ['Gas Analysers (CH₄, CO₂, O₂, H₂S)', '1 No.', '—', 'Continuous online analysers. Out-of-spec values trigger recycle, never dispatch.'],
-  ['Dew Point Sensor', '1 No.', '—', 'Verifies the PSA dryer delivers −40 °C dew point at the cascade fill point.'],
+  ['Gas Analysers (CH₄, CO₂, O₂, H₂S)', '1 No.', 'n/a', 'Continuous online analysers. Out-of-spec values trigger recycle, never dispatch.'],
+  ['Dew Point Sensor', '1 No.', 'n/a', 'Verifies the PSA dryer delivers −40 °C dew point at the cascade fill point.'],
 ];
 
 const chips = [

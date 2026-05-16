@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
-import Kicker from '../components/Kicker.astro';
 import ChipRail from '../components/ChipRail.astro';
 import Mark from '../components/Mark.astro';
 import PullQuote from '../components/PullQuote.astro';
@@ -55,7 +54,6 @@ const facts: [string, string][] = [
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Everything a journalist usually asks" deck='Boilerplate, fast facts, the <span style="color: var(--color-saffron-text);">brand pack</span>, and the build journal.' maxCh={28} />
   <ChipRail items={chips} />
 
   <Section id="boilerplate" eyebrow="Boilerplate" title="Two lengths. Drop in and use.">

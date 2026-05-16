@@ -20,7 +20,7 @@ interface Props {
 }
 
 const { title, description, ogImage = asset('brand/og_image.png'), canonical, article, heroOver = false } = Astro.props;
-const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.tagline}`;
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · ${SITE.tagline}`;
 const desc = description ?? SITE.description;
 const url = canonical ?? new URL(Astro.url.pathname, SITE.url).href;
 const path = stripBase(Astro.url.pathname);
@@ -103,7 +103,7 @@ const orgJsonLd = {
         mainEntityOfPage: url,
       })} />
     )}
-    <link rel="alternate" type="application/rss+xml" title="SVGE — Build journal" href={asset('news/rss.xml')} />
+    <link rel="alternate" type="application/rss+xml" title="SVGE · Build journal" href={asset('news/rss.xml')} />
     <meta name="generator" content={Astro.generator} />
   </head>
   <body data-path={path}>
