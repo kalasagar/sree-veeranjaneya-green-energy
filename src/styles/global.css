@@ -326,17 +326,85 @@
   .svge-header.is-over .btn-ghost { color: var(--color-paper); border-color: color-mix(in oklab, var(--color-paper) 50%, transparent); }
   .svge-header.is-over .btn-ghost:hover { background: color-mix(in oklab, var(--color-paper) 12%, transparent); border-color: var(--color-paper); }
 
-  /* Nav link active indicator — saffron hairline under the label */
-  .svge-h-link { color: var(--color-slate); }
-  .svge-h-link:hover { color: var(--color-saffron-text); }
-  .svge-h-link.is-active { color: var(--color-saffron-text); font-weight: 600; }
-  .svge-h-link.is-active::after {
-    content: ''; position: absolute; left: 12px; right: 12px; bottom: 6px;
-    height: 2px; background: var(--color-saffron); border-radius: 1px;
+  /* Nav links — institutional/editorial masthead style.
+       Type: small mono caps with widened tracking. Reads as the table of
+       contents of an editorial publication, not a SaaS dashboard.
+       States:
+         default — slate caps, no chrome
+         hover   — ink text on a paper-2 pill + a 1 px saffron tick at top
+         active  — paper text on a SOLID INK pill (full inversion) + 3 px
+                   saffron rule along the top edge
+     Inversion on the active state means the current page is unmistakable. */
+  .svge-h-link {
+    color: var(--color-slate);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    transition: background 160ms ease, color 160ms ease;
   }
-  .svge-header.is-over .svge-h-link { color: var(--color-paper); }
-  .svge-header.is-over .svge-h-link.is-active { color: var(--color-gold); }
-  .svge-header.is-over .svge-h-link.is-active::after { background: var(--color-gold); }
+  .svge-h-link::before {
+    /* Top tick — invisible by default, fades in on hover, solid on active. */
+    content: '';
+    position: absolute;
+    left: 10px; right: 10px;
+    top: 0;
+    height: 2px;
+    background: var(--color-saffron);
+    opacity: 0;
+    transform: scaleX(0.4);
+    transform-origin: center;
+    transition: opacity 160ms ease, transform 220ms ease;
+    border-radius: 0 0 2px 2px;
+  }
+  .svge-h-link:hover {
+    color: var(--color-ink);
+    background: var(--color-paper-2);
+  }
+  .svge-h-link:hover::before {
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+  .svge-h-link.is-active {
+    color: var(--color-paper);
+    background: var(--color-ink);
+    font-weight: 600;
+  }
+  .svge-h-link.is-active:hover {
+    background: var(--color-ink-soft);
+    color: var(--color-paper);
+  }
+  .svge-h-link.is-active::before {
+    opacity: 1;
+    transform: scaleX(1);
+    height: 3px;
+    background: var(--color-saffron);
+  }
+
+  /* Over-hero variant — palette inverted: pale on dark hero, then a paper
+     pill on active so the current page still reads as "selected". */
+  .svge-header.is-over .svge-h-link {
+    color: color-mix(in oklab, var(--color-paper) 85%, transparent);
+  }
+  .svge-header.is-over .svge-h-link:hover {
+    color: var(--color-paper);
+    background: color-mix(in oklab, var(--color-paper) 14%, transparent);
+  }
+  .svge-header.is-over .svge-h-link:hover::before {
+    background: var(--color-gold);
+    opacity: 0.7;
+  }
+  .svge-header.is-over .svge-h-link.is-active {
+    color: var(--color-ink);
+    background: var(--color-paper);
+  }
+  .svge-header.is-over .svge-h-link.is-active:hover {
+    background: color-mix(in oklab, var(--color-paper) 90%, transparent);
+    color: var(--color-ink);
+  }
+  .svge-header.is-over .svge-h-link.is-active::before { background: var(--color-gold); }
 
   /* Kicker — magazine deck under each hero. Tightened to feel like one
      editorial moment, not a heavy block. */
