@@ -6,7 +6,6 @@ import ChipRail from '../components/ChipRail.astro';
 import Accordion from '../components/Accordion.astro';
 import Countdown from '../components/Countdown.astro';
 import TeamComposition from '../components/TeamComposition.astro';
-import ClearanceMatrix from '../components/ClearanceMatrix.astro';
 import NotifyMe from '../components/NotifyMe.astro';
 import Logos from '../components/Logos.astro';
 import { SITE } from '../lib/site';
@@ -86,7 +85,4 @@ const chips = [{ id: 'rfps', label: 'RFPs' }, { id: 'careers', label: 'Careers' 
     />
   </Section>
 
-  <Section id="clearances" eyebrow="Why now" title="The build is real, not vapour.">
-    <ClearanceMatrix compact={true} />
-  </Section>
 </Base>

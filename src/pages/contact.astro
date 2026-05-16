@@ -2,8 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import FullBleedHero from '../components/FullBleedHero.astro';
-import Kicker from '../components/Kicker.astro';
-import Stakeholders from '../components/Stakeholders.astro';
 import { SITE } from '../lib/site';
 ---
 <Base title="Contact" description="Tell us who you are (farmer, partner, journalist, future hire) and we route your message." heroOver={true}>
@@ -24,11 +22,7 @@ import { SITE } from '../lib/site';
     </p>
   </FullBleedHero>
 
-  <Kicker eyebrow="Talk to us" deck='Seven kinds of reader, <span style="color: var(--color-saffron-text);">one inbox</span> at the other end.' maxCh={26} />
-
-  <Section><Stakeholders /></Section>
-
-  <Section eyebrow="Or use the form" title="A single message reaches all founders." bg="paper-2">
+  <Section eyebrow="Send a message" title="One inbox, both directors.">
     <div class="grid lg:grid-cols-[2fr_1fr] gap-8">
       <form id="contactForm" action="https://formspree.io/f/REPLACE_WITH_FORMSPREE_ID" method="POST" class="space-y-5 max-w-2xl">
         <label class="block">
