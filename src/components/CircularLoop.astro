@@ -13,6 +13,8 @@
  * Props:
  *   compact?: boolean  — diagram-only (no cards). Used on /plant.
  */
+import { link } from '../lib/links';
+
 const BASE = import.meta.env.BASE_URL;
 const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 
@@ -27,30 +29,35 @@ const fights = [
     headline: '~80 buses/day',
     detail:
       "4 TPD CBG to Indian Oil — about a day's CNG for 80 city buses. India sends ~₹12 lakh crore abroad every year buying crude. Every cubic metre we make stays here.",
+    href: '/build/#capital',
   },
   {
     eyebrow: 'Burn cycle',
     headline: '~29,000 TPA',
     detail:
       'Feedstock bought, not burned. ~14 Mt of paddy straw is set on fire across India every winter; we take ours out of that pile and pay for it.',
+    href: '/farmers/',
   },
   {
     eyebrow: 'Air quality',
     headline: '5× WHO limit',
     detail:
       'Annual PM2.5 in the Indo-Gangetic plain runs five times the WHO safe limit. Stubble burning is one named cause. We remove the match in our belt.',
+    href: '/plant/#glossary',
   },
   {
     eyebrow: 'Soil & fertilizer',
     headline: '~365 TPA FOM',
     detail:
       "~365 TPA of solid Fermented Organic Manure plus 52 m³/day of liquid manure goes back to the same 40 km belt we buy from. Rebuilds the organic carbon decades of chemical farming stripped out.",
+    href: '/plant/#glossary',
   },
   {
     eyebrow: 'Rural cash',
     headline: '~120 jobs',
     detail:
       "47 on plant payroll, ~73 in aggregation, transport, and farmer-side roles inside 40 km. Napier at ₹1,200/t × 6 harvests/yr; payments cleared in 14 days.",
+    href: '/work/',
   },
 ];
 ---
@@ -138,11 +145,11 @@ const fights = [
     <ol class="loop-fights" role="list">
       {fights.map(f => (
         <li>
-          <div class="loop-fight-cell">
+          <a href={link(f.href)} class="loop-fight-cell">
             <p class="eyebrow" style="color: var(--color-gold);">{f.eyebrow}</p>
             <p class="loop-fight-headline">{f.headline}</p>
             <p class="loop-fight-detail">{f.detail}</p>
-          </div>
+          </a>
         </li>
       ))}
     </ol>
@@ -221,8 +228,16 @@ const fights = [
     padding: 1.25rem;
     background: var(--color-ink);
     color: var(--color-paper);
+    text-decoration: none;
+    transition: background-color 0.15s ease;
   }
   @media (min-width: 640px) { .loop-fight-cell { padding: 1.5rem; } }
+  .loop-fight-cell:hover { background: var(--color-ink-soft); }
+  .loop-fight-cell:hover .eyebrow { color: var(--color-saffron) !important; }
+  .loop-fight-cell:focus-visible {
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 2px;
+  }
 
   .loop-fight-headline {
     margin-top: 0.75rem;
