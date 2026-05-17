@@ -16,7 +16,7 @@ export const SITE = {
   // ---- IDENTITY ----
   name: 'Sree Veeranjaneya Green Energy',
   legalName: 'Sree Veeranjaneya Green Energy Private Limited',
-  short: 'SVGE',
+  short: 'SVGE Bio',
   tagline: 'Grass to Gas. Farm to Fuel.',
   description:
     "A 4-TPD Compressed Bio-Gas plant under SATAT in coastal Andhra Pradesh. Indian Oil Letter of Intent issued 04 October 2024 (ref IndianOil/SATAT/01/3931). Tech partner: Raj Process Equipments, Pune. Built to IS 16087:2016, classified WHITE by the CPCB, on a 2-year commissioning clock.",

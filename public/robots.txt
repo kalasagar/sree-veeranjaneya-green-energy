@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://svge.pages.dev/sitemap-index.xml
+# Local review tooling — not for indexing.
+Disallow: /sree-veeranjaneya-green-energy/_review/
+Disallow: /_review/
+
+Sitemap: https://kalasagar.github.io/sree-veeranjaneya-green-energy/sitemap-index.xml

@@ -31,8 +31,8 @@ const files = [
   'og_image.png',
 ];
 
-const readme = `SVGE Brand Pack
-================
+const readme = `SVGE Bio Brand Pack
+====================
 
 Sree Veeranjaneya Green Energy Private Limited
 CIN U35101AP2024PTC115061
@@ -153,7 +153,7 @@ async function writeZip() {
     if (!existsSync(path)) { console.warn('  skip (missing):', f); continue; }
     const data = readFileSync(path);
     const compress = f.endsWith('.svg') || f.endsWith('.txt');
-    await addEntry('SVGE-Brand-Pack/' + f, data, compress);
+    await addEntry('SVGE-Bio-Brand-Pack/' + f, data, compress);
     console.log('  +', f, '(' + data.length + ' bytes)');
   }
 

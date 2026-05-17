@@ -16,7 +16,19 @@ const faqs = [
   { q: 'Will Napier grass work on my land?', a: 'Napier handles most coastal-Andhra soils, including stony or low-water plots that struggle with paddy. We visit your land before signing, at our cost.' },
   { q: 'When does this actually start?', a: 'The plant is in pre-construction today. Email us now to be on the contact list when first feedstock collection begins (target Q3 2026).' },
 ];
+
+// FAQPage structured data — Google rich-snippet eligible.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 <Base title="For Farmers" description="We buy paddy straw, Napier grass, cattle dung. We pay within 14 days. By bank transfer. Within 40 km of Thatipadu." heroOver={true}>
   <FullBleedHero
     banner="farmers_hands_straw"

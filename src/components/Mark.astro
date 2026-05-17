@@ -27,7 +27,7 @@ interface Props {
 const {
   size = 36,
   class: className = '',
-  ariaLabel = 'SVGE',
+  ariaLabel = 'SVGE Bio',
   decorative = false,
   rounded = true,
 } = Astro.props;
@@ -40,7 +40,7 @@ const isDecorative = decorative || ariaLabel === null;
 ---
 <img
   src={src}
-  alt={isDecorative ? '' : (ariaLabel ?? 'SVGE')}
+  alt={isDecorative ? '' : (ariaLabel ?? 'SVGE Bio')}
   aria-hidden={isDecorative ? 'true' : undefined}
   width={size}
   height={size}

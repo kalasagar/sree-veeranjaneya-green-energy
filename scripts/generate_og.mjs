@@ -67,7 +67,7 @@ function svgOverlay(title, sub) {
       </linearGradient>
     </defs>
     <rect width="${W}" height="${H}" fill="url(#g)"/>
-    <text x="80" y="80" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-size="22" font-weight="600" letter-spacing="0.18em" fill="${SAFFRON}">SVGE · GRASS TO GAS · FARM TO FUEL</text>
+    <text x="80" y="80" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-size="22" font-weight="600" letter-spacing="0.18em" fill="${SAFFRON}">SVGE BIO · GRASS TO GAS · FARM TO FUEL</text>
     <text x="80" y="${baselineY}" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-weight="700" font-size="72" fill="${PAPER}" style="letter-spacing:-0.02em">${titleTspans}</text>
     <text x="80" y="${subStartY}" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-weight="400" font-size="28" fill="${PAPER}" opacity="0.92">${subTspans}</text>
     <rect x="80" y="${H - 80}" width="60" height="3" fill="${SAFFRON}"/>
@@ -92,31 +92,62 @@ function wrap(text, maxChars) {
   return lines;
 }
 
+// Paper-tinted typographic SVG for pages without a photographic banner.
+// Renders the brand mark, the title in display-serif-ish weight, and the
+// subtitle below — no scrim, no shadow gradient, no photo crop.
+function svgPaperCard(title, sub) {
+  const titleLines = wrap(title, 28);
+  const subLines = wrap(sub, 50);
+  const titleStartY = 280;
+  const titleLineH = 80;
+  const titleTspans = titleLines
+    .map((l, i) => `<tspan x="80" dy="${i === 0 ? 0 : titleLineH}">${escape(l)}</tspan>`)
+    .join('');
+  const subStartY = titleStartY + titleLines.length * titleLineH + 36;
+  const subLineH = 36;
+  const subTspans = subLines
+    .map((l, i) => `<tspan x="80" dy="${i === 0 ? 0 : subLineH}">${escape(l)}</tspan>`)
+    .join('');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">
+    <rect width="${W}" height="${H}" fill="${PAPER}"/>
+    <!-- Saffron rule + brand-mark proxy (a saffron disc) at top-left -->
+    <circle cx="100" cy="100" r="20" fill="${SAFFRON}"/>
+    <text x="140" y="108" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-size="22" font-weight="700" letter-spacing="0.04em" fill="${SLATE}">SVGE Bio</text>
+    <text x="80" y="180" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-size="14" font-weight="600" letter-spacing="0.22em" fill="${SAFFRON}">GRASS TO GAS · FARM TO FUEL</text>
+    <rect x="80" y="200" width="60" height="3" fill="${SAFFRON}"/>
+
+    <text x="80" y="${titleStartY}" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-weight="700" font-size="72" fill="${SLATE}" style="letter-spacing:-0.02em">${titleTspans}</text>
+    <text x="80" y="${subStartY}" font-family="ui-sans-serif,system-ui,Sora,sans-serif" font-weight="400" font-size="24" fill="#475569">${subTspans}</text>
+
+    <rect x="80" y="${H - 64}" width="${W - 160}" height="1" fill="${SLATE}" opacity="0.18"/>
+    <text x="80" y="${H - 30}" font-family="ui-monospace,'IBM Plex Mono',monospace" font-size="14" fill="${SLATE}" opacity="0.6">Pre-construction · Vizianagaram, Andhra Pradesh</text>
+  </svg>`;
+}
+
 async function buildCard(page) {
   const outPath = join(OUT_DIR, `${page.slug}.png`);
-  const overlay = Buffer.from(svgOverlay(page.title, page.sub));
 
   let base;
+  let overlay = null;
   if (page.banner) {
     const candidate = join(PUBLIC, 'banners', `${page.banner}.webp`);
     if (existsSync(candidate)) {
       base = sharp(candidate).resize(W, H, { fit: 'cover', position: 'centre' });
+      overlay = Buffer.from(svgOverlay(page.title, page.sub));
     }
   }
   if (!base) {
-    // Forest-green wash fallback
-    base = sharp({
-      create: {
-        width: W,
-        height: H,
-        channels: 3,
-        background: FOREST,
-      },
-    });
+    // Typographic paper card for pages without a photographic banner
+    // (privacy, terms, 404, build-data-room, contact, news). Honest:
+    // these aren't lead-magnet pages, so no photo is presented.
+    base = sharp(Buffer.from(svgPaperCard(page.title, page.sub)));
   }
 
-  await base
-    .composite([{ input: overlay, top: 0, left: 0 }])
+  await (overlay
+    ? base.composite([{ input: overlay, top: 0, left: 0 }])
+    : base
+  )
     .png({ quality: 92, compressionLevel: 9 })
     .toFile(outPath);
 

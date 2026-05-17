@@ -29,7 +29,7 @@ const orgJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: SITE.legalName,
-  alternateName: SITE.name,
+  alternateName: [SITE.name, SITE.short],
   url: SITE.url,
   logo: new URL('/brand/mark_512.png', SITE.url).href,
   email: SITE.email,
@@ -54,6 +54,17 @@ const orgJsonLd = {
     { '@type': 'PropertyValue', name: 'GSTIN', value: SITE.gst },
     { '@type': 'PropertyValue', name: 'UDYAM', value: SITE.udyam },
   ],
+};
+
+// Per-page WebSite + SearchAction so brand-name searches resolve to this site.
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.short,
+  alternateName: [SITE.name, SITE.legalName],
+  url: SITE.url,
+  inLanguage: 'en-IN',
+  publisher: { '@type': 'Organization', name: SITE.legalName, url: SITE.url },
 };
 ---
 <!doctype html>
@@ -87,7 +98,14 @@ const orgJsonLd = {
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={new URL(ogImage, SITE.url).href} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="sitemap" type="application/xml" href={asset('sitemap-index.xml')} />
     <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteJsonLd)} />
     {article && (
       <script type="application/ld+json" set:html={JSON.stringify({
         '@context': 'https://schema.org',
