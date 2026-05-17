@@ -2,57 +2,112 @@
 import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
-import PageTitle from '../components/PageTitle.astro';
 import { SITE } from '../lib/site';
 
 const lastUpdated = '2026-05-14';
+const lastUpdatedFmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(lastUpdated + 'T00:00:00Z'));
+
+const sections = [
+  { id: 'information',  label: 'Information on this site' },
+  { id: 'brand',        label: 'Brand and content licence' },
+  { id: 'third-party',  label: 'Third-party links' },
+  { id: 'warranty',     label: 'No warranty' },
+  { id: 'jurisdiction', label: 'Jurisdiction' },
+  { id: 'contact',      label: 'Contact' },
+];
 ---
 <Base title="Terms of Use" description="Plain terms governing your use of the SVGE Bio website.">
-  <PageTitle
-    eyebrow="Legal"
-    title="Terms of Use"
-    lede={`Plain terms governing your use of the SVGE Bio website. By using it, you agree to these. Last updated ${lastUpdated}.`}
-  />
-  <Section narrow>
-    <div class="prose-svge">
-      <p>
-        This site is operated by {SITE.legalName} ("SVGE Bio", "we", "us"). By using it, you agree to the terms below. If you don't, please close the tab.
-      </p>
+  <!-- Masthead -->
+  <section class="svge-legal-masthead" data-reveal>
+    <div class="container-svge">
+      <p class="eyebrow" style="color: var(--color-saffron-text);">Legal · Terms</p>
+      <h1 class="svge-legal-title">Terms of Use</h1>
+      <p class="svge-legal-lede">Plain terms governing your use of the {SITE.short} website. By using it, you agree to these.</p>
+      <div class="svge-legal-meta">
+        <span class="svge-legal-pill">Last updated · <span class="numeral">{lastUpdatedFmt}</span></span>
+        <span class="svge-legal-pill">Operated by · {SITE.short}</span>
+        <span class="svge-legal-pill">Contact · <a href={`mailto:${SITE.email}`}>{SITE.email}</a></span>
+      </div>
+    </div>
+  </section>
 
-      <h2>Information on this site</h2>
-      <p>
-        We try to keep everything on this site accurate and current. Some content (particularly stat citations, founder bios, and the project timeline) may be updated as facts change. We will note material changes on the <a href={link("/news/")}>News</a> page.
-      </p>
-      <p>
-        Nothing on this site is a contract, an offer to contract, or a commitment of any kind, except in two narrow places: (a) our public promise to publish a monthly construction update from the day concrete is poured, and (b) our farmer-facing payment promises set out on <a href={link("/farmers/")}>/farmers/</a>, which apply once you have entered into a written supply arrangement with us.
-      </p>
+  <Section>
+    <div class="svge-legal-layout">
+      <aside class="svge-legal-toc" aria-label="On this page">
+        <p class="eyebrow" style="color: var(--color-slate-2);">On this page</p>
+        <ol>
+          {sections.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`}>
+                <span class="numeral">{String(i + 1).padStart(2, '0')}</span>
+                <span>{s.label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </aside>
 
-      <h2>Brand and content licence</h2>
-      <ul>
-        <li><strong>Editorial use.</strong> Journalists may reproduce text and brand assets from this site with attribution. The <a href={link("/press/")}>press kit</a> sets out specifics.</li>
-        <li><strong>Brand assets.</strong> The SVGE name and mark are property of {SITE.legalName}. Do not modify the mark, recolour it, or use it on a background other than off-white or brand green without our written permission.</li>
-        <li><strong>Other content.</strong> All site text, photos, illustrations, and code are © {SITE.legalName}, all rights reserved unless explicitly licensed.</li>
-      </ul>
+      <article class="svge-legal-body">
+        <p class="svge-legal-intro">
+          This site is operated by <strong>{SITE.legalName}</strong> ("{SITE.short}", "we", "us"). By using it, you agree to the terms below. If you don't, please close the tab.
+        </p>
 
-      <h2>Third-party links</h2>
-      <p>
-        Where we link to outside resources (partner sites, government schemes, source citations) we don't control or endorse the content on those sites. Following an external link is at your own discretion.
-      </p>
+        <section id="information" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">01 · Information on this site</p>
+          <h2>Accurate to the best of our knowledge. Not a contract.</h2>
+          <p>We try to keep everything on this site accurate and current. Some content (particularly stat citations, founder bios, and the project timeline) may be updated as facts change. We will note material changes on the <a href={link('/press/#journal')}>build journal</a>.</p>
+          <p class="svge-legal-callout">Nothing on this site is a contract, an offer to contract, or a commitment of any kind, except in two narrow places: <strong>(a)</strong> our public promise to publish a monthly construction update from the day concrete is poured, and <strong>(b)</strong> our farmer-facing payment promises set out on <a href={link('/farmers/')}>/farmers/</a>, which apply once you have entered into a written supply arrangement with us.</p>
+        </section>
 
-      <h2>No warranty</h2>
-      <p>
-        We provide this site "as is". We don't warrant that it will always be available, error-free, or fit for any particular purpose. We won't be liable for any indirect or consequential loss arising from your use of it.
-      </p>
+        <section id="brand" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">02 · Brand and content licence</p>
+          <h2>What you can reuse, with what permissions.</h2>
+          <dl class="svge-legal-dl">
+            <div>
+              <dt>Editorial use</dt>
+              <dd>Journalists may reproduce text and brand assets from this site with attribution. The <a href={link('/press/')}>press kit</a> sets out specifics.</dd>
+            </div>
+            <div>
+              <dt>Brand assets</dt>
+              <dd>The {SITE.short} name and mark are property of {SITE.legalName}. Do not modify the mark, recolour it, or use it on a background other than off-white or brand green without our written permission.</dd>
+            </div>
+            <div>
+              <dt>Other content</dt>
+              <dd>All site text, photos, illustrations, and code are © {SITE.legalName}, all rights reserved unless explicitly licensed.</dd>
+            </div>
+          </dl>
+        </section>
 
-      <h2>Jurisdiction</h2>
-      <p>
-        These terms are governed by the laws of India. Any dispute is subject to the exclusive jurisdiction of the courts at Srikakulam, Andhra Pradesh.
-      </p>
+        <section id="third-party" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">03 · Third-party links</p>
+          <h2>Outside our control.</h2>
+          <p>Where we link to outside resources (partner sites, government schemes, source citations) we don't control or endorse the content on those sites. Following an external link is at your own discretion.</p>
+        </section>
 
-      <h2>Contact</h2>
-      <p>
-        Any question about these terms: email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
-      </p>
+        <section id="warranty" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">04 · No warranty</p>
+          <h2>Provided "as is".</h2>
+          <p>We provide this site "as is". We don't warrant that it will always be available, error-free, or fit for any particular purpose. We won't be liable for any indirect or consequential loss arising from your use of it.</p>
+        </section>
+
+        <section id="jurisdiction" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">05 · Jurisdiction</p>
+          <h2>Governed by Indian law.</h2>
+          <p>These terms are governed by the laws of India. Any dispute is subject to the exclusive jurisdiction of the courts at <strong>Srikakulam, Andhra Pradesh</strong>.</p>
+        </section>
+
+        <section id="contact" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">06 · Contact</p>
+          <h2>Questions about these terms?</h2>
+          <p>Any question about these terms: email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+        </section>
+
+        <aside class="svge-legal-cta" data-reveal>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Privacy policy</p>
+          <p>For details on what personal data we collect, why, and what we don't, see our <a href={link('/privacy/')}>privacy policy</a>.</p>
+          <a href={link('/privacy/')} class="btn btn-ghost">Read the privacy policy →</a>
+        </aside>
+      </article>
     </div>
   </Section>
 </Base>

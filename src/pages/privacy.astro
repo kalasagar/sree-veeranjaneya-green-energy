@@ -2,76 +2,211 @@
 import Base from '../layouts/Base.astro';
 import { link } from '../lib/links';
 import Section from '../components/Section.astro';
-import PageTitle from '../components/PageTitle.astro';
 import { SITE } from '../lib/site';
 
 const lastUpdated = '2026-05-14';
+const lastUpdatedFmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(lastUpdated + 'T00:00:00Z'));
+
+const sections = [
+  { id: 'what-we-collect',    label: 'What we collect' },
+  { id: 'what-we-dont',       label: "What we don't collect" },
+  { id: 'why',                label: 'Why we collect it' },
+  { id: 'how-long',           label: 'How long we keep it' },
+  { id: 'who-we-share',       label: 'Who we share with' },
+  { id: 'your-rights',        label: 'Your rights · DPDP Act 2023' },
+  { id: 'children',           label: 'Children' },
+  { id: 'changes',            label: 'Changes to this policy' },
+];
 ---
 <Base title="Privacy Policy" description="How Sree Veeranjaneya Green Energy handles your personal data. Short, plain, India DPDP Act 2023 compliant.">
-  <PageTitle
-    eyebrow="Legal"
-    title="Privacy Policy"
-    lede={`What we collect, why, and what we don't. Short, plain, India DPDP Act 2023 compliant. Last updated ${lastUpdated}.`}
-  />
-  <Section narrow>
-    <div class="prose-svge">
-      <p>
-        This policy explains what personal data we collect on <a href={SITE.url}>{SITE.url}</a>, why, and what we do with it. It applies to {SITE.legalName} (CIN {SITE.cin}), the data fiduciary, contactable at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
-      </p>
+  <!-- Masthead -->
+  <section class="svge-legal-masthead" data-reveal>
+    <div class="container-svge">
+      <p class="eyebrow" style="color: var(--color-saffron-text);">Legal · Data</p>
+      <h1 class="svge-legal-title">Privacy Policy</h1>
+      <p class="svge-legal-lede">What we collect, why, and what we don't. Short, plain, India DPDP Act 2023 compliant.</p>
+      <div class="svge-legal-meta">
+        <span class="svge-legal-pill">Last updated · <span class="numeral">{lastUpdatedFmt}</span></span>
+        <span class="svge-legal-pill">Data fiduciary · {SITE.short}</span>
+        <span class="svge-legal-pill">Contact · <a href={`mailto:${SITE.email}`}>{SITE.email}</a></span>
+      </div>
+    </div>
+  </section>
 
-      <h2>What we collect</h2>
-      <ul>
-        <li><strong>Contact form data.</strong> When you submit the form at <a href={link("/contact/")}>/contact/</a>, we receive your name, email, chosen topic, and message. No other fields.</li>
-        <li><strong>Server logs.</strong> Cloudflare Pages (our host) automatically logs your IP address, user agent, and the URL you requested, for security and abuse prevention. We do not read these logs in the normal course of operations.</li>
-        <li><strong>Analytics.</strong> If enabled, Cloudflare Web Analytics records aggregated, anonymised page views. No cookies. No personal identifiers.</li>
-      </ul>
+  <Section>
+    <div class="svge-legal-layout">
+      <!-- Sticky TOC -->
+      <aside class="svge-legal-toc" aria-label="On this page">
+        <p class="eyebrow" style="color: var(--color-slate-2);">On this page</p>
+        <ol>
+          {sections.map((s, i) => (
+            <li>
+              <a href={`#${s.id}`}>
+                <span class="numeral">{String(i + 1).padStart(2, '0')}</span>
+                <span>{s.label}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </aside>
 
-      <h2>What we do not collect</h2>
-      <ul>
-        <li>No tracking cookies, no third-party advertising pixels, no Google Analytics, no Facebook Pixel.</li>
-        <li>No payment data. We do not sell anything on this site.</li>
-        <li>No sensitive personal data (caste, religion, health, biometrics, financial info) under any circumstance.</li>
-      </ul>
+      <!-- Body -->
+      <article class="svge-legal-body">
+        <p class="svge-legal-intro">
+          This policy explains what personal data we collect on <a href={SITE.url}>{SITE.url}</a>, why, and what we do with it. It applies to <strong>{SITE.legalName}</strong> (CIN <span class="numeral">{SITE.cin}</span>), the data fiduciary, contactable at <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        </p>
 
-      <h2>Why we collect it</h2>
-      <p>One reason: to reply to your message. Contact form data is forwarded to our company inbox via MailChannels (our email relay), and read by the two directors. We use it to write back. That's it.</p>
+        <section id="what-we-collect" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">01 · What we collect</p>
+          <h2>Three things, all minimal.</h2>
+          <dl class="svge-legal-dl">
+            <div>
+              <dt>Contact form data</dt>
+              <dd>When you submit the form at <a href={link('/contact/')}>/contact/</a>, we receive your name, email, chosen topic, and message. No other fields.</dd>
+            </div>
+            <div>
+              <dt>Server logs</dt>
+              <dd>Cloudflare Pages (our host) automatically logs your IP address, user agent, and the URL you requested, for security and abuse prevention. We do not read these logs in the normal course of operations.</dd>
+            </div>
+            <div>
+              <dt>Aggregate analytics</dt>
+              <dd>If enabled, Cloudflare Web Analytics records aggregated, anonymised page views. No cookies. No personal identifiers.</dd>
+            </div>
+          </dl>
+        </section>
 
-      <h2>How long we keep it</h2>
-      <ul>
-        <li>Contact form messages: retained in our email inbox indefinitely unless you ask us to delete them.</li>
-        <li>Server logs: kept by Cloudflare per their policy (typically 30 days).</li>
-        <li>Analytics: aggregated only, so there is no record to delete.</li>
-      </ul>
+        <section id="what-we-dont" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">02 · What we don't collect</p>
+          <h2>Things commonly collected that we never touch.</h2>
+          <ul class="svge-legal-bullets">
+            <li>No tracking cookies, no third-party advertising pixels, no Google Analytics, no Facebook Pixel.</li>
+            <li>No payment data. We do not sell anything on this site.</li>
+            <li>No sensitive personal data (caste, religion, health, biometrics, financial info) under any circumstance.</li>
+          </ul>
+        </section>
 
-      <h2>Who we share it with</h2>
-      <p>
-        Two third parties touch your data, only as processors:
-      </p>
-      <ul>
-        <li><strong>Cloudflare Inc.</strong> hosts the site and runs the contact-form function. <a href="https://www.cloudflare.com/privacypolicy/">Their privacy policy</a>.</li>
-        <li><strong>MailChannels Inc.</strong> relays the contact email to our inbox. <a href="https://mailchannels.com/privacy-policy">Their privacy policy</a>.</li>
-      </ul>
-      <p>Nobody else. We do not sell or rent personal data to anyone, under any circumstance.</p>
+        <section id="why" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">03 · Why we collect it</p>
+          <h2>One reason: to reply to your message.</h2>
+          <p>Contact form data is forwarded to our company inbox via MailChannels (our email relay), and read by the two directors. We use it to write back. That's it.</p>
+        </section>
 
-      <h2>Your rights under India's DPDP Act 2023</h2>
-      <p>You have the right to:</p>
-      <ul>
-        <li>Know what personal data of yours we hold.</li>
-        <li>Correct anything inaccurate.</li>
-        <li>Ask us to delete your data.</li>
-        <li>Withdraw consent at any time, after which we will stop processing.</li>
-        <li>Nominate someone else to exercise these rights on your behalf, if you become unable to.</li>
-        <li>Raise a complaint with the Data Protection Board of India if we don't resolve your concern.</li>
-      </ul>
-      <p>
-        To exercise any of these rights, email <a href={`mailto:${SITE.email}?subject=Privacy%20request`}>{SITE.email}</a> with subject line "Privacy request". We aim to respond within 14 days.
-      </p>
+        <section id="how-long" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">04 · How long we keep it</p>
+          <h2>Retention windows.</h2>
+          <dl class="svge-legal-dl">
+            <div>
+              <dt>Contact-form messages</dt>
+              <dd>Retained in our email inbox indefinitely unless you ask us to delete them.</dd>
+            </div>
+            <div>
+              <dt>Server logs</dt>
+              <dd>Kept by Cloudflare per their policy (typically 30 days).</dd>
+            </div>
+            <div>
+              <dt>Analytics</dt>
+              <dd>Aggregated only, so there is no record to delete.</dd>
+            </div>
+          </dl>
+        </section>
 
-      <h2>Children</h2>
-      <p>This site is not directed at people under 18. We do not knowingly collect data from minors. If you are a minor, do not submit the contact form.</p>
+        <section id="who-we-share" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">05 · Who we share with</p>
+          <h2>Two processors. Nobody else.</h2>
+          <dl class="svge-legal-dl">
+            <div>
+              <dt>Cloudflare Inc.</dt>
+              <dd>Hosts the site and runs the contact-form function. <a href="https://www.cloudflare.com/privacypolicy/">Their privacy policy →</a></dd>
+            </div>
+            <div>
+              <dt>MailChannels Inc.</dt>
+              <dd>Relays the contact email to our inbox. <a href="https://mailchannels.com/privacy-policy">Their privacy policy →</a></dd>
+            </div>
+          </dl>
+          <p class="svge-legal-callout">We do not sell or rent personal data to anyone, under any circumstance.</p>
+        </section>
 
-      <h2>Changes to this policy</h2>
-      <p>If we change it, we update the "Last updated" date at the top and the new version takes effect from that date. Material changes will also be noted on <a href={link("/news/")}>our news page</a>.</p>
+        <section id="your-rights" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">06 · Your rights · DPDP Act 2023</p>
+          <h2>What India's data law guarantees you.</h2>
+          <ul class="svge-legal-bullets">
+            <li>Know what personal data of yours we hold.</li>
+            <li>Correct anything inaccurate.</li>
+            <li>Ask us to delete your data.</li>
+            <li>Withdraw consent at any time, after which we will stop processing.</li>
+            <li>Nominate someone else to exercise these rights on your behalf, if you become unable to.</li>
+            <li>Raise a complaint with the Data Protection Board of India if we don't resolve your concern.</li>
+          </ul>
+          <p class="svge-legal-callout">To exercise any of these rights, email <a href={`mailto:${SITE.email}?subject=Privacy%20request`}>{SITE.email}</a> with subject line "Privacy request". We aim to respond within 14 days.</p>
+        </section>
+
+        <section id="children" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">07 · Children</p>
+          <h2>Not directed at minors.</h2>
+          <p>This site is not directed at people under 18. We do not knowingly collect data from minors. If you are a minor, do not submit the contact form.</p>
+        </section>
+
+        <section id="changes" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">08 · Changes to this policy</p>
+          <h2>How we communicate updates.</h2>
+          <p>If we change this policy, we update the "Last updated" date at the top and the new version takes effect from that date. Material changes will also be noted on <a href={link('/press/#journal')}>the build journal</a>.</p>
+        </section>
+
+        <!-- Footer CTA -->
+        <aside class="svge-legal-cta" data-reveal>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Have a question?</p>
+          <p>Privacy questions reach both directors. We aim to respond within fourteen days.</p>
+          <a href={`mailto:${SITE.email}?subject=Privacy%20request`} class="btn btn-primary">Email {SITE.email} →</a>
+        </aside>
+      </article>
     </div>
   </Section>
 </Base>
+
+<style is:global>
+  .svge-legal-masthead { background: var(--color-paper-2); padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--rule-color); }
+  .svge-legal-title { font-family: var(--font-display); font-weight: 700; font-size: clamp(2rem, 5.5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--color-ink); margin-top: 0.75rem; max-width: 22ch; }
+  .svge-legal-lede { font-family: var(--font-display); font-style: italic; font-size: clamp(1.0625rem, 1.6vw, 1.25rem); line-height: 1.55; color: var(--color-slate); margin-top: 1rem; max-width: 56ch; }
+  .svge-legal-meta { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; }
+  .svge-legal-pill { display: inline-flex; align-items: center; padding: 0.375rem 0.875rem; background: var(--color-paper); border: 1px solid var(--rule-color); border-radius: 999px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-slate); }
+  .svge-legal-pill a { color: var(--color-ink); text-decoration: none; }
+  .svge-legal-pill .numeral { color: var(--color-ink); font-weight: 600; }
+
+  .svge-legal-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  @media (min-width: 1024px) { .svge-legal-layout { grid-template-columns: 240px 1fr; gap: 3rem; align-items: start; } }
+
+  .svge-legal-toc { display: none; }
+  @media (min-width: 1024px) {
+    .svge-legal-toc { display: block; position: sticky; top: calc(var(--header-h) + var(--status-h) + 1.5rem); }
+    .svge-legal-toc ol { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-direction: column; gap: 0.25rem; }
+    .svge-legal-toc a { display: grid; grid-template-columns: 28px 1fr; gap: 0.625rem; align-items: baseline; padding: 0.5rem 0.625rem; border-radius: 0.375rem; text-decoration: none; color: var(--color-slate); transition: background-color 0.15s, color 0.15s; font-size: 0.875rem; line-height: 1.35; }
+    .svge-legal-toc a:hover { background: var(--color-paper-2); color: var(--color-ink); }
+    .svge-legal-toc .numeral { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; color: var(--color-saffron-text); }
+  }
+
+  .svge-legal-body { max-width: 65ch; }
+  .svge-legal-intro { font-family: var(--font-display); font-size: 1.125rem; line-height: 1.6; color: var(--color-ink); padding-bottom: 2rem; margin-bottom: 0; border-bottom: 1px solid var(--rule-color); }
+  .svge-legal-section { padding-top: 2.5rem; padding-bottom: 0.5rem; scroll-margin-top: calc(var(--header-h) + var(--status-h) + 1.5rem); }
+  .svge-legal-section h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.375rem, 2.4vw, 1.75rem); line-height: 1.15; letter-spacing: -0.015em; color: var(--color-ink); margin-top: 0.625rem; max-width: 32ch; }
+  .svge-legal-section h2 + p,
+  .svge-legal-section h2 + dl,
+  .svge-legal-section h2 + ul { margin-top: 1.25rem; }
+  .svge-legal-section p { font-size: 1rem; line-height: 1.65; color: var(--color-slate); max-width: 60ch; }
+  .svge-legal-section p + p { margin-top: 1rem; }
+
+  .svge-legal-dl { display: grid; gap: 1px; background: var(--rule-color); border-radius: 0.375rem; overflow: hidden; }
+  .svge-legal-dl > div { background: var(--color-paper); padding: 1rem 1.25rem; display: grid; grid-template-columns: 1fr; gap: 0.375rem; }
+  @media (min-width: 640px) { .svge-legal-dl > div { grid-template-columns: 1fr 2fr; gap: 1.5rem; } }
+  .svge-legal-dl dt { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-saffron-text); padding-top: 0.125rem; }
+  .svge-legal-dl dd { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--color-ink); }
+
+  .svge-legal-bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .svge-legal-bullets li { position: relative; padding-left: 1.25rem; font-size: 0.9375rem; line-height: 1.55; color: var(--color-ink); }
+  .svge-legal-bullets li::before { content: ""; position: absolute; left: 0; top: 0.5625rem; width: 8px; height: 1px; background: var(--color-saffron); }
+
+  .svge-legal-callout { margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--color-paper-2); border-left: 3px solid var(--color-saffron); border-radius: 0 0.25rem 0.25rem 0; font-size: 0.9375rem; line-height: 1.55; color: var(--color-ink); max-width: none; }
+
+  .svge-legal-cta { margin-top: 3rem; padding: 2rem; background: var(--color-paper-2); border-radius: 0.5rem; display: flex; flex-direction: column; gap: 0.875rem; }
+  .svge-legal-cta p { font-family: var(--font-display); font-size: 1.125rem; line-height: 1.5; color: var(--color-ink); max-width: 40ch; }
+  .svge-legal-cta .btn { align-self: flex-start; }
+</style>

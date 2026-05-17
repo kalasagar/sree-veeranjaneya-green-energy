@@ -62,8 +62,8 @@ const readMin = Math.max(1, Math.round(wordCount / 200));
     </article>
   </Section>
 
-  <!-- Body -->
-  <Section narrow>
+  <!-- Body — drop-cap on the first paragraph, body-font prose -->
+  <Section narrow dense>
     <div class="prose-svge drop-cap svge-post-body">
       <Content />
     </div>
@@ -155,8 +155,10 @@ const readMin = Math.max(1, Math.round(wordCount / 200));
   .svge-post-tags { display: inline-flex; flex-wrap: wrap; gap: 0.35rem; }
   .svge-post-tag { color: var(--color-saffron-text); font-weight: 600; }
 
-  /* Body */
-  .svge-post-body { font-family: var(--font-display); }
+  /* Body — body font for paragraphs (prose-svge default), display
+     serif reserved for h2/h3 headings. */
+  .svge-post-body { max-width: 62ch; }
+  .svge-post-body p { font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.75; color: var(--color-ink); }
   .svge-post-body h2,
   .svge-post-body h3 {
     font-family: var(--font-display);
@@ -164,16 +166,20 @@ const readMin = Math.max(1, Math.round(wordCount / 200));
     color: var(--color-ink);
     letter-spacing: -0.015em;
     line-height: 1.15;
-    margin-top: 2.25rem;
+    margin-top: 2.5rem;
   }
-  .svge-post-body h2 { font-size: clamp(1.375rem, 2.4vw, 1.75rem); }
+  .svge-post-body h2 { font-size: clamp(1.5rem, 2.6vw, 1.875rem); max-width: 28ch; }
+  .svge-post-body h2::after { content: ""; display: block; width: 2rem; height: 2px; margin-top: 0.625rem; background: var(--color-saffron); }
   .svge-post-body h3 { font-size: clamp(1.125rem, 2vw, 1.375rem); }
   .svge-post-body h2 + p,
-  .svge-post-body h3 + p { margin-top: 0.75rem; }
+  .svge-post-body h3 + p { margin-top: 1rem; }
   .svge-post-body ul,
-  .svge-post-body ol { margin-top: 1rem; padding-left: 1.25rem; }
-  .svge-post-body li { margin-top: 0.35rem; }
+  .svge-post-body ol { margin-top: 1.25rem; padding-left: 1.5rem; }
+  .svge-post-body li { margin-top: 0.5rem; line-height: 1.7; color: var(--color-ink); }
+  .svge-post-body ul li::marker { color: var(--color-saffron); }
   .svge-post-body strong { color: var(--color-ink); font-weight: 700; }
+  .svge-post-body a { color: var(--color-saffron-text); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .svge-post-body hr { margin: 2.5rem 0; border: 0; border-top: 1px solid var(--rule-color); }
 
   /* After-post */
   .svge-post-after { max-width: 65ch; }
