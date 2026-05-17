@@ -8,12 +8,27 @@ const lastUpdated = '2026-05-14';
 const lastUpdatedFmt = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(lastUpdated + 'T00:00:00Z'));
 
 const sections = [
+  { id: 'tldr',         label: 'In one paragraph' },
   { id: 'information',  label: 'Information on this site' },
-  { id: 'brand',        label: 'Brand and content licence' },
+  { id: 'brand',        label: 'Brand & content licence' },
+  { id: 'not-covered',  label: "What these terms don't cover" },
   { id: 'third-party',  label: 'Third-party links' },
   { id: 'warranty',     label: 'No warranty' },
   { id: 'jurisdiction', label: 'Jurisdiction' },
   { id: 'contact',      label: 'Contact' },
+];
+
+const brandDo = [
+  'Quote text and republish it with attribution to SVGE Bio.',
+  'Use the brand mark in editorial coverage of the company.',
+  'Download the brand pack from /press/ for journalistic use.',
+  'Link to any page on this site.',
+];
+const brandDont = [
+  'Modify the brand mark — recolour, distort, or redraw it.',
+  'Use the mark on a background other than off-white or brand green.',
+  'Imply SVGE Bio endorsement of any third party.',
+  'Use brand assets commercially without our written permission.',
 ];
 ---
 <Base title="Terms of Use" description="Plain terms governing your use of the SVGE Bio website.">
@@ -26,6 +41,7 @@ const sections = [
       <div class="svge-legal-meta">
         <span class="svge-legal-pill">Last updated · <span class="numeral">{lastUpdatedFmt}</span></span>
         <span class="svge-legal-pill">Operated by · {SITE.short}</span>
+        <span class="svge-legal-pill">Governing law · India</span>
         <span class="svge-legal-pill">Contact · <a href={`mailto:${SITE.email}`}>{SITE.email}</a></span>
       </div>
     </div>
@@ -45,69 +61,227 @@ const sections = [
             </li>
           ))}
         </ol>
+        <p class="svge-legal-toc-foot">
+          Looking for the <a href={link('/privacy/')}>privacy policy</a>? It's separate.
+        </p>
       </aside>
 
       <article class="svge-legal-body">
-        <p class="svge-legal-intro">
-          This site is operated by <strong>{SITE.legalName}</strong> ("{SITE.short}", "we", "us"). By using it, you agree to the terms below. If you don't, please close the tab.
-        </p>
+        <!-- TL;DR -->
+        <section id="tldr" class="svge-legal-section svge-legal-tldr">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">TL;DR</p>
+          <p class="svge-legal-tldr-text">
+            This site is operated by <strong>{SITE.legalName}</strong> ("{SITE.short}", "we"). Read it freely. Quote it with attribution. Use the brand mark only as we've drawn it. Nothing here is a contract except where we say it is. Indian law applies. Questions: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+          </p>
+        </section>
 
         <section id="information" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">01 · Information on this site</p>
-          <h2>Accurate to the best of our knowledge. Not a contract.</h2>
-          <p>We try to keep everything on this site accurate and current. Some content (particularly stat citations, founder bios, and the project timeline) may be updated as facts change. We will note material changes on the <a href={link('/press/#journal')}>build journal</a>.</p>
-          <p class="svge-legal-callout">Nothing on this site is a contract, an offer to contract, or a commitment of any kind, except in two narrow places: <strong>(a)</strong> our public promise to publish a monthly construction update from the day concrete is poured, and <strong>(b)</strong> our farmer-facing payment promises set out on <a href={link('/farmers/')}>/farmers/</a>, which apply once you have entered into a written supply arrangement with us.</p>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">02 · Information on this site</p>
+          <h2>Accurate, but not a contract.</h2>
+          <p>We try to keep everything on this site accurate and current. Some content (stat citations, founder bios, the project timeline) may be updated as facts change. We will note material changes on the <a href={link('/press/#journal')}>build journal</a>.</p>
+          <p class="svge-legal-callout">Nothing on this site is a contract, an offer to contract, or a commitment of any kind, <em>except</em> in two narrow places: <strong>(a)</strong> our public promise to publish a monthly construction update from the day concrete is poured, and <strong>(b)</strong> our farmer-facing payment promises set out on <a href={link('/farmers/')}>/farmers/</a>, which apply once you have entered into a written supply arrangement with us.</p>
         </section>
 
         <section id="brand" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">02 · Brand and content licence</p>
-          <h2>What you can reuse, with what permissions.</h2>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">03 · Brand & content licence</p>
+          <h2>Quote freely. Brand mark stays as we drew it.</h2>
+          <p>All site text, photos, illustrations, and code are © {SITE.legalName}, all rights reserved unless explicitly licensed below. The brand pack on the <a href={link('/press/')}>press page</a> sets out the assets we provide for editorial use.</p>
+
+          <div class="svge-legal-rules">
+            <div class="svge-legal-rules-col svge-legal-rules-do">
+              <p class="eyebrow">You may</p>
+              <ul>
+                {brandDo.map(line => <li>{line}</li>)}
+              </ul>
+            </div>
+            <div class="svge-legal-rules-col svge-legal-rules-dont">
+              <p class="eyebrow">You may not</p>
+              <ul>
+                {brandDont.map(line => <li>{line}</li>)}
+              </ul>
+            </div>
+          </div>
+
+          <p class="svge-legal-fineprint">For any use beyond editorial — commercial reproduction, derivative artwork, sponsorship visuals — email <a href={`mailto:${SITE.email}?subject=Brand%20use%20request`}>{SITE.email}</a> and we will reply within two business days.</p>
+        </section>
+
+        <section id="not-covered" class="svge-legal-section">
+          <p class="eyebrow" style="color: var(--color-saffron-text);">04 · What these terms don't cover</p>
+          <h2>Three things sit under different agreements.</h2>
           <dl class="svge-legal-dl">
             <div>
-              <dt>Editorial use</dt>
-              <dd>Journalists may reproduce text and brand assets from this site with attribution. The <a href={link('/press/')}>press kit</a> sets out specifics.</dd>
+              <dt>Your personal data</dt>
+              <dd>Handled under the <a href={link('/privacy/')}>privacy policy</a>, separately. Read it for what we collect, why, and how to remove it.</dd>
             </div>
             <div>
-              <dt>Brand assets</dt>
-              <dd>The {SITE.short} name and mark are property of {SITE.legalName}. Do not modify the mark, recolour it, or use it on a background other than off-white or brand green without our written permission.</dd>
+              <dt>Farmer supply terms</dt>
+              <dd>Payment cadence, pickup, and FOM offtake are governed by the supply slip you sign at <a href={link('/farmers/')}>/farmers/</a>, not by these site terms.</dd>
             </div>
             <div>
-              <dt>Other content</dt>
-              <dd>All site text, photos, illustrations, and code are © {SITE.legalName}, all rights reserved unless explicitly licensed.</dd>
+              <dt>Lender / partner contracts</dt>
+              <dd>RFPs, the DPR, and any subsequent commercial agreements sit in the lender data room and are governed by their own signed documents.</dd>
             </div>
           </dl>
         </section>
 
         <section id="third-party" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">03 · Third-party links</p>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">05 · Third-party links</p>
           <h2>Outside our control.</h2>
           <p>Where we link to outside resources (partner sites, government schemes, source citations) we don't control or endorse the content on those sites. Following an external link is at your own discretion.</p>
         </section>
 
         <section id="warranty" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">04 · No warranty</p>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">06 · No warranty</p>
           <h2>Provided "as is".</h2>
           <p>We provide this site "as is". We don't warrant that it will always be available, error-free, or fit for any particular purpose. We won't be liable for any indirect or consequential loss arising from your use of it.</p>
         </section>
 
         <section id="jurisdiction" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">05 · Jurisdiction</p>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">07 · Jurisdiction</p>
           <h2>Governed by Indian law.</h2>
           <p>These terms are governed by the laws of India. Any dispute is subject to the exclusive jurisdiction of the courts at <strong>Srikakulam, Andhra Pradesh</strong>.</p>
         </section>
 
         <section id="contact" class="svge-legal-section">
-          <p class="eyebrow" style="color: var(--color-saffron-text);">06 · Contact</p>
-          <h2>Questions about these terms?</h2>
-          <p>Any question about these terms: email <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">08 · Contact</p>
+          <h2>Reach a human.</h2>
+          <p>Both directors read the inbox. Use the subject line that fits — we'll route accordingly.</p>
+          <ul class="svge-legal-contact-list">
+            <li>
+              <span class="lbl">General terms questions</span>
+              <a href={`mailto:${SITE.email}?subject=Terms%20question`}>{SITE.email}</a>
+            </li>
+            <li>
+              <span class="lbl">Brand &amp; reuse requests</span>
+              <a href={`mailto:${SITE.email}?subject=Brand%20use%20request`}>{SITE.email}</a>
+            </li>
+            <li>
+              <span class="lbl">Privacy / data requests</span>
+              <a href={`mailto:${SITE.email}?subject=Privacy%20request`}>{SITE.email}</a>
+            </li>
+          </ul>
         </section>
 
         <aside class="svge-legal-cta" data-reveal>
-          <p class="eyebrow" style="color: var(--color-saffron-text);">Privacy policy</p>
-          <p>For details on what personal data we collect, why, and what we don't, see our <a href={link('/privacy/')}>privacy policy</a>.</p>
-          <a href={link('/privacy/')} class="btn btn-ghost">Read the privacy policy →</a>
+          <p class="eyebrow" style="color: var(--color-saffron-text);">Also worth reading</p>
+          <p>These terms cover use of the site. The <a href={link('/privacy/')}>privacy policy</a> covers your personal data. The <a href={link('/press/')}>press kit</a> covers editorial reuse of brand assets and quotes.</p>
+          <div class="svge-legal-cta-actions">
+            <a href={link('/privacy/')} class="btn btn-ghost">Privacy policy →</a>
+            <a href={link('/press/')} class="btn btn-ghost">Press kit →</a>
+          </div>
         </aside>
       </article>
     </div>
   </Section>
 </Base>
+
+<style is:global>
+  /* Extensions to the legal-page system. The shared rules live in
+     privacy.astro under <style is:global>. */
+
+  /* TL;DR — saffron-on-paper-2 callout, more emphatic than a section. */
+  .svge-legal-tldr {
+    padding: 1.5rem 1.75rem;
+    background: var(--color-paper-2);
+    border-left: 4px solid var(--color-saffron);
+    border-radius: 0 0.375rem 0.375rem 0;
+  }
+  .svge-legal-tldr-text {
+    margin-top: 0.75rem;
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--color-ink);
+    max-width: none !important;
+  }
+
+  /* Do / Don't grid */
+  .svge-legal-rules {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--rule-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  @media (min-width: 640px) { .svge-legal-rules { grid-template-columns: 1fr 1fr; } }
+  .svge-legal-rules-col { padding: 1.25rem 1.5rem; background: var(--color-paper); }
+  .svge-legal-rules-col ul { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .svge-legal-rules-col li { position: relative; padding-left: 1.5rem; font-size: 0.9375rem; line-height: 1.55; color: var(--color-ink); }
+  .svge-legal-rules-do .eyebrow { color: var(--color-forest); }
+  .svge-legal-rules-dont .eyebrow { color: var(--color-saffron-text); }
+  .svge-legal-rules-do li::before {
+    content: ""; position: absolute; left: 0; top: 0.4375rem; width: 12px; height: 7px;
+    border-left: 2px solid var(--color-forest); border-bottom: 2px solid var(--color-forest);
+    transform: rotate(-45deg);
+  }
+  .svge-legal-rules-dont li::before {
+    content: ""; position: absolute; left: 0; top: 0.5rem; width: 11px; height: 11px;
+    background: linear-gradient(45deg, transparent calc(50% - 1px), var(--color-saffron-text) calc(50% - 1px), var(--color-saffron-text) calc(50% + 1px), transparent calc(50% + 1px)),
+                linear-gradient(-45deg, transparent calc(50% - 1px), var(--color-saffron-text) calc(50% - 1px), var(--color-saffron-text) calc(50% + 1px), transparent calc(50% + 1px));
+  }
+
+  .svge-legal-fineprint { margin-top: 1.25rem; font-size: 0.875rem; line-height: 1.55; color: var(--color-slate-2); }
+
+  /* Contact list */
+  .svge-legal-contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    display: grid;
+    gap: 1px;
+    background: var(--rule-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+  }
+  .svge-legal-contact-list li {
+    background: var(--color-paper);
+    padding: 0.875rem 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    align-items: baseline;
+  }
+  @media (min-width: 640px) {
+    .svge-legal-contact-list li { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  }
+  .svge-legal-contact-list .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-slate);
+  }
+  .svge-legal-contact-list a {
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-saffron);
+    align-self: end;
+    justify-self: start;
+  }
+  .svge-legal-contact-list a:hover { color: var(--color-saffron-text); }
+
+  /* TOC footer */
+  .svge-legal-toc-foot {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule-color);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-slate-2);
+  }
+  .svge-legal-toc-foot a { color: var(--color-slate); }
+
+  /* CTA actions row */
+  .svge-legal-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+</style>
