@@ -11,13 +11,24 @@ import Base from '../../layouts/Base.astro';
 import { link } from '../../lib/links';
 import { SITE } from '../../lib/site';
 
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
 const today = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date());
 ---
 <Base
   title="Data room (one-pager)"
-  description="Single-page lender summary for SVGE. Print to PDF via your browser."
+  description="Single-page lender summary for SVGE Bio. Print to PDF via your browser."
 >
   <article class="container-narrow py-16 print:py-0">
+    <!-- Top photo strip (suppressed in print) -->
+    <figure class="mb-8 overflow-hidden rounded print:hidden" style="aspect-ratio: 21 / 9; border: 1px solid var(--rule-color);">
+      <picture>
+        <source type="image/avif" srcset={`${asset('banners/build_data_room-640.avif')} 640w, ${asset('banners/build_data_room-1024.avif')} 1024w, ${asset('banners/build_data_room-1600.avif')} 1600w`} sizes="(max-width: 1024px) 100vw, 720px" />
+        <source type="image/webp" srcset={`${asset('banners/build_data_room-640.webp')} 640w, ${asset('banners/build_data_room-1024.webp')} 1024w, ${asset('banners/build_data_room-1600.webp')} 1600w`} sizes="(max-width: 1024px) 100vw, 720px" />
+        <img src={asset('banners/build_data_room.webp')} alt="An open project file under a brass anglepoise lamp — a balance sheet, a clearance-matrix grid, and a 24-month commissioning timeline." loading="eager" decoding="async" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+      </picture>
+    </figure>
+
     <!-- Header -->
     <header class="pb-6 border-b" style="border-color: var(--rule-color);">
       <p class="eyebrow" style="color: var(--color-saffron-text);">Data room · one-pager</p>

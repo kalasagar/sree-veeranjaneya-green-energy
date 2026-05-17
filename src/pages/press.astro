@@ -9,6 +9,9 @@ import NotifyMe from '../components/NotifyMe.astro';
 import { SITE } from '../lib/site';
 import { getCollection } from 'astro:content';
 
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
 const posts = (await getCollection('news', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
@@ -18,6 +21,7 @@ const chips = [
   { id: 'facts', label: 'Fast facts' },
   { id: 'brand', label: 'Brand pack' },
   { id: 'quotes', label: 'Quotes' },
+  { id: 'film', label: 'Film' },
   { id: 'journal', label: 'Journal' },
 ];
 
@@ -311,6 +315,22 @@ const facts: [string, string][] = [
   <Section id="quotes" eyebrow="Founder quotes" title="On the record." bg="paper-2" narrow>
     <p class="prose-svge">Both founders are quoted on the record on the About page. The quotes carry their signed attribution and stay current as the company evolves.</p>
     <p class="mt-6"><a href={link('/about/#founders')}>Founder quotes on /about →</a></p>
+  </Section>
+
+  <Section id="film" eyebrow="The film" title="Six beats. Forty-eight seconds. The whole story.">
+    <p class="prose-svge mb-6" style="max-width: 60ch;">Problem → People → Plant → Process → Product → Return. Six clips, crossfaded into one 48-second arc, all shot in the locked palette. Embed or download for editorial use; on-air clearance available on email.</p>
+    <figure class="overflow-hidden rounded" style="aspect-ratio: 16 / 9; background: var(--color-ink);">
+      <video
+        src={asset('video/hero_story_arc.mp4')}
+        controls
+        muted
+        playsinline
+        preload="metadata"
+        poster={asset('banners/hero_paddy_dawn-1024.webp')}
+        style="width: 100%; height: 100%; display: block;"
+      ></video>
+    </figure>
+    <p class="meta mt-3" style="color: var(--color-slate-2);">Stitched from six 8-second beats via <code>scripts/stitch_story.sh</code>. Locked palette throughout. 1080p, 16:9.</p>
   </Section>
 
   <Section id="journal" eyebrow="Build journal" title="Monthly receipts.">

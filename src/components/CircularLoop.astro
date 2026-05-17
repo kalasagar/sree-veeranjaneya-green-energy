@@ -16,6 +16,9 @@
  */
 import { link } from '../lib/links';
 
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
 interface Props {
   compact?: boolean;
 }
@@ -59,7 +62,11 @@ const fights = [
   },
 ];
 ---
-<div class={compact ? 'svge-flow svge-flow--compact' : 'svge-flow'} data-reveal>
+<div
+  class={compact ? 'svge-flow svge-flow--compact' : 'svge-flow'}
+  data-reveal
+  style={`--svge-flow-bg: url("${asset('banners/loop_diagram_circular-1024.webp')}");`}
+>
   <figure class="flow-figure">
     <svg viewBox="0 0 1100 580" role="img" aria-labelledby="flowTitle flowDesc" preserveAspectRatio="xMidYMid meet">
       <title id="flowTitle">SVGE flow: from farms, through the plant, out to fuel and back to soil</title>
@@ -235,6 +242,27 @@ const fights = [
   .svge-flow {
     display: grid;
     gap: 2.5rem;
+    position: relative;
+    isolation: isolate;
+  }
+  /* loop_diagram_circular illustration as a faint tonal anchor behind
+     the SVG diagram. lg+ only — saves bytes + reads cleaner on phones. */
+  @media (min-width: 1024px) {
+    .svge-flow::before {
+      content: "";
+      position: absolute;
+      inset: -3rem auto auto -3rem;
+      width: 60%;
+      max-width: 720px;
+      aspect-ratio: 1;
+      background-image: url("var(--svge-flow-bg)");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.06;
+      z-index: -1;
+      pointer-events: none;
+    }
   }
   .flow-figure {
     margin: 0;

@@ -9,6 +9,9 @@ import { SITE } from '../lib/site';
 import { link } from '../lib/links';
 import Mark from './Mark.astro';
 
+const BASE = import.meta.env.BASE_URL;
+const asset = (p: string) => `${BASE}${p.replace(/^\//, '')}`.replace('//', '/');
+
 const year = new Date().getFullYear();
 const version = 'V3.9';
 const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
@@ -32,7 +35,20 @@ const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 's
         </div>
 
         <aside class="lg:col-span-4 lg:col-start-9 lg:pl-6 lg:border-l self-start" style="border-color: color-mix(in oklab, var(--color-paper) 18%, transparent);">
-          <Mark size={120} decorative />
+          <!-- Closing-loop ambient: a 4-second hand-drawn cycle (paddy ->
+               flame -> compost -> seedling). Lazily loads on md+ only;
+               mobile falls back to the static brand mark below. -->
+          <div class="svge-footer-loop hidden md:block" aria-hidden="true">
+            <video
+              src={asset('video/closing_loop_cycle.mp4')}
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+            ></video>
+          </div>
+          <Mark size={120} class="md:hidden" decorative />
           <p class="eyebrow mt-6" style="color: color-mix(in oklab, var(--color-paper) 55%, transparent);">Current status</p>
           <p class="mt-2 text-lg font-semibold" style="color: var(--color-paper); font-family: var(--font-display); letter-spacing: -0.01em;">{SITE.status.phaseLabel}</p>
           <p class="meta mt-1" style="color: color-mix(in oklab, var(--color-paper) 65%, transparent);">Construction begins Q3 2026. Commissioning deadline 04 Oct 2026.</p>
@@ -52,10 +68,14 @@ const lastUpdated = new Intl.DateTimeFormat('en-IN', { day: '2-digit', month: 's
       <!-- Sitemap grid (4 columns: brand + 3 link lists) -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-10">
         <div class="lg:col-span-4">
-          <Mark size={56} decorative />
-          <p class="mt-4 text-lg font-bold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink); letter-spacing: -0.01em;">{SITE.short}</p>
-          <p class="meta mt-1 max-w-[28ch]">{SITE.legalName}</p>
-          <div class="mt-4 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
+          <div class="flex items-center gap-4">
+            <Mark size={64} decorative />
+            <div class="min-w-0">
+              <p class="text-lg font-bold tracking-tight" style="font-family: var(--font-display); color: var(--color-ink); letter-spacing: -0.01em; line-height: 1.1;">{SITE.short}</p>
+              <p class="meta mt-1 leading-snug" style="max-width: 28ch;">{SITE.legalName}</p>
+            </div>
+          </div>
+          <div class="mt-5 w-8 h-px" style="background: var(--color-saffron);" aria-hidden="true"></div>
           <p class="mt-4 eyebrow" style="color: var(--color-saffron-text);">SATAT · GOBARdhan · MNRE</p>
           <p class="meta mt-3 max-w-[32ch]">A 4 TPD CBG plant being built in coastal Andhra Pradesh, with monthly receipts from the day concrete is poured.</p>
         </div>

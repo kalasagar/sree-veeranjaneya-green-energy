@@ -552,6 +552,21 @@
   }
   .svge-footer-cta:hover { background: var(--color-saffron); color: var(--color-paper); }
 
+  /* Footer closing-loop ambient — 4-second hand-drawn cycle. Aspect-locked
+     and capped so it can never bloat the footer band. lg+ only is gated
+     via Tailwind's `hidden md:block` on the wrapper. */
+  .svge-footer-loop {
+    width: 100%;
+    max-width: 180px;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-paper) 14%, transparent);
+    background: color-mix(in oklab, var(--color-paper) 6%, transparent);
+  }
+  .svge-footer-loop video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (prefers-reduced-motion: reduce) { .svge-footer-loop video { animation: none; } }
+
   .svge-footer-colophon { background: var(--color-paper-2); }
   .svge-footer-colophon a {
     color: var(--color-slate);
